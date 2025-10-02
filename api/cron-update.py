@@ -89,73 +89,86 @@ def update_congressional_data():
             logger.error(f"Error updating hearings: {e}")
             update_results['updates']['hearings'] = f"Error: {str(e)}"
 
-        # Update committees
-        logger.info("Updating committees...")
-        try:
-            committees = committee_fetcher.fetch_all_committees(119)
-            committee_count = 0
+        # Update committees (weekly only - full update on Sundays)
+        today = datetime.now()
+        is_sunday = today.weekday() == 6  # Sunday = 6
 
-            for committee_data in committees[:50]:  # Limit for daily updates
-                parsed_committee = committee_parser.parse(committee_data)
-                if parsed_committee:
-                    with db.transaction() as conn:
-                        conn.execute('''
-                            INSERT OR REPLACE INTO committees
-                            (system_code, name, chamber, type, parent_committee_id, congress)
-                            VALUES (?, ?, ?, ?, ?, ?)
-                        ''', (
-                            parsed_committee.system_code,
-                            parsed_committee.name,
-                            parsed_committee.chamber,
-                            parsed_committee.type,
-                            parsed_committee.parent_committee_id,
-                            parsed_committee.congress
-                        ))
-                        committee_count += 1
+        if is_sunday:
+            logger.info("Updating committees (weekly full update)...")
+            try:
+                committees = committee_fetcher.fetch_all_committees(119)
+                committee_count = 0
 
-            update_results['updates']['committees'] = committee_count
-            logger.info(f"Updated {committee_count} committees")
+                for committee_data in committees:  # Full update on Sundays
+                    parsed_committee = committee_parser.parse(committee_data)
+                    if parsed_committee:
+                        with db.transaction() as conn:
+                            conn.execute('''
+                                INSERT OR REPLACE INTO committees
+                                (system_code, name, chamber, type, parent_committee_id, congress)
+                                VALUES (?, ?, ?, ?, ?, ?)
+                            ''', (
+                                parsed_committee.system_code,
+                                parsed_committee.name,
+                                parsed_committee.chamber,
+                                parsed_committee.type,
+                                parsed_committee.parent_committee_id,
+                                parsed_committee.congress
+                            ))
+                            committee_count += 1
 
-        except Exception as e:
-            logger.error(f"Error updating committees: {e}")
-            update_results['updates']['committees'] = f"Error: {str(e)}"
+                update_results['updates']['committees'] = committee_count
+                logger.info(f"Updated {committee_count} committees")
 
-        # Update members
-        logger.info("Updating members...")
-        try:
-            members = member_fetcher.fetch_current_members(119)
-            member_count = 0
+            except Exception as e:
+                logger.error(f"Error updating committees: {e}")
+                update_results['updates']['committees'] = f"Error: {str(e)}"
+        else:
+            logger.info("Skipping committee update (only runs on Sundays)")
+            update_results['updates']['committees'] = "Skipped (weekly update)"
 
-            for member_data in members[:100]:  # Limit for daily updates
-                parsed_member = member_parser.parse(member_data)
-                if parsed_member:
-                    with db.transaction() as conn:
-                        conn.execute('''
-                            INSERT OR REPLACE INTO members
-                            (bioguide_id, first_name, middle_name, last_name, full_name,
-                             party, state, district, birth_year, current_member, congress)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                        ''', (
-                            parsed_member.bioguide_id,
-                            parsed_member.first_name,
-                            parsed_member.middle_name,
-                            parsed_member.last_name,
-                            parsed_member.full_name,
-                            parsed_member.party,
-                            parsed_member.state,
-                            parsed_member.district,
-                            parsed_member.birth_year,
-                            parsed_member.current_member,
-                            parsed_member.congress
-                        ))
-                        member_count += 1
+        # Update members (weekly only - full update on Mondays)
+        is_monday = today.weekday() == 0  # Monday = 0
 
-            update_results['updates']['members'] = member_count
-            logger.info(f"Updated {member_count} members")
+        if is_monday:
+            logger.info("Updating members (weekly full update)...")
+            try:
+                members = member_fetcher.fetch_current_members(119)
+                member_count = 0
 
-        except Exception as e:
-            logger.error(f"Error updating members: {e}")
-            update_results['updates']['members'] = f"Error: {str(e)}"
+                for member_data in members:  # Full update on Mondays
+                    parsed_member = member_parser.parse(member_data)
+                    if parsed_member:
+                        with db.transaction() as conn:
+                            conn.execute('''
+                                INSERT OR REPLACE INTO members
+                                (bioguide_id, first_name, middle_name, last_name, full_name,
+                                 party, state, district, birth_year, current_member, congress)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            ''', (
+                                parsed_member.bioguide_id,
+                                parsed_member.first_name,
+                                parsed_member.middle_name,
+                                parsed_member.last_name,
+                                parsed_member.full_name,
+                                parsed_member.party,
+                                parsed_member.state,
+                                parsed_member.district,
+                                parsed_member.birth_year,
+                                parsed_member.current_member,
+                                parsed_member.congress
+                            ))
+                            member_count += 1
+
+                update_results['updates']['members'] = member_count
+                logger.info(f"Updated {member_count} members")
+
+            except Exception as e:
+                logger.error(f"Error updating members: {e}")
+                update_results['updates']['members'] = f"Error: {str(e)}"
+        else:
+            logger.info("Skipping member update (only runs on Mondays)")
+            update_results['updates']['members'] = "Skipped (weekly update)"
 
         # Update witnesses for recent hearings
         logger.info("Updating witnesses...")

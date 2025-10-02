@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     request_timeout: int = Field(default=30, env='REQUEST_TIMEOUT')
 
     # Database Configuration
-    database_path: str = Field(default='data/congressional_hearings.db', env='DATABASE_PATH')
+    database_path: str = Field(default='database.db', env='DATABASE_PATH')
 
     # Import Configuration
     target_congress: int = Field(default=119, env='TARGET_CONGRESS')

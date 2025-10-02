@@ -19,29 +19,18 @@
         <div class="card">
             <div class="card-body">
                 <form method="GET" class="row g-3">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label for="search" class="form-label">Search Witnesses</label>
                         <input type="text" class="form-control" id="search" name="search"
                                value="{{ search }}" placeholder="Search by name or organization...">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label for="type" class="form-label">Witness Type</label>
                         <select class="form-select" id="type" name="type">
                             <option value="">All Types</option>
                             {% for type in witness_types %}
                             <option value="{{ type }}" {% if type == selected_type %}selected{% endif %}>
                                 {{ type }}
-                            </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="organization" class="form-label">Organization</label>
-                        <select class="form-select" id="organization" name="organization">
-                            <option value="">All Organizations</option>
-                            {% for org in organizations %}
-                            <option value="{{ org }}" {% if org == selected_organization %}selected{% endif %}>
-                                {{ org[:50] }}{% if org|length > 50 %}...{% endif %}
                             </option>
                             {% endfor %}
                         </select>
@@ -80,7 +69,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <a href="{{ url_for('main_pages.witnesses', search=search, type=selected_type, organization=selected_organization, page=1, sort='name', order='asc' if sort_by == 'name' and sort_order == 'desc' else 'desc') }}"
+                                    <a href="{{ url_for('main_pages.witnesses', search=search, type=selected_type, page=1, sort='name', order='asc' if sort_by == 'name' and sort_order == 'desc' else 'desc') }}"
                                        class="text-decoration-none text-dark">
                                         Name
                                         {% if sort_by == 'name' %}
@@ -91,7 +80,7 @@
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="{{ url_for('main_pages.witnesses', search=search, type=selected_type, organization=selected_organization, page=1, sort='organization', order='asc' if sort_by == 'organization' and sort_order == 'desc' else 'desc') }}"
+                                    <a href="{{ url_for('main_pages.witnesses', search=search, type=selected_type, page=1, sort='organization', order='asc' if sort_by == 'organization' and sort_order == 'desc' else 'desc') }}"
                                        class="text-decoration-none text-dark">
                                         Organization
                                         {% if sort_by == 'organization' %}
@@ -102,7 +91,7 @@
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="{{ url_for('main_pages.witnesses', search=search, type=selected_type, organization=selected_organization, page=1, sort='type', order='asc' if sort_by == 'type' and sort_order == 'desc' else 'desc') }}"
+                                    <a href="{{ url_for('main_pages.witnesses', search=search, type=selected_type, page=1, sort='type', order='asc' if sort_by == 'type' and sort_order == 'desc' else 'desc') }}"
                                        class="text-decoration-none text-dark">
                                         Type
                                         {% if sort_by == 'type' %}
@@ -113,7 +102,7 @@
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="{{ url_for('main_pages.witnesses', search=search, type=selected_type, organization=selected_organization, page=1, sort='hearings', order='asc' if sort_by == 'hearings' and sort_order == 'desc' else 'desc') }}"
+                                    <a href="{{ url_for('main_pages.witnesses', search=search, type=selected_type, page=1, sort='hearings', order='asc' if sort_by == 'hearings' and sort_order == 'desc' else 'desc') }}"
                                        class="text-decoration-none text-dark">
                                         Hearings
                                         {% if sort_by == 'hearings' %}
@@ -198,7 +187,7 @@
                     <ul class="pagination justify-content-center mt-3">
                         {% if has_prev %}
                         <li class="page-item">
-                            <a class="page-link" href="{{ url_for('main_pages.witnesses', page=page-1, search=search, type=selected_type, organization=selected_organization, sort=sort_by, order=sort_order) }}">
+                            <a class="page-link" href="{{ url_for('main_pages.witnesses', page=page-1, search=search, type=selected_type, sort=sort_by, order=sort_order) }}">
                                 <i class="fas fa-chevron-left"></i> Previous
                             </a>
                         </li>
@@ -207,7 +196,7 @@
                         {% for p in range(1, total_pages + 1) %}
                         {% if p <= 3 or p >= total_pages - 2 or (p >= page - 1 and p <= page + 1) %}
                         <li class="page-item {% if p == page %}active{% endif %}">
-                            <a class="page-link" href="{{ url_for('main_pages.witnesses', page=p, search=search, type=selected_type, organization=selected_organization, sort=sort_by, order=sort_order) }}">
+                            <a class="page-link" href="{{ url_for('main_pages.witnesses', page=p, search=search, type=selected_type, sort=sort_by, order=sort_order) }}">
                                 {{ p }}
                             </a>
                         </li>
@@ -220,7 +209,7 @@
 
                         {% if has_next %}
                         <li class="page-item">
-                            <a class="page-link" href="{{ url_for('main_pages.witnesses', page=page+1, search=search, type=selected_type, organization=selected_organization, sort=sort_by, order=sort_order) }}">
+                            <a class="page-link" href="{{ url_for('main_pages.witnesses', page=page+1, search=search, type=selected_type, sort=sort_by, order=sort_order) }}">
                                 Next <i class="fas fa-chevron-right"></i>
                             </a>
                         </li>

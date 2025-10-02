@@ -110,7 +110,6 @@ def witnesses():
     try:
         search = request.args.get('search', '')
         witness_type = request.args.get('type', '')
-        organization = request.args.get('organization', '')
         sort_by = request.args.get('sort', 'name')
         sort_order = request.args.get('order', 'asc')
         page = int(request.args.get('page', 1))
@@ -140,9 +139,6 @@ def witnesses():
             query += ' AND wa.witness_type = ?'
             params.append(witness_type)
 
-        if organization:
-            query += ' AND w.organization LIKE ?'
-            params.append(f'%{organization}%')
 
         query += ' GROUP BY w.witness_id'
 
@@ -176,9 +172,6 @@ def witnesses():
             cursor = conn.execute('SELECT DISTINCT witness_type FROM witness_appearances WHERE witness_type IS NOT NULL ORDER BY witness_type')
             witness_types = [row[0] for row in cursor.fetchall()]
 
-            cursor = conn.execute('SELECT DISTINCT organization FROM witnesses WHERE organization IS NOT NULL ORDER BY organization')
-            organizations = [row[0] for row in cursor.fetchall()]
-
         # Pagination info
         total_pages = (total + per_page - 1) // per_page
         has_prev = page > 1
@@ -187,10 +180,8 @@ def witnesses():
         return render_template('witnesses.html',
                              witnesses=witnesses_data,
                              witness_types=witness_types,
-                             organizations=organizations,
                              search=search,
                              selected_type=witness_type,
-                             selected_organization=organization,
                              sort_by=sort_by,
                              sort_order=sort_order,
                              page=page,

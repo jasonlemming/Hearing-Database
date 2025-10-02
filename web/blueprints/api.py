@@ -16,6 +16,31 @@ db = DatabaseManager()
 
 
 
+@api_bp.route('/debug')
+def debug():
+    """Debug endpoint for troubleshooting deployment issues"""
+    import os
+    import sys
+    debug_info = {
+        'cwd': os.getcwd(),
+        'path': sys.path[:3],
+        'db_path': db.db_path,
+        'db_exists': os.path.exists(db.db_path),
+        'files_in_root': os.listdir('.'),
+        'python_version': sys.version
+    }
+    try:
+        if os.path.exists(db.db_path):
+            with db.transaction() as conn:
+                cursor = conn.execute("SELECT name FROM sqlite_master WHERE type='table'")
+                debug_info['tables'] = [row[0] for row in cursor.fetchall()]
+        else:
+            debug_info['tables'] = 'database file not found'
+    except Exception as e:
+        debug_info['db_error'] = str(e)
+    return jsonify(debug_info)
+
+
 @api_bp.route('/stats')
 def stats():
     """API endpoint for database statistics"""

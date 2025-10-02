@@ -11,10 +11,6 @@ This modular version uses Flask blueprints to organize routes into logical compo
 
 This replaces the previous monolithic 841-line app.py with organized, maintainable modules.
 """
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from flask import Flask, redirect, url_for
 from datetime import datetime
 

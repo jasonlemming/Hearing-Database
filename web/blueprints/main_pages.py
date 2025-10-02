@@ -1,10 +1,6 @@
 """
 Main pages blueprint - members, witnesses, and search
 """
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-
 from flask import Blueprint, render_template, request
 from database.manager import DatabaseManager
 

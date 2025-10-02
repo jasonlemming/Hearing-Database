@@ -1,10 +1,6 @@
 """
 Admin routes blueprint
 """
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-
 from flask import Blueprint, render_template
 from database.manager import DatabaseManager
 from datetime import datetime

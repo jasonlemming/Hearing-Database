@@ -25,5 +25,21 @@
       "path": "/api/cron/daily-update",
       "schedule": "0 6 * * *"
     }
-  ]
+  ],
+  "functions": {
+    "api/index.py": {
+      "excludeFiles": [
+        "data/congressional_hearings.db",
+        "data/backups/**",
+        "logs/**",
+        "docs/**",
+        "scripts/**",
+        "tests/**",
+        "venv/**",
+        "*.md",
+        "cli.py",
+        "congressional_data.db"
+      ]
+    }
+  }
 }

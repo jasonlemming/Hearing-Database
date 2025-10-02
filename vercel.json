@@ -4,22 +4,26 @@
     {
       "src": "api/index.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "api/cron-update.py",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
+    {
+      "src": "/api/cron/daily-update",
+      "dest": "api/cron-update.py"
+    },
     {
       "src": "/(.*)",
       "dest": "api/index.py"
     }
   ],
-  "env": {
-    "CONGRESS_API_KEY": "@congress_api_key",
-    "DATABASE_PATH": "./database.db",
-    "FLASK_ENV": "production"
-  },
-  "functions": {
-    "api/index.py": {
-      "maxDuration": 30
+  "crons": [
+    {
+      "path": "/api/cron/daily-update",
+      "schedule": "0 6 * * *"
     }
-  }
+  ]
 }

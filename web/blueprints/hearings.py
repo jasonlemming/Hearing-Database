@@ -1,0 +1,176 @@
+"""
+Hearing-related routes blueprint
+"""
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from flask import Blueprint, render_template, request
+from database.manager import DatabaseManager
+
+hearings_bp = Blueprint('hearings', __name__)
+
+# Initialize database manager
+db = DatabaseManager()
+
+
+@hearings_bp.route('/hearings')
+def hearings():
+    """Browse hearings"""
+    try:
+        search = request.args.get('search', '')
+        chamber = request.args.get('chamber', '')
+        committee_id = request.args.get('committee', '')
+        date_from = request.args.get('date_from', '')
+        date_to = request.args.get('date_to', '')
+        sort_by = request.args.get('sort', 'date')
+        sort_order = request.args.get('order', 'desc')
+        page = int(request.args.get('page', 1))
+        per_page = 20
+        offset = (page - 1) * per_page
+
+        # Build query - show all hearings, with committee info when available
+        # Show parent committee if the associated committee is a subcommittee
+        query = '''
+            SELECT h.hearing_id, h.title, h.hearing_date_only, h.hearing_time, h.chamber, h.status, h.hearing_type,
+                   COALESCE(parent.name, c.name) as committee_name,
+                   COALESCE(parent.committee_id, c.committee_id) as committee_id,
+                   h.updated_at, h.event_id
+            FROM hearings h
+            LEFT JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id AND hc.is_primary = 1
+            LEFT JOIN committees c ON hc.committee_id = c.committee_id
+            LEFT JOIN committees parent ON c.parent_committee_id = parent.committee_id
+            WHERE 1=1
+        '''
+        params = []
+
+        if search:
+            query += ' AND (h.title LIKE ? OR c.name LIKE ? OR parent.name LIKE ?)'
+            search_term = f'%{search}%'
+            params.extend([search_term, search_term, search_term])
+
+        if chamber:
+            query += ' AND h.chamber = ?'
+            params.append(chamber)
+
+        if committee_id:
+            query += ' AND (c.committee_id = ? OR parent.committee_id = ?)'
+            params.extend([committee_id, committee_id])
+
+        if date_from:
+            query += ' AND h.hearing_date_only >= ?'
+            params.append(date_from)
+
+        if date_to:
+            query += ' AND h.hearing_date_only <= ?'
+            params.append(date_to)
+
+        # Count total for pagination
+        count_query = f"SELECT COUNT(*) FROM ({query}) as count_query"
+
+        with db.transaction() as conn:
+            cursor = conn.execute(count_query, params)
+            total = cursor.fetchone()[0]
+
+            # Add sorting
+            sort_columns = {
+                'title': 'h.title',
+                'committee': 'COALESCE(parent.name, c.name)',
+                'date': 'h.hearing_date_only',
+                'chamber': 'h.chamber',
+                'status': 'h.status'
+            }
+
+            sort_column = sort_columns.get(sort_by, 'h.hearing_date_only')
+            sort_direction = 'ASC' if sort_order == 'asc' else 'DESC'
+
+            # Special handling for date sorting (nulls last for DESC, nulls first for ASC)
+            if sort_by == 'date':
+                if sort_order == 'desc':
+                    query += f' ORDER BY {sort_column} DESC NULLS LAST, h.hearing_time DESC NULLS LAST, h.updated_at DESC'
+                else:
+                    query += f' ORDER BY {sort_column} ASC NULLS FIRST, h.hearing_time ASC NULLS FIRST, h.updated_at ASC'
+            else:
+                query += f' ORDER BY {sort_column} {sort_direction}, h.hearing_date_only DESC NULLS LAST'
+
+            # Get page of results
+            query += ' LIMIT ? OFFSET ?'
+            params.extend([per_page, offset])
+
+            cursor = conn.execute(query, params)
+            hearings_data = cursor.fetchall()
+
+            # Get filter options
+            cursor = conn.execute('SELECT DISTINCT chamber FROM hearings ORDER BY chamber')
+            chambers = [row[0] for row in cursor.fetchall()]
+
+            cursor = conn.execute('''
+                SELECT DISTINCT
+                    COALESCE(parent.committee_id, c.committee_id) as committee_id,
+                    COALESCE(parent.name, c.name) as committee_name
+                FROM committees c
+                JOIN hearing_committees hc ON c.committee_id = hc.committee_id
+                LEFT JOIN committees parent ON c.parent_committee_id = parent.committee_id
+                ORDER BY committee_name
+            ''')
+            committees_with_hearings = cursor.fetchall()
+
+        # Pagination info
+        total_pages = (total + per_page - 1) // per_page
+        has_prev = page > 1
+        has_next = page < total_pages
+
+        return render_template('hearings.html',
+                             hearings=hearings_data,
+                             chambers=chambers,
+                             committees=committees_with_hearings,
+                             search=search,
+                             selected_chamber=chamber,
+                             selected_committee=committee_id,
+                             sort_by=sort_by,
+                             sort_order=sort_order,
+                             page=page,
+                             total_pages=total_pages,
+                             has_prev=has_prev,
+                             has_next=has_next,
+                             total=total)
+    except Exception as e:
+        return f"Error: {e}", 500
+
+
+@hearings_bp.route('/hearing/<int:hearing_id>')
+def hearing_detail(hearing_id):
+    """Hearing detail page"""
+    try:
+        with db.transaction() as conn:
+            # Get hearing info
+            cursor = conn.execute('SELECT * FROM hearings WHERE hearing_id = ?', (hearing_id,))
+            hearing = cursor.fetchone()
+
+            if not hearing:
+                return "Hearing not found", 404
+
+            # Get associated committees
+            cursor = conn.execute('''
+                SELECT c.committee_id, c.name, c.system_code, hc.is_primary
+                FROM committees c
+                JOIN hearing_committees hc ON c.committee_id = hc.committee_id
+                WHERE hc.hearing_id = ?
+                ORDER BY hc.is_primary DESC, c.name
+            ''', (hearing_id,))
+            committees = cursor.fetchall()
+
+            # Get witnesses for this hearing
+            cursor = conn.execute('''
+                SELECT w.witness_id, w.full_name, w.first_name, w.last_name, w.title, w.organization,
+                       wa.witness_type, wa.appearance_order, wa.position
+                FROM witnesses w
+                JOIN witness_appearances wa ON w.witness_id = wa.witness_id
+                WHERE wa.hearing_id = ?
+                ORDER BY wa.appearance_order, w.last_name, w.first_name
+            ''', (hearing_id,))
+            witnesses = cursor.fetchall()
+
+        return render_template('hearing_detail.html', hearing=hearing, committees=committees, witnesses=witnesses)
+    except Exception as e:
+        return f"Error: {e}", 500

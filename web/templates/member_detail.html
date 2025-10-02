@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+
+{% block title %}{{ member[5] }} - Congressional Hearing Database{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('main_pages.members') }}">Members</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ member[5] }}</li>
+    </ol>
+</nav>
+
+<!-- Member Header -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h1 class="mb-3">
+                            <i class="fas fa-user-tie me-3"></i>
+                            {% if member[11] %}{{ member[11] }} {% endif %}{{ member[5] }}
+                        </h1>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-info-circle me-2"></i>Basic Information</h6>
+                                <ul class="list-unstyled">
+                                    <li><strong>Full Name:</strong> {{ member[5] }}</li>
+                                    {% if member[2] or member[3] or member[4] %}
+                                    <li><strong>Name Components:</strong>
+                                        {% if member[2] %}{{ member[2] }}{% endif %}
+                                        {% if member[3] %} {{ member[3] }}{% endif %}
+                                        {% if member[4] %} {{ member[4] }}{% endif %}
+                                    </li>
+                                    {% endif %}
+                                    <li><strong>Party:</strong>
+                                        {% if member[6] == 'Democratic' or member[6] == 'D' %}
+                                            <span class="badge bg-primary">{{ member[6] }}</span>
+                                        {% elif member[6] == 'Republican' or member[6] == 'R' %}
+                                            <span class="badge bg-danger">{{ member[6] }}</span>
+                                        {% elif member[6] == 'Independent' or member[6] == 'I' %}
+                                            <span class="badge bg-warning">{{ member[6] }}</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ member[6] or 'Unknown' }}</span>
+                                        {% endif %}
+                                    </li>
+                                    <li><strong>Chamber:</strong>
+                                        {% if member[17] == 'House' %}
+                                            <span class="badge bg-success">{{ member[17] }}</span>
+                                        {% elif member[17] == 'Senate' %}
+                                            <span class="badge bg-info">{{ member[17] }}</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ member[17] or 'Unknown' }}</span>
+                                        {% endif %}
+                                    </li>
+                                    <li><strong>State:</strong>
+                                        {% if member[7] %}
+                                            <span class="badge bg-light text-dark">{{ member[7] }}</span>
+                                        {% else %}
+                                            <span class="text-muted">—</span>
+                                        {% endif %}
+                                    </li>
+                                    {% if member[8] %}
+                                    <li><strong>District:</strong> {{ member[8] }}</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-id-badge me-2"></i>Official Information</h6>
+                                <ul class="list-unstyled">
+                                    {% if member[1] %}
+                                    <li><strong>Bioguide ID:</strong> <code>{{ member[1] }}</code></li>
+                                    {% endif %}
+                                    {% if member[16] %}
+                                    <li><strong>Congress:</strong> {{ member[16] }}</li>
+                                    {% endif %}
+                                    {% if member[15] %}
+                                    <li><strong>Terms Served:</strong> {{ member[15] }}</li>
+                                    {% endif %}
+                                    {% if member[9] %}
+                                    <li><strong>Birth Year:</strong> {{ member[9] }}</li>
+                                    {% endif %}
+                                    <li><strong>Current Member:</strong>
+                                        {% if member[10] %}
+                                            <span class="badge bg-success">Yes</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">No</span>
+                                        {% endif %}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        {% if member[12] or member[13] or member[14] %}
+                        <div class="mb-3">
+                            <h6><i class="fas fa-address-book me-2"></i>Contact Information</h6>
+                            <ul class="list-unstyled">
+                                {% if member[12] %}
+                                <li><strong>Official Website:</strong> <a href="{{ member[12] }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-external-link-alt me-1"></i>Visit Website
+                                </a></li>
+                                {% endif %}
+                                {% if member[13] %}
+                                <li><strong>Office Address:</strong> {{ member[13] }}</li>
+                                {% endif %}
+                                {% if member[14] %}
+                                <li><strong>Phone:</strong> {{ member[14] }}</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                                <h3>{{ committees|length }}</h3>
+                                <p class="mb-0">Committee Memberships</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Committee Memberships -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-users me-2"></i>
+                    Committee Memberships ({{ committees|length }})
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if committees %}
+                <div class="row">
+                    {% for committee in committees %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-primary">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h6 class="card-title">
+                                            <a href="{{ url_for('committees.committee_detail', committee_id=committee[0]) }}" class="text-decoration-none">
+                                                {{ committee[1] }}
+                                            </a>
+                                        </h6>
+                                        {% if committee[6] %}
+                                        <p class="text-muted mb-2">
+                                            <small><strong>Parent:</strong> {{ committee[7] }}</small>
+                                        </p>
+                                        {% endif %}
+                                        <p class="card-text">
+                                            <small class="text-muted">{{ committee[2] }} • {{ committee[3] }}</small>
+                                        </p>
+                                        <div class="d-flex flex-wrap gap-1">
+                                            {% if committee[2] == 'House' %}
+                                                <span class="badge bg-success">{{ committee[2] }}</span>
+                                            {% elif committee[2] == 'Senate' %}
+                                                <span class="badge bg-info">{{ committee[2] }}</span>
+                                            {% elif committee[2] == 'Joint' %}
+                                                <span class="badge bg-warning">{{ committee[2] }}</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ committee[2] }}</span>
+                                            {% endif %}
+
+                                            {% if committee[4] %}
+                                                {% if 'Chair' in committee[4] %}
+                                                    <span class="badge bg-danger">{{ committee[4] }}</span>
+                                                {% elif 'Ranking' in committee[4] %}
+                                                    <span class="badge bg-warning text-dark">{{ committee[4] }}</span>
+                                                {% else %}
+                                                    <span class="badge bg-light text-dark">{{ committee[4] }}</span>
+                                                {% endif %}
+                                            {% endif %}
+
+                                            {% if committee[5] %}
+                                                <span class="badge bg-success">Active</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-users-slash fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No committee memberships</h5>
+                    <p class="text-muted">This member has no recorded committee memberships.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Committee Hearings -->
+{% if recent_hearings %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    Recent Committee Hearings ({{ recent_hearings|length }})
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Committee</th>
+                                <th>Date</th>
+                                <th>Chamber</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for hearing in recent_hearings %}
+                            <tr>
+                                <td>
+                                    {% if hearing[1] %}
+                                        {{ hearing[1][:60] }}{% if hearing[1]|length > 60 %}...{% endif %}
+                                    {% else %}
+                                        <span class="text-muted">No title available</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if hearing[4] %}
+                                        <span class="badge bg-primary">{{ hearing[4][:30] }}{% if hearing[4]|length > 30 %}...{% endif %}</span>
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if hearing[2] %}
+                                        {{ hearing[2] }}
+                                    {% else %}
+                                        <span class="text-muted">No date</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if hearing[3] == 'House' %}
+                                        <span class="badge bg-success">{{ hearing[3] }}</span>
+                                    {% elif hearing[3] == 'Senate' %}
+                                        <span class="badge bg-info">{{ hearing[3] }}</span>
+                                    {% elif hearing[3] == 'Joint' %}
+                                        <span class="badge bg-warning">{{ hearing[3] }}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ hearing[3] or 'Unknown' }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('hearings.hearing_detail', hearing_id=hearing[0]) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye me-1"></i>View
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

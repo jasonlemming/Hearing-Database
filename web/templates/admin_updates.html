@@ -1,0 +1,357 @@
+{% extends "base.html" %}
+
+{% block title %}Update History - Congressional Hearing Database{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-sync-alt me-3"></i>
+            Daily Update History
+        </h1>
+    </div>
+</div>
+
+{% if not table_exists %}
+<!-- No Update Logs Yet -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-clock fa-4x text-muted mb-4"></i>
+                <h3 class="text-muted">No Update History Available</h3>
+                <p class="text-muted mb-4">
+                    Daily update logging has not been configured yet. Once the daily update system
+                    runs for the first time, update history will be displayed here.
+                </p>
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title">To Enable Daily Updates:</h5>
+                                <ol class="text-start">
+                                    <li>Set up the cron job using <code>config/cron.conf</code></li>
+                                    <li>Run the daily update script manually: <code>python scripts/daily_update.py</code></li>
+                                    <li>Check this page to monitor update status and history</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+
+<!-- Update Status Summary -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-line me-2"></i>
+                    Update Status Summary
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h4 class="text-primary">{{ updates|length }}</h4>
+                                <small class="text-muted">Total Updates (30 days)</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h4 class="text-success">{{ updates|selectattr('success')|list|length }}</h4>
+                                <small class="text-muted">Successful Updates</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h4 class="text-danger">{{ updates|rejectattr('success')|list|length }}</h4>
+                                <small class="text-muted">Failed Updates</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                {% if updates %}
+                                    {% set latest = updates[0] %}
+                                    {% if latest.update_date == (now.strftime('%Y-%m-%d') if now else '') %}
+                                        <h4 class="text-success">Today</h4>
+                                        <small class="text-muted">Last Update</small>
+                                    {% else %}
+                                        <h4 class="text-warning">{{ latest.update_date }}</h4>
+                                        <small class="text-muted">Last Update</small>
+                                    {% endif %}
+                                {% else %}
+                                    <h4 class="text-muted">Never</h4>
+                                    <small class="text-muted">Last Update</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update History Table -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-history me-2"></i>
+                    Update History (Last 30 Days)
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if updates %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                                <th>Hearings</th>
+                                <th>Updates</th>
+                                <th>New</th>
+                                <th>API Calls</th>
+                                <th>Errors</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for update in updates %}
+                            <tr class="{% if not update.success %}table-danger{% elif update.error_count > 0 %}table-warning{% endif %}">
+                                <td>
+                                    <strong>{{ update.update_date }}</strong>
+                                    <br><small class="text-muted">{{ update.start_time[-8:] if update.start_time else '' }}</small>
+                                </td>
+                                <td>
+                                    {% if update.duration_seconds %}
+                                        {% if update.duration_seconds < 60 %}
+                                            {{ "%.1f"|format(update.duration_seconds) }}s
+                                        {% elif update.duration_seconds < 3600 %}
+                                            {{ "%.1f"|format(update.duration_seconds / 60) }}m
+                                        {% else %}
+                                            {{ "%.1f"|format(update.duration_seconds / 3600) }}h
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if update.success %}
+                                        {% if update.error_count > 0 %}
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="fas fa-exclamation-triangle me-1"></i>
+                                                Completed with warnings
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check-circle me-1"></i>
+                                                Success
+                                            </span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="badge bg-danger">
+                                            <i class="fas fa-times-circle me-1"></i>
+                                            Failed
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark">
+                                        {{ update.hearings_checked or 0 }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if update.hearings_updated > 0 %}
+                                        <span class="badge bg-info">
+                                            {{ update.hearings_updated }}
+                                        </span>
+                                    {% else %}
+                                        <span class="text-muted">0</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if update.hearings_added > 0 %}
+                                        <span class="badge bg-success">
+                                            {{ update.hearings_added }}
+                                        </span>
+                                    {% else %}
+                                        <span class="text-muted">0</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary">
+                                        {{ update.api_requests or 0 }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if update.error_count > 0 %}
+                                        <span class="badge bg-danger">
+                                            {{ update.error_count }}
+                                        </span>
+                                    {% else %}
+                                        <span class="text-muted">0</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if update.errors and update.error_count > 0 %}
+                                        <button class="btn btn-sm btn-outline-danger" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#errors-{{ update.log_id }}"
+                                                aria-expanded="false">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            View Errors
+                                        </button>
+                                    {% elif update.committees_updated > 0 or update.witnesses_updated > 0 %}
+                                        <button class="btn btn-sm btn-outline-info" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#details-{{ update.log_id }}"
+                                                aria-expanded="false">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            Details
+                                        </button>
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+
+                            <!-- Error Details Row -->
+                            {% if update.errors and update.error_count > 0 %}
+                            <tr>
+                                <td colspan="9" class="p-0">
+                                    <div class="collapse" id="errors-{{ update.log_id }}">
+                                        <div class="card card-body border-0 bg-light">
+                                            <h6 class="text-danger">
+                                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                                Errors ({{ update.error_count }})
+                                            </h6>
+                                            <ul class="mb-0">
+                                                {% for error in update.errors %}
+                                                <li><code>{{ error }}</code></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endif %}
+
+                            <!-- Additional Details Row -->
+                            {% if update.committees_updated > 0 or update.witnesses_updated > 0 %}
+                            <tr>
+                                <td colspan="9" class="p-0">
+                                    <div class="collapse" id="details-{{ update.log_id }}">
+                                        <div class="card card-body border-0 bg-light">
+                                            <h6 class="text-info">
+                                                <i class="fas fa-info-circle me-2"></i>
+                                                Update Details
+                                            </h6>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <strong>Committees Updated:</strong> {{ update.committees_updated or 0 }}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <strong>Witnesses Updated:</strong> {{ update.witnesses_updated or 0 }}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <strong>Start Time:</strong> {{ update.start_time }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-history fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No Updates Found</h5>
+                    <p class="text-muted">No daily updates have been recorded in the last 30 days.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Manual Update Section -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-tools me-2"></i>
+                    Manual Update Actions
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Run Manual Update</h6>
+                        <p class="text-muted">
+                            To run a manual update, use the command line:
+                        </p>
+                        <div class="bg-light p-3 rounded">
+                            <code>cd /path/to/project && python scripts/daily_update.py</code>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Schedule Daily Updates</h6>
+                        <p class="text-muted">
+                            To set up automated daily updates, configure cron:
+                        </p>
+                        <div class="bg-light p-3 rounded">
+                            <code>crontab -e</code><br>
+                            <small class="text-muted">See config/cron.conf for examples</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Auto-refresh update status every 5 minutes
+setInterval(function() {
+    // Only refresh if we're on the admin updates page
+    if (window.location.pathname === '/admin/updates') {
+        // Could implement AJAX refresh of update status here
+        console.log('Checking for update status...');
+    }
+}, 5 * 60 * 1000);
+
+// Add current date context for template
+document.addEventListener('DOMContentLoaded', function() {
+    // Add "today" indicator if needed
+    const today = new Date().toISOString().split('T')[0];
+
+    // Could enhance with real-time status updates
+});
+</script>
+{% endblock %}

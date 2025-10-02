@@ -1,0 +1,363 @@
+{% extends "base.html" %}
+
+{% block title %}Committees - Congressional Hearing Database{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-users me-3"></i>
+            Congressional Committees
+        </h1>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="GET" class="row g-3">
+                    <div class="col-md-3">
+                        <label for="chamber" class="form-label">Chamber</label>
+                        <select class="form-select" id="chamber" name="chamber">
+                            <option value="">All Chambers</option>
+                            {% for chamber in chambers %}
+                            <option value="{{ chamber }}" {% if chamber == selected_chamber %}selected{% endif %}>
+                                {{ chamber }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="type" class="form-label">Committee Type</label>
+                        <select class="form-select" id="type" name="type">
+                            <option value="">All Types</option>
+                            {% for type in types %}
+                            <option value="{{ type }}" {% if type == selected_type %}selected{% endif %}>
+                                {{ type }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="committee" class="form-label">Select Committee</label>
+                        <select class="form-select" id="committee" name="committee" onchange="if(this.value) window.location.href='/committee/' + this.value">
+                            <option value="">Browse All Committees</option>
+                            {% for committee in all_committees %}
+                            <option value="{{ committee[0] }}">
+                                {{ committee[1][:45] }}{% if committee[1]|length > 45 %}...{% endif %}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">&nbsp;</label>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter me-1"></i>Filter
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Results -->
+<div class="row">
+    <div class="col-12">
+        <!-- Hierarchical View -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-sitemap me-2"></i>
+                    Congressional Committees
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if committees_hierarchy %}
+
+                <!-- Group committees by chamber -->
+                {% set house_committees = [] %}
+                {% set senate_committees = [] %}
+                {% set joint_committees = [] %}
+                {% for group in committees_hierarchy %}
+                    {% if group.parent[3] == 'House' %}
+                        {% set _ = house_committees.append(group) %}
+                    {% elif group.parent[3] == 'Senate' %}
+                        {% set _ = senate_committees.append(group) %}
+                    {% elif group.parent[3] == 'Joint' %}
+                        {% set _ = joint_committees.append(group) %}
+                    {% endif %}
+                {% endfor %}
+
+                <!-- House Committees Section -->
+                {% if house_committees %}
+                <div class="mb-5">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="me-3">
+                            <i class="fas fa-home fa-2x" style="color: #64748b;"></i>
+                        </div>
+                        <div>
+                            <h2 class="mb-0" style="color: #64748b; font-weight: bold;">House Committees</h2>
+                            <p class="text-muted mb-0">{{ house_committees|length }} committees</p>
+                        </div>
+                    </div>
+
+                    {% for group in house_committees %}
+                    {% set is_agriculture = 'Agriculture' in group.parent[2] %}
+                    <div class="mb-4">
+                        <!-- Parent Committee -->
+                        <div class="card" style="border-color: #64748b;">
+                            <div class="card-header collapse-toggle"
+                                 style="background-color: #64748b; color: white; cursor: pointer;"
+                                 data-bs-toggle="collapse"
+                                 data-bs-target="#subcommittees-{{ group.parent[0] }}"
+                                 aria-expanded="{% if is_agriculture %}true{% else %}false{% endif %}">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h4 class="mb-0">
+                                            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}"
+                                               class="text-white text-decoration-none">
+                                                {{ group.parent[2] }}
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div class="col-md-4 text-end">
+                                        <span class="badge bg-light text-dark">House</span>
+
+                                        {% if group.parent[5] > 0 %}
+                                            <span class="badge bg-warning text-dark ms-1">{{ group.parent[5] }} hearings</span>
+                                        {% endif %}
+
+                                        {% if group.subcommittees|length > 0 %}
+                                            <span class="badge bg-light text-dark ms-1">{{ group.subcommittees|length }} subcommittees</span>
+                                            <i class="fas fa-chevron-down ms-2"></i>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                        <!-- Subcommittees -->
+                        {% if group.subcommittees %}
+                        <div class="collapse {% if is_agriculture %}show{% endif %}" id="subcommittees-{{ group.parent[0] }}">
+                            <div class="card-body">
+                                <div class="row">
+                                    {% for subcommittee in group.subcommittees %}
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card border-light">
+                                            <div class="card-body py-2">
+                                                <h6 class="card-title mb-1">
+                                                    <a href="{{ url_for('committees.committee_detail', committee_id=subcommittee[0]) }}"
+                                                       class="text-decoration-none">
+                                                        {{ subcommittee[2] }}
+                                                    </a>
+                                                </h6>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    {% if subcommittee[5] > 0 %}
+                                                        <span class="badge bg-primary">{{ subcommittee[5] }} hearings</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="collapse {% if is_agriculture %}show{% endif %}" id="subcommittees-{{ group.parent[0] }}">
+                            <div class="card-body">
+                                <p class="text-muted mb-0"><em>No subcommittees</em></p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Senate Committees Section -->
+                {% if senate_committees %}
+                <div class="mb-5">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="me-3">
+                            <i class="fas fa-university fa-2x" style="color: #71717a;"></i>
+                        </div>
+                        <div>
+                            <h2 class="mb-0" style="color: #71717a; font-weight: bold;">Senate Committees</h2>
+                            <p class="text-muted mb-0">{{ senate_committees|length }} committees</p>
+                        </div>
+                    </div>
+
+                    {% for group in senate_committees %}
+                    <div class="mb-4">
+                        <!-- Parent Committee -->
+                        <div class="card" style="border-color: #71717a;">
+                            <div class="card-header collapse-toggle"
+                                 style="background-color: #71717a; color: white; cursor: pointer;"
+                                 data-bs-toggle="collapse"
+                                 data-bs-target="#subcommittees-{{ group.parent[0] }}"
+                                 aria-expanded="false">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h4 class="mb-0">
+                                            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}"
+                                               class="text-white text-decoration-none">
+                                                {{ group.parent[2] }}
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div class="col-md-4 text-end">
+                                        <span class="badge bg-light text-dark">Senate</span>
+
+                                        {% if group.parent[5] > 0 %}
+                                            <span class="badge bg-warning text-dark ms-1">{{ group.parent[5] }} hearings</span>
+                                        {% endif %}
+
+                                        {% if group.subcommittees|length > 0 %}
+                                            <span class="badge bg-light text-dark ms-1">{{ group.subcommittees|length }} subcommittees</span>
+                                            <i class="fas fa-chevron-down ms-2"></i>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                        <!-- Subcommittees -->
+                        {% if group.subcommittees %}
+                        <div class="collapse" id="subcommittees-{{ group.parent[0] }}">
+                            <div class="card-body">
+                                <div class="row">
+                                    {% for subcommittee in group.subcommittees %}
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card border-light">
+                                            <div class="card-body py-2">
+                                                <h6 class="card-title mb-1">
+                                                    <a href="{{ url_for('committees.committee_detail', committee_id=subcommittee[0]) }}"
+                                                       class="text-decoration-none">
+                                                        {{ subcommittee[2] }}
+                                                    </a>
+                                                </h6>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    {% if subcommittee[5] > 0 %}
+                                                        <span class="badge bg-primary">{{ subcommittee[5] }} hearings</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="collapse" id="subcommittees-{{ group.parent[0] }}">
+                            <div class="card-body">
+                                <p class="text-muted mb-0"><em>No subcommittees</em></p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Joint Committees Section -->
+                {% if joint_committees %}
+                <div class="mb-5">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="me-3">
+                            <i class="fas fa-handshake fa-2x" style="color: #78716c;"></i>
+                        </div>
+                        <div>
+                            <h2 class="mb-0" style="color: #78716c; font-weight: bold;">Joint Committees</h2>
+                            <p class="text-muted mb-0">{{ joint_committees|length }} committees</p>
+                        </div>
+                    </div>
+
+                    {% for group in joint_committees %}
+                    <div class="mb-4">
+                        <!-- Parent Committee -->
+                        <div class="card" style="border-color: #78716c;">
+                            <div class="card-header collapse-toggle"
+                                 style="background-color: #78716c; color: white; cursor: pointer;"
+                                 data-bs-toggle="collapse"
+                                 data-bs-target="#subcommittees-{{ group.parent[0] }}"
+                                 aria-expanded="false">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h4 class="mb-0">
+                                            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}"
+                                               class="text-white text-decoration-none">
+                                                {{ group.parent[2] }}
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div class="col-md-4 text-end">
+                                        <span class="badge bg-light text-dark">Joint</span>
+
+                                        {% if group.parent[5] > 0 %}
+                                            <span class="badge bg-warning text-dark ms-1">{{ group.parent[5] }} hearings</span>
+                                        {% endif %}
+
+                                        {% if group.subcommittees|length > 0 %}
+                                            <span class="badge bg-light text-dark ms-1">{{ group.subcommittees|length }} subcommittees</span>
+                                            <i class="fas fa-chevron-down ms-2"></i>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                        <!-- Subcommittees -->
+                        {% if group.subcommittees %}
+                        <div class="collapse" id="subcommittees-{{ group.parent[0] }}">
+                            <div class="card-body">
+                                <div class="row">
+                                    {% for subcommittee in group.subcommittees %}
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card border-light">
+                                            <div class="card-body py-2">
+                                                <h6 class="card-title mb-1">
+                                                    <a href="{{ url_for('committees.committee_detail', committee_id=subcommittee[0]) }}"
+                                                       class="text-decoration-none">
+                                                        {{ subcommittee[2] }}
+                                                    </a>
+                                                </h6>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    {% if subcommittee[5] > 0 %}
+                                                        <span class="badge bg-primary">{{ subcommittee[5] }} hearings</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="collapse" id="subcommittees-{{ group.parent[0] }}">
+                            <div class="card-body">
+                                <p class="text-muted mb-0"><em>No subcommittees</em></p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No committees found</h5>
+                    <p class="text-muted">Try adjusting your filters or search criteria.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

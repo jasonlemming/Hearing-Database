@@ -1,0 +1,410 @@
+{% extends "base.html" %}
+
+{% block title %}Witnesses - Congressional Hearing Database{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-users me-3"></i>
+            Congressional Witnesses
+        </h1>
+    </div>
+</div>
+
+<!-- Import Status Bar -->
+<div class="row mb-3" id="import-status" style="display: none;">
+    <div class="col-12">
+        <div class="card border-info">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0">
+                        <i class="fas fa-download me-2"></i>
+                        <span id="status-title">Witness Data Import in Progress</span>
+                    </h6>
+                    <button type="button" class="btn-close" id="close-status" aria-label="Close"></button>
+                </div>
+                <div class="progress mb-2" style="height: 20px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                         id="progress-bar"
+                         role="progressbar"
+                         style="width: 0%">
+                        <span id="progress-text">0%</span>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-3">
+                        <small class="text-muted">Hearings Processed</small>
+                        <br><strong id="hearings-processed">0</strong>
+                    </div>
+                    <div class="col-3">
+                        <small class="text-muted">Witnesses Found</small>
+                        <br><strong id="witnesses-found">0</strong>
+                    </div>
+                    <div class="col-3">
+                        <small class="text-muted">Total Appearances</small>
+                        <br><strong id="appearances-found">0</strong>
+                    </div>
+                    <div class="col-3">
+                        <small class="text-muted">Completion</small>
+                        <br><strong id="completion-estimate">Calculating...</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search and Filters -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="GET" class="row g-3">
+                    <div class="col-md-4">
+                        <label for="search" class="form-label">Search Witnesses</label>
+                        <input type="text" class="form-control" id="search" name="search"
+                               value="{{ search }}" placeholder="Search by name or organization...">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="type" class="form-label">Witness Type</label>
+                        <select class="form-select" id="type" name="type">
+                            <option value="">All Types</option>
+                            {% for type in witness_types %}
+                            <option value="{{ type }}" {% if type == selected_type %}selected{% endif %}>
+                                {{ type }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="organization" class="form-label">Organization</label>
+                        <select class="form-select" id="organization" name="organization">
+                            <option value="">All Organizations</option>
+                            {% for org in organizations %}
+                            <option value="{{ org }}" {% if org == selected_organization %}selected{% endif %}>
+                                {{ org[:50] }}{% if org|length > 50 %}...{% endif %}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">&nbsp;</label>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search me-1"></i>Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Results -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-list me-2"></i>
+                    Witnesses ({{ total }} total)
+                </h5>
+                {% if total > 0 %}
+                <span class="text-muted">Page {{ page }} of {{ total_pages }}</span>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if witnesses %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <a href="{{ url_for('main_pages.witnesses', search=search, type=selected_type, organization=selected_organization, page=1, sort='name', order='asc' if sort_by == 'name' and sort_order == 'desc' else 'desc') }}"
+                                       class="text-decoration-none text-dark">
+                                        Name
+                                        {% if sort_by == 'name' %}
+                                            <i class="fas fa-sort-{{ 'up' if sort_order == 'asc' else 'down' }} ms-1"></i>
+                                        {% else %}
+                                            <i class="fas fa-sort ms-1 text-muted"></i>
+                                        {% endif %}
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="{{ url_for('main_pages.witnesses', search=search, type=selected_type, organization=selected_organization, page=1, sort='organization', order='asc' if sort_by == 'organization' and sort_order == 'desc' else 'desc') }}"
+                                       class="text-decoration-none text-dark">
+                                        Organization
+                                        {% if sort_by == 'organization' %}
+                                            <i class="fas fa-sort-{{ 'up' if sort_order == 'asc' else 'down' }} ms-1"></i>
+                                        {% else %}
+                                            <i class="fas fa-sort ms-1 text-muted"></i>
+                                        {% endif %}
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="{{ url_for('main_pages.witnesses', search=search, type=selected_type, organization=selected_organization, page=1, sort='type', order='asc' if sort_by == 'type' and sort_order == 'desc' else 'desc') }}"
+                                       class="text-decoration-none text-dark">
+                                        Type
+                                        {% if sort_by == 'type' %}
+                                            <i class="fas fa-sort-{{ 'up' if sort_order == 'asc' else 'down' }} ms-1"></i>
+                                        {% else %}
+                                            <i class="fas fa-sort ms-1 text-muted"></i>
+                                        {% endif %}
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="{{ url_for('main_pages.witnesses', search=search, type=selected_type, organization=selected_organization, page=1, sort='hearings', order='asc' if sort_by == 'hearings' and sort_order == 'desc' else 'desc') }}"
+                                       class="text-decoration-none text-dark">
+                                        Hearings
+                                        {% if sort_by == 'hearings' %}
+                                            <i class="fas fa-sort-{{ 'up' if sort_order == 'asc' else 'down' }} ms-1"></i>
+                                        {% else %}
+                                            <i class="fas fa-sort ms-1 text-muted"></i>
+                                        {% endif %}
+                                    </a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for witness in witnesses %}
+                            <tr>
+                                <td>
+                                    <div>
+                                        <a href="{{ url_for('main_pages.witness_detail', witness_id=witness[0]) }}" class="text-decoration-none">
+                                            <strong>{{ witness[1] }}</strong>
+                                        </a>
+                                        {% if witness[4] %}
+                                        <br><small class="text-muted">{{ witness[4] }}</small>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if witness[5] %}
+                                        {{ witness[5] }}
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if witness[6] %}
+                                        <span class="badge
+                                            {% if witness[6] == 'Government' %}bg-primary
+                                            {% elif witness[6] == 'Academic' %}bg-info
+                                            {% elif witness[6] == 'Private' %}bg-success
+                                            {% elif witness[6] == 'Nonprofit' %}bg-warning text-dark
+                                            {% else %}bg-secondary
+                                            {% endif %}">
+                                            {{ witness[6] }}
+                                        </span>
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if witness[7] > 0 %}
+                                        <span class="badge bg-light text-dark">{{ witness[7] }} hearing{{ 's' if witness[7] != 1 else '' }}</span>
+                                        {% if witness[9] %}
+                                        <div class="mt-1">
+                                            {% set hearing_ids = witness[9].split('|||') %}
+                                            {% set hearing_titles = witness[8].split('|||') if witness[8] else [] %}
+                                            {% for hearing_id in hearing_ids[:3] %}
+                                            <a href="{{ url_for('hearings.hearing_detail', hearing_id=hearing_id) }}"
+                                               class="d-block text-decoration-none small text-muted">
+                                                {% if hearing_titles and loop.index0 < hearing_titles|length %}
+                                                {{ hearing_titles[loop.index0][:60] }}{% if hearing_titles[loop.index0]|length > 60 %}...{% endif %}
+                                                {% else %}
+                                                Hearing #{{ hearing_id }}
+                                                {% endif %}
+                                            </a>
+                                            {% endfor %}
+                                            {% if hearing_ids|length > 3 %}
+                                            <small class="text-muted">and {{ hearing_ids|length - 3 }} more...</small>
+                                            {% endif %}
+                                        </div>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                {% if total_pages > 1 %}
+                <nav aria-label="Witnesses pagination">
+                    <ul class="pagination justify-content-center mt-3">
+                        {% if has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('main_pages.witnesses', page=page-1, search=search, type=selected_type, organization=selected_organization, sort=sort_by, order=sort_order) }}">
+                                <i class="fas fa-chevron-left"></i> Previous
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% for p in range(1, total_pages + 1) %}
+                        {% if p <= 3 or p >= total_pages - 2 or (p >= page - 1 and p <= page + 1) %}
+                        <li class="page-item {% if p == page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('main_pages.witnesses', page=p, search=search, type=selected_type, organization=selected_organization, sort=sort_by, order=sort_order) }}">
+                                {{ p }}
+                            </a>
+                        </li>
+                        {% elif p == 4 or p == total_pages - 3 %}
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('main_pages.witnesses', page=page+1, search=search, type=selected_type, organization=selected_organization, sort=sort_by, order=sort_order) }}">
+                                Next <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-users-slash fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No witnesses found</h5>
+                    <p class="text-muted">Try adjusting your search criteria or filters.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let importCheckInterval;
+let statusDismissed = false;
+
+function checkImportStatus() {
+    if (statusDismissed) return;
+
+    fetch('/api/witness-import-status')
+        .then(response => response.json())
+        .then(data => {
+            updateStatusBar(data);
+        })
+        .catch(error => {
+            console.error('Error checking import status:', error);
+        });
+}
+
+function updateStatusBar(status) {
+    const statusBar = document.getElementById('import-status');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const statusTitle = document.getElementById('status-title');
+
+    // Show status bar if import is active (less than 95% complete)
+    if (!status.is_complete && status.total_witnesses > 0) {
+        statusBar.style.display = 'block';
+
+        // Update progress bar
+        const percentage = status.progress_percentage;
+        progressBar.style.width = percentage + '%';
+        progressText.textContent = percentage + '%';
+
+        // Update status indicators
+        document.getElementById('hearings-processed').textContent = status.hearings_processed + '/' + status.total_hearings;
+        document.getElementById('witnesses-found').textContent = status.total_witnesses.toLocaleString();
+        document.getElementById('appearances-found').textContent = status.total_appearances.toLocaleString();
+
+        // Update completion estimate
+        if (status.is_complete) {
+            document.getElementById('completion-estimate').textContent = 'Complete!';
+            statusTitle.textContent = 'Witness Data Import Complete';
+            progressBar.classList.remove('progress-bar-animated', 'progress-bar-striped');
+            progressBar.classList.add('bg-success');
+
+            // Show completion notification
+            showCompletionNotification(status);
+
+            // Stop checking after completion
+            if (importCheckInterval) {
+                clearInterval(importCheckInterval);
+            }
+        } else {
+            const remainingHearings = status.total_hearings - status.hearings_processed;
+            document.getElementById('completion-estimate').textContent = remainingHearings + ' hearings left';
+        }
+    } else if (status.is_complete) {
+        // Import is complete, show completion state briefly
+        statusBar.style.display = 'block';
+        statusTitle.textContent = 'Witness Data Import Complete';
+        progressBar.style.width = '100%';
+        progressText.textContent = '100%';
+        progressBar.classList.remove('progress-bar-animated', 'progress-bar-striped');
+        progressBar.classList.add('bg-success');
+
+        document.getElementById('hearings-processed').textContent = status.hearings_processed + '/' + status.total_hearings;
+        document.getElementById('witnesses-found').textContent = status.total_witnesses.toLocaleString();
+        document.getElementById('appearances-found').textContent = status.total_appearances.toLocaleString();
+        document.getElementById('completion-estimate').textContent = 'Complete!';
+
+        showCompletionNotification(status);
+
+        // Auto-hide after 10 seconds
+        setTimeout(() => {
+            statusBar.style.display = 'none';
+            if (importCheckInterval) {
+                clearInterval(importCheckInterval);
+            }
+        }, 10000);
+    }
+}
+
+function showCompletionNotification(status) {
+    // Create a toast notification for completion
+    const toastHtml = `
+        <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="fas fa-check-circle me-2"></i>
+                    Witness import complete! Found ${status.total_witnesses.toLocaleString()} witnesses across ${status.hearings_with_witnesses} hearings.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    `;
+
+    // Add toast to page if not already exists
+    let toastContainer = document.querySelector('.toast-container');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+        document.body.appendChild(toastContainer);
+    }
+
+    toastContainer.innerHTML = toastHtml;
+    const toast = new bootstrap.Toast(toastContainer.querySelector('.toast'));
+    toast.show();
+}
+
+// Close button functionality
+document.getElementById('close-status').addEventListener('click', function() {
+    document.getElementById('import-status').style.display = 'none';
+    statusDismissed = true;
+    if (importCheckInterval) {
+        clearInterval(importCheckInterval);
+    }
+});
+
+// Start checking import status when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    checkImportStatus(); // Check immediately
+    importCheckInterval = setInterval(checkImportStatus, 5000); // Check every 5 seconds
+});
+</script>
+{% endblock %}

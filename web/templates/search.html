@@ -1,0 +1,330 @@
+{% extends "base.html" %}
+
+{% block title %}Search - Congressional Hearing Database{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-search me-3"></i>
+            Search Database
+        </h1>
+    </div>
+</div>
+
+<!-- Search Form -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="GET" class="row g-3">
+                    <div class="col-md-10">
+                        <label for="q" class="form-label">Search Query</label>
+                        <input type="text" class="form-control form-control-lg" id="q" name="q"
+                               value="{{ query }}" placeholder="Search committees, hearings, members, and witnesses..."
+                               autofocus>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">&nbsp;</label>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-search me-1"></i>Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if query %}
+<!-- Search Results -->
+<div class="row">
+    <!-- Committees Results -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-users me-2"></i>
+                    Committees ({{ results.committees|length }})
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if results.committees %}
+                <div class="list-group list-group-flush">
+                    {% for committee in results.committees %}
+                    <a href="{{ url_for('committees.committee_detail', committee_id=committee[0]) }}"
+                       class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between align-items-start">
+                            <div>
+                                <h6 class="mb-1">{{ committee[1][:40] }}{% if committee[1]|length > 40 %}...{% endif %}</h6>
+                                <small class="text-muted">{{ committee[2] }} • {{ committee[3] }}</small>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% if results.committees|length == 10 %}
+                <div class="text-center mt-2">
+                    <small class="text-muted">Showing first 10 results</small>
+                </div>
+                {% endif %}
+                {% else %}
+                <p class="text-muted mb-0">No committees found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Hearings Results -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    Hearings ({{ results.hearings|length }})
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if results.hearings %}
+                <div class="list-group list-group-flush">
+                    {% for hearing in results.hearings %}
+                    <a href="{{ url_for('hearings.hearing_detail', hearing_id=hearing[0]) }}"
+                       class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between align-items-start">
+                            <div>
+                                {% if hearing[1] %}
+                                <h6 class="mb-1">{{ hearing[1][:40] }}{% if hearing[1]|length > 40 %}...{% endif %}</h6>
+                                {% else %}
+                                <h6 class="mb-1 text-muted">No title available</h6>
+                                {% endif %}
+                                <small class="text-muted">
+                                    {% if hearing[3] %}{{ hearing[3] }}{% endif %}
+                                    {% if hearing[2] %} • {{ hearing[2] }}{% endif %}
+                                </small>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% if results.hearings|length == 10 %}
+                <div class="text-center mt-2">
+                    <small class="text-muted">Showing first 10 results</small>
+                </div>
+                {% endif %}
+                {% else %}
+                <p class="text-muted mb-0">No hearings found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Members Results -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-user-tie me-2"></i>
+                    Members ({{ results.members|length }})
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if results.members %}
+                <div class="list-group list-group-flush">
+                    {% for member in results.members %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between align-items-start">
+                            <div>
+                                <h6 class="mb-1">{{ member[1] }}</h6>
+                                <small class="text-muted">
+                                    {{ member[2] }}
+                                    {% if member[3] %} • {{ member[3] }}{% endif %}
+                                    {% if member[4] %}-{{ member[4] }}{% endif %}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if results.members|length == 10 %}
+                <div class="text-center mt-2">
+                    <small class="text-muted">Showing first 10 results</small>
+                </div>
+                {% endif %}
+                {% else %}
+                <p class="text-muted mb-0">No members found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Witnesses Results -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-microphone me-2"></i>
+                    Witnesses ({{ results.witnesses|length }})
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if results.witnesses %}
+                <div class="list-group list-group-flush">
+                    {% for witness in results.witnesses %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between align-items-start">
+                            <div>
+                                <h6 class="mb-1">{{ witness[1] }}</h6>
+                                <small class="text-muted">
+                                    {% if witness[2] %}{{ witness[2] }}{% endif %}
+                                    {% if witness[3] %} •
+                                        <span class="badge
+                                            {% if witness[3] == 'Government' %}bg-primary
+                                            {% elif witness[3] == 'Academic' %}bg-info
+                                            {% elif witness[3] == 'Private' %}bg-success
+                                            {% elif witness[3] == 'Nonprofit' %}bg-warning text-dark
+                                            {% else %}bg-secondary
+                                            {% endif %} me-1">
+                                            {{ witness[3] }}
+                                        </span>
+                                    {% endif %}
+                                    {% if witness[4] %}{{ witness[4] }} hearing{{ 's' if witness[4] != 1 else '' }}{% endif %}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if results.witnesses|length == 10 %}
+                <div class="text-center mt-2">
+                    <small class="text-muted">Showing first 10 results</small>
+                </div>
+                {% endif %}
+                {% else %}
+                <p class="text-muted mb-0">No witnesses found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Tips -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    Search Tips
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Committee Search</h6>
+                        <ul class="small">
+                            <li>Search by committee name: "Ways and Means"</li>
+                            <li>Search by chamber: "House" or "Senate"</li>
+                            <li>Search by type: "Standing" or "Select"</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Hearing Search</h6>
+                        <ul class="small">
+                            <li>Search by hearing title or topic</li>
+                            <li>Search by committee name</li>
+                            <li>Partial matches are supported</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Member Search</h6>
+                        <ul class="small">
+                            <li>Search by full name: "John Smith"</li>
+                            <li>Search by last name: "Smith"</li>
+                            <li>Search by first name: "John"</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Witness Search</h6>
+                        <ul class="small">
+                            <li>Search by witness name: "Dr. Smith"</li>
+                            <li>Search by organization: "FBI"</li>
+                            <li>Search by type: "Government" or "Academic"</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h6>General Tips</h6>
+                        <ul class="small">
+                            <li>Search is case-insensitive</li>
+                            <li>Results are limited to 10 per category</li>
+                            <li>Use specific filters for more results</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<!-- Welcome Message -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-search fa-4x text-muted mb-4"></i>
+                <h3 class="text-muted">Search the Congressional Database</h3>
+                <p class="text-muted">
+                    Enter a search term above to find committees, hearings, members, and witnesses.
+                    You can search by name, topic, or any relevant keyword.
+                </p>
+                <div class="row mt-4">
+                    <div class="col-md-6 mb-3">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                                <h5>Committees</h5>
+                                <p class="small mb-0">Browse congressional committees by name, chamber, or type</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <i class="fas fa-calendar-alt fa-2x text-warning mb-2"></i>
+                                <h5>Hearings</h5>
+                                <p class="small mb-0">Find hearings by title, committee, or topic</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <i class="fas fa-user-tie fa-2x text-success mb-2"></i>
+                                <h5>Members</h5>
+                                <p class="small mb-0">Search for congressional members by name, party, or state</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <i class="fas fa-microphone fa-2x text-info mb-2"></i>
+                                <h5>Witnesses</h5>
+                                <p class="small mb-0">Search for hearing witnesses by name, organization, or type</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

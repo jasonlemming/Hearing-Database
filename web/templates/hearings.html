@@ -1,0 +1,394 @@
+{% extends "base.html" %}
+
+{% block title %}Hearings - Congressional Hearing Database{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-calendar-alt me-3"></i>
+            Congressional Hearings
+        </h1>
+    </div>
+</div>
+
+<!-- Quick Date Filters -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="d-flex flex-wrap gap-2">
+            <button type="button" class="btn btn-outline-primary quick-filter" data-filter="all">
+                <i class="fas fa-list me-1"></i>All
+            </button>
+            <button type="button" class="btn btn-outline-primary quick-filter" data-filter="today">
+                <i class="fas fa-calendar-day me-1"></i>Today
+            </button>
+            <button type="button" class="btn btn-outline-primary quick-filter" data-filter="this-week">
+                <i class="fas fa-calendar-week me-1"></i>This Week
+            </button>
+            <button type="button" class="btn btn-outline-primary quick-filter" data-filter="this-month">
+                <i class="fas fa-calendar me-1"></i>This Month
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Search and Filters -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="GET" class="row g-3" id="hearingsForm">
+                    <div class="col-md-4">
+                        <label for="search" class="form-label">Search Hearings</label>
+                        <input type="text" class="form-control" id="search" name="search"
+                               value="{{ search }}" placeholder="Search by title or committee...">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="chamber" class="form-label">Chamber</label>
+                        <select class="form-select" id="chamber" name="chamber">
+                            <option value="">All Chambers</option>
+                            {% for chamber in chambers %}
+                            <option value="{{ chamber }}" {% if chamber == selected_chamber %}selected{% endif %}>
+                                {{ chamber }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="committee" class="form-label">Committee</label>
+                        <select class="form-select" id="committee" name="committee">
+                            <option value="">All Committees</option>
+                            {% for committee in committees %}
+                            <option value="{{ committee[0] }}" {% if committee[0]|string == selected_committee %}selected{% endif %}>
+                                {{ committee[1][:50] }}{% if committee[1]|length > 50 %}...{% endif %}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">&nbsp;</label>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search me-1"></i>Search
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hidden date range inputs for quick filters -->
+                    <input type="hidden" name="date_from" id="date_from" value="{{ request.args.get('date_from', '') }}">
+                    <input type="hidden" name="date_to" id="date_to" value="{{ request.args.get('date_to', '') }}">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Results -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-list me-2"></i>
+                    Hearings ({{ total }} total)
+                </h5>
+                {% if total > 0 %}
+                <span class="text-muted">Page {{ page }} of {{ total_pages }}</span>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if hearings %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <a href="{{ url_for('hearings.hearings', search=search, chamber=selected_chamber, committee=selected_committee, page=1, sort='title', order='asc' if sort_by == 'title' and sort_order == 'desc' else 'desc') }}"
+                                       class="text-decoration-none text-dark">
+                                        Title
+                                        {% if sort_by == 'title' %}
+                                            <i class="fas fa-sort-{{ 'up' if sort_order == 'asc' else 'down' }} ms-1"></i>
+                                        {% else %}
+                                            <i class="fas fa-sort ms-1 text-muted"></i>
+                                        {% endif %}
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="{{ url_for('hearings.hearings', search=search, chamber=selected_chamber, committee=selected_committee, page=1, sort='committee', order='asc' if sort_by == 'committee' and sort_order == 'desc' else 'desc') }}"
+                                       class="text-decoration-none text-dark">
+                                        Committee
+                                        {% if sort_by == 'committee' %}
+                                            <i class="fas fa-sort-{{ 'up' if sort_order == 'asc' else 'down' }} ms-1"></i>
+                                        {% else %}
+                                            <i class="fas fa-sort ms-1 text-muted"></i>
+                                        {% endif %}
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="{{ url_for('hearings.hearings', search=search, chamber=selected_chamber, committee=selected_committee, page=1, sort='date', order='asc' if sort_by == 'date' and sort_order == 'desc' else 'desc') }}"
+                                       class="text-decoration-none text-dark">
+                                        Date
+                                        {% if sort_by == 'date' %}
+                                            <i class="fas fa-sort-{{ 'up' if sort_order == 'asc' else 'down' }} ms-1"></i>
+                                        {% else %}
+                                            <i class="fas fa-sort ms-1 text-muted"></i>
+                                        {% endif %}
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="{{ url_for('hearings.hearings', search=search, chamber=selected_chamber, committee=selected_committee, page=1, sort='chamber', order='asc' if sort_by == 'chamber' and sort_order == 'desc' else 'desc') }}"
+                                       class="text-decoration-none text-dark">
+                                        Chamber
+                                        {% if sort_by == 'chamber' %}
+                                            <i class="fas fa-sort-{{ 'up' if sort_order == 'asc' else 'down' }} ms-1"></i>
+                                        {% else %}
+                                            <i class="fas fa-sort ms-1 text-muted"></i>
+                                        {% endif %}
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="{{ url_for('hearings.hearings', search=search, chamber=selected_chamber, committee=selected_committee, page=1, sort='status', order='asc' if sort_by == 'status' and sort_order == 'desc' else 'desc') }}"
+                                       class="text-decoration-none text-dark">
+                                        Status
+                                        {% if sort_by == 'status' %}
+                                            <i class="fas fa-sort-{{ 'up' if sort_order == 'asc' else 'down' }} ms-1"></i>
+                                        {% else %}
+                                            <i class="fas fa-sort ms-1 text-muted"></i>
+                                        {% endif %}
+                                    </a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for hearing in hearings %}
+                            <tr>
+                                <td>
+                                    {% if hearing[1] and hearing[1].strip() %}
+                                        <a href="{{ url_for('hearings.hearing_detail', hearing_id=hearing[0]) }}" class="text-decoration-none text-dark">
+                                            <strong>{{ hearing[1][:80] }}{% if hearing[1]|length > 80 %}...{% endif %}</strong>
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ url_for('hearings.hearing_detail', hearing_id=hearing[0]) }}" class="text-decoration-none text-muted">
+                                            {% if hearing[10] %}
+                                                Hearing Event #{{ hearing[10] }}
+                                            {% else %}
+                                                Untitled Hearing
+                                            {% endif %}
+                                        </a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if hearing[7] %}
+                                        <a href="{{ url_for('committees.committee_detail', committee_id=hearing[8]) }}"
+                                           class="committee-link">
+                                            {{ hearing[7][:40] }}{% if hearing[7]|length > 40 %}...{% endif %}
+                                        </a>
+                                    {% else %}
+                                        <span class="text-muted">
+                                            <i class="fas fa-question-circle me-1"></i>Committee TBD
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if hearing[2] %}
+                                        <div><strong>{{ hearing[2] | strptime('%Y-%m-%d') | strftime('%b %d') }}</strong></div>
+                                    {% else %}
+                                        <span class="text-muted">
+                                            <i class="fas fa-calendar-times me-1"></i>Date TBD
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if hearing[4] == 'House' %}
+                                        <span class="badge bg-success">{{ hearing[4] }}</span>
+                                    {% elif hearing[4] == 'Senate' %}
+                                        <span class="badge bg-info">{{ hearing[4] }}</span>
+                                    {% elif hearing[4] == 'Joint' %}
+                                        <span class="badge bg-warning">{{ hearing[4] }}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ hearing[4] or 'Unknown' }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if hearing[5] %}
+                                        <span class="badge bg-light text-dark">{{ hearing[5] }}</span>
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                {% if total_pages > 1 %}
+                <nav aria-label="Hearings pagination">
+                    <ul class="pagination justify-content-center mt-3">
+                        {% if has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('hearings.hearings', page=page-1, search=search, chamber=selected_chamber, committee=selected_committee, sort=sort_by, order=sort_order) }}">
+                                <i class="fas fa-chevron-left"></i> Previous
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% for p in range(1, total_pages + 1) %}
+                        {% if p <= 3 or p >= total_pages - 2 or (p >= page - 1 and p <= page + 1) %}
+                        <li class="page-item {% if p == page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('hearings.hearings', page=p, search=search, chamber=selected_chamber, committee=selected_committee, sort=sort_by, order=sort_order) }}">
+                                {{ p }}
+                            </a>
+                        </li>
+                        {% elif p == 4 or p == total_pages - 3 %}
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('hearings.hearings', page=page+1, search=search, chamber=selected_chamber, committee=selected_committee, sort=sort_by, order=sort_order) }}">
+                                Next <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No hearings found</h5>
+                    <p class="text-muted">Try adjusting your search criteria or filters.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const quickFilters = document.querySelectorAll('.quick-filter');
+    const form = document.getElementById('hearingsForm');
+    const dateFromInput = document.getElementById('date_from');
+    const dateToInput = document.getElementById('date_to');
+
+    // Get today's date in YYYY-MM-DD format
+    function formatDate(date) {
+        return date.toISOString().split('T')[0];
+    }
+
+    // Get start of week (Monday)
+    function getStartOfWeek(date) {
+        const d = new Date(date);
+        const day = d.getDay();
+        const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+        return new Date(d.setDate(diff));
+    }
+
+    // Get end of week (Sunday)
+    function getEndOfWeek(date) {
+        const d = new Date(date);
+        const day = d.getDay();
+        const diff = d.getDate() - day + 7;
+        return new Date(d.setDate(diff));
+    }
+
+    // Get start of month
+    function getStartOfMonth(date) {
+        return new Date(date.getFullYear(), date.getMonth(), 1);
+    }
+
+    // Get end of month
+    function getEndOfMonth(date) {
+        return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    }
+
+    // Update active button state
+    function updateActiveButton(activeFilter) {
+        quickFilters.forEach(btn => {
+            btn.classList.remove('btn-primary');
+            btn.classList.add('btn-outline-primary');
+        });
+
+        const activeBtn = document.querySelector(`[data-filter="${activeFilter}"]`);
+        if (activeBtn) {
+            activeBtn.classList.remove('btn-outline-primary');
+            activeBtn.classList.add('btn-primary');
+        }
+    }
+
+    // Set date range and submit form
+    function applyDateFilter(filter) {
+        const today = new Date();
+
+        switch(filter) {
+            case 'all':
+                dateFromInput.value = '';
+                dateToInput.value = '';
+                break;
+            case 'today':
+                dateFromInput.value = formatDate(today);
+                dateToInput.value = formatDate(today);
+                break;
+            case 'this-week':
+                dateFromInput.value = formatDate(getStartOfWeek(today));
+                dateToInput.value = formatDate(getEndOfWeek(today));
+                break;
+            case 'this-month':
+                dateFromInput.value = formatDate(getStartOfMonth(today));
+                dateToInput.value = formatDate(getEndOfMonth(today));
+                break;
+        }
+
+        updateActiveButton(filter);
+        form.submit();
+    }
+
+    // Add click event listeners to quick filter buttons
+    quickFilters.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.dataset.filter;
+            applyDateFilter(filter);
+        });
+    });
+
+    // Initialize active button based on current URL parameters
+    function initializeActiveButton() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const dateFrom = urlParams.get('date_from');
+        const dateTo = urlParams.get('date_to');
+
+        if (!dateFrom && !dateTo) {
+            updateActiveButton('all');
+        } else if (dateFrom === dateTo) {
+            const today = formatDate(new Date());
+            if (dateFrom === today) {
+                updateActiveButton('today');
+            }
+        } else if (dateFrom && dateTo) {
+            const today = new Date();
+            const weekStart = formatDate(getStartOfWeek(today));
+            const weekEnd = formatDate(getEndOfWeek(today));
+            const monthStart = formatDate(getStartOfMonth(today));
+            const monthEnd = formatDate(getEndOfMonth(today));
+
+            if (dateFrom === weekStart && dateTo === weekEnd) {
+                updateActiveButton('this-week');
+            } else if (dateFrom === monthStart && dateTo === monthEnd) {
+                updateActiveButton('this-month');
+            }
+        }
+    }
+
+    // Initialize on page load
+    initializeActiveButton();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}Members - Congressional Hearing Database{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-user-tie me-3"></i>
+            Congressional Members
+        </h1>
+    </div>
+</div>
+
+<!-- Search and Filters -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="GET" class="row g-3">
+                    <div class="col-md-3">
+                        <label for="search" class="form-label">Search Members</label>
+                        <input type="text" class="form-control" id="search" name="search"
+                               value="{{ search }}" placeholder="Search by name...">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="party" class="form-label">Party</label>
+                        <select class="form-select" id="party" name="party">
+                            <option value="">All Parties</option>
+                            {% for party in parties %}
+                            <option value="{{ party }}" {% if party == selected_party %}selected{% endif %}>
+                                {{ party }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="state" class="form-label">State</label>
+                        <select class="form-select" id="state" name="state">
+                            <option value="">All States</option>
+                            {% for state in states %}
+                            <option value="{{ state }}" {% if state == selected_state %}selected{% endif %}>
+                                {{ state }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="chamber" class="form-label">Chamber</label>
+                        <select class="form-select" id="chamber" name="chamber">
+                            <option value="">All Chambers</option>
+                            {% for chamber in chambers %}
+                            <option value="{{ chamber }}" {% if chamber == selected_chamber %}selected{% endif %}>
+                                {{ chamber }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="committee" class="form-label">Committee</label>
+                        <select class="form-select" id="committee" name="committee">
+                            <option value="">All Committees</option>
+                            {% for committee in committees %}
+                            <option value="{{ committee[0] }}" {% if committee[0]|string == selected_committee %}selected{% endif %}>
+                                {{ committee[1][:25] }}{% if committee[1]|length > 25 %}...{% endif %}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label">&nbsp;</label>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search me-1"></i>Filter
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Results -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-list me-2"></i>
+                    Members ({{ members|length }})
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if members %}
+                <div class="table-responsive">
+                    <table class="table table-hover" id="membersTable">
+                        <thead>
+                            <tr>
+                                <th class="sortable" data-column="0">
+                                    Name
+                                    <i class="fas fa-sort ms-1 text-muted sort-icon"></i>
+                                </th>
+                                <th class="sortable" data-column="1">
+                                    Party
+                                    <i class="fas fa-sort ms-1 text-muted sort-icon"></i>
+                                </th>
+                                <th class="sortable" data-column="2">
+                                    State
+                                    <i class="fas fa-sort ms-1 text-muted sort-icon"></i>
+                                </th>
+                                <th class="sortable" data-column="3">
+                                    Chamber
+                                    <i class="fas fa-sort ms-1 text-muted sort-icon"></i>
+                                </th>
+                                <th class="sortable" data-column="4">
+                                    District
+                                    <i class="fas fa-sort ms-1 text-muted sort-icon"></i>
+                                </th>
+                                <th class="sortable" data-column="5">
+                                    Committees
+                                    <i class="fas fa-sort ms-1 text-muted sort-icon"></i>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for member in members %}
+                            <tr>
+                                <td>
+                                    <a href="{{ url_for('main_pages.member_detail', member_id=member[0]) }}" class="text-decoration-none">
+                                        <strong>{{ member[1] }}</strong>
+                                    </a>
+                                </td>
+                                <td>
+                                    {% if member[2] == 'Democratic' or member[2] == 'D' %}
+                                        <span class="badge bg-primary">{{ member[2] }}</span>
+                                    {% elif member[2] == 'Republican' or member[2] == 'R' %}
+                                        <span class="badge bg-danger">{{ member[2] }}</span>
+                                    {% elif member[2] == 'Independent' or member[2] == 'I' %}
+                                        <span class="badge bg-warning">{{ member[2] }}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ member[2] or 'Unknown' }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if member[3] %}
+                                        <span class="badge bg-light text-dark">{{ member[3] }}</span>
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if member[6] == 'House' %}
+                                        <span class="badge bg-success">{{ member[6] }}</span>
+                                    {% elif member[6] == 'Senate' %}
+                                        <span class="badge bg-info">{{ member[6] }}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ member[6] or 'Unknown' }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if member[4] %}
+                                        {{ member[4] }}
+                                    {% else %}
+                                        <span class="text-muted">At-Large</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if member[5] > 0 %}
+                                        <span class="badge bg-success">{{ member[5] }}</span>
+                                    {% else %}
+                                        <span class="text-muted">0</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No members found</h5>
+                    <p class="text-muted">Try adjusting your search criteria or filters.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.sortable {
+    cursor: pointer;
+    user-select: none;
+}
+.sortable:hover {
+    background-color: #f8f9fa;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const table = document.getElementById('membersTable');
+    const tbody = table.querySelector('tbody');
+    const sortableHeaders = document.querySelectorAll('.sortable');
+    let currentSort = { column: null, direction: 'asc' };
+
+    // Get cell value for sorting
+    function getCellValue(row, columnIndex) {
+        const cell = row.cells[columnIndex];
+
+        switch(columnIndex) {
+            case 0: // Name
+                return cell.textContent.trim().toLowerCase();
+            case 1: // Party
+                const partyBadge = cell.querySelector('.badge');
+                return partyBadge ? partyBadge.textContent.trim() : '';
+            case 2: // State
+                const stateBadge = cell.querySelector('.badge');
+                return stateBadge ? stateBadge.textContent.trim() : '';
+            case 3: // Chamber
+                const chamberBadge = cell.querySelector('.badge');
+                return chamberBadge ? chamberBadge.textContent.trim() : '';
+            case 4: // District
+                const text = cell.textContent.trim();
+                // Handle numeric districts and "At-Large"
+                if (text === 'At-Large' || text === '—') return 999;
+                const num = parseInt(text);
+                return isNaN(num) ? text.toLowerCase() : num;
+            case 5: // Committees
+                const committeeBadge = cell.querySelector('.badge');
+                if (committeeBadge) {
+                    return parseInt(committeeBadge.textContent) || 0;
+                }
+                return 0;
+            default:
+                return cell.textContent.trim().toLowerCase();
+        }
+    }
+
+    // Sort table by column
+    function sortTable(columnIndex) {
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+
+        // Determine sort direction
+        if (currentSort.column === columnIndex) {
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSort.direction = 'asc';
+        }
+        currentSort.column = columnIndex;
+
+        // Sort rows
+        rows.sort((a, b) => {
+            const aVal = getCellValue(a, columnIndex);
+            const bVal = getCellValue(b, columnIndex);
+
+            let comparison = 0;
+            if (typeof aVal === 'number' && typeof bVal === 'number') {
+                comparison = aVal - bVal;
+            } else {
+                comparison = String(aVal).localeCompare(String(bVal));
+            }
+
+            return currentSort.direction === 'asc' ? comparison : -comparison;
+        });
+
+        // Update DOM
+        rows.forEach(row => tbody.appendChild(row));
+
+        // Update sort icons
+        updateSortIcons(columnIndex, currentSort.direction);
+    }
+
+    // Update sort icons
+    function updateSortIcons(activeColumn, direction) {
+        sortableHeaders.forEach((header, index) => {
+            const icon = header.querySelector('.sort-icon');
+            if (index === activeColumn) {
+                icon.className = `fas fa-sort-${direction === 'asc' ? 'up' : 'down'} ms-1`;
+                icon.classList.remove('text-muted');
+            } else {
+                icon.className = 'fas fa-sort ms-1 text-muted';
+            }
+        });
+    }
+
+    // Add click event listeners to sortable headers
+    sortableHeaders.forEach((header, index) => {
+        header.addEventListener('click', () => {
+            sortTable(parseInt(header.dataset.column));
+        });
+    });
+});
+</script>
+{% endblock %}

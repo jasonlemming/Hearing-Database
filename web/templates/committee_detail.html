@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+{% block title %}{{ committee[2] }} - Congressional Hearing Database{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('committees.committees') }}">Committees</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ committee[2] }}</li>
+    </ol>
+</nav>
+
+<!-- Committee Header -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h1 class="mb-3">
+                            <i class="fas fa-users me-3"></i>
+                            {{ committee[2] }}
+                        </h1>
+                        {% if committee[1] %}
+                        <p class="lead text-muted mb-3">{{ committee[1] }}</p>
+                        {% endif %}
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-info-circle me-2"></i>Committee Details</h6>
+                                <ul class="list-unstyled">
+                                    <li><strong>Chamber:</strong>
+                                        {% if committee[3] == 'House' %}
+                                            <span class="badge bg-success">{{ committee[3] }}</span>
+                                        {% elif committee[3] == 'Senate' %}
+                                            <span class="badge bg-info">{{ committee[3] }}</span>
+                                        {% elif committee[3] == 'Joint' %}
+                                            <span class="badge bg-warning">{{ committee[3] }}</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ committee[3] }}</span>
+                                        {% endif %}
+                                    </li>
+                                    <li><strong>Type:</strong> <span class="badge bg-light text-dark">{{ committee[4] }}</span></li>
+                                    {% if committee[1] %}
+                                    <li><strong>System Code:</strong> <code>{{ committee[1] }}</code></li>
+                                    {% endif %}
+                                    {% if committee.parent_name %}
+                                    <li><strong>Parent Committee:</strong> {{ committee.parent_name }}</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <i class="fas fa-calendar-alt fa-3x text-primary mb-3"></i>
+                                <h3>{{ hearings|length }}</h3>
+                                <p class="mb-0">Total Hearings</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Subcommittees -->
+{% if subcommittees %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-sitemap me-2"></i>
+                    Subcommittees ({{ subcommittees|length }})
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for subcommittee in subcommittees %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-left-primary">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    <a href="{{ url_for('committees.committee_detail', committee_id=subcommittee[0]) }}"
+                                       class="committee-link">
+                                        {{ subcommittee[2] }}
+                                    </a>
+                                </h6>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        {{ subcommittee[1] }} • {{ subcommittee[3] }}
+                                    </small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Hearings -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    Committee Hearings ({{ hearings|length }})
+                </h5>
+                {% if hearings|length > 0 %}
+                <a href="{{ url_for('hearings.hearings', committee=committee[0]) }}" class="btn btn-outline-primary btn-sm">
+                    View All <i class="fas fa-external-link-alt ms-1"></i>
+                </a>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if hearings %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Type</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for hearing in hearings %}
+                            <tr>
+                                <td>
+                                    {% if hearing[1] %}
+                                        {{ hearing[1][:80] }}{% if hearing[1]|length > 80 %}...{% endif %}
+                                    {% else %}
+                                        <span class="text-muted">No title available</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if hearing[2] %}
+                                        {{ hearing[2] }}
+                                    {% else %}
+                                        <span class="text-muted">No date</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if hearing[3] %}
+                                        <span class="badge bg-light text-dark">{{ hearing[3] }}</span>
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if hearing[4] %}
+                                        <span class="badge bg-secondary">{{ hearing[4] }}</span>
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if hearing[5] %}
+                                        <span class="badge bg-primary">Primary</span>
+                                    {% else %}
+                                        <span class="badge bg-outline-secondary">Related</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('hearings.hearing_detail', hearing_id=hearing[0]) }}"
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye me-1"></i>View
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No hearings found</h5>
+                    <p class="text-muted">This committee has no recorded hearings in the database.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

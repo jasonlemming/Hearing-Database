@@ -28,18 +28,7 @@
   ],
   "functions": {
     "api/index.py": {
-      "excludeFiles": [
-        "data/congressional_hearings.db",
-        "data/backups/**",
-        "logs/**",
-        "docs/**",
-        "scripts/**",
-        "tests/**",
-        "venv/**",
-        "*.md",
-        "cli.py",
-        "congressional_data.db"
-      ]
+      "excludeFiles": "{data/congressional_hearings.db,data/backups/**,logs/**,docs/**,scripts/**,tests/**,venv/**,*.md,cli.py,congressional_data.db,audit_tools/**,database_audit.db}"
     }
   }
 }

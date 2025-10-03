@@ -11,13 +11,20 @@ class Settings(BaseSettings):
     """Application settings with environment variable support"""
 
     # API Configuration
-    api_key: str = Field(..., env='API_KEY')
+    api_key: Optional[str] = Field(default=None, env='API_KEY')
     api_base_url: str = Field(default='https://api.congress.gov/v3', env='API_BASE_URL')
     rate_limit: int = Field(default=5000, env='RATE_LIMIT')
     request_timeout: int = Field(default=30, env='REQUEST_TIMEOUT')
 
     # Database Configuration
     database_path: str = Field(default='database.db', env='DATABASE_PATH')
+
+    def __init__(self, **kwargs):
+        """Initialize settings with Vercel-specific configuration"""
+        super().__init__(**kwargs)
+        # For Vercel deployment, use the included database
+        if os.environ.get('VERCEL'):
+            self.database_path = '/var/task/database.db'
 
     # Import Configuration
     target_congress: int = Field(default=119, env='TARGET_CONGRESS')

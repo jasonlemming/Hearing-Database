@@ -129,13 +129,18 @@
                                         <span class="badge bg-light text-dark">House</span>
 
                                         {% if group.parent[5] > 0 %}
-                                            <span class="badge bg-warning text-dark ms-1">{{ group.parent[5] }} hearings</span>
+                                            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}"
+                                               class="badge bg-warning text-dark ms-1 text-decoration-none"
+                                               title="View committee details and hearings">
+                                                {{ group.parent[5] }} hearings
+                                            </a>
                                         {% endif %}
 
                                         {% if group.subcommittees|length > 0 %}
                                             <span class="badge bg-light text-dark ms-1">{{ group.subcommittees|length }} subcommittees</span>
                                             <i class="fas fa-chevron-down ms-2"></i>
                                         {% endif %}
+
                                     </div>
                                 </div>
                             </div>
@@ -155,9 +160,13 @@
                                                         {{ subcommittee[2] }}
                                                     </a>
                                                 </h6>
-                                                <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex justify-content-start align-items-center">
                                                     {% if subcommittee[5] > 0 %}
-                                                        <span class="badge bg-primary">{{ subcommittee[5] }} hearings</span>
+                                                        <a href="{{ url_for('committees.committee_detail', committee_id=subcommittee[0]) }}"
+                                                           class="badge bg-primary text-decoration-none"
+                                                           title="View subcommittee details and hearings">
+                                                            {{ subcommittee[5] }} hearings
+                                                        </a>
                                                     {% endif %}
                                                 </div>
                                             </div>
@@ -165,12 +174,36 @@
                                     </div>
                                     {% endfor %}
                                 </div>
+
+                                <!-- Full Committee Link -->
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="d-grid">
+                                            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}"
+                                               class="btn btn-primary btn-lg"
+                                               title="View full committee details, hearings, and members">
+                                                <i class="fas fa-users me-2"></i>
+                                                View Full Committee Details
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         {% else %}
                         <div class="collapse {% if is_agriculture %}show{% endif %}" id="subcommittees-{{ group.parent[0] }}">
                             <div class="card-body">
-                                <p class="text-muted mb-0"><em>No subcommittees</em></p>
+                                <p class="text-muted mb-3"><em>No subcommittees</em></p>
+
+                                <!-- Full Committee Link -->
+                                <div class="d-grid">
+                                    <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}"
+                                       class="btn btn-primary btn-lg"
+                                       title="View full committee details, hearings, and members">
+                                        <i class="fas fa-users me-2"></i>
+                                        View Full Committee Details
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         {% endif %}
@@ -214,13 +247,18 @@
                                         <span class="badge bg-light text-dark">Senate</span>
 
                                         {% if group.parent[5] > 0 %}
-                                            <span class="badge bg-warning text-dark ms-1">{{ group.parent[5] }} hearings</span>
+                                            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}"
+                                               class="badge bg-warning text-dark ms-1 text-decoration-none"
+                                               title="View committee details and hearings">
+                                                {{ group.parent[5] }} hearings
+                                            </a>
                                         {% endif %}
 
                                         {% if group.subcommittees|length > 0 %}
                                             <span class="badge bg-light text-dark ms-1">{{ group.subcommittees|length }} subcommittees</span>
                                             <i class="fas fa-chevron-down ms-2"></i>
                                         {% endif %}
+
                                     </div>
                                 </div>
                             </div>
@@ -240,9 +278,13 @@
                                                         {{ subcommittee[2] }}
                                                     </a>
                                                 </h6>
-                                                <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex justify-content-start align-items-center">
                                                     {% if subcommittee[5] > 0 %}
-                                                        <span class="badge bg-primary">{{ subcommittee[5] }} hearings</span>
+                                                        <a href="{{ url_for('committees.committee_detail', committee_id=subcommittee[0]) }}"
+                                                           class="badge bg-primary text-decoration-none"
+                                                           title="View subcommittee details and hearings">
+                                                            {{ subcommittee[5] }} hearings
+                                                        </a>
                                                     {% endif %}
                                                 </div>
                                             </div>
@@ -299,13 +341,18 @@
                                         <span class="badge bg-light text-dark">Joint</span>
 
                                         {% if group.parent[5] > 0 %}
-                                            <span class="badge bg-warning text-dark ms-1">{{ group.parent[5] }} hearings</span>
+                                            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}"
+                                               class="badge bg-warning text-dark ms-1 text-decoration-none"
+                                               title="View committee details and hearings">
+                                                {{ group.parent[5] }} hearings
+                                            </a>
                                         {% endif %}
 
                                         {% if group.subcommittees|length > 0 %}
                                             <span class="badge bg-light text-dark ms-1">{{ group.subcommittees|length }} subcommittees</span>
                                             <i class="fas fa-chevron-down ms-2"></i>
                                         {% endif %}
+
                                     </div>
                                 </div>
                             </div>
@@ -325,9 +372,13 @@
                                                         {{ subcommittee[2] }}
                                                     </a>
                                                 </h6>
-                                                <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex justify-content-start align-items-center">
                                                     {% if subcommittee[5] > 0 %}
-                                                        <span class="badge bg-primary">{{ subcommittee[5] }} hearings</span>
+                                                        <a href="{{ url_for('committees.committee_detail', committee_id=subcommittee[0]) }}"
+                                                           class="badge bg-primary text-decoration-none"
+                                                           title="View subcommittee details and hearings">
+                                                            {{ subcommittee[5] }} hearings
+                                                        </a>
                                                     {% endif %}
                                                 </div>
                                             </div>

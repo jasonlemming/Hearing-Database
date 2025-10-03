@@ -25,5 +25,5 @@
       "path": "/api/cron/daily-update",
       "schedule": "0 6 * * *"
     }
-  ],
+  ]
 }

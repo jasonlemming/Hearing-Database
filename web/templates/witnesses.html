@@ -152,25 +152,6 @@
                                 <td>
                                     {% if witness[7] > 0 %}
                                         <span class="badge bg-light text-dark">{{ witness[7] }} hearing{{ 's' if witness[7] != 1 else '' }}</span>
-                                        {% if witness[9] %}
-                                        <div class="mt-1">
-                                            {% set hearing_ids = witness[9].split('|||') %}
-                                            {% set hearing_titles = witness[8].split('|||') if witness[8] else [] %}
-                                            {% for hearing_id in hearing_ids[:3] %}
-                                            <a href="{{ url_for('hearings.hearing_detail', hearing_id=hearing_id) }}"
-                                               class="d-block text-decoration-none small text-muted">
-                                                {% if hearing_titles and loop.index0 < hearing_titles|length %}
-                                                {{ hearing_titles[loop.index0][:60] }}{% if hearing_titles[loop.index0]|length > 60 %}...{% endif %}
-                                                {% else %}
-                                                Hearing #{{ hearing_id }}
-                                                {% endif %}
-                                            </a>
-                                            {% endfor %}
-                                            {% if hearing_ids|length > 3 %}
-                                            <small class="text-muted">and {{ hearing_ids|length - 3 }} more...</small>
-                                            {% endif %}
-                                        </div>
-                                        {% endif %}
                                     {% else %}
                                         <span class="text-muted">—</span>
                                     {% endif %}

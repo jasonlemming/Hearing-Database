@@ -167,6 +167,40 @@ def hearing_detail(hearing_id):
             ''', (hearing_id,))
             witnesses = cursor.fetchall()
 
-        return render_template('hearing_detail.html', hearing=hearing, committees=committees, witnesses=witnesses)
+            # Get hearing transcripts
+            cursor = conn.execute('''
+                SELECT transcript_id, jacket_number, title, document_url, pdf_url, html_url, format_type
+                FROM hearing_transcripts
+                WHERE hearing_id = ?
+                ORDER BY created_at DESC
+            ''', (hearing_id,))
+            transcripts = cursor.fetchall()
+
+            # Get witness documents
+            cursor = conn.execute('''
+                SELECT wd.document_id, wd.witness_id, w.full_name, wd.title, wd.document_url, wd.pdf_url, wd.html_url, wd.document_type
+                FROM witness_documents wd
+                JOIN witnesses w ON wd.witness_id = w.witness_id
+                WHERE wd.hearing_id = ?
+                ORDER BY w.last_name, w.first_name
+            ''', (hearing_id,))
+            witness_documents = cursor.fetchall()
+
+            # Get supporting documents
+            cursor = conn.execute('''
+                SELECT document_id, title, document_url, pdf_url, html_url, document_type
+                FROM supporting_documents
+                WHERE hearing_id = ?
+                ORDER BY created_at DESC
+            ''', (hearing_id,))
+            supporting_documents = cursor.fetchall()
+
+        return render_template('hearing_detail.html',
+                             hearing=hearing,
+                             committees=committees,
+                             witnesses=witnesses,
+                             transcripts=transcripts,
+                             witness_documents=witness_documents,
+                             supporting_documents=supporting_documents)
     except Exception as e:
         return f"Error: {e}", 500

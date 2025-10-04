@@ -1,291 +1,298 @@
-# Congressional Committee Hearing Database
+# Congressional Hearing Database
 
-A comprehensive system for importing, storing, and querying congressional committee hearings data from the Congress.gov API. This project creates a searchable database of hearings, witnesses, documents, and their relationships for research purposes.
+A public-facing tool for exploring congressional committee hearings, witness testimony, and legislative activity. Track what's happening in Congress through an accessible web interface and powerful data management tools.
+
+**Live Demo**: [Deployed on Vercel](https://hearing-database.vercel.app) (if applicable)
+
+## What Can You Do With This?
+
+- 📅 **Track Committee Activity** - Monitor specific committees and subject areas
+- 👥 **Follow Members** - See what congressional members are working on
+- 🎤 **Analyze Witness Testimony** - Identify who testifies and organizational representation patterns
+- 🔍 **Search & Filter** - Find hearings by chamber, committee, date, or keyword
+- 📄 **Access Documents** - Direct links to official transcripts and supporting materials
+
+## Current Data
+
+- **Congress**: 119th (2025-2027)
+- **Hearings**: 1,168 (613 House, 555 Senate)
+- **Witnesses**: 1,545 unique individuals with 1,620 appearances
+- **Committees**: 53 parent committees + 161 subcommittees
+- **Members**: 538 congressional members tracked
+- **Updates**: Daily automated sync at 6am UTC
+
+## Quick Start
+
+### For Casual Users
+
+**Just want to browse hearings?** Visit the web interface:
+
+```bash
+# Clone and run locally
+git clone <repository-url>
+cd Hearing-Database
+pip install -r requirements.txt
+python cli.py web serve
+```
+
+Then open http://localhost:5000 in your browser.
+
+👉 **See the [User Guide](docs/USER_GUIDE.md) for web interface tutorials**
+
+### For Technical Users
+
+**Want to import your own data or run custom queries?**
+
+1. **Get a Congress.gov API Key** (free): https://api.congress.gov/sign-up/
+2. **Configure environment**:
+   ```bash
+   cp .env.example .env
+   # Edit .env and add your API key
+   ```
+3. **Initialize database**:
+   ```bash
+   python cli.py database init
+   ```
+4. **Import data**:
+   ```bash
+   python cli.py import full --congress 119
+   ```
+
+👉 **See the [CLI Guide](docs/CLI_GUIDE.md) for detailed command reference**
+
+### For Developers
+
+**Want to contribute or integrate with the API?**
+
+- **Architecture**: [Web Architecture Guide](docs/WEB_ARCHITECTURE.md)
+- **API Reference**: [API Documentation](docs/API_REFERENCE.md)
+- **Deployment**: [Deployment Guide](docs/DEPLOYMENT.md)
+- **Daily Updates**: [Automated Updates](docs/DAILY_UPDATES.md)
 
 ## Features
 
-- **Complete Data Import**: Fetch committees, members, hearings, bills, witnesses, and documents
-- **Rate-Limited API Client**: Respects Congress.gov API limits (5,000 requests/hour)
-- **Incremental Updates**: Daily sync to capture new and changed data
-- **Data Validation**: Configurable strict/lenient parsing with error handling
-- **Resumable Imports**: Checkpoint system allows resuming interrupted imports
-- **Rich Relationships**: Links between hearings, committees, bills, witnesses, and documents
+### Web Interface
+- Browse hearings with advanced filtering (chamber, committee, date range, search)
+- View detailed hearing information with witness lists and documents
+- Explore committee structures and membership
+- Track witness testimony across multiple hearings
+- Member detail pages with committee assignments
+
+### Data Management CLI
+- **Import**: Full data import from Congress.gov API
+- **Update**: Incremental daily updates (fetches only changed data)
+- **Enhance**: Enrich existing data with additional details
+- **Database**: Schema management and maintenance
+- **Analysis**: Audit tools and data quality checks
+
+### Automated Updates
+- Daily cron job (Vercel deployment) syncs new hearings and updates
+- Incremental update strategy minimizes API usage
+- Error tracking and logging for monitoring
 
 ## Project Structure
 
 ```
-Congressional-meetings-api-claude-experiment/
-├── api/                    # API client and rate limiting
+Hearing-Database/
+├── api/                    # Congress.gov API client and rate limiting
 ├── config/                 # Configuration and logging
-├── database/              # Database schema and operations
-├── fetchers/              # API data fetchers
+├── database/              # Database schema and operations (SQLite)
+├── fetchers/              # API data fetchers (hearings, committees, witnesses, etc.)
 ├── parsers/               # Data validation and parsing
 ├── importers/             # Import orchestration
-├── scripts/               # CLI scripts
-├── data/                  # Database file (created on init)
-└── logs/                  # Log files (created on run)
+├── updaters/              # Daily update automation
+├── web/                   # Flask web application
+│   ├── blueprints/        # Modular route handlers
+│   ├── templates/         # HTML templates
+│   └── static/            # CSS, JavaScript, images
+├── scripts/               # Legacy standalone scripts
+├── docs/                  # Documentation
+├── tests/                 # Test suite
+└── cli.py                 # Unified command-line interface
 ```
-
-## Quick Start
-
-1. **Install Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Configure Environment**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your Congress.gov API key
-   ```
-
-3. **Initialize Database**
-   ```bash
-   python cli.py database init
-   ```
-
-4. **Run Import**
-   ```bash
-   # Validation run first (recommended)
-   python cli.py import full --validation --congress 119
-
-   # Full import
-   python cli.py import full --congress 119
-   ```
-
-## Unified CLI
-
-The project includes a comprehensive unified CLI (`cli.py`) that consolidates all database operations:
-
-```bash
-# Check database status
-python cli.py database status
-
-# Import data
-python cli.py import full --congress 119
-
-# Update with latest changes
-python cli.py update incremental --lookback-days 7
-
-# Enhance existing data
-python cli.py enhance hearings --target titles
-
-# Import witnesses
-python cli.py witness import-all --congress 119
-
-# Start web interface
-python cli.py web serve
-```
-
-See [docs/CLI_GUIDE.md](docs/CLI_GUIDE.md) for comprehensive CLI documentation.
-
-## Modular Web Architecture
-
-The web application uses a modular Flask blueprint architecture for improved maintainability:
-
-- **Main App**: 91 lines (down from 841 lines - 89% reduction)
-- **Blueprints**: 6 organized modules (committees, hearings, members/witnesses/search, API, admin)
-- **Benefits**: Better organization, parallel development, easier testing and maintenance
-
-See [docs/WEB_ARCHITECTURE.md](docs/WEB_ARCHITECTURE.md) for detailed architecture documentation.
-
-## Configuration
-
-Key environment variables in `.env`:
-
-- `CONGRESS_API_KEY`: Your Congress.gov API key (required)
-- `TARGET_CONGRESS`: Congress number to import (default: 119)
-- `DATABASE_PATH`: SQLite database file path
-- `BATCH_SIZE`: Import batch size (default: 50)
-- `VALIDATION_MODE`: Enable strict validation (default: False)
 
 ## Database Schema
 
-The database includes 17 tables covering:
+The SQLite database tracks comprehensive congressional hearing data:
 
-- **Committees**: All congressional committees and subcommittees
-- **Members**: Representatives and Senators with leadership positions
-- **Hearings**: Committee meetings, hearings, and markups
-- **Bills**: Legislation referenced in hearings
-- **Witnesses**: Individuals testifying at hearings
-- **Documents**: Transcripts, witness statements, supporting materials
-- **Relationships**: Links between all entities
+**Core Tables**:
+- `hearings` - Hearing metadata (title, date, chamber, status, type)
+- `committees` - Committee and subcommittee information
+- `members` - Congressional members with party and state
+- `witnesses` - Witness information (name, title, organization)
 
-Key relationships:
-- Committees ↔ Members (committee memberships)
-- Committees ↔ Hearings (hearing committees)
-- Hearings ↔ Bills (hearing bills)
-- Hearings ↔ Witnesses (witness appearances)
-- Hearings ↔ Documents (transcripts, materials)
+**Relationship Tables**:
+- `hearing_committees` - Links hearings to committees
+- `hearing_transcripts` - Transcript URLs and metadata
+- `witness_appearances` - Witness testimony records
+- `witness_documents` - Witness written statements
+- `supporting_documents` - Additional hearing materials
+- `committee_memberships` - Member committee assignments
 
-## Usage Examples
+**Tracking Tables**:
+- `sync_tracking` - Import/update history
+- `update_logs` - Daily update metrics
+- `import_errors` - Error tracking
 
-### Import Commands
+## Technology Stack
 
-```bash
-# Check configuration
-python scripts/run_import.py --check-config
+- **Backend**: Python 3.8+ with Flask web framework
+- **Database**: SQLite (portable, serverless-friendly)
+- **API**: Congress.gov API v3 (5,000 requests/hour limit)
+- **Frontend**: Bootstrap 5 with vanilla JavaScript
+- **Deployment**: Vercel with automated daily cron jobs
+- **CLI**: Click framework for command-line interface
 
-# Import specific phase
-python scripts/run_import.py --phase committees --congress 119
-python scripts/run_import.py --phase members --congress 119
-python scripts/run_import.py --phase hearings --congress 119
+## Data Scope & Philosophy
 
-# Resume interrupted import
-python scripts/run_import.py --resume
+### Current Focus
+- **119th Congress** (2025-2027) - Currently active congress
+- **Historical Archive** - Data accumulates over time (will retain 119th when 120th starts)
+- **Metadata Focus** - Stores links to documents rather than full text (lightweight approach)
+- **Public Data** - All data sourced from official Congress.gov API
 
-# Custom batch size
-python scripts/run_import.py --batch-size 25 --congress 119
-```
+### Out of Scope (Current)
+- Bill tracking (schema exists but low priority)
+- Full-text document storage/search
+- Historical backfill to prior congresses (possible future enhancement)
 
-### Database Queries
+## Use Cases
 
-```sql
--- All hearings by committee
-SELECT h.* FROM hearings h
-JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id
-JOIN committees c ON hc.committee_id = c.committee_id
-WHERE c.system_code = 'hsif00'
-ORDER BY h.hearing_date DESC;
+### Civic Engagement
+- Monitor hearings on topics you care about
+- See which organizations testify before Congress
+- Track your representatives' committee activities
+- Access official hearing documents and transcripts
 
--- All testimony by witness
-SELECT w.full_name, h.title, h.hearing_date, c.name
-FROM witnesses w
-JOIN witness_appearances wa ON w.witness_id = wa.witness_id
-JOIN hearings h ON wa.hearing_id = h.hearing_id
-JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id
-JOIN committees c ON hc.committee_id = c.committee_id
-WHERE w.full_name LIKE '%Smith%'
-ORDER BY h.hearing_date DESC;
+### Research & Analysis
+- Study witness testimony patterns and organizational representation
+- Analyze committee hearing frequency and topics
+- Track legislative oversight activities
+- Export data for custom analysis
 
--- Committee roster
-SELECT m.full_name, m.party, m.state, cm.role
-FROM committees c
-JOIN committee_memberships cm ON c.committee_id = cm.committee_id
-JOIN members m ON cm.member_id = m.member_id
-WHERE c.system_code = 'ssfi00' AND cm.is_active = 1
-ORDER BY cm.role, m.last_name;
-```
+### Journalism & Transparency
+- Quick lookup of hearing information
+- Verify witness testimony claims
+- Monitor congressional activity timelines
+- Access primary source documents
 
-## API Integration
+## API Endpoints
 
-The system integrates with Congress.gov API v3:
+Public JSON API for programmatic access:
 
-- **Base URL**: https://api.congress.gov/v3
-- **Authentication**: API key required
-- **Rate Limits**: 5,000 requests/hour (automatically managed)
-- **Response Format**: JSON
+- `GET /api/stats` - Database statistics
+- `GET /api/update-status` - Daily update status and history
+- `GET /api/debug` - System diagnostic information
 
-Key endpoints used:
-- `/committee/{congress}/{chamber}` - Committee listings
-- `/member/congress/{congress}` - Member listings
-- `/committee-meeting/{congress}/{chamber}` - Hearing listings
-- `/bill/{congress}/{type}/{number}` - Bill details
-- `/hearing/{congress}/{chamber}/{jacket}` - Transcript details
+See [API Reference](docs/API_REFERENCE.md) for complete documentation.
 
-## Data Validation
+## Configuration
 
-The system supports two validation modes:
-
-**Strict Mode** (`VALIDATION_MODE=True`):
-- Critical field failures halt processing
-- Ensures data quality at cost of completeness
-
-**Lenient Mode** (`VALIDATION_MODE=False`):
-- Logs errors, uses defaults, continues processing
-- Maximizes data capture with quality warnings
-
-## Error Handling
-
-- **Automatic Retries**: Network failures and rate limits
-- **Error Logging**: Detailed logs in database and files
-- **Graceful Degradation**: Continue processing on non-critical errors
-- **Resume Capability**: Checkpoint system for interrupted imports
-
-## Performance
-
-- **Batch Processing**: Configurable batch sizes for memory efficiency
-- **Database Indexes**: Optimized for common query patterns
-- **Connection Pooling**: Efficient database operations
-- **Rate Limiting**: Automatic API throttling
-
-Expected import times (119th Congress):
-- Committees: ~5 minutes
-- Members: ~10 minutes
-- Hearings: ~30-60 minutes
-- Documents: ~2-4 hours (varies by hearing count)
-
-## Monitoring
-
-Check import progress:
+Key environment variables (`.env` file):
 
 ```bash
-# View logs
-tail -f logs/import.log
+# Required
+CONGRESS_API_KEY=your_api_key_here
 
-# Check database counts
-sqlite3 data/congressional_hearings.db "
-SELECT 'committees' as table_name, COUNT(*) as count FROM committees
-UNION ALL SELECT 'members', COUNT(*) FROM members
-UNION ALL SELECT 'hearings', COUNT(*) FROM hearings
-UNION ALL SELECT 'witnesses', COUNT(*) FROM witnesses;"
-
-# Check sync status
-sqlite3 data/congressional_hearings.db "
-SELECT * FROM sync_tracking ORDER BY last_sync_timestamp DESC LIMIT 10;"
-
-# Check errors
-sqlite3 data/congressional_hearings.db "
-SELECT * FROM import_errors WHERE is_resolved = 0 ORDER BY created_at DESC;"
+# Optional
+DATABASE_PATH=database.db          # Database file location
+TARGET_CONGRESS=119                # Congress to import
+BATCH_SIZE=50                      # Import batch size
+UPDATE_WINDOW_DAYS=30              # Daily update lookback window
+LOG_LEVEL=INFO                     # Logging verbosity
 ```
 
-## Future Enhancements
+## Development
 
-Planned features:
-- Full-text search of hearing transcripts (SQLite FTS5)
-- Web dashboard for browsing and searching
-- PDF text extraction for documents
-- Analytics and reporting features
-- Historical congress coverage (118th, 117th, etc.)
-- Integration with transcription tools
+### Setup
+```bash
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-## Troubleshooting
+# Install dependencies
+pip install -r requirements.txt
 
-**Common Issues:**
+# Run tests
+pytest
 
-1. **Rate Limit Exceeded**
-   - System automatically waits for reset
-   - Reduce batch size if persistent
+# Format code
+black .
+```
 
-2. **Missing Data**
-   - Check API response structure in logs
-   - Some fields may be optional/missing
+### Running Locally
+```bash
+# Start web server
+python cli.py web serve --host 127.0.0.1 --port 5000
 
-3. **Database Errors**
-   - Check disk space and permissions
-   - Restore from backup if needed
+# Or run Flask app directly
+python web/app.py  # Runs on port 8000
+```
 
-4. **Network Issues**
-   - System retries automatically
-   - Check internet connectivity
+## Deployment
 
-**Getting Help:**
+The system is designed for Vercel serverless deployment with automated daily updates:
 
-1. Check logs in `logs/import.log`
-2. Review error records in `import_errors` table
-3. Validate configuration with `--check-config`
-4. Run in validation mode first to identify issues
+- Vercel handles web hosting and serverless functions
+- Cron job triggers daily data sync at 6am UTC
+- SQLite database deployed with the application
+- Read-mostly workload optimized for Vercel's serverless environment
 
-## License
+See [Deployment Guide](docs/DEPLOYMENT.md) for detailed instructions.
 
-This project is for research and educational purposes. Please review Congress.gov API terms of service for usage guidelines.
+## Performance & Limitations
+
+### Current Scale
+- **Database Size**: ~4.5 MB (1,168 hearings with full metadata)
+- **API Rate Limit**: 5,000 requests/hour (Congress.gov)
+- **Update Time**: ~5-10 minutes for daily incremental updates
+- **Full Import**: ~30-60 minutes for complete 119th Congress import
+
+### SQLite Considerations
+- Excellent for read-heavy workloads (web browsing)
+- Single-writer limitation (appropriate for daily batch updates)
+- Portable and serverless-friendly
+- May need migration to PostgreSQL if scale significantly increases
 
 ## Contributing
 
-This system is designed as scaffolding for congressional hearing research. Feel free to extend for your specific use cases:
+Contributions welcome! Areas of interest:
 
-- Add new data sources
-- Implement additional parsers
-- Create analysis tools
-- Build web interfaces
-- Integrate with other systems
+- Additional data visualizations
+- Enhanced search capabilities
+- Alternative transcript data source integration
+- Historical congress backfill
+- Performance optimizations
+- Documentation improvements
+
+Please open an issue to discuss major changes before submitting PRs.
+
+## Roadmap
+
+### Potential Future Enhancements
+- **Full-text search** of transcript content (if alternative data source identified)
+- **Historical backfill** to prior congresses (118th, 117th, etc.)
+- **Advanced analytics** dashboard with charts and trends
+- **Export capabilities** (CSV, JSON) for custom analysis
+- **Email notifications** for committee/member activity
+- **Mobile-responsive** improvements
+
+## License
+
+MIT License - See LICENSE file for details
+
+## Acknowledgments
+
+- Data provided by the [Congress.gov API](https://api.congress.gov)
+- Built for civic engagement and government transparency
+- Inspired by the need for accessible congressional oversight data
+
+## Support
+
+- **Issues**: Report bugs or request features via GitHub Issues
+- **Documentation**: See `docs/` directory for detailed guides
+- **Questions**: Open a discussion for usage questions
+
+---
+
+**Disclaimer**: This is an independent project and is not affiliated with or endorsed by Congress.gov, the Library of Congress, or any government entity. All data is sourced from publicly available official sources.

@@ -178,17 +178,18 @@ def hearing_detail(hearing_id):
 
             # Get witness documents
             cursor = conn.execute('''
-                SELECT wd.document_id, wd.witness_id, w.full_name, wd.title, wd.document_url, wd.pdf_url, wd.html_url, wd.document_type
+                SELECT wd.document_id, w.witness_id, w.full_name, wd.title, wd.document_url, wd.format_type, wd.document_type
                 FROM witness_documents wd
-                JOIN witnesses w ON wd.witness_id = w.witness_id
-                WHERE wd.hearing_id = ?
+                JOIN witness_appearances wa ON wd.appearance_id = wa.appearance_id
+                JOIN witnesses w ON wa.witness_id = w.witness_id
+                WHERE wa.hearing_id = ?
                 ORDER BY w.last_name, w.first_name
             ''', (hearing_id,))
             witness_documents = cursor.fetchall()
 
             # Get supporting documents
             cursor = conn.execute('''
-                SELECT document_id, title, document_url, pdf_url, html_url, document_type
+                SELECT document_id, title, document_url, format_type, document_type
                 FROM supporting_documents
                 WHERE hearing_id = ?
                 ORDER BY created_at DESC

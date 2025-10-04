@@ -299,24 +299,16 @@
                                         {% endif %}
                                     </h6>
                                     <p class="mb-1 text-muted">{{ doc[2] }}</p>
-                                    {% if doc[7] %}
-                                    <small class="text-muted">Type: {{ doc[7] }}</small>
-                                    {% endif %}
+                                    <small class="text-muted">
+                                        {% if doc[6] %}Type: {{ doc[6] }}{% endif %}
+                                        {% if doc[5] and doc[6] %} • {% endif %}
+                                        {% if doc[5] %}Format: {{ doc[5] }}{% endif %}
+                                    </small>
                                 </div>
-                                <div class="btn-group" role="group">
-                                    {% if doc[5] %}
-                                    <a href="{{ doc[5] }}" target="_blank" class="btn btn-sm btn-outline-danger">
-                                        <i class="fas fa-file-pdf me-1"></i>PDF
-                                    </a>
-                                    {% endif %}
-                                    {% if doc[6] %}
-                                    <a href="{{ doc[6] }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-file-code me-1"></i>HTML
-                                    </a>
-                                    {% endif %}
-                                    {% if doc[4] and not doc[5] and not doc[6] %}
-                                    <a href="{{ doc[4] }}" target="_blank" class="btn btn-sm btn-outline-secondary">
-                                        <i class="fas fa-external-link-alt me-1"></i>View
+                                <div>
+                                    {% if doc[4] %}
+                                    <a href="{{ doc[4] }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-external-link-alt me-1"></i>View Document
                                     </a>
                                     {% endif %}
                                 </div>
@@ -343,24 +335,16 @@
                                             Supporting Document
                                         {% endif %}
                                     </h6>
-                                    {% if doc[5] %}
-                                    <small class="text-muted">Type: {{ doc[5] }}</small>
-                                    {% endif %}
+                                    <small class="text-muted">
+                                        {% if doc[4] %}Type: {{ doc[4] }}{% endif %}
+                                        {% if doc[3] and doc[4] %} • {% endif %}
+                                        {% if doc[3] %}Format: {{ doc[3] }}{% endif %}
+                                    </small>
                                 </div>
-                                <div class="btn-group" role="group">
-                                    {% if doc[3] %}
-                                    <a href="{{ doc[3] }}" target="_blank" class="btn btn-sm btn-outline-danger">
-                                        <i class="fas fa-file-pdf me-1"></i>PDF
-                                    </a>
-                                    {% endif %}
-                                    {% if doc[4] %}
-                                    <a href="{{ doc[4] }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-file-code me-1"></i>HTML
-                                    </a>
-                                    {% endif %}
-                                    {% if doc[2] and not doc[3] and not doc[4] %}
-                                    <a href="{{ doc[2] }}" target="_blank" class="btn btn-sm btn-outline-secondary">
-                                        <i class="fas fa-external-link-alt me-1"></i>View
+                                <div>
+                                    {% if doc[2] %}
+                                    <a href="{{ doc[2] }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-external-link-alt me-1"></i>View Document
                                     </a>
                                     {% endif %}
                                 </div>

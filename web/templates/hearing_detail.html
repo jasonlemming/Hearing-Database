@@ -224,6 +224,158 @@
 </div>
 {% endif %}
 
+<!-- Documents Section -->
+{% if transcripts or witness_documents or supporting_documents %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-file-alt me-2"></i>
+                    Documents
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Hearing Transcripts -->
+                {% if transcripts %}
+                <div class="mb-4">
+                    <h6 class="mb-3"><i class="fas fa-file-alt me-2"></i>Official Transcripts</h6>
+                    <div class="list-group">
+                        {% for transcript in transcripts %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">
+                                        {% if transcript[2] %}
+                                            {{ transcript[2] }}
+                                        {% elif transcript[1] %}
+                                            Hearing Transcript ({{ transcript[1] }})
+                                        {% else %}
+                                            Hearing Transcript
+                                        {% endif %}
+                                    </h6>
+                                    {% if transcript[6] %}
+                                    <small class="text-muted">Format: {{ transcript[6] }}</small>
+                                    {% endif %}
+                                </div>
+                                <div class="btn-group" role="group">
+                                    {% if transcript[4] %}
+                                    <a href="{{ transcript[4] }}" target="_blank" class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-file-pdf me-1"></i>PDF
+                                    </a>
+                                    {% endif %}
+                                    {% if transcript[5] %}
+                                    <a href="{{ transcript[5] }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-file-code me-1"></i>HTML
+                                    </a>
+                                    {% endif %}
+                                    {% if transcript[3] and not transcript[4] and not transcript[5] %}
+                                    <a href="{{ transcript[3] }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-external-link-alt me-1"></i>View
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Witness Documents -->
+                {% if witness_documents %}
+                <div class="mb-4">
+                    <h6 class="mb-3"><i class="fas fa-user-tie me-2"></i>Witness Statements</h6>
+                    <div class="list-group">
+                        {% for doc in witness_documents %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">
+                                        {% if doc[3] %}
+                                            {{ doc[3] }}
+                                        {% else %}
+                                            Statement by {{ doc[2] }}
+                                        {% endif %}
+                                    </h6>
+                                    <p class="mb-1 text-muted">{{ doc[2] }}</p>
+                                    {% if doc[7] %}
+                                    <small class="text-muted">Type: {{ doc[7] }}</small>
+                                    {% endif %}
+                                </div>
+                                <div class="btn-group" role="group">
+                                    {% if doc[5] %}
+                                    <a href="{{ doc[5] }}" target="_blank" class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-file-pdf me-1"></i>PDF
+                                    </a>
+                                    {% endif %}
+                                    {% if doc[6] %}
+                                    <a href="{{ doc[6] }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-file-code me-1"></i>HTML
+                                    </a>
+                                    {% endif %}
+                                    {% if doc[4] and not doc[5] and not doc[6] %}
+                                    <a href="{{ doc[4] }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-external-link-alt me-1"></i>View
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Supporting Documents -->
+                {% if supporting_documents %}
+                <div>
+                    <h6 class="mb-3"><i class="fas fa-paperclip me-2"></i>Supporting Materials</h6>
+                    <div class="list-group">
+                        {% for doc in supporting_documents %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">
+                                        {% if doc[1] %}
+                                            {{ doc[1] }}
+                                        {% else %}
+                                            Supporting Document
+                                        {% endif %}
+                                    </h6>
+                                    {% if doc[5] %}
+                                    <small class="text-muted">Type: {{ doc[5] }}</small>
+                                    {% endif %}
+                                </div>
+                                <div class="btn-group" role="group">
+                                    {% if doc[3] %}
+                                    <a href="{{ doc[3] }}" target="_blank" class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-file-pdf me-1"></i>PDF
+                                    </a>
+                                    {% endif %}
+                                    {% if doc[4] %}
+                                    <a href="{{ doc[4] }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-file-code me-1"></i>HTML
+                                    </a>
+                                    {% endif %}
+                                    {% if doc[2] and not doc[3] and not doc[4] %}
+                                    <a href="{{ doc[2] }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-external-link-alt me-1"></i>View
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 <!-- Additional Information -->
 {% if hearing[13] or hearing[14] %}
 <div class="row">

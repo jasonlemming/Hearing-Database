@@ -189,7 +189,7 @@ def hearing_detail(hearing_id):
 
             # Get supporting documents
             cursor = conn.execute('''
-                SELECT document_id, title, document_url, format_type, document_type
+                SELECT document_id, title, document_url, format_type, document_type, description
                 FROM supporting_documents
                 WHERE hearing_id = ?
                 ORDER BY created_at DESC

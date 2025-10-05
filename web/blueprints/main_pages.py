@@ -304,11 +304,51 @@ def witness_detail(witness_id):
             ''', (witness_id,))
             committees = cursor.fetchall()
 
+            # Get documents for each hearing this witness appeared at
+            # Build a dictionary mapping hearing_id to documents
+            hearing_documents = {}
+            for appearance in appearances:
+                hearing_id = appearance[0]  # h.hearing_id is first column
+
+                # Get witness documents for this hearing
+                cursor = conn.execute('''
+                    SELECT wd.document_id, wd.document_type, wd.title, wd.document_url, wd.format_type
+                    FROM witness_documents wd
+                    JOIN witness_appearances wa ON wd.appearance_id = wa.appearance_id
+                    WHERE wa.hearing_id = ? AND wa.witness_id = ?
+                    ORDER BY wd.document_type, wd.title
+                ''', (hearing_id, witness_id))
+                witness_docs = cursor.fetchall()
+
+                # Get transcripts for this hearing
+                cursor = conn.execute('''
+                    SELECT transcript_id, jacket_number, title, document_url, pdf_url, html_url, format_type
+                    FROM hearing_transcripts
+                    WHERE hearing_id = ?
+                ''', (hearing_id,))
+                transcripts = cursor.fetchall()
+
+                # Get supporting documents for this hearing
+                cursor = conn.execute('''
+                    SELECT document_id, title, document_url, format_type, document_type, description
+                    FROM supporting_documents
+                    WHERE hearing_id = ?
+                    ORDER BY document_type, title
+                ''', (hearing_id,))
+                supporting_docs = cursor.fetchall()
+
+                hearing_documents[hearing_id] = {
+                    'witness_documents': witness_docs,
+                    'transcripts': transcripts,
+                    'supporting_documents': supporting_docs
+                }
+
         return render_template('witness_detail.html',
                              witness=witness,
                              appearances=appearances,
                              stats=stats,
-                             committees=committees)
+                             committees=committees,
+                             hearing_documents=hearing_documents)
     except Exception as e:
         return f"Error: {e}", 500
 

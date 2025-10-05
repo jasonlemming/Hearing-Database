@@ -135,7 +135,7 @@
 </div>
 {% endif %}
 
-<!-- Hearing Appearances -->
+<!-- Hearing Appearances with Document Accordions -->
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -147,95 +147,156 @@
             </div>
             <div class="card-body">
                 {% if appearances %}
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Hearing</th>
-                                <th>Date</th>
-                                <th>Committee</th>
-                                <th>Chamber</th>
-                                <th>Position</th>
-                                <th>Type</th>
-                                <th>Order</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for appearance in appearances %}
-                            <tr>
-                                <td>
-                                    {% if appearance[1] %}
-                                        {{ appearance[1][:80] }}{% if appearance[1]|length > 80 %}...{% endif %}
-                                    {% else %}
-                                        <span class="text-muted">No title available</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if appearance[2] %}
-                                        {{ appearance[2] }}
-                                    {% else %}
-                                        <span class="text-muted">No date</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if appearance[11] %}
-                                        <a href="{{ url_for('committees.committee_detail', committee_id=appearance[12]) }}" class="text-decoration-none">
-                                            {{ appearance[11][:40] }}{% if appearance[11]|length > 40 %}...{% endif %}
+                <div class="accordion" id="hearingAccordion">
+                    {% for appearance in appearances %}
+                    <div class="accordion-item mb-2">
+                        <h2 class="accordion-header" id="heading{{ appearance[0] }}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ appearance[0] }}" aria-expanded="false" aria-controls="collapse{{ appearance[0] }}">
+                                <div class="w-100">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>
+                                                {% if appearance[1] %}
+                                                    {{ appearance[1][:100] }}{% if appearance[1]|length > 100 %}...{% endif %}
+                                                {% else %}
+                                                    <span class="text-muted">No title available</span>
+                                                {% endif %}
+                                            </strong>
+                                            <br>
+                                            <small class="text-muted">
+                                                {% if appearance[2] %}{{ appearance[2] }}{% endif %}
+                                                {% if appearance[2] and appearance[11] %} • {% endif %}
+                                                {% if appearance[11] %}{{ appearance[11][:40] }}{% if appearance[11]|length > 40 %}...{% endif %}{% endif %}
+                                            </small>
+                                        </div>
+                                        <div class="ms-3">
+                                            {% if appearance[3] == 'House' %}
+                                                <span class="badge bg-success">{{ appearance[3] }}</span>
+                                            {% elif appearance[3] == 'Senate' %}
+                                                <span class="badge bg-info">{{ appearance[3] }}</span>
+                                            {% elif appearance[3] == 'Joint' %}
+                                                <span class="badge bg-warning">{{ appearance[3] }}</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ appearance[3] or 'Unknown' }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapse{{ appearance[0] }}" class="accordion-collapse collapse" aria-labelledby="heading{{ appearance[0] }}" data-bs-parent="#hearingAccordion">
+                            <div class="accordion-body">
+                                {% set hearing_id = appearance[0] %}
+                                {% set docs = hearing_documents.get(hearing_id, {}) %}
+                                {% set has_any_docs = docs.get('witness_documents') or docs.get('transcripts') or docs.get('supporting_documents') %}
+
+                                <!-- Hearing Info -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <h6>Appearance Details</h6>
+                                        <ul class="list-unstyled">
+                                            {% if appearance[8] %}<li><strong>Position:</strong> {{ appearance[8] }}</li>{% endif %}
+                                            {% if appearance[9] %}<li><strong>Type:</strong> {{ appearance[9] }}</li>{% endif %}
+                                            {% if appearance[10] %}<li><strong>Order:</strong> {{ appearance[10] }}</li>{% endif %}
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6 text-end">
+                                        <a href="{{ url_for('hearings.hearing_detail', hearing_id=appearance[0]) }}" class="btn btn-primary">
+                                            <i class="fas fa-eye me-1"></i>View Full Hearing
                                         </a>
-                                    {% else %}
-                                        <span class="text-muted">—</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if appearance[3] == 'House' %}
-                                        <span class="badge bg-success">{{ appearance[3] }}</span>
-                                    {% elif appearance[3] == 'Senate' %}
-                                        <span class="badge bg-info">{{ appearance[3] }}</span>
-                                    {% elif appearance[3] == 'Joint' %}
-                                        <span class="badge bg-warning">{{ appearance[3] }}</span>
-                                    {% else %}
-                                        <span class="badge bg-secondary">{{ appearance[3] or 'Unknown' }}</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if appearance[8] %}
-                                        <span class="badge bg-light text-dark">{{ appearance[8] }}</span>
-                                    {% else %}
-                                        <span class="text-muted">—</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if appearance[9] %}
-                                        <span class="badge
-                                            {% if appearance[9] == 'Government' %}bg-primary
-                                            {% elif appearance[9] == 'Academic' %}bg-info
-                                            {% elif appearance[9] == 'Private' %}bg-success
-                                            {% elif appearance[9] == 'Nonprofit' %}bg-warning text-dark
-                                            {% else %}bg-secondary
-                                            {% endif %}">
-                                            {{ appearance[9] }}
-                                        </span>
-                                    {% else %}
-                                        <span class="text-muted">—</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if appearance[10] %}
-                                        <span class="badge bg-outline-secondary">{{ appearance[10] }}</span>
-                                    {% else %}
-                                        <span class="text-muted">—</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <a href="{{ url_for('hearings.hearing_detail', hearing_id=appearance[0]) }}" class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-eye me-1"></i>View
-                                    </a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                                    </div>
+                                </div>
+
+                                <!-- Documents -->
+                                {% if has_any_docs %}
+                                <hr>
+                                <h6 class="mb-3"><i class="fas fa-file-alt me-2"></i>Documents</h6>
+
+                                <!-- Witness Documents -->
+                                {% if docs.get('witness_documents') %}
+                                <div class="mb-3">
+                                    <h6 class="text-primary mb-2"><i class="fas fa-user-tie me-2"></i>My Statements</h6>
+                                    <div class="list-group">
+                                        {% for doc in docs['witness_documents'] %}
+                                        {% if doc[3] %}
+                                        <a href="{{ doc[3] }}" target="_blank" class="list-group-item list-group-item-action" style="cursor: pointer;">
+                                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-0">{{ doc[2] if doc[2] else doc[1] }}</h6>
+                                                </div>
+                                                <div>
+                                                    <i class="fas fa-external-link-alt text-muted"></i>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                <!-- Transcripts -->
+                                {% if docs.get('transcripts') %}
+                                <div class="mb-3">
+                                    <h6 class="text-success mb-2"><i class="fas fa-file-alt me-2"></i>Hearing Transcripts</h6>
+                                    <div class="list-group">
+                                        {% for trans in docs['transcripts'] %}
+                                        <div class="list-group-item">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h6 class="mb-1">{{ trans[2] if trans[2] else 'Hearing Transcript' }}</h6>
+                                                    <small class="text-muted">{% if trans[6] %}Format: {{ trans[6] }}{% endif %}</small>
+                                                </div>
+                                                <div class="btn-group">
+                                                    {% if trans[4] %}
+                                                    <a href="{{ trans[4] }}" target="_blank" class="btn btn-sm btn-outline-danger">PDF</a>
+                                                    {% endif %}
+                                                    {% if trans[5] %}
+                                                    <a href="{{ trans[5] }}" target="_blank" class="btn btn-sm btn-outline-primary">HTML</a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                <!-- Supporting Documents -->
+                                {% if docs.get('supporting_documents') %}
+                                <div>
+                                    <h6 class="text-secondary mb-2"><i class="fas fa-paperclip me-2"></i>Supporting Materials</h6>
+                                    <div class="list-group">
+                                        {% for doc in docs['supporting_documents'] %}
+                                        {% if doc[2] %}
+                                        <a href="{{ doc[2] }}" target="_blank" class="list-group-item list-group-item-action" style="cursor: pointer;">
+                                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-1">{{ doc[1] if doc[1] else 'Supporting Document' }}</h6>
+                                                    {% if doc[5] %}
+                                                    <p class="mb-0 text-muted small">{{ doc[5] }}</p>
+                                                    {% endif %}
+                                                </div>
+                                                <div>
+                                                    <i class="fas fa-external-link-alt text-muted"></i>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% else %}
+                                <div class="text-center py-3 text-muted">
+                                    <i class="fas fa-file-slash fa-2x mb-2"></i>
+                                    <p class="mb-0">No documents available for this hearing.</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
                 {% else %}
                 <div class="text-center py-4">

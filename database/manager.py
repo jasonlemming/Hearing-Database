@@ -80,13 +80,21 @@ class DatabaseManager:
 
     def fetch_one(self, query: str, params: Optional[Tuple] = None) -> Optional[sqlite3.Row]:
         """Fetch single row"""
-        cursor = self.execute(query, params)
-        return cursor.fetchone()
+        with self.transaction() as conn:
+            if params:
+                cursor = conn.execute(query, params)
+            else:
+                cursor = conn.execute(query)
+            return cursor.fetchone()
 
     def fetch_all(self, query: str, params: Optional[Tuple] = None) -> List[sqlite3.Row]:
         """Fetch all rows"""
-        cursor = self.execute(query, params)
-        return cursor.fetchall()
+        with self.transaction() as conn:
+            if params:
+                cursor = conn.execute(query, params)
+            else:
+                cursor = conn.execute(query)
+            return cursor.fetchall()
 
     def initialize_schema(self, schema_file: str = "database/schema.sql") -> None:
         """

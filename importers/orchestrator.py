@@ -89,7 +89,7 @@ class ImportOrchestrator:
             # Phase 5: Import documents and witnesses
             logger.info("Phase 5: Importing documents and witnesses...")
             hearing_ids = self._get_all_hearing_ids()
-            results['documents'] = self.import_documents(hearing_ids[:100], validation_mode)  # Limit for initial run
+            results['documents'] = self.import_documents(hearing_ids, validation_mode)  # Process all hearings
             if not validation_mode:
                 self.create_checkpoint('documents', 'success')
 
@@ -300,21 +300,32 @@ class ImportOrchestrator:
 
     def import_documents(self, hearing_ids: List[int], validation_mode: bool = False) -> Dict[str, int]:
         """
-        Import documents for specified hearings
+        Import documents for specified hearings.
+
+        Populates all three document tables: hearing_transcripts, witness_documents,
+        and supporting_documents. Links witness documents to witness_appearances.
 
         Args:
             hearing_ids: List of hearing IDs to process
             validation_mode: If True, validate but don't write
 
         Returns:
-            Import statistics
+            Import statistics including counts for each document type
         """
-        stats = {'processed': 0, 'imported': 0, 'errors': 0}
+        stats = {
+            'processed': 0,
+            'hearings_with_docs': 0,
+            'transcripts': 0,
+            'witness_docs': 0,
+            'supporting_docs': 0,
+            'errors': 0,
+            'mismatches': []
+        }
 
         try:
             for hearing_id in hearing_ids:
                 try:
-                    # Get hearing details
+                    # Get hearing details from database
                     if not validation_mode:
                         hearing = self.db_manager.fetch_one(
                             "SELECT * FROM hearings WHERE hearing_id = ?",
@@ -322,49 +333,126 @@ class ImportOrchestrator:
                         )
 
                         if hearing:
-                            # Fetch detailed hearing information (which includes documents)
+                            # Fetch detailed hearing information from Congress.gov API
                             detailed_hearing = self.hearing_fetcher.fetch_hearing_details(
                                 hearing['congress'], hearing['chamber'].lower(), hearing['event_id']
                             )
 
-                            if detailed_hearing and 'committeeMeeting' in detailed_hearing:
-                                event_data = detailed_hearing['committeeMeeting']
-                            elif detailed_hearing and 'committeeEvent' in detailed_hearing:
-                                event_data = detailed_hearing['committeeEvent']
+                            if detailed_hearing:
+                                # Extract event data from response
+                                event_data = None
+                                if 'committeeMeeting' in detailed_hearing:
+                                    event_data = detailed_hearing['committeeMeeting']
+                                elif 'committeeEvent' in detailed_hearing:
+                                    event_data = detailed_hearing['committeeEvent']
 
-                                # Extract and import witnesses
-                                witnesses = self.hearing_parser.extract_witnesses(event_data)
-                                for witness_data in witnesses:
-                                    witness = self.witness_parser.parse(witness_data)
-                                    if witness:
-                                        witness_id = self.db_manager.get_or_create_witness(witness.dict())
-                                        self.db_manager.create_witness_appearance(
-                                            witness_id, hearing_id, witness_data
-                                        )
+                                if event_data:
+                                    # Get existing witness appearances from database (they should already be imported)
+                                    witness_appearance_map = {}  # Map witness names to appearance IDs
 
-                                # Extract documents
-                                documents = self.document_fetcher.extract_hearing_documents(event_data)
-
-                                # Import transcripts
-                                for transcript in documents['transcripts']:
-                                    self.db_manager.execute(
-                                        "INSERT OR REPLACE INTO hearing_transcripts "
-                                        "(hearing_id, jacket_number, title, document_url, pdf_url, html_url, format_type) "
-                                        "VALUES (?, ?, ?, ?, ?, ?, ?)",
-                                        (hearing_id, transcript.get('jacket_number'), transcript.get('title'),
-                                         transcript.get('document_url'), transcript.get('pdf_url'),
-                                         transcript.get('html_url'), transcript.get('format_type'))
+                                    # Query existing witness appearances for this hearing
+                                    appearances = self.db_manager.fetch_all(
+                                        """SELECT wa.appearance_id, w.full_name
+                                           FROM witness_appearances wa
+                                           JOIN witnesses w ON wa.witness_id = w.witness_id
+                                           WHERE wa.hearing_id = ?""",
+                                        (hearing_id,)
                                     )
 
-                                stats['imported'] += 1
+                                    for appearance in appearances:
+                                        witness_name = appearance['full_name']
+                                        appearance_id = appearance['appearance_id']
+                                        if witness_name and appearance_id:
+                                            # Store both with and without titles for flexible matching
+                                            witness_appearance_map[witness_name] = appearance_id
+                                            # Also store normalized version (without titles)
+                                            normalized = self._normalize_witness_name(witness_name)
+                                            witness_appearance_map[normalized] = appearance_id
+                                            # Also store surname-normalized version for fuzzy matching
+                                            surname_normalized = self._normalize_surname_for_matching(witness_name)
+                                            witness_appearance_map[surname_normalized] = appearance_id
+
+                                    # Extract all documents from hearing details
+                                    documents = self.document_fetcher.extract_hearing_documents(event_data)
+
+                                    # Track if we found any documents
+                                    has_docs = False
+
+                                    # Import hearing transcripts
+                                    for transcript in documents['transcripts']:
+                                        self.db_manager.execute(
+                                            "INSERT OR REPLACE INTO hearing_transcripts "
+                                            "(hearing_id, jacket_number, title, document_url, pdf_url, html_url, format_type) "
+                                            "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                                            (hearing_id, transcript.get('jacket_number'), transcript.get('title'),
+                                             transcript.get('document_url'), transcript.get('pdf_url'),
+                                             transcript.get('html_url'), transcript.get('format_type'))
+                                        )
+                                        stats['transcripts'] += 1
+                                        has_docs = True
+
+                                    # Import witness documents
+                                    for witness_doc in documents['witness_documents']:
+                                        # Find matching witness appearance
+                                        witness_name = witness_doc.get('witness_name')
+                                        # Try exact match first, then normalized match, then surname-normalized
+                                        appearance_id = witness_appearance_map.get(witness_name)
+                                        if not appearance_id:
+                                            # Try normalized name (without titles)
+                                            normalized_name = self._normalize_witness_name(witness_name)
+                                            appearance_id = witness_appearance_map.get(normalized_name)
+                                        if not appearance_id:
+                                            # Try surname-normalized (handles O'Leary, compound surnames, etc.)
+                                            surname_normalized = self._normalize_surname_for_matching(witness_name)
+                                            appearance_id = witness_appearance_map.get(surname_normalized)
+
+                                        if appearance_id:
+                                            self.db_manager.execute(
+                                                "INSERT OR REPLACE INTO witness_documents "
+                                                "(appearance_id, document_type, title, document_url, format_type) "
+                                                "VALUES (?, ?, ?, ?, ?)",
+                                                (appearance_id, witness_doc.get('document_type'),
+                                                 witness_doc.get('title'), witness_doc.get('document_url'),
+                                                 witness_doc.get('format_type'))
+                                            )
+                                            stats['witness_docs'] += 1
+                                            has_docs = True
+                                        else:
+                                            # Enhanced logging with full diagnostic context
+                                            available_witnesses = [app['full_name'] for app in appearances]
+                                            logger.warning(
+                                                f"Document matching failed - hearing_id={hearing_id}, "
+                                                f"witness_name='{witness_name}', "
+                                                f"document_url='{witness_doc.get('document_url', 'N/A')}', "
+                                                f"available_witnesses={available_witnesses[:5]}"  # Show first 5
+                                            )
+
+                                    # Import supporting documents
+                                    for support_doc in documents['supporting_documents']:
+                                        self.db_manager.execute(
+                                            "INSERT OR REPLACE INTO supporting_documents "
+                                            "(hearing_id, document_type, title, description, document_url, format_type) "
+                                            "VALUES (?, ?, ?, ?, ?, ?)",
+                                            (hearing_id, support_doc.get('document_type'), support_doc.get('title'),
+                                             support_doc.get('description'), support_doc.get('document_url'),
+                                             support_doc.get('format_type'))
+                                        )
+                                        stats['supporting_docs'] += 1
+                                        has_docs = True
+
+                                    if has_docs:
+                                        stats['hearings_with_docs'] += 1
 
                     stats['processed'] += 1
 
                 except Exception as e:
-                    logger.error(f"Error importing documents for hearing {hearing_id}: {e}")
+                    logger.error(f"Error importing documents for hearing {hearing_id}: {e}", exc_info=True)
                     stats['errors'] += 1
 
-            logger.info(f"Document import: {stats['imported']}/{stats['processed']} successful")
+            logger.info(f"Document import: {stats['processed']} hearings processed, "
+                       f"{stats['transcripts']} transcripts, "
+                       f"{stats['witness_docs']} witness documents, "
+                       f"{stats['supporting_docs']} supporting documents imported")
             return stats
 
         except Exception as e:
@@ -469,3 +557,49 @@ class ImportOrchestrator:
             if 'Import phase' in notes:
                 return notes.split('Import phase ')[1].split(' ')[0]
         return None
+
+    def _normalize_witness_name(self, name: str) -> str:
+        """
+        Normalize witness name by removing titles/honorifics.
+
+        Examples:
+        - "Mr. Christopher Urben" -> "Christopher Urben"
+        - "The Honorable John Doe" -> "John Doe"
+        """
+        if not name:
+            return ''
+
+        # Remove common titles
+        titles = ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Professor', 'The Honorable', 'Hon.', 'Miss']
+        normalized = name
+        for title in titles:
+            normalized = normalized.replace(title, '').strip()
+
+        return normalized
+
+    def _normalize_surname_for_matching(self, text: str) -> str:
+        """
+        Normalize surname for fuzzy matching by removing special characters and spaces.
+
+        This handles edge cases like:
+        - Apostrophes: "O'Leary" -> "oleary"
+        - Compound surnames: "Fernandez da Ponte" -> "fernandezdaponte"
+        - Spaces: "Smith Jones" -> "smithjones"
+
+        Args:
+            text: Surname text to normalize
+
+        Returns:
+            Normalized lowercase surname with no spaces or apostrophes
+        """
+        if not text:
+            return ''
+
+        # Remove apostrophes
+        normalized = text.replace("'", "")
+        # Remove spaces
+        normalized = normalized.replace(" ", "")
+        # Lowercase
+        normalized = normalized.lower()
+
+        return normalized

@@ -119,9 +119,9 @@ def run_phase(orchestrator, phase, congress, validation, batch_size):
     elif phase == 'hearings':
         return method(congress, validation_mode=validation, batch_size=batch_size)
     else:  # documents
-        # For documents, we need hearing IDs
+        # For documents, we need hearing IDs - process all hearings
         db_manager = orchestrator.db_manager
-        hearings = db_manager.fetch_all("SELECT hearing_id FROM hearings LIMIT 100")
+        hearings = db_manager.fetch_all("SELECT hearing_id FROM hearings")
         hearing_ids = [h['hearing_id'] for h in hearings]
         return method(hearing_ids, validation_mode=validation)
 

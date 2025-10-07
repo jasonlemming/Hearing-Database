@@ -17,7 +17,7 @@ import time
 # Add project root to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from api.client import CongressGovAPIClient
+from api.client import CongressAPIClient
 from database.manager import DatabaseManager
 from fetchers.hearing_fetcher import HearingFetcher
 from fetchers.committee_fetcher import CommitteeFetcher
@@ -81,7 +81,7 @@ class DailyUpdater:
         self.db = DatabaseManager()
 
         # Initialize API client and fetchers
-        self.api_client = CongressGovAPIClient(
+        self.api_client = CongressAPIClient(
             api_key=self.settings.CONGRESS_API_KEY,
             rate_limit_per_hour=self.settings.RATE_LIMIT_PER_HOUR
         )

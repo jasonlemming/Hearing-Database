@@ -41,6 +41,8 @@ venv.bak/
 # Database files (keep deployment database)
 data/congressional_hearings.db
 data/backups/
+congress_hearings.db
+data/congress.db
 # Include production database for deployment
 !database.db
 
@@ -69,6 +71,8 @@ Thumbs.db
 .pytest_cache/
 .coverage
 htmlcov/
+test_*.html
+test_*.py
 
 # Documentation builds
 docs/_build/

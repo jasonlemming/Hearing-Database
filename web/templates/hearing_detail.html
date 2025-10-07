@@ -124,31 +124,96 @@
                 </h5>
             </div>
             <div class="card-body">
-                {% if hearing[18] %}
-                    <!-- YouTube video embed - medium-sized player, 2/3 width -->
-                    <div class="row">
-                        <div class="col-lg-8 col-md-10">
-                            <div class="video-container">
-                                <div class="ratio ratio-16x9">
-                                    <iframe
-                                        src="https://www.youtube.com/embed/{{ hearing[18] }}"
-                                        title="Hearing Video"
-                                        frameborder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                        allowfullscreen>
-                                    </iframe>
+                {% if hearing[17] or hearing[18] %}
+                    {% if hearing[19] == 'youtube' %}
+                        <!-- YouTube video embed - medium-sized player, 2/3 width -->
+                        <div class="row">
+                            <div class="col-lg-8 col-md-10">
+                                <div class="video-container">
+                                    <div class="ratio ratio-16x9">
+                                        <iframe
+                                            src="https://www.youtube.com/embed/{{ hearing[18] }}"
+                                            title="Hearing Video"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            allowfullscreen>
+                                        </iframe>
+                                    </div>
+                                </div>
+                                {% if hearing[17] %}
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        <a href="{{ hearing[17] }}" target="_blank">View on Congress.gov</a>
+                                    </small>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% elif hearing[19] == 'senate_isvp' %}
+                        <!-- Senate ISVP video embed -->
+                        <div class="row">
+                            <div class="col-lg-8 col-md-10">
+                                <div class="video-container">
+                                    <div class="ratio ratio-16x9">
+                                        <iframe
+                                            src="{{ hearing[17] }}"
+                                            title="Senate Hearing Video"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen>
+                                        </iframe>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        <a href="{{ hearing[17] }}" target="_blank">View on Senate.gov</a>
+                                    </small>
                                 </div>
                             </div>
-                            {% if hearing[17] %}
-                            <div class="mt-2">
-                                <small class="text-muted">
-                                    <i class="fas fa-external-link-alt me-1"></i>
-                                    <a href="{{ hearing[17] }}" target="_blank">View on Congress.gov</a>
-                                </small>
-                            </div>
-                            {% endif %}
                         </div>
-                    </div>
+                    {% elif hearing[19] == 'house_video' %}
+                        <!-- House video link -->
+                        <div class="text-center py-4">
+                            <i class="fas fa-video fa-3x text-success mb-3"></i>
+                            <h5>House Video Available</h5>
+                            <p class="text-muted mb-3">This hearing has video available on the House website.</p>
+                            <a href="{{ hearing[17] }}" target="_blank" class="btn btn-success">
+                                <i class="fas fa-external-link-alt me-2"></i>Watch on House.gov
+                            </a>
+                        </div>
+                    {% elif hearing[19] == 'committee_video' %}
+                        <!-- Committee video page link -->
+                        <div class="text-center py-4">
+                            <i class="fas fa-video fa-3x text-info mb-3"></i>
+                            <h5>Committee Video Available</h5>
+                            <p class="text-muted mb-3">This hearing has video available on Congress.gov.</p>
+                            <a href="{{ hearing[17] }}" target="_blank" class="btn btn-info">
+                                <i class="fas fa-external-link-alt me-2"></i>Watch on Congress.gov
+                            </a>
+                        </div>
+                    {% elif hearing[19] == 'event_page' %}
+                        <!-- Event page link (fallback) -->
+                        <div class="text-center py-4">
+                            <i class="fas fa-calendar-alt fa-3x text-secondary mb-3"></i>
+                            <h5>Event Page Available</h5>
+                            <p class="text-muted mb-3">View this hearing on Congress.gov for video information.</p>
+                            <a href="{{ hearing[17] }}" target="_blank" class="btn btn-secondary">
+                                <i class="fas fa-external-link-alt me-2"></i>View on Congress.gov
+                            </a>
+                        </div>
+                    {% else %}
+                        <!-- Generic video link -->
+                        <div class="text-center py-4">
+                            <i class="fas fa-video fa-3x text-primary mb-3"></i>
+                            <h5>Video Available</h5>
+                            <p class="text-muted mb-3">This hearing has video available.</p>
+                            <a href="{{ hearing[17] }}" target="_blank" class="btn btn-primary">
+                                <i class="fas fa-external-link-alt me-2"></i>Watch Video
+                            </a>
+                        </div>
+                    {% endif %}
                 {% else %}
                     <div class="text-center py-4">
                         <i class="fas fa-video-slash fa-3x text-muted mb-3"></i>

@@ -22,6 +22,7 @@ from database.manager import DatabaseManager
 from fetchers.hearing_fetcher import HearingFetcher
 from fetchers.committee_fetcher import CommitteeFetcher
 from fetchers.witness_fetcher import WitnessFetcher
+from parsers.hearing_parser import HearingParser
 from config.settings import Settings
 from config.logging_config import get_logger
 
@@ -89,6 +90,7 @@ class DailyUpdater:
         self.hearing_fetcher = HearingFetcher(self.api_client)
         self.committee_fetcher = CommitteeFetcher(self.api_client)
         self.witness_fetcher = WitnessFetcher(self.api_client)
+        self.hearing_parser = HearingParser()
 
         self.metrics = UpdateMetrics()
 
@@ -156,9 +158,9 @@ class DailyUpdater:
             # Get hearings with date filter
             # Note: Congress.gov API doesn't have direct "modified since" filter,
             # so we fetch recent hearings and check update timestamps
-            api_hearings = self.hearing_fetcher.fetch_hearings_for_congress(
-                congress=self.congress,
-                limit=None  # Get all hearings to check modification dates
+            # Use fetch_all_with_details to get video data
+            api_hearings = self.hearing_fetcher.fetch_all_with_details(
+                congress=self.congress
             )
 
             self.metrics.api_requests += 1
@@ -329,67 +331,38 @@ class DailyUpdater:
                     self.metrics.errors.append(error_msg)
 
     def _update_hearing_record(self, conn, existing_record: tuple, new_data: Dict[str, Any]) -> None:
-        """Update an existing hearing record with new data."""
-        # Extract hearing ID from existing record
-        hearing_id = existing_record[0]  # Assuming first column is hearing_id
+        """Update an existing hearing record with new data using parser pipeline."""
+        # Parse the new data using HearingParser
+        hearing = self.hearing_parser.parse(new_data)
 
-        # Update the hearing record
-        # This would use your existing HearingParser logic
-        update_sql = '''
-            UPDATE hearings
-            SET title = ?, hearing_date_only = ?, status = ?, location = ?, updated_at = ?
-            WHERE hearing_id = ?
-        '''
+        if not hearing:
+            logger.warning(f"Failed to parse hearing data for {new_data.get('eventId')}")
+            return
 
-        # Extract and format the data
-        title = new_data.get('title')
-        date = new_data.get('date')
-        if date:
-            try:
-                date = datetime.fromisoformat(date.replace('Z', '+00:00')).date().isoformat()
-            except (ValueError, TypeError):
-                date = None
+        # Convert to dict and add congress
+        hearing_dict = hearing.dict()
+        hearing_dict['congress'] = self.congress
 
-        status = new_data.get('status')
-        location = new_data.get('location')
-        updated_at = datetime.now().isoformat()
+        # Use DatabaseManager's upsert_hearing which handles all fields including video
+        self.db.upsert_hearing(hearing_dict)
 
-        conn.execute(update_sql, (title, date, status, location, updated_at, hearing_id))
-
-        logger.debug(f"Updated hearing {hearing_id} with new data")
+        logger.debug(f"Updated hearing {new_data.get('eventId')} with new data")
 
     def _add_new_hearing(self, conn, hearing_data: Dict[str, Any]) -> None:
-        """Add a new hearing record to the database."""
-        # This would use your existing HearingParser and import logic
-        # For now, implementing a basic insert
-        insert_sql = '''
-            INSERT INTO hearings (
-                event_id, congress, chamber, title, hearing_date_only,
-                status, location, hearing_type, created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        '''
+        """Add a new hearing record to the database using parser pipeline."""
+        # Parse the new data using HearingParser
+        hearing = self.hearing_parser.parse(hearing_data)
 
-        date = hearing_data.get('date')
-        if date:
-            try:
-                date = datetime.fromisoformat(date.replace('Z', '+00:00')).date().isoformat()
-            except (ValueError, TypeError):
-                date = None
+        if not hearing:
+            logger.warning(f"Failed to parse hearing data for {hearing_data.get('eventId')}")
+            return
 
-        now = datetime.now().isoformat()
+        # Convert to dict and add congress
+        hearing_dict = hearing.dict()
+        hearing_dict['congress'] = self.congress
 
-        conn.execute(insert_sql, (
-            hearing_data.get('eventId'),
-            self.congress,
-            hearing_data.get('chamber'),
-            hearing_data.get('title'),
-            date,
-            hearing_data.get('status'),
-            hearing_data.get('location'),
-            hearing_data.get('type'),
-            now,
-            now
-        ))
+        # Use DatabaseManager's upsert_hearing which handles all fields including video
+        self.db.upsert_hearing(hearing_dict)
 
         logger.debug(f"Added new hearing {hearing_data.get('eventId')}")
 

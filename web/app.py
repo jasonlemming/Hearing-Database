@@ -82,7 +82,10 @@ if __name__ == '__main__':
     try:
         import flask
     except ImportError:
+        import os
         os.system('pip install flask')
 
-    # Run the application
-    app.run(debug=True, host='0.0.0.0', port=8000)
+    # Run the application with configurable port
+    import os
+    port = int(os.environ.get('FLASK_RUN_PORT', 5001))  # Default to 5001 since 5000 and 8000 are in use
+    app.run(debug=True, host='0.0.0.0', port=port)

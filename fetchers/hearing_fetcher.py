@@ -233,6 +233,45 @@ class HearingFetcher(BaseFetcher):
 
         return witnesses
 
+    def extract_videos(self, hearing_details: Dict[str, Any]) -> Dict[str, str]:
+        """
+        Extract video information from hearing details
+
+        Args:
+            hearing_details: Detailed hearing data
+
+        Returns:
+            Dictionary with video_url and youtube_video_id (empty if no video)
+        """
+        video_data = {
+            'video_url': None,
+            'youtube_video_id': None
+        }
+
+        # Check for videos in the API response
+        videos = self.safe_get(hearing_details, 'videos')
+
+        if videos:
+            # Videos can be an array or dict with 'item' key
+            video_items = []
+            if isinstance(videos, list):
+                video_items = videos
+            elif isinstance(videos, dict):
+                items = self.safe_get(videos, 'item', [])
+                video_items = items if isinstance(items, list) else [items]
+
+            # Get the first video URL (primary video)
+            if video_items:
+                first_video = video_items[0] if isinstance(video_items[0], dict) else {}
+                video_url = self.safe_get(first_video, 'url')
+
+                if video_url:
+                    video_data['video_url'] = video_url
+                    # YouTube ID will be extracted/validated by parser
+                    logger.debug(f"Found video URL: {video_url}")
+
+        return video_data
+
     def _build_full_name(self, witness: Dict[str, Any]) -> str:
         """Build full name from first and last name"""
         first = self.safe_get(witness, 'firstName', '')

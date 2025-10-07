@@ -472,6 +472,14 @@ class ImportOrchestrator:
                         # Import hearing
                         hearing_dict = hearing.dict()
                         hearing_dict['congress'] = congress
+
+                        # Extract and parse video data
+                        video_data = self.hearing_fetcher.extract_videos(hearing_data)
+                        if video_data.get('video_url'):
+                            parsed_video = self.hearing_parser.parse_video_url(video_data['video_url'])
+                            hearing_dict['video_url'] = parsed_video['video_url']
+                            hearing_dict['youtube_video_id'] = parsed_video['youtube_video_id']
+
                         hearing_id = self.db_manager.upsert_hearing(hearing_dict)
 
                         # Link to committees

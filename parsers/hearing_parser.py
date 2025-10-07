@@ -307,3 +307,51 @@ class HearingParser(BaseParser):
                 })
 
         return bills
+
+    def parse_video_url(self, video_url: Optional[str]) -> Dict[str, Optional[str]]:
+        """
+        Parse and validate video URL, extracting YouTube video ID
+
+        Args:
+            video_url: Congress.gov video URL
+
+        Returns:
+            Dictionary with validated video_url and extracted youtube_video_id
+        """
+        import re
+
+        result = {
+            'video_url': None,
+            'youtube_video_id': None
+        }
+
+        if not video_url:
+            return result
+
+        # Store the full URL
+        result['video_url'] = video_url
+
+        # Extract YouTube video ID from URL
+        # Expected format: https://www.congress.gov/committees/video/{chamber-committee}/{code}/{youtube-id}
+        # YouTube IDs are typically 11 characters: alphanumeric, hyphens, underscores
+
+        try:
+            # Extract the last segment after the final '/'
+            url_parts = video_url.rstrip('/').split('/')
+            if url_parts:
+                potential_id = url_parts[-1]
+
+                # Validate it looks like a YouTube video ID
+                # YouTube IDs are 11 characters, alphanumeric with - and _
+                youtube_id_pattern = r'^[A-Za-z0-9_-]{11}$'
+
+                if re.match(youtube_id_pattern, potential_id):
+                    result['youtube_video_id'] = potential_id
+                    logger.debug(f"Extracted YouTube ID: {potential_id} from URL: {video_url}")
+                else:
+                    logger.warning(f"Potential YouTube ID '{potential_id}' does not match expected pattern (11 chars, alphanumeric with -_) from URL: {video_url}")
+
+        except Exception as e:
+            logger.error(f"Error parsing video URL '{video_url}': {e}")
+
+        return result

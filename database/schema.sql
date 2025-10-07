@@ -142,6 +142,8 @@ CREATE TABLE hearings (
     jacket_number TEXT,                       -- Links to transcript (5-digit number)
     url TEXT,                                 -- API reference URL
     congress_gov_url TEXT,                    -- Public Congress.gov URL
+    video_url TEXT,                           -- Full Congress.gov video URL
+    youtube_video_id TEXT,                    -- Extracted YouTube video ID
     update_date TIMESTAMP,                    -- From API - for sync tracking
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

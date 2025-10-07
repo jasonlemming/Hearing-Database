@@ -92,6 +92,17 @@ class HearingModel(BaseModel):
     url: Optional[str] = None
     congress_gov_url: Optional[str] = None
     update_date: Optional[datetime] = None
+    video_url: Optional[str] = None
+    youtube_video_id: Optional[str] = None
+    video_type: Optional[str] = None
+
+    @validator('video_type')
+    def validate_video_type(cls, v):
+        if v is not None:
+            valid_types = ['youtube', 'senate_isvp', 'house_video', 'committee_video', 'event_page']
+            if v not in valid_types:
+                raise ValueError(f'Video type must be one of {valid_types}')
+        return v
 
     @validator('chamber')
     def validate_chamber(cls, v):

@@ -1,0 +1,14 @@
+2025-10-07 10:45:16,831 - updaters.daily_updater - INFO - DailyUpdater initialized for Congress 119, 7 day lookback
+2025-10-07 10:45:16,831 - updaters.daily_updater - INFO - Starting daily update process
+2025-10-07 10:45:16,831 - updaters.daily_updater - INFO - Fetching hearings modified since 2025-09-30
+2025-10-07 10:45:16,831 - updaters.daily_updater - ERROR - Error fetching recent hearings: 'HearingFetcher' object has no attribute 'fetch_hearings_for_congress'
+2025-10-07 10:45:16,831 - updaters.daily_updater - ERROR - Daily update failed: 'HearingFetcher' object has no attribute 'fetch_hearings_for_congress'
+Traceback (most recent call last):
+  File "/Users/jasonlemons/Documents/GitHub/Hearing-Database/updaters/daily_updater.py", line 108, in run_daily_update
+    recent_hearings = self._fetch_recent_hearings()
+  File "/Users/jasonlemons/Documents/GitHub/Hearing-Database/updaters/daily_updater.py", line 159, in _fetch_recent_hearings
+    api_hearings = self.hearing_fetcher.fetch_hearings_for_congress(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'HearingFetcher' object has no attribute 'fetch_hearings_for_congress'
+2025-10-07 10:45:16,832 - __main__ - INFO - Daily update completed successfully
+2025-10-07 10:45:16,832 - __main__ - INFO - Results: {'success': False, 'error': "'HearingFetcher' object has no attribute 'fetch_hearings_for_congress'", 'metrics': {'start_time': '2025-10-07T10:45:16.831264', 'end_time': '2025-10-07T10:45:16.831625', 'duration_seconds': 0.000361, 'hearings_checked': 0, 'hearings_updated': 0, 'hearings_added': 0, 'committees_updated': 0, 'witnesses_updated': 0, 'api_requests': 0, 'error_count': 2, 'errors': ["Fetch error: 'HearingFetcher' object has no attribute 'fetch_hearings_for_congress'", "'HearingFetcher' object has no attribute 'fetch_hearings_for_congress'"]}}

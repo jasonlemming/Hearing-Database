@@ -217,8 +217,8 @@ class ImportOrchestrator:
         stats = {'processed': 0, 'imported': 0, 'errors': 0}
 
         try:
-            # Fetch all hearings
-            hearings = self.hearing_fetcher.fetch_hearings(congress)
+            # Fetch all hearings with detailed information (includes video data)
+            hearings = self.hearing_fetcher.fetch_all_with_details(congress)
             stats['processed'] = len(hearings)
 
             # Process in batches
@@ -465,13 +465,14 @@ class ImportOrchestrator:
 
         for hearing_data in hearings:
             try:
-                # Parse hearing data
+                # Parse hearing data (now includes video extraction)
                 hearing = self.hearing_parser.parse(hearing_data)
                 if hearing:
                     if not validation_mode:
                         # Import hearing
                         hearing_dict = hearing.dict()
                         hearing_dict['congress'] = congress
+
                         hearing_id = self.db_manager.upsert_hearing(hearing_dict)
 
                         # Link to committees

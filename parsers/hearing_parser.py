@@ -44,6 +44,12 @@ class HearingParser(BaseParser):
             'update_date': self._extract_update_date(raw_data)
         }
 
+        # Extract video data
+        video_data = self._extract_video_data(raw_data)
+        hearing_data['video_url'] = video_data['video_url']
+        hearing_data['youtube_video_id'] = video_data['youtube_video_id']
+        hearing_data['video_type'] = video_data['video_type']
+
         return self.validate_model(HearingModel, hearing_data)
 
     def _normalize_chamber(self, chamber: str) -> str:
@@ -188,6 +194,103 @@ class HearingParser(BaseParser):
 
         return None
 
+    def _extract_video_data(self, raw_data: Dict[str, Any]) -> Dict[str, Optional[str]]:
+        """
+        Extract and parse video data from hearing raw data
+
+        Scans ALL videos in the API response and selects the best one based on priority:
+        1. YouTube URLs (for embeddable video)
+        2. Senate ISVP URLs (senate.gov/isvp)
+        3. House video URLs (house.gov)
+        4. Congress.gov committee video URLs
+        5. Congress.gov event page URLs (fallback)
+
+        Args:
+            raw_data: Raw hearing data
+
+        Returns:
+            Dictionary with video_url, youtube_video_id, and video_type
+        """
+        result = {
+            'video_url': None,
+            'youtube_video_id': None,
+            'video_type': None
+        }
+
+        # Check for videos in the API response
+        videos = self.safe_get(raw_data, 'videos')
+
+        if not videos:
+            return result
+
+        # Videos can be an array or dict with 'item' key
+        video_items = []
+        if isinstance(videos, list):
+            video_items = videos
+        elif isinstance(videos, dict):
+            items = self.safe_get(videos, 'item', [])
+            video_items = items if isinstance(items, list) else [items]
+
+        # Scan ALL videos and categorize them
+        youtube_urls = []
+        senate_isvp_urls = []
+        house_video_urls = []
+        committee_video_urls = []
+        event_page_urls = []
+
+        for video in video_items:
+            if not isinstance(video, dict):
+                continue
+            url = self.safe_get(video, 'url')
+            if not url:
+                continue
+
+            # Categorize by URL pattern
+            if 'youtube.com' in url or 'youtu.be' in url:
+                youtube_urls.append(url)
+            elif 'senate.gov/isvp' in url:
+                senate_isvp_urls.append(url)
+            elif 'house.gov' in url and 'video' in url.lower():
+                house_video_urls.append(url)
+            elif 'congress.gov/committees/video' in url:
+                committee_video_urls.append(url)
+            elif 'congress.gov/event' in url:
+                event_page_urls.append(url)
+
+        # Select best video based on priority
+        video_url = None
+        video_type = None
+
+        if youtube_urls:
+            video_url = youtube_urls[0]
+            video_type = 'youtube'
+            logger.debug(f"Selected YouTube video: {video_url}")
+        elif senate_isvp_urls:
+            video_url = senate_isvp_urls[0]
+            video_type = 'senate_isvp'
+            logger.debug(f"Selected Senate ISVP video: {video_url}")
+        elif house_video_urls:
+            video_url = house_video_urls[0]
+            video_type = 'house_video'
+            logger.debug(f"Selected House video: {video_url}")
+        elif committee_video_urls:
+            video_url = committee_video_urls[0]
+            video_type = 'committee_video'
+            logger.debug(f"Selected committee video: {video_url}")
+        elif event_page_urls:
+            video_url = event_page_urls[0]
+            video_type = 'event_page'
+            logger.debug(f"Selected event page (fallback): {video_url}")
+
+        # Parse the video URL to extract YouTube ID if applicable
+        if video_url:
+            parsed = self.parse_video_url(video_url)
+            result['video_url'] = parsed['video_url']
+            result['youtube_video_id'] = parsed['youtube_video_id']
+            result['video_type'] = video_type
+
+        return result
+
     def extract_committee_references(self, raw_data: Dict[str, Any]) -> List[Dict[str, Any]]:
         """
         Extract committee references from hearing data
@@ -307,3 +410,84 @@ class HearingParser(BaseParser):
                 })
 
         return bills
+
+    def parse_video_url(self, video_url: Optional[str]) -> Dict[str, Optional[str]]:
+        """
+        Parse and validate video URL, extracting YouTube video ID
+
+        Args:
+            video_url: YouTube URL (direct or congress.gov committee video URL)
+
+        Returns:
+            Dictionary with validated video_url and extracted youtube_video_id
+        """
+        import re
+        from urllib.parse import urlparse, parse_qs
+
+        result = {
+            'video_url': None,
+            'youtube_video_id': None
+        }
+
+        if not video_url:
+            return result
+
+        # Store the full URL
+        result['video_url'] = video_url
+
+        # Extract YouTube video ID from URL
+        # Supported formats:
+        # 1. Direct YouTube: https://www.youtube.com/watch?v={VIDEO_ID}
+        # 2. Congress.gov committee: https://www.congress.gov/committees/video/{chamber-committee}/{code}/{youtube-id}
+        # YouTube IDs are typically 11 characters: alphanumeric, hyphens, underscores
+
+        try:
+            # Check if it's a direct YouTube URL
+            if 'youtube.com' in video_url:
+                parsed = urlparse(video_url)
+                query_params = parse_qs(parsed.query)
+
+                # Look for 'v' parameter in query string
+                if 'v' in query_params and query_params['v']:
+                    potential_id = query_params['v'][0]
+
+                    # Strip erroneous leading hyphen from Congress.gov API bug
+                    # API returns IDs like "-cuneRXGeLaQ" (12 chars) instead of "cuneRXGeLaQ" (11 chars)
+                    if potential_id.startswith('-') and len(potential_id) == 12:
+                        potential_id = potential_id[1:]
+
+                    # Validate it looks like a YouTube video ID
+                    # YouTube IDs are exactly 11 characters: alphanumeric, hyphens, underscores
+                    youtube_id_pattern = r'^[A-Za-z0-9_-]{11}$'
+
+                    if re.match(youtube_id_pattern, potential_id):
+                        result['youtube_video_id'] = potential_id
+                        logger.debug(f"Extracted YouTube ID from direct URL: {potential_id}")
+                    else:
+                        logger.warning(f"YouTube ID '{potential_id}' from query parameter does not match expected pattern")
+            else:
+                # Try congress.gov committee video URL format
+                # Expected format: https://www.congress.gov/committees/video/{chamber-committee}/{code}/{youtube-id}
+                url_parts = video_url.rstrip('/').split('/')
+                if url_parts:
+                    potential_id = url_parts[-1]
+
+                    # Strip erroneous leading hyphen from Congress.gov API bug
+                    # API returns IDs like "-cuneRXGeLaQ" (12 chars) instead of "cuneRXGeLaQ" (11 chars)
+                    if potential_id.startswith('-') and len(potential_id) == 12:
+                        potential_id = potential_id[1:]
+
+                    # Validate it looks like a YouTube video ID
+                    # YouTube IDs are exactly 11 characters: alphanumeric, hyphens, underscores
+                    youtube_id_pattern = r'^[A-Za-z0-9_-]{11}$'
+
+                    if re.match(youtube_id_pattern, potential_id):
+                        result['youtube_video_id'] = potential_id
+                        logger.debug(f"Extracted YouTube ID from path: {potential_id}")
+                    else:
+                        logger.warning(f"Potential YouTube ID '{potential_id}' from path does not match expected pattern")
+
+        except Exception as e:
+            logger.error(f"Error parsing video URL '{video_url}': {e}")
+
+        return result

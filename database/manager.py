@@ -210,8 +210,9 @@ class DatabaseManager:
         query = """
         INSERT OR REPLACE INTO hearings
         (event_id, congress, chamber, title, hearing_type, status, hearing_date,
-         location, jacket_number, url, congress_gov_url, update_date, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+         location, jacket_number, url, congress_gov_url, video_url, youtube_video_id,
+         update_date, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
         """
 
         params = (
@@ -226,6 +227,8 @@ class DatabaseManager:
             hearing_data.get('jacket_number'),
             hearing_data.get('url'),
             hearing_data.get('congress_gov_url'),
+            hearing_data.get('video_url'),
+            hearing_data.get('youtube_video_id'),
             hearing_data.get('update_date')
         )
 

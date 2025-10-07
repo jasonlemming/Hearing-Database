@@ -82,8 +82,8 @@ class DailyUpdater:
 
         # Initialize API client and fetchers
         self.api_client = CongressAPIClient(
-            api_key=self.settings.CONGRESS_API_KEY,
-            rate_limit_per_hour=self.settings.RATE_LIMIT_PER_HOUR
+            api_key=self.settings.api_key,
+            rate_limit_per_hour=self.settings.rate_limit
         )
 
         self.hearing_fetcher = HearingFetcher(self.api_client)

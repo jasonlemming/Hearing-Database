@@ -272,6 +272,7 @@ CREATE TABLE hearing_transcripts (
 
 CREATE INDEX idx_transcripts_hearing ON hearing_transcripts(hearing_id);
 CREATE INDEX idx_transcripts_jacket ON hearing_transcripts(jacket_number);
+CREATE UNIQUE INDEX idx_transcripts_unique ON hearing_transcripts(hearing_id, document_url);
 
 -- 14. witness_documents
 -- Documents submitted by witnesses (linked to specific appearances)
@@ -292,6 +293,7 @@ CREATE TABLE witness_documents (
 
 CREATE INDEX idx_witness_docs_appearance ON witness_documents(appearance_id);
 CREATE INDEX idx_witness_docs_type ON witness_documents(document_type);
+CREATE UNIQUE INDEX idx_witness_docs_unique ON witness_documents(appearance_id, document_url);
 
 -- 15. supporting_documents
 -- Additional hearing-related documents
@@ -311,6 +313,7 @@ CREATE TABLE supporting_documents (
 
 CREATE INDEX idx_supporting_docs_hearing ON supporting_documents(hearing_id);
 CREATE INDEX idx_supporting_docs_type ON supporting_documents(document_type);
+CREATE UNIQUE INDEX idx_supporting_docs_unique ON supporting_documents(hearing_id, document_url);
 
 -- 16. sync_tracking
 -- Tracks synchronization status for incremental updates

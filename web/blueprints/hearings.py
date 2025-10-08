@@ -3,6 +3,7 @@ Hearing-related routes blueprint
 """
 from flask import Blueprint, render_template, request
 from database.manager import DatabaseManager
+from datetime import datetime, timedelta
 
 hearings_bp = Blueprint('hearings', __name__)
 
@@ -17,8 +18,17 @@ def hearings():
         search = request.args.get('search', '')
         chamber = request.args.get('chamber', '')
         committee_id = request.args.get('committee', '')
-        date_from = request.args.get('date_from', '')
-        date_to = request.args.get('date_to', '')
+
+        # Default to current week if no dates provided
+        today = datetime.now()
+        # Calculate Monday of current week (weekday 0 = Monday)
+        days_since_monday = today.weekday()
+        monday = today - timedelta(days=days_since_monday)
+        # Calculate Sunday of current week
+        sunday = monday + timedelta(days=6)
+
+        date_from = request.args.get('date_from', monday.strftime('%Y-%m-%d'))
+        date_to = request.args.get('date_to', sunday.strftime('%Y-%m-%d'))
         sort_by = request.args.get('sort', 'date')
         sort_order = request.args.get('order', 'desc')
         page = int(request.args.get('page', 1))
@@ -131,6 +141,8 @@ def hearings():
                              search=search,
                              selected_chamber=chamber,
                              selected_committee=committee_id,
+                             date_from=date_from,
+                             date_to=date_to,
                              sort_by=sort_by,
                              sort_order=sort_order,
                              page=page,

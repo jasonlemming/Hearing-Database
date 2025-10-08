@@ -91,6 +91,7 @@
                 </p>
             </a>
 
+            {% if 'crs' in config.get('BLUEPRINTS', []) %}
             <a href="{{ url_for('crs.index') }}" class="project-block">
                 <h1 class="project-title">
                     CRS Products
@@ -100,6 +101,7 @@
                     Browse and search Congressional Research Service reports and publications with full-text search.
                 </p>
             </a>
+            {% endif %}
         </div>
     </div>
 

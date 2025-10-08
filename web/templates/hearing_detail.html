@@ -28,7 +28,12 @@
                         <h1 class="mb-3">
                             <i class="fas fa-calendar-alt me-3"></i>
                             {% if hearing[4] %}
-                                {{ hearing[4] }}
+                                {% if hearing[4]|length > 150 %}
+                                    <span id="hearing-title-short">{{ hearing[4][:150] }}... <a href="#" onclick="document.getElementById('hearing-title-short').style.display='none'; document.getElementById('hearing-title-full').style.display='inline'; return false;" class="text-primary" style="font-size: 0.6em; text-decoration: none;">Show more</a></span>
+                                    <span id="hearing-title-full" style="display: none;">{{ hearing[4] }} <a href="#" onclick="document.getElementById('hearing-title-short').style.display='inline'; document.getElementById('hearing-title-full').style.display='none'; return false;" class="text-primary" style="font-size: 0.6em; text-decoration: none;">Show less</a></span>
+                                {% else %}
+                                    {{ hearing[4] }}
+                                {% endif %}
                             {% else %}
                                 <span class="text-muted">Hearing (No Title Available)</span>
                             {% endif %}
@@ -75,9 +80,6 @@
                             <div class="col-md-6">
                                 <h6><i class="fas fa-link me-2"></i>System Information</h6>
                                 <ul class="list-unstyled">
-                                    {% if hearing[1] %}
-                                    <li><strong>Event ID:</strong> <code>{{ hearing[1] }}</code></li>
-                                    {% endif %}
                                     {% if hearing[2] %}
                                     <li><strong>Congress:</strong> {{ hearing[2] }}</li>
                                     {% endif %}
@@ -90,13 +92,6 @@
                                 </ul>
                             </div>
                         </div>
-
-                        {% if hearing[8] %}
-                        <div class="mb-3">
-                            <h6><i class="fas fa-map-marker-alt me-2"></i>Location</h6>
-                            <p class="text-muted">{{ hearing[8]|format_location }}</p>
-                        </div>
-                        {% endif %}
                     </div>
                     <div class="col-md-3">
                         <div class="card bg-light">

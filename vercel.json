@@ -32,10 +32,6 @@
     {
       "path": "/api/cron/scheduled-update/3",
       "schedule": "0 6 * * *"
-    },
-    {
-      "path": "/api/cron/scheduled-update/4",
-      "schedule": "0 0 * * 0"
     }
   ]
 }

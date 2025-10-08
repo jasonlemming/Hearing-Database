@@ -1,0 +1,282 @@
+/**
+ * Admin Dashboard Styling
+ *
+ * Custom styles for the admin dashboard interface
+ */
+
+/* Stat Cards */
+.stat-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card .display-4 {
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.stat-card small {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+/* Progress Bar Enhanced */
+.progress {
+    border-radius: 10px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+    font-weight: bold;
+    transition: width 0.5s ease;
+    border-radius: 10px;
+}
+
+#progress-text {
+    font-size: 16px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Log Viewer */
+#log-output {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    line-height: 1.4;
+    border-radius: 5px;
+    padding: 15px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+#log-output::-webkit-scrollbar {
+    width: 10px;
+}
+
+#log-output::-webkit-scrollbar-track {
+    background: #2d2d2d;
+}
+
+#log-output::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 5px;
+}
+
+#log-output::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
+
+/* Log Details Summary */
+#log-details summary {
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+}
+
+#log-details summary:hover {
+    background-color: #f8f9fa;
+}
+
+#log-details[open] summary {
+    margin-bottom: 10px;
+}
+
+/* Recent Changes List */
+#change-items {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+}
+
+#change-items .list-group-item {
+    border-left: none;
+    border-right: none;
+    padding: 8px 15px;
+    font-size: 14px;
+}
+
+#change-items .list-group-item:first-child {
+    border-top: none;
+}
+
+#change-items .list-group-item:last-child {
+    border-bottom: none;
+}
+
+.change-added {
+    color: #28a745;
+}
+
+.change-updated {
+    color: #17a2b8;
+}
+
+.change-error {
+    color: #dc3545;
+}
+
+/* Control Panel Enhancements */
+#update-form {
+    max-width: 100%;
+}
+
+#update-form .form-range {
+    cursor: pointer;
+}
+
+#update-form .form-check-input {
+    cursor: pointer;
+}
+
+#update-form .form-check-label {
+    cursor: pointer;
+    user-select: none;
+}
+
+#lookback-display {
+    font-size: 14px;
+    min-width: 40px;
+    display: inline-block;
+    text-align: center;
+}
+
+/* Button Enhancements */
+#start-update-btn {
+    font-weight: bold;
+    padding: 12px 24px;
+    font-size: 16px;
+}
+
+#cancel-update-btn {
+    font-weight: bold;
+}
+
+/* Alert Enhancements */
+#current-task-alert {
+    margin-bottom: 0;
+    border-radius: 5px;
+}
+
+/* Progress Container */
+#progress-container {
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Table Enhancements */
+#recent-changes-table {
+    font-size: 14px;
+}
+
+#recent-changes-table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+#recent-changes-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+#recent-changes-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+#recent-changes-table code {
+    background-color: #f8f9fa;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+/* Badge Styling */
+.badge {
+    font-weight: 500;
+    padding: 4px 8px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .stat-card .display-4 {
+        font-size: 2rem;
+    }
+
+    #start-update-btn {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+
+    #recent-changes-table {
+        font-size: 12px;
+    }
+}
+
+/* Loading Spinner */
+.fa-spin {
+    animation: fa-spin 1s infinite linear;
+}
+
+@keyframes fa-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Status Icons */
+.fa-check-circle {
+    color: #28a745;
+}
+
+.fa-times-circle {
+    color: #dc3545;
+}
+
+.fa-ban {
+    color: #ffc107;
+}
+
+.fa-clock {
+    color: #6c757d;
+}
+
+/* Quick Links Styling */
+.card.bg-light .card-title {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+/* Smooth Transitions */
+* {
+    transition-property: background-color, color, border-color, box-shadow, transform;
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+}
+
+/* Disable transitions for progress bar to avoid lag */
+.progress-bar {
+    transition: width 0.5s ease !important;
+}

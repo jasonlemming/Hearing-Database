@@ -23,6 +23,7 @@ from fetchers.hearing_fetcher import HearingFetcher
 from fetchers.committee_fetcher import CommitteeFetcher
 from fetchers.witness_fetcher import WitnessFetcher
 from parsers.hearing_parser import HearingParser
+from parsers.witness_parser import WitnessParser
 from config.settings import Settings
 from config.logging_config import get_logger
 
@@ -75,11 +76,21 @@ class DailyUpdater:
     - Adding new hearings and related data
     """
 
-    def __init__(self, congress: int = 119, lookback_days: int = 7):
+    def __init__(self, congress: int = 119, lookback_days: int = 7, update_mode: str = 'incremental', components: Optional[List[str]] = None):
         self.settings = Settings()
         self.congress = congress
         self.lookback_days = lookback_days
+        self.update_mode = update_mode  # 'incremental' or 'full'
         self.db = DatabaseManager()
+
+        # Component selection (default: all hearing-related components)
+        # Note: 'hearings' always includes videos (same API response)
+        # Members are updated separately via weekly schedule
+        self.enabled_components = components if components else ['hearings', 'witnesses', 'committees']
+
+        # Ensure hearings is always included (required)
+        if 'hearings' not in self.enabled_components:
+            self.enabled_components.insert(0, 'hearings')
 
         # Initialize API client and fetchers
         self.api_client = CongressAPIClient(
@@ -91,43 +102,64 @@ class DailyUpdater:
         self.committee_fetcher = CommitteeFetcher(self.api_client)
         self.witness_fetcher = WitnessFetcher(self.api_client)
         self.hearing_parser = HearingParser()
+        self.witness_parser = WitnessParser()
 
         self.metrics = UpdateMetrics()
 
-        logger.info(f"DailyUpdater initialized for Congress {congress}, {lookback_days} day lookback")
+        logger.info(f"DailyUpdater initialized for Congress {congress}, {lookback_days} day lookback, mode={update_mode}")
+        logger.info(f"Enabled components: {', '.join(self.enabled_components)}")
 
-    def run_daily_update(self) -> Dict[str, Any]:
+    def run_daily_update(self, dry_run: bool = False, progress_callback=None) -> Dict[str, Any]:
         """
         Execute the complete daily update process.
+
+        Args:
+            dry_run: If True, preview changes without modifying database
+            progress_callback: Optional callback function to report progress.
+                             Called with dict containing progress data.
 
         Returns:
             Dictionary containing update metrics and results
         """
-        logger.info("Starting daily update process")
+        if dry_run:
+            logger.info("Starting daily update process (DRY RUN - no database changes will be made)")
+        else:
+            logger.info("Starting daily update process")
 
         try:
             # Step 1: Get recently modified hearings from API
-            recent_hearings = self._fetch_recent_hearings()
+            recent_hearings = self._fetch_recent_hearings(progress_callback=progress_callback)
             logger.info(f"Found {len(recent_hearings)} recently modified hearings")
 
             # Step 2: Compare with database and identify changes
             changes = self._identify_changes(recent_hearings)
             logger.info(f"Identified {len(changes['updates'])} updates, {len(changes['additions'])} new hearings")
 
-            # Step 3: Apply updates to database
-            self._apply_updates(changes)
+            if dry_run:
+                # In dry run mode, skip database modifications
+                logger.info("DRY RUN: Skipping database updates")
+                logger.info(f"Would update {len(changes['updates'])} hearings")
+                logger.info(f"Would add {len(changes['additions'])} new hearings")
 
-            # Step 4: Update related data (committees, witnesses)
-            self._update_related_data(changes)
+                # Set metrics as if we did the updates
+                self.metrics.hearings_updated = len(changes['updates'])
+                self.metrics.hearings_added = len(changes['additions'])
+            else:
+                # Step 3: Apply updates to database
+                self._apply_updates(changes)
 
-            # Step 5: Record update metrics
-            self._record_update_metrics()
+                # Step 4: Update related data (committees, witnesses)
+                self._update_related_data(changes)
+
+                # Step 5: Record update metrics
+                self._record_update_metrics()
 
             self.metrics.end_time = datetime.now()
             logger.info(f"Daily update completed successfully in {self.metrics.duration()}")
 
             return {
                 'success': True,
+                'dry_run': dry_run,
                 'metrics': self.metrics.to_dict()
             }
 
@@ -142,64 +174,124 @@ class DailyUpdater:
                 'metrics': self.metrics.to_dict()
             }
 
-    def _fetch_recent_hearings(self) -> List[Dict[str, Any]]:
+    def _fetch_recent_hearings(self, progress_callback=None) -> List[Dict[str, Any]]:
         """
-        Fetch hearings modified in the last N days from Congress.gov API.
+        Fetch hearings based on update mode.
+
+        - 'full' mode: Fetches ALL hearings with complete details (slow, comprehensive)
+        - 'incremental' mode: Fetches only recent hearings within lookback window (fast)
+
+        Args:
+            progress_callback: Optional callback to report progress during fetching
 
         Returns:
-            List of hearing data dictionaries
+            List of hearing data dictionaries with complete details including videos
         """
         cutoff_date = datetime.now() - timedelta(days=self.lookback_days)
-        recent_hearings = []
-
-        logger.info(f"Fetching hearings modified since {cutoff_date.strftime('%Y-%m-%d')}")
 
         try:
-            # Get hearings with date filter
-            # Note: Congress.gov API doesn't have direct "modified since" filter,
-            # so we fetch recent hearings and check update timestamps
-            # Use fetch_all_with_details to get video data
-            api_hearings = self.hearing_fetcher.fetch_all_with_details(
-                congress=self.congress
-            )
+            if self.update_mode == 'full':
+                # Full sync mode - fetch all hearings with details
+                logger.info(f"Running FULL sync - fetching all hearings for Congress {self.congress}")
+                logger.info("This will take 20-30 minutes. Use 'incremental' mode for faster updates.")
 
-            self.metrics.api_requests += 1
+                api_hearings = self.hearing_fetcher.fetch_all_with_details(
+                    congress=self.congress
+                )
 
-            # Filter by modification date (if available in API response)
-            for hearing in api_hearings:
-                # Check if hearing was recently updated
-                updated_at = hearing.get('updateDate')
-                if updated_at:
-                    try:
-                        update_date = datetime.fromisoformat(updated_at.replace('Z', '+00:00'))
-                        if update_date >= cutoff_date.replace(tzinfo=timezone.utc):
-                            recent_hearings.append(hearing)
-                    except (ValueError, TypeError) as e:
-                        logger.warning(f"Could not parse update date {updated_at}: {e}")
-                        # Include hearing anyway if we can't parse the date
-                        recent_hearings.append(hearing)
-                else:
-                    # No update date available, include all recent hearings
-                    hearing_date = hearing.get('date')
-                    if hearing_date:
+                self.metrics.api_requests += 1
+                self.metrics.hearings_checked = len(api_hearings)
+
+                logger.info(f"Fetched {len(api_hearings)} total hearings with details")
+                return api_hearings
+
+            else:
+                # Incremental mode - fetch wider window, then filter by update date
+                # This catches hearings that were recently MODIFIED but scheduled far in future
+                logger.info(f"Running INCREMENTAL sync - {self.lookback_days} day lookback from {cutoff_date.strftime('%Y-%m-%d')}")
+
+                # Step 1: Fetch a wider window of hearings (90 days covers most recent activity)
+                # We need to fetch more than the lookback window because hearings scheduled
+                # months in advance can be updated today
+                fetch_window = max(90, self.lookback_days * 3)  # At least 90 days or 3x lookback
+                logger.info(f"Fetching {fetch_window}-day window to check for updates")
+
+                all_recent = self.hearing_fetcher.fetch_recent_hearings(
+                    congress=self.congress,
+                    days_back=fetch_window
+                )
+
+                self.metrics.api_requests += 1
+                logger.info(f"Retrieved {len(all_recent)} hearings from {fetch_window}-day window")
+
+                # Step 2: Fetch details and filter by updateDate
+                recent_hearings = []
+                for i, hearing in enumerate(all_recent):
+                    event_id = hearing.get('eventId')
+                    chamber = hearing.get('chamber', '').lower()
+
+                    if event_id and chamber:
                         try:
-                            h_date = datetime.fromisoformat(hearing_date.replace('Z', '+00:00'))
-                            if h_date >= cutoff_date.replace(tzinfo=timezone.utc):
-                                recent_hearings.append(hearing)
-                        except (ValueError, TypeError):
-                            recent_hearings.append(hearing)
-                    else:
-                        recent_hearings.append(hearing)
+                            detailed = self.hearing_fetcher.fetch_hearing_details(
+                                congress=self.congress,
+                                chamber=chamber,
+                                event_id=event_id
+                            )
 
-            self.metrics.hearings_checked = len(api_hearings)
-            logger.info(f"Filtered to {len(recent_hearings)} potentially updated hearings")
+                            if detailed and 'committeeMeeting' in detailed:
+                                detailed_hearing = detailed['committeeMeeting']
+                                detailed_hearing['chamber'] = chamber.title()
+
+                                # Filter by updateDate (when hearing was last modified)
+                                updated_at = detailed_hearing.get('updateDate')
+                                if updated_at:
+                                    try:
+                                        update_date = datetime.fromisoformat(updated_at.replace('Z', '+00:00'))
+                                        if update_date >= cutoff_date.replace(tzinfo=timezone.utc):
+                                            recent_hearings.append(detailed_hearing)
+                                    except (ValueError, TypeError):
+                                        # Can't parse date, include it to be safe
+                                        recent_hearings.append(detailed_hearing)
+                                else:
+                                    # No updateDate, check hearing date as fallback
+                                    hearing_date = detailed_hearing.get('date')
+                                    if hearing_date:
+                                        try:
+                                            h_date = datetime.fromisoformat(hearing_date.replace('Z', '+00:00'))
+                                            if h_date >= cutoff_date.replace(tzinfo=timezone.utc):
+                                                recent_hearings.append(detailed_hearing)
+                                        except (ValueError, TypeError):
+                                            recent_hearings.append(detailed_hearing)
+                            else:
+                                # Fall back to basic info
+                                recent_hearings.append(hearing)
+
+                            self.metrics.api_requests += 1
+
+                            # Progress reporting every 50 hearings
+                            if (i + 1) % 50 == 0:
+                                logger.info(f"Checked {i + 1}/{len(all_recent)} hearings, found {len(recent_hearings)} updates")
+
+                                # Call progress callback if provided
+                                if progress_callback:
+                                    progress_callback({
+                                        'hearings_checked': i + 1,
+                                        'total_hearings': len(all_recent),
+                                        'hearings_found': len(recent_hearings),
+                                        'percent': int((i + 1) / len(all_recent) * 100)
+                                    })
+
+                        except Exception as e:
+                            logger.warning(f"Could not fetch details for {event_id}: {e}")
+
+                self.metrics.hearings_checked = len(all_recent)
+                logger.info(f"Found {len(recent_hearings)} hearings updated in last {self.lookback_days} days")
+                return recent_hearings
 
         except Exception as e:
-            logger.error(f"Error fetching recent hearings: {e}")
+            logger.error(f"Error fetching hearings: {e}")
             self.metrics.errors.append(f"Fetch error: {e}")
             raise
-
-        return recent_hearings
 
     def _identify_changes(self, api_hearings: List[Dict[str, Any]]) -> Dict[str, List]:
         """
@@ -368,27 +460,39 @@ class DailyUpdater:
 
     def _update_related_data(self, changes: Dict[str, List]) -> None:
         """
-        Update committees and witnesses for changed hearings.
+        Update committees and witnesses from embedded hearing details.
+        No additional API calls needed - data already fetched in _fetch_recent_hearings().
 
         Args:
             changes: Dictionary with updates and additions
         """
-        # For new hearings, fetch and add committee associations and witnesses
+        # For new hearings, process committee associations and witnesses from embedded data
         for addition in changes['additions']:
             try:
-                self._update_hearing_committees(addition)
-                self._update_hearing_witnesses(addition)
+                # Only process committees if enabled
+                if 'committees' in self.enabled_components:
+                    self._update_hearing_committees_from_details(addition)
+
+                # Only process witnesses if enabled
+                if 'witnesses' in self.enabled_components:
+                    self._update_hearing_witnesses_from_details(addition)
             except Exception as e:
                 error_msg = f"Error updating related data for {addition.get('eventId')}: {e}"
                 logger.error(error_msg)
                 self.metrics.errors.append(error_msg)
 
-        # For updated hearings, check if witnesses need updating
+        # For updated hearings, check if committees and witnesses need updating
         for update in changes['updates']:
             try:
-                self._update_hearing_witnesses(update['new_data'])
+                # Only process committees if enabled
+                if 'committees' in self.enabled_components:
+                    self._update_hearing_committees_from_details(update['new_data'])
+
+                # Only process witnesses if enabled
+                if 'witnesses' in self.enabled_components:
+                    self._update_hearing_witnesses_from_details(update['new_data'])
             except Exception as e:
-                error_msg = f"Error updating witnesses for {update['new_data'].get('eventId')}: {e}"
+                error_msg = f"Error updating related data for {update['new_data'].get('eventId')}: {e}"
                 logger.error(error_msg)
                 self.metrics.errors.append(error_msg)
 
@@ -441,6 +545,131 @@ class DailyUpdater:
         except Exception as e:
             logger.warning(f"Could not update witnesses for hearing {event_id}: {e}")
 
+    def _update_hearing_committees_from_details(self, hearing_data: Dict[str, Any]) -> None:
+        """
+        Extract and update committee associations from embedded hearing details.
+        No additional API calls needed - data already fetched.
+
+        Args:
+            hearing_data: Full hearing data with embedded committees
+        """
+        event_id = hearing_data.get('eventId')
+        committees = hearing_data.get('committees', [])
+
+        if not event_id or not committees:
+            logger.debug(f"No committees found in embedded data for hearing {event_id}")
+            return
+
+        # Get hearing_id from database
+        hearing_record = self.db.get_hearing_by_event_id(event_id)
+        if not hearing_record:
+            logger.warning(f"Hearing {event_id} not found in database")
+            return
+
+        hearing_id = hearing_record['hearing_id']
+
+        try:
+            # Extract committees using parser (no API call - uses embedded data)
+            committee_refs = self.hearing_parser.extract_committee_references(hearing_data)
+
+            if not committee_refs:
+                logger.debug(f"No committees extracted for hearing {event_id}")
+                return
+
+            # Delete all existing committee links to prevent duplicates
+            # This is safer than resetting is_primary flags, as it handles committee ID changes
+            self.db.delete_hearing_committee_links(hearing_id)
+
+            # Link each committee to hearing
+            for committee_ref in committee_refs:
+                system_code = committee_ref.get('system_code')
+                if not system_code:
+                    continue
+
+                # Get committee from database
+                committee = self.db.get_committee_by_system_code(system_code)
+                if committee:
+                    # Create hearing-committee link
+                    self.db.link_hearing_committee(
+                        hearing_id,
+                        committee['committee_id'],
+                        committee_ref.get('is_primary', False)
+                    )
+                    self.metrics.committees_updated += 1
+                    logger.debug(f"Linked committee {system_code} to hearing {event_id}")
+                else:
+                    logger.warning(f"Committee {system_code} not found in database for hearing {event_id}")
+
+        except Exception as e:
+            logger.warning(f"Could not process committees from embedded data for hearing {event_id}: {e}")
+
+    def _update_hearing_witnesses_from_details(self, hearing_data: Dict[str, Any]) -> None:
+        """
+        Extract and update witness information from embedded hearing details.
+        No additional API calls needed - data already fetched.
+
+        Args:
+            hearing_data: Full hearing data with embedded witnesses and witness documents
+        """
+        event_id = hearing_data.get('eventId')
+        witnesses = hearing_data.get('witnesses', [])
+        witness_documents = hearing_data.get('witnessDocuments', [])
+
+        if not event_id:
+            return
+
+        if not witnesses and not witness_documents:
+            logger.debug(f"No witnesses found in embedded data for hearing {event_id}")
+            return
+
+        # Get hearing_id from database
+        hearing_record = self.db.get_hearing_by_event_id(event_id)
+        if not hearing_record:
+            logger.warning(f"Hearing {event_id} not found in database")
+            return
+
+        hearing_id = hearing_record['hearing_id']
+
+        try:
+            # Process each witness from embedded data
+            for i, witness_raw in enumerate(witnesses, 1):
+                try:
+                    # Normalize data structure for parser
+                    witness_data = {
+                        'name': witness_raw.get('name'),
+                        'firstName': witness_raw.get('firstName'),
+                        'lastName': witness_raw.get('lastName'),
+                        'position': witness_raw.get('position'),
+                        'organization': witness_raw.get('organization')
+                    }
+
+                    # Parse witness data
+                    parsed = self.witness_parser.parse(witness_data)
+                    if not parsed:
+                        logger.debug(f"Failed to parse witness for hearing {event_id}")
+                        continue
+
+                    # Get or create witness (handles deduplication internally via database manager)
+                    witness_dict = parsed.dict()
+                    witness_id = self.db.get_or_create_witness(witness_dict)
+
+                    # Create witness appearance link
+                    appearance_data = {
+                        'position': parsed.title,
+                        'witness_type': None,  # Could be inferred if needed
+                        'appearance_order': i
+                    }
+                    self.db.create_witness_appearance(witness_id, hearing_id, appearance_data)
+                    self.metrics.witnesses_updated += 1
+                    logger.debug(f"Saved witness {parsed.full_name} for hearing {event_id}")
+
+                except Exception as e:
+                    logger.warning(f"Failed to process witness for hearing {event_id}: {e}")
+                    continue
+
+        except Exception as e:
+            logger.warning(f"Could not process witnesses from embedded data for hearing {event_id}: {e}")
+
     def _record_update_metrics(self) -> None:
         """Record update metrics in the database for monitoring."""
         metrics_data = self.metrics.to_dict()
@@ -463,9 +692,16 @@ class DailyUpdater:
                     error_count INTEGER DEFAULT 0,
                     errors TEXT,
                     success BOOLEAN DEFAULT 1,
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                    trigger_source TEXT DEFAULT 'manual',
+                    schedule_id INTEGER,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (schedule_id) REFERENCES scheduled_tasks(task_id)
                 )
             ''')
+
+            # Get trigger source and schedule ID (injected by cron-update.py)
+            trigger_source = getattr(self, 'trigger_source', 'manual')
+            schedule_id = getattr(self, 'schedule_id', None)
 
             # Insert update log
             conn.execute('''
@@ -473,8 +709,8 @@ class DailyUpdater:
                     update_date, start_time, end_time, duration_seconds,
                     hearings_checked, hearings_updated, hearings_added,
                     committees_updated, witnesses_updated, api_requests,
-                    error_count, errors, success
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    error_count, errors, success, trigger_source, schedule_id
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
                 self.metrics.start_time.date(),
                 self.metrics.start_time,
@@ -488,7 +724,9 @@ class DailyUpdater:
                 self.metrics.api_requests,
                 len(self.metrics.errors),
                 json.dumps(self.metrics.errors) if self.metrics.errors else None,
-                len(self.metrics.errors) == 0
+                len(self.metrics.errors) == 0,
+                trigger_source,
+                schedule_id
             ))
 
         logger.info(f"Recorded update metrics: {self.metrics.to_dict()}")

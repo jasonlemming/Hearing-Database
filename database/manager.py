@@ -117,7 +117,7 @@ class DatabaseManager:
     # Committee operations
     def upsert_committee(self, committee_data: Dict[str, Any]) -> int:
         """
-        Insert or update committee record
+        Insert or update committee record using proper UPDATE to avoid foreign key violations
 
         Args:
             committee_data: Committee data dictionary
@@ -125,25 +125,60 @@ class DatabaseManager:
         Returns:
             Committee ID
         """
-        query = """
-        INSERT OR REPLACE INTO committees
-        (system_code, name, chamber, type, parent_committee_id, is_current, url, congress, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-        """
+        system_code = committee_data.get('system_code')
 
-        params = (
-            committee_data.get('system_code'),
-            committee_data.get('name'),
-            committee_data.get('chamber'),
-            committee_data.get('type'),
-            committee_data.get('parent_committee_id'),
-            committee_data.get('is_current', True),
-            committee_data.get('url'),
-            committee_data.get('congress')
-        )
+        # Check if committee exists
+        existing = self.get_committee_by_system_code(system_code)
 
-        cursor = self.execute(query, params)
-        return cursor.lastrowid
+        if existing:
+            # Update existing committee
+            update_query = """
+            UPDATE committees SET
+                name = ?,
+                chamber = ?,
+                type = ?,
+                parent_committee_id = ?,
+                is_current = ?,
+                url = ?,
+                congress = ?,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE system_code = ?
+            """
+
+            params = (
+                committee_data.get('name'),
+                committee_data.get('chamber'),
+                committee_data.get('type'),
+                committee_data.get('parent_committee_id'),
+                committee_data.get('is_current', True),
+                committee_data.get('url'),
+                committee_data.get('congress'),
+                system_code
+            )
+
+            self.execute(update_query, params)
+            return existing['committee_id']
+        else:
+            # Insert new committee
+            insert_query = """
+            INSERT INTO committees
+            (system_code, name, chamber, type, parent_committee_id, is_current, url, congress, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+            """
+
+            params = (
+                system_code,
+                committee_data.get('name'),
+                committee_data.get('chamber'),
+                committee_data.get('type'),
+                committee_data.get('parent_committee_id'),
+                committee_data.get('is_current', True),
+                committee_data.get('url'),
+                committee_data.get('congress')
+            )
+
+            cursor = self.execute(insert_query, params)
+            return cursor.lastrowid
 
     def get_committee_by_system_code(self, system_code: str) -> Optional[sqlite3.Row]:
         """Get committee by system code"""
@@ -153,7 +188,7 @@ class DatabaseManager:
     # Member operations
     def upsert_member(self, member_data: Dict[str, Any]) -> int:
         """
-        Insert or update member record
+        Insert or update member record using proper UPDATE to avoid foreign key violations
 
         Args:
             member_data: Member data dictionary
@@ -161,35 +196,86 @@ class DatabaseManager:
         Returns:
             Member ID
         """
-        query = """
-        INSERT OR REPLACE INTO members
-        (bioguide_id, first_name, middle_name, last_name, full_name, party, state,
-         district, birth_year, current_member, honorific_prefix, official_url,
-         office_address, phone, terms_served, congress, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-        """
+        bioguide_id = member_data.get('bioguide_id')
 
-        params = (
-            member_data.get('bioguide_id'),
-            member_data.get('first_name'),
-            member_data.get('middle_name'),
-            member_data.get('last_name'),
-            member_data.get('full_name'),
-            member_data.get('party'),
-            member_data.get('state'),
-            member_data.get('district'),
-            member_data.get('birth_year'),
-            member_data.get('current_member', True),
-            member_data.get('honorific_prefix'),
-            member_data.get('official_url'),
-            member_data.get('office_address'),
-            member_data.get('phone'),
-            member_data.get('terms_served'),
-            member_data.get('congress')
-        )
+        # Check if member exists
+        existing = self.get_member_by_bioguide_id(bioguide_id)
 
-        cursor = self.execute(query, params)
-        return cursor.lastrowid
+        if existing:
+            # Update existing member
+            update_query = """
+            UPDATE members SET
+                first_name = ?,
+                middle_name = ?,
+                last_name = ?,
+                full_name = ?,
+                party = ?,
+                state = ?,
+                district = ?,
+                birth_year = ?,
+                current_member = ?,
+                honorific_prefix = ?,
+                official_url = ?,
+                office_address = ?,
+                phone = ?,
+                terms_served = ?,
+                congress = ?,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE bioguide_id = ?
+            """
+
+            params = (
+                member_data.get('first_name'),
+                member_data.get('middle_name'),
+                member_data.get('last_name'),
+                member_data.get('full_name'),
+                member_data.get('party'),
+                member_data.get('state'),
+                member_data.get('district'),
+                member_data.get('birth_year'),
+                member_data.get('current_member', True),
+                member_data.get('honorific_prefix'),
+                member_data.get('official_url'),
+                member_data.get('office_address'),
+                member_data.get('phone'),
+                member_data.get('terms_served'),
+                member_data.get('congress'),
+                bioguide_id
+            )
+
+            self.execute(update_query, params)
+            return existing['member_id']
+        else:
+            # Insert new member
+            insert_query = """
+            INSERT INTO members
+            (bioguide_id, first_name, middle_name, last_name, full_name, party, state,
+             district, birth_year, current_member, honorific_prefix, official_url,
+             office_address, phone, terms_served, congress, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+            """
+
+            params = (
+                bioguide_id,
+                member_data.get('first_name'),
+                member_data.get('middle_name'),
+                member_data.get('last_name'),
+                member_data.get('full_name'),
+                member_data.get('party'),
+                member_data.get('state'),
+                member_data.get('district'),
+                member_data.get('birth_year'),
+                member_data.get('current_member', True),
+                member_data.get('honorific_prefix'),
+                member_data.get('official_url'),
+                member_data.get('office_address'),
+                member_data.get('phone'),
+                member_data.get('terms_served'),
+                member_data.get('congress')
+            )
+
+            cursor = self.execute(insert_query, params)
+            return cursor.lastrowid
 
     def get_member_by_bioguide_id(self, bioguide_id: str) -> Optional[sqlite3.Row]:
         """Get member by bioguide ID"""
@@ -199,7 +285,7 @@ class DatabaseManager:
     # Hearing operations
     def upsert_hearing(self, hearing_data: Dict[str, Any]) -> int:
         """
-        Insert or update hearing record
+        Insert or update hearing record using proper UPDATE to avoid foreign key violations
 
         Args:
             hearing_data: Hearing data dictionary
@@ -207,33 +293,117 @@ class DatabaseManager:
         Returns:
             Hearing ID
         """
-        query = """
-        INSERT OR REPLACE INTO hearings
-        (event_id, congress, chamber, title, hearing_type, status, hearing_date,
-         location, jacket_number, url, congress_gov_url, video_url, youtube_video_id,
-         update_date, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-        """
+        event_id = hearing_data.get('event_id')
 
-        params = (
-            hearing_data.get('event_id'),
-            hearing_data.get('congress'),
-            hearing_data.get('chamber'),
-            hearing_data.get('title'),
-            hearing_data.get('hearing_type'),
-            hearing_data.get('status'),
-            hearing_data.get('hearing_date'),
-            hearing_data.get('location'),
-            hearing_data.get('jacket_number'),
-            hearing_data.get('url'),
-            hearing_data.get('congress_gov_url'),
-            hearing_data.get('video_url'),
-            hearing_data.get('youtube_video_id'),
-            hearing_data.get('update_date')
-        )
+        # Parse hearing_date into separate date and time fields
+        hearing_date_only = None
+        hearing_time = None
+        if hearing_data.get('hearing_date'):
+            try:
+                from datetime import datetime, date as dt_date, time as dt_time
+                date_value = hearing_data['hearing_date']
 
-        cursor = self.execute(query, params)
-        return cursor.lastrowid
+                # Handle datetime objects (already parsed)
+                if isinstance(date_value, datetime):
+                    hearing_date_only = date_value.date().isoformat()
+                    hearing_time = date_value.time().isoformat()
+                # Handle date objects (date only, no time)
+                elif isinstance(date_value, dt_date):
+                    hearing_date_only = date_value.isoformat()
+                    hearing_time = None  # No time component
+                # Handle string formats
+                elif isinstance(date_value, str):
+                    if date_value.endswith('Z'):
+                        dt = datetime.fromisoformat(date_value.replace('Z', '+00:00'))
+                    elif 'T' in date_value:
+                        dt = datetime.fromisoformat(date_value.split('+')[0].split('Z')[0])
+                    else:
+                        # Date only format
+                        dt = datetime.strptime(date_value, '%Y-%m-%d')
+
+                    hearing_date_only = dt.date().isoformat()
+                    hearing_time = dt.time().isoformat()
+            except Exception as e:
+                logger.warning(f"Failed to parse hearing_date '{hearing_data.get('hearing_date')}': {e}")
+
+        # Check if hearing exists
+        existing = self.get_hearing_by_event_id(event_id)
+
+        if existing:
+            # Update existing hearing
+            update_query = """
+            UPDATE hearings SET
+                congress = ?,
+                chamber = ?,
+                title = ?,
+                hearing_type = ?,
+                status = ?,
+                hearing_date = ?,
+                hearing_date_only = ?,
+                hearing_time = ?,
+                location = ?,
+                jacket_number = ?,
+                url = ?,
+                congress_gov_url = ?,
+                video_url = ?,
+                youtube_video_id = ?,
+                update_date = ?,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE event_id = ?
+            """
+
+            params = (
+                hearing_data.get('congress'),
+                hearing_data.get('chamber'),
+                hearing_data.get('title'),
+                hearing_data.get('hearing_type'),
+                hearing_data.get('status'),
+                hearing_data.get('hearing_date'),
+                hearing_date_only,
+                hearing_time,
+                hearing_data.get('location'),
+                hearing_data.get('jacket_number'),
+                hearing_data.get('url'),
+                hearing_data.get('congress_gov_url'),
+                hearing_data.get('video_url'),
+                hearing_data.get('youtube_video_id'),
+                hearing_data.get('update_date'),
+                event_id
+            )
+
+            self.execute(update_query, params)
+            return existing['hearing_id']
+        else:
+            # Insert new hearing
+            insert_query = """
+            INSERT INTO hearings
+            (event_id, congress, chamber, title, hearing_type, status, hearing_date,
+             hearing_date_only, hearing_time, location, jacket_number, url, congress_gov_url,
+             video_url, youtube_video_id, update_date, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+            """
+
+            params = (
+                event_id,
+                hearing_data.get('congress'),
+                hearing_data.get('chamber'),
+                hearing_data.get('title'),
+                hearing_data.get('hearing_type'),
+                hearing_data.get('status'),
+                hearing_data.get('hearing_date'),
+                hearing_date_only,
+                hearing_time,
+                hearing_data.get('location'),
+                hearing_data.get('jacket_number'),
+                hearing_data.get('url'),
+                hearing_data.get('congress_gov_url'),
+                hearing_data.get('video_url'),
+                hearing_data.get('youtube_video_id'),
+                hearing_data.get('update_date')
+            )
+
+            cursor = self.execute(insert_query, params)
+            return cursor.lastrowid
 
     def get_hearing_by_event_id(self, event_id: str) -> Optional[sqlite3.Row]:
         """Get hearing by event ID"""
@@ -285,7 +455,7 @@ class DatabaseManager:
     # Bill operations
     def upsert_bill(self, bill_data: Dict[str, Any]) -> int:
         """
-        Insert or update bill record
+        Insert or update bill record using proper UPDATE to avoid foreign key violations
 
         Args:
             bill_data: Bill data dictionary
@@ -293,23 +463,54 @@ class DatabaseManager:
         Returns:
             Bill ID
         """
-        query = """
-        INSERT OR REPLACE INTO bills
-        (congress, bill_type, bill_number, title, url, introduced_date, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-        """
+        congress = bill_data.get('congress')
+        bill_type = bill_data.get('bill_type')
+        bill_number = bill_data.get('bill_number')
 
-        params = (
-            bill_data.get('congress'),
-            bill_data.get('bill_type'),
-            bill_data.get('bill_number'),
-            bill_data.get('title'),
-            bill_data.get('url'),
-            bill_data.get('introduced_date')
-        )
+        # Check if bill exists
+        existing = self.get_bill_by_congress_type_number(congress, bill_type, bill_number)
 
-        cursor = self.execute(query, params)
-        return cursor.lastrowid
+        if existing:
+            # Update existing bill
+            update_query = """
+            UPDATE bills SET
+                title = ?,
+                url = ?,
+                introduced_date = ?,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE congress = ? AND bill_type = ? AND bill_number = ?
+            """
+
+            params = (
+                bill_data.get('title'),
+                bill_data.get('url'),
+                bill_data.get('introduced_date'),
+                congress,
+                bill_type,
+                bill_number
+            )
+
+            self.execute(update_query, params)
+            return existing['bill_id']
+        else:
+            # Insert new bill
+            insert_query = """
+            INSERT INTO bills
+            (congress, bill_type, bill_number, title, url, introduced_date, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+            """
+
+            params = (
+                congress,
+                bill_type,
+                bill_number,
+                bill_data.get('title'),
+                bill_data.get('url'),
+                bill_data.get('introduced_date')
+            )
+
+            cursor = self.execute(insert_query, params)
+            return cursor.lastrowid
 
     def get_bill_by_congress_type_number(self, congress: int, bill_type: str, bill_number: int) -> Optional[sqlite3.Row]:
         """Get bill by congress, type, and number"""
@@ -317,6 +518,16 @@ class DatabaseManager:
         return self.fetch_one(query, (congress, bill_type, bill_number))
 
     # Relationship operations
+    def reset_hearing_committee_primary_flags(self, hearing_id: int) -> None:
+        """Reset all is_primary flags to 0 for a hearing to prevent duplicate primary committees"""
+        query = "UPDATE hearing_committees SET is_primary = 0 WHERE hearing_id = ?"
+        self.execute(query, (hearing_id,))
+
+    def delete_hearing_committee_links(self, hearing_id: int) -> None:
+        """Delete all committee links for a hearing"""
+        query = "DELETE FROM hearing_committees WHERE hearing_id = ?"
+        self.execute(query, (hearing_id,))
+
     def link_hearing_committee(self, hearing_id: int, committee_id: int, is_primary: bool = True) -> None:
         """Link hearing to committee"""
         query = """

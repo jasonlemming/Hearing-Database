@@ -2,9 +2,23 @@
 
 The Congressional Hearing Database includes an automated daily update system that keeps the database synchronized with the latest data from the Congress.gov API.
 
+> **🔧 FIXED**: As of October 8, 2025 (evening):
+> - ✅ **Date format bug fixed** - Incremental updates now return actual results
+> - ✅ All foreign key constraint errors resolved
+> - ✅ Update system fully operational
+> - ✅ Admin dashboard functional
+>
+> **📖 NEW DOCUMENTATION**: See [UPDATE_PROTOCOLS.md](UPDATE_PROTOCOLS.md) for comprehensive update strategy, CLI commands, and troubleshooting.
+
 ## Overview
 
 The daily update system implements **incremental updates** to efficiently synchronize new and modified hearings without requiring full data re-imports. This ensures the database stays current with minimal API usage and processing time.
+
+**Key Improvements**:
+- ✅ Zero foreign key constraint errors
+- ✅ Video URL synchronization included in daily updates
+- ✅ Multi-cadence strategy (daily/weekly/monthly)
+- ✅ Enhanced CLI commands for manual updates
 
 ## Features
 
@@ -198,11 +212,14 @@ curl http://localhost:5000/api/update-status
 
 ### Update Timing
 
-Typical update times:
+Typical update times (October 2025, 119th Congress):
 
-- **7-day lookback**: 2-5 minutes
-- **30-day lookback**: 5-10 minutes
-- **60-day lookback**: 10-15 minutes
+- **1-day lookback**: 2-3 minutes (checks ~938 hearings, finds ~10-30 updates)
+- **7-day lookback**: 3-5 minutes (checks ~938 hearings, finds ~100-300 updates)
+- **30-day lookback**: 5-10 minutes (checks ~938 hearings, finds ~600-800 updates)
+- **60-day lookback**: 10-15 minutes (checks ~938 hearings, finds ~800+ updates)
+
+**Note**: Times include fetching 90-day window and filtering by updateDate.
 
 ### Efficiency Strategies
 

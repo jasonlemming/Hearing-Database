@@ -27,31 +27,39 @@ def hearings():
 
         # Build query - show all hearings, with committee info when available
         # Show parent committee if the associated committee is a subcommittee
+        # Prefer primary committee, but fall back to any committee if no primary exists
         query = '''
             SELECT h.hearing_id, h.title, h.hearing_date_only, h.hearing_time, h.chamber, h.status, h.hearing_type,
-                   COALESCE(parent.name, c.name) as committee_name,
-                   COALESCE(parent.committee_id, c.committee_id) as committee_id,
+                   COALESCE(parent_primary.name, c_primary.name, parent_any.name, c_any.name) as committee_name,
+                   COALESCE(parent_primary.committee_id, c_primary.committee_id, parent_any.committee_id, c_any.committee_id) as committee_id,
                    h.updated_at, h.event_id
             FROM hearings h
-            LEFT JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id AND hc.is_primary = 1
-            LEFT JOIN committees c ON hc.committee_id = c.committee_id
-            LEFT JOIN committees parent ON c.parent_committee_id = parent.committee_id
+            LEFT JOIN hearing_committees hc_primary ON h.hearing_id = hc_primary.hearing_id AND hc_primary.is_primary = 1
+            LEFT JOIN committees c_primary ON hc_primary.committee_id = c_primary.committee_id
+            LEFT JOIN committees parent_primary ON c_primary.parent_committee_id = parent_primary.committee_id
+            LEFT JOIN hearing_committees hc_any ON h.hearing_id = hc_any.hearing_id
+                AND NOT EXISTS (SELECT 1 FROM hearing_committees WHERE hearing_id = h.hearing_id AND is_primary = 1)
+            LEFT JOIN committees c_any ON hc_any.committee_id = c_any.committee_id
+            LEFT JOIN committees parent_any ON c_any.parent_committee_id = parent_any.committee_id
             WHERE 1=1
         '''
         params = []
 
         if search:
-            query += ' AND (h.title LIKE ? OR c.name LIKE ? OR parent.name LIKE ?)'
+            query += ''' AND (h.title LIKE ?
+                         OR c_primary.name LIKE ? OR parent_primary.name LIKE ?
+                         OR c_any.name LIKE ? OR parent_any.name LIKE ?)'''
             search_term = f'%{search}%'
-            params.extend([search_term, search_term, search_term])
+            params.extend([search_term, search_term, search_term, search_term, search_term])
 
         if chamber:
             query += ' AND h.chamber = ?'
             params.append(chamber)
 
         if committee_id:
-            query += ' AND (c.committee_id = ? OR parent.committee_id = ?)'
-            params.extend([committee_id, committee_id])
+            query += ''' AND (c_primary.committee_id = ? OR parent_primary.committee_id = ?
+                          OR c_any.committee_id = ? OR parent_any.committee_id = ?)'''
+            params.extend([committee_id, committee_id, committee_id, committee_id])
 
         if date_from:
             query += ' AND h.hearing_date_only >= ?'
@@ -71,7 +79,7 @@ def hearings():
             # Add sorting
             sort_columns = {
                 'title': 'h.title',
-                'committee': 'COALESCE(parent.name, c.name)',
+                'committee': 'COALESCE(parent_primary.name, c_primary.name, parent_any.name, c_any.name)',
                 'date': 'h.hearing_date_only',
                 'chamber': 'h.chamber',
                 'status': 'h.status'

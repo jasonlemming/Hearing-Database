@@ -1,9 +1,24 @@
 """
 Admin routes blueprint
+
+WARNING: This admin interface has NO AUTHENTICATION.
+Only use on localhost for development/testing.
+DO NOT deploy /admin routes to production.
 """
-from flask import Blueprint, render_template
+import os
+import sys
+from flask import Blueprint, render_template, jsonify, request
 from database.manager import DatabaseManager
 from datetime import datetime
+from typing import Dict, Any, List
+
+# Add project root to path for imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from config.task_manager import task_manager
+from config.logging_config import get_logger
+
+logger = get_logger(__name__)
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -76,3 +91,989 @@ def updates():
 
     except Exception as e:
         return f"Error: {e}", 500
+
+
+@admin_bp.route('/')
+def dashboard():
+    """Main admin dashboard - landing page for admin section"""
+    try:
+        with db.transaction() as conn:
+            # Get summary stats
+            cursor = conn.execute("SELECT COUNT(*) FROM hearings")
+            total_hearings = cursor.fetchone()[0]
+
+            cursor = conn.execute("SELECT COUNT(*) FROM hearings WHERE updated_at > created_at")
+            updated_hearings = cursor.fetchone()[0]
+
+            cursor = conn.execute("SELECT MIN(created_at) FROM hearings")
+            baseline_date = cursor.fetchone()[0]
+
+            # Get last update info
+            cursor = conn.execute("""
+                SELECT update_date, start_time, hearings_updated, hearings_added
+                FROM update_logs
+                ORDER BY start_time DESC
+                LIMIT 1
+            """)
+            last_update = cursor.fetchone()
+
+            return render_template('admin_dashboard.html',
+                                 total_hearings=total_hearings,
+                                 updated_hearings=updated_hearings,
+                                 baseline_date=baseline_date or '2025-10-01',
+                                 production_count=1168,  # From README
+                                 last_update=last_update,
+                                 now=datetime.now())
+
+    except Exception as e:
+        logger.error(f"Dashboard error: {e}")
+        return f"Error loading dashboard: {e}", 500
+
+
+@admin_bp.route('/history')
+def history():
+    """Renamed route for update history (previously /updates)"""
+    return updates()
+
+
+@admin_bp.route('/api/start-update', methods=['POST'])
+def start_update():
+    """
+    Start a manual update task
+
+    Request JSON:
+        {
+            "lookback_days": 7,
+            "components": ["hearings", "videos"],
+            "chamber": "both",
+            "mode": "incremental",
+            "dry_run": false
+        }
+
+    Returns:
+        {"task_id": "uuid", "status": "started"}
+    """
+    try:
+        params = request.get_json() or {}
+
+        lookback_days = params.get('lookback_days', 7)
+        components = params.get('components', ['hearings', 'witnesses', 'committees'])
+        chamber = params.get('chamber', 'both')
+        mode = params.get('mode', 'incremental')
+        dry_run = params.get('dry_run', False)
+
+        # Validate inputs
+        if not isinstance(lookback_days, int) or not (1 <= lookback_days <= 90):
+            return jsonify({'error': 'lookback_days must be between 1 and 90'}), 400
+
+        if chamber not in ['both', 'house', 'senate']:
+            return jsonify({'error': 'chamber must be both, house, or senate'}), 400
+
+        if mode not in ['incremental', 'full']:
+            return jsonify({'error': 'mode must be incremental or full'}), 400
+
+        # Validate and normalize components
+        valid_components = {'hearings', 'witnesses', 'committees'}
+        if isinstance(components, list):
+            components = [c for c in components if c in valid_components]
+        else:
+            components = ['hearings', 'witnesses', 'committees']
+
+        # Ensure hearings is always included (required)
+        if 'hearings' not in components:
+            components.insert(0, 'hearings')
+
+        if not components:
+            return jsonify({'error': 'At least one component required'}), 400
+
+        # Build CLI command
+        command = _build_cli_command(lookback_days, components, chamber, dry_run, mode)
+
+        # Start task
+        task_id = task_manager.start_task(command)
+
+        logger.info(f"Started update task {task_id} with mode={mode}, lookback={lookback_days}, chamber={chamber}")
+
+        return jsonify({
+            'task_id': task_id,
+            'status': 'started',
+            'command': ' '.join(command)
+        })
+
+    except RuntimeError as e:
+        # Another task is already running
+        return jsonify({'error': str(e)}), 409
+
+    except Exception as e:
+        logger.error(f"Failed to start update: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/task-status/<task_id>')
+def task_status(task_id: str):
+    """
+    Get current status and progress of a task
+
+    Returns:
+        {
+            "status": "running" | "completed" | "failed" | "cancelled",
+            "progress": {...},
+            "recent_logs": [...],
+            "metrics": {...}
+        }
+    """
+    try:
+        status = task_manager.get_task_status(task_id)
+
+        if not status:
+            return jsonify({'error': 'Task not found'}), 404
+
+        # Get recent log lines (last 20)
+        logs = task_manager.get_task_logs(task_id, since_line=max(0, status['stdout_lines'] - 20))
+
+        return jsonify({
+            'status': status['status'],
+            'progress': status['progress'],
+            'duration_seconds': status['duration_seconds'],
+            'recent_logs': logs['stdout'][-20:] if logs else [],
+            'error_count': status['progress'].get('errors', 0),
+            'result': status['result'],
+            'error_message': status.get('error_message')
+        })
+
+    except Exception as e:
+        logger.error(f"Error getting task status: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/task-logs/<task_id>')
+def task_logs(task_id: str):
+    """
+    Get full log output for a task
+
+    Query params:
+        since_line: Start from this line number (for incremental updates)
+
+    Returns:
+        {"stdout": [...], "stderr": [...], "total_lines": N}
+    """
+    try:
+        since_line = request.args.get('since_line', 0, type=int)
+        logs = task_manager.get_task_logs(task_id, since_line=since_line)
+
+        if not logs:
+            return jsonify({'error': 'Task not found'}), 404
+
+        return jsonify(logs)
+
+    except Exception as e:
+        logger.error(f"Error getting task logs: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/cancel-update/<task_id>', methods=['POST'])
+def cancel_update(task_id: str):
+    """Cancel a running update task"""
+    try:
+        success = task_manager.cancel_task(task_id)
+
+        if success:
+            logger.info(f"Cancelled task {task_id}")
+            return jsonify({'status': 'cancelled'})
+        else:
+            return jsonify({'error': 'Task not found or not running'}), 404
+
+    except Exception as e:
+        logger.error(f"Error cancelling task: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/recent-changes')
+def recent_changes():
+    """
+    Get hearings modified since a date
+
+    Query params:
+        since: Date in YYYY-MM-DD format (default: baseline date)
+        limit: Max records to return (default: 50)
+
+    Returns:
+        List of hearing records with change info
+    """
+    try:
+        since_date = request.args.get('since', '2025-10-01')
+        limit = request.args.get('limit', 50, type=int)
+
+        changes = _get_hearing_changes(since_date, limit)
+
+        return jsonify({
+            'since_date': since_date,
+            'count': len(changes),
+            'changes': changes
+        })
+
+    except Exception as e:
+        logger.error(f"Error getting recent changes: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/production-diff')
+def production_diff():
+    """
+    Compare local database with production
+
+    Returns:
+        Statistics showing difference from production baseline
+    """
+    try:
+        with db.transaction() as conn:
+            cursor = conn.execute("SELECT COUNT(*) FROM hearings")
+            local_count = cursor.fetchone()[0]
+
+            cursor = conn.execute("SELECT COUNT(*) FROM hearings WHERE created_at > '2025-10-01'")
+            new_since_baseline = cursor.fetchone()[0]
+
+            cursor = conn.execute("SELECT COUNT(*) FROM hearings WHERE updated_at > created_at")
+            updated_since_baseline = cursor.fetchone()[0]
+
+            cursor = conn.execute("SELECT MIN(created_at), MAX(updated_at) FROM hearings")
+            row = cursor.fetchone()
+            baseline_date = row[0] if row else None
+            last_update_date = row[1] if row else None
+
+            # Production count from README
+            production_count = 1168
+
+            return jsonify({
+                'local_count': local_count,
+                'production_count': production_count,
+                'difference': local_count - production_count,
+                'new_hearings': new_since_baseline,
+                'updated_hearings': updated_since_baseline,
+                'baseline_date': baseline_date,
+                'last_update': last_update_date
+            })
+
+    except Exception as e:
+        logger.error(f"Error getting production diff: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+# ============================================================================
+# SCHEDULING API ENDPOINTS
+# ============================================================================
+
+@admin_bp.route('/api/schedules', methods=['GET'])
+def list_schedules():
+    """
+    Get all scheduled tasks
+
+    Returns:
+        List of scheduled task configurations
+    """
+    try:
+        with db.transaction() as conn:
+            cursor = conn.execute('''
+                SELECT task_id, name, description, schedule_cron, lookback_days,
+                       components, chamber, mode, is_active, is_deployed,
+                       last_run_at, next_run_at, created_at, updated_at
+                FROM scheduled_tasks
+                ORDER BY is_active DESC, name ASC
+            ''')
+
+            schedules = []
+            for row in cursor.fetchall():
+                import json
+                schedules.append({
+                    'task_id': row[0],
+                    'name': row[1],
+                    'description': row[2],
+                    'schedule_cron': row[3],
+                    'lookback_days': row[4],
+                    'components': json.loads(row[5]) if row[5] else [],
+                    'chamber': row[6],
+                    'mode': row[7],
+                    'is_active': bool(row[8]),
+                    'is_deployed': bool(row[9]),
+                    'last_run_at': row[10],
+                    'next_run_at': row[11],
+                    'created_at': row[12],
+                    'updated_at': row[13]
+                })
+
+            return jsonify({'schedules': schedules})
+
+    except Exception as e:
+        logger.error(f"Error listing schedules: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/schedules/<int:task_id>', methods=['GET'])
+def get_schedule(task_id: int):
+    """Get a single scheduled task by ID"""
+    try:
+        with db.transaction() as conn:
+            cursor = conn.execute('''
+                SELECT task_id, name, description, schedule_cron, lookback_days,
+                       components, chamber, mode, is_active, is_deployed,
+                       last_run_at, next_run_at, created_at, updated_at
+                FROM scheduled_tasks
+                WHERE task_id = ?
+            ''', (task_id,))
+
+            row = cursor.fetchone()
+            if not row:
+                return jsonify({'error': 'Schedule not found'}), 404
+
+            import json
+            schedule = {
+                'task_id': row[0],
+                'name': row[1],
+                'description': row[2],
+                'schedule_cron': row[3],
+                'lookback_days': row[4],
+                'components': json.loads(row[5]) if row[5] else [],
+                'chamber': row[6],
+                'mode': row[7],
+                'is_active': bool(row[8]),
+                'is_deployed': bool(row[9]),
+                'last_run_at': row[10],
+                'next_run_at': row[11],
+                'created_at': row[12],
+                'updated_at': row[13]
+            }
+
+            return jsonify({'schedule': schedule})
+
+    except Exception as e:
+        logger.error(f"Error getting schedule: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/schedules', methods=['POST'])
+def create_schedule():
+    """
+    Create a new scheduled task
+
+    Request JSON:
+        {
+            "name": "Daily Update",
+            "description": "...",
+            "schedule_cron": "0 6 * * *",
+            "lookback_days": 7,
+            "components": ["hearings", "committees"],
+            "chamber": "both",
+            "mode": "incremental",
+            "is_active": true
+        }
+    """
+    try:
+        data = request.get_json()
+
+        # Validation
+        required_fields = ['name', 'schedule_cron', 'lookback_days', 'components']
+        for field in required_fields:
+            if field not in data:
+                return jsonify({'error': f'Missing required field: {field}'}), 400
+
+        # Validate lookback_days
+        if not isinstance(data['lookback_days'], int) or not (1 <= data['lookback_days'] <= 90):
+            return jsonify({'error': 'lookback_days must be between 1 and 90'}), 400
+
+        # Validate chamber
+        if data.get('chamber', 'both') not in ['both', 'house', 'senate']:
+            return jsonify({'error': 'chamber must be both, house, or senate'}), 400
+
+        # Validate mode
+        if data.get('mode', 'incremental') not in ['incremental', 'full']:
+            return jsonify({'error': 'mode must be incremental or full'}), 400
+
+        import json
+        with db.transaction() as conn:
+            cursor = conn.execute('''
+                INSERT INTO scheduled_tasks
+                (name, description, schedule_cron, lookback_days, components,
+                 chamber, mode, is_active, is_deployed)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (
+                data['name'],
+                data.get('description', ''),
+                data['schedule_cron'],
+                data['lookback_days'],
+                json.dumps(data['components']),
+                data.get('chamber', 'both'),
+                data.get('mode', 'incremental'),
+                data.get('is_active', True),
+                False  # New schedules start as not deployed
+            ))
+
+            task_id = cursor.lastrowid
+            logger.info(f"Created new schedule: {data['name']} (ID: {task_id})")
+
+            return jsonify({
+                'task_id': task_id,
+                'message': 'Schedule created successfully'
+            }), 201
+
+    except Exception as e:
+        logger.error(f"Error creating schedule: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/schedules/<int:task_id>', methods=['PUT'])
+def update_schedule(task_id: int):
+    """Update an existing scheduled task"""
+    try:
+        data = request.get_json()
+
+        # Validate if schedule exists
+        with db.transaction() as conn:
+            cursor = conn.execute('SELECT task_id FROM scheduled_tasks WHERE task_id = ?', (task_id,))
+            if not cursor.fetchone():
+                return jsonify({'error': 'Schedule not found'}), 404
+
+        # Build update query dynamically based on provided fields
+        update_fields = []
+        params = []
+
+        if 'name' in data:
+            update_fields.append('name = ?')
+            params.append(data['name'])
+
+        if 'description' in data:
+            update_fields.append('description = ?')
+            params.append(data['description'])
+
+        if 'schedule_cron' in data:
+            update_fields.append('schedule_cron = ?')
+            params.append(data['schedule_cron'])
+
+        if 'lookback_days' in data:
+            if not isinstance(data['lookback_days'], int) or not (1 <= data['lookback_days'] <= 90):
+                return jsonify({'error': 'lookback_days must be between 1 and 90'}), 400
+            update_fields.append('lookback_days = ?')
+            params.append(data['lookback_days'])
+
+        if 'components' in data:
+            import json
+            update_fields.append('components = ?')
+            params.append(json.dumps(data['components']))
+
+        if 'chamber' in data:
+            if data['chamber'] not in ['both', 'house', 'senate']:
+                return jsonify({'error': 'chamber must be both, house, or senate'}), 400
+            update_fields.append('chamber = ?')
+            params.append(data['chamber'])
+
+        if 'mode' in data:
+            if data['mode'] not in ['incremental', 'full']:
+                return jsonify({'error': 'mode must be incremental or full'}), 400
+            update_fields.append('mode = ?')
+            params.append(data['mode'])
+
+        if 'is_active' in data:
+            update_fields.append('is_active = ?')
+            params.append(data['is_active'])
+
+        if 'is_deployed' in data:
+            update_fields.append('is_deployed = ?')
+            params.append(data['is_deployed'])
+
+        # Always update updated_at
+        update_fields.append('updated_at = CURRENT_TIMESTAMP')
+
+        if not update_fields:
+            return jsonify({'error': 'No fields to update'}), 400
+
+        params.append(task_id)
+
+        with db.transaction() as conn:
+            query = f"UPDATE scheduled_tasks SET {', '.join(update_fields)} WHERE task_id = ?"
+            conn.execute(query, params)
+
+        logger.info(f"Updated schedule ID: {task_id}")
+        return jsonify({'message': 'Schedule updated successfully'})
+
+    except Exception as e:
+        logger.error(f"Error updating schedule: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/schedules/<int:task_id>', methods=['DELETE'])
+def delete_schedule(task_id: int):
+    """Delete a scheduled task"""
+    try:
+        with db.transaction() as conn:
+            cursor = conn.execute('SELECT name FROM scheduled_tasks WHERE task_id = ?', (task_id,))
+            row = cursor.fetchone()
+
+            if not row:
+                return jsonify({'error': 'Schedule not found'}), 404
+
+            schedule_name = row[0]
+            conn.execute('DELETE FROM scheduled_tasks WHERE task_id = ?', (task_id,))
+
+        logger.info(f"Deleted schedule: {schedule_name} (ID: {task_id})")
+        return jsonify({'message': 'Schedule deleted successfully'})
+
+    except Exception as e:
+        logger.error(f"Error deleting schedule: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/schedules/<int:task_id>/toggle', methods=['POST'])
+def toggle_schedule(task_id: int):
+    """Toggle a schedule's active status"""
+    try:
+        with db.transaction() as conn:
+            cursor = conn.execute('SELECT is_active FROM scheduled_tasks WHERE task_id = ?', (task_id,))
+            row = cursor.fetchone()
+
+            if not row:
+                return jsonify({'error': 'Schedule not found'}), 404
+
+            new_status = not bool(row[0])
+            conn.execute('''
+                UPDATE scheduled_tasks
+                SET is_active = ?, updated_at = CURRENT_TIMESTAMP
+                WHERE task_id = ?
+            ''', (new_status, task_id))
+
+        logger.info(f"Toggled schedule ID {task_id} to {'active' if new_status else 'inactive'}")
+        return jsonify({
+            'message': 'Schedule status updated',
+            'is_active': new_status
+        })
+
+    except Exception as e:
+        logger.error(f"Error toggling schedule: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/schedules/export-vercel', methods=['GET'])
+def export_vercel_config():
+    """
+    Export active schedules as Vercel cron configuration
+
+    Returns:
+        JSON configuration for vercel.json crons section
+    """
+    try:
+        with db.transaction() as conn:
+            cursor = conn.execute('''
+                SELECT task_id, name, schedule_cron
+                FROM scheduled_tasks
+                WHERE is_active = 1
+                ORDER BY name
+            ''')
+
+            schedules = cursor.fetchall()
+
+        # Generate Vercel cron configuration
+        crons = []
+        for task_id, name, schedule_cron in schedules:
+            crons.append({
+                "path": f"/api/cron/scheduled-update/{task_id}",
+                "schedule": schedule_cron
+            })
+
+        # Generate full vercel.json structure
+        vercel_config = {
+            "version": 2,
+            "builds": [
+                {
+                    "src": "api/index.py",
+                    "use": "@vercel/python"
+                },
+                {
+                    "src": "api/cron-update.py",
+                    "use": "@vercel/python"
+                }
+            ],
+            "routes": [
+                {
+                    "src": "/api/cron/scheduled-update/(.*)",
+                    "dest": "api/cron-update.py"
+                },
+                {
+                    "src": "/(.*)",
+                    "dest": "api/index.py"
+                }
+            ],
+            "crons": crons
+        }
+
+        return jsonify({
+            'config': vercel_config,
+            'schedule_count': len(crons),
+            'instructions': 'Copy this configuration to your vercel.json file and redeploy to Vercel'
+        })
+
+    except Exception as e:
+        logger.error(f"Error exporting Vercel config: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/schedules/<int:task_id>/executions', methods=['GET'])
+def get_schedule_executions(task_id):
+    """
+    Get execution history for a specific schedule
+
+    Args:
+        task_id: Schedule task ID
+
+    Query Parameters:
+        limit: Maximum number of executions to return (default: 50)
+        offset: Number of executions to skip (default: 0)
+
+    Returns:
+        JSON with execution history including metrics and status
+    """
+    try:
+        limit = request.args.get('limit', 50, type=int)
+        offset = request.args.get('offset', 0, type=int)
+
+        with db.transaction() as conn:
+            # Get execution history with metrics
+            cursor = conn.execute('''
+                SELECT
+                    se.execution_id,
+                    se.execution_time,
+                    se.success,
+                    se.error_message,
+                    ul.log_id,
+                    ul.update_date,
+                    ul.start_time,
+                    ul.end_time,
+                    ul.duration_seconds,
+                    ul.hearings_checked,
+                    ul.hearings_updated,
+                    ul.hearings_added,
+                    ul.committees_updated,
+                    ul.witnesses_updated,
+                    ul.api_requests,
+                    ul.error_count,
+                    ul.errors
+                FROM schedule_execution_logs se
+                JOIN update_logs ul ON se.log_id = ul.log_id
+                WHERE se.schedule_id = ?
+                ORDER BY se.execution_time DESC
+                LIMIT ? OFFSET ?
+            ''', (task_id, limit, offset))
+
+            executions = []
+            for row in cursor.fetchall():
+                import json
+                executions.append({
+                    'execution_id': row[0],
+                    'execution_time': row[1],
+                    'success': bool(row[2]),
+                    'error_message': row[3],
+                    'log_id': row[4],
+                    'update_date': row[5],
+                    'start_time': row[6],
+                    'end_time': row[7],
+                    'duration_seconds': row[8],
+                    'hearings_checked': row[9],
+                    'hearings_updated': row[10],
+                    'hearings_added': row[11],
+                    'committees_updated': row[12],
+                    'witnesses_updated': row[13],
+                    'api_requests': row[14],
+                    'error_count': row[15],
+                    'errors': json.loads(row[16]) if row[16] else []
+                })
+
+            # Get total count
+            cursor = conn.execute('''
+                SELECT COUNT(*) FROM schedule_execution_logs
+                WHERE schedule_id = ?
+            ''', (task_id,))
+            total_count = cursor.fetchone()[0]
+
+            return jsonify({
+                'executions': executions,
+                'total_count': total_count,
+                'limit': limit,
+                'offset': offset
+            })
+
+    except Exception as e:
+        logger.error(f"Error getting schedule executions: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/schedules/<int:task_id>/test', methods=['POST'])
+def test_schedule(task_id):
+    """
+    Test a schedule by running it immediately
+
+    Args:
+        task_id: Schedule task ID to test
+
+    Returns:
+        JSON with test execution results
+    """
+    from updaters.daily_updater import DailyUpdater
+
+    try:
+        # Get schedule configuration from database
+        with db.transaction() as conn:
+            cursor = conn.execute('''
+                SELECT task_id, name, lookback_days, mode, components, is_active
+                FROM scheduled_tasks
+                WHERE task_id = ? AND is_active = 1
+            ''', (task_id,))
+            row = cursor.fetchone()
+
+            if not row:
+                return jsonify({
+                    'error': 'Schedule not found or inactive',
+                    'task_id': task_id
+                }), 404
+
+            # Parse configuration
+            import json as json_module
+            try:
+                components = json_module.loads(row[4]) if row[4] else ['hearings', 'witnesses', 'committees']
+            except:
+                components = ['hearings', 'witnesses', 'committees']
+
+            schedule_config = {
+                'task_id': row[0],
+                'schedule_name': row[1],
+                'congress': 119,
+                'lookback_days': row[2],
+                'update_mode': row[3],
+                'enabled_components': components,
+            }
+
+        # Run the scheduled update
+        logger.info(f"Test run initiated for schedule: {schedule_config['schedule_name']}")
+
+        updater = DailyUpdater(
+            congress=schedule_config['congress'],
+            lookback_days=schedule_config['lookback_days'],
+            update_mode=schedule_config['update_mode'],
+            components=schedule_config['enabled_components']
+        )
+
+        # Inject schedule context for tracking
+        updater.schedule_id = task_id
+        updater.trigger_source = 'test'
+
+        # Run the update
+        updater.run_daily_update()
+
+        # Update last run timestamp
+        with db.transaction() as conn:
+            conn.execute('''
+                UPDATE scheduled_tasks
+                SET last_run_at = CURRENT_TIMESTAMP
+                WHERE task_id = ?
+            ''', (task_id,))
+
+        # Get the log_id that was just created
+        with db.transaction() as conn:
+            cursor = conn.execute('''
+                SELECT log_id FROM update_logs
+                WHERE schedule_id = ? AND trigger_source = 'test'
+                ORDER BY start_time DESC
+                LIMIT 1
+            ''', (task_id,))
+            row = cursor.fetchone()
+            log_id = row[0] if row else None
+
+        # Create execution log entry
+        if log_id:
+            import json as json_module
+            try:
+                with db.transaction() as conn:
+                    conn.execute('''
+                        INSERT INTO schedule_execution_logs
+                        (schedule_id, log_id, execution_time, success, config_snapshot)
+                        VALUES (?, ?, CURRENT_TIMESTAMP, 1, ?)
+                    ''', (task_id, log_id, json_module.dumps(schedule_config)))
+            except Exception as exec_log_error:
+                logger.warning(f"Failed to create execution log: {exec_log_error}")
+
+        # Get metrics
+        metrics = updater.metrics.to_dict() if hasattr(updater, 'metrics') else {}
+
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'status': 'success',
+            'schedule_id': task_id,
+            'schedule_name': schedule_config['schedule_name'],
+            'metrics': metrics,
+            'log_id': log_id
+        })
+
+    except Exception as e:
+        logger.error(f"Test schedule failed for task {task_id}: {e}")
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'status': 'error',
+            'task_id': task_id,
+            'error': str(e)
+        }), 500
+
+
+@admin_bp.route('/api/executions', methods=['GET'])
+def get_all_executions():
+    """
+    Get execution history across all schedules
+
+    Query Parameters:
+        limit: Maximum number of executions to return (default: 100)
+        success_only: Only show successful executions (default: false)
+
+    Returns:
+        JSON with recent execution history
+    """
+    try:
+        limit = request.args.get('limit', 100, type=int)
+        success_only = request.args.get('success_only', 'false').lower() == 'true'
+
+        success_filter = 'AND se.success = 1' if success_only else ''
+
+        with db.transaction() as conn:
+            cursor = conn.execute(f'''
+                SELECT
+                    se.execution_id,
+                    se.schedule_id,
+                    st.name as schedule_name,
+                    se.execution_time,
+                    se.success,
+                    se.error_message,
+                    ul.log_id,
+                    ul.duration_seconds,
+                    ul.hearings_checked,
+                    ul.hearings_updated,
+                    ul.hearings_added,
+                    ul.trigger_source
+                FROM schedule_execution_logs se
+                JOIN scheduled_tasks st ON se.schedule_id = st.task_id
+                JOIN update_logs ul ON se.log_id = ul.log_id
+                WHERE 1=1 {success_filter}
+                ORDER BY se.execution_time DESC
+                LIMIT ?
+            ''', (limit,))
+
+            executions = []
+            for row in cursor.fetchall():
+                executions.append({
+                    'execution_id': row[0],
+                    'schedule_id': row[1],
+                    'schedule_name': row[2],
+                    'execution_time': row[3],
+                    'success': bool(row[4]),
+                    'error_message': row[5],
+                    'log_id': row[6],
+                    'duration_seconds': row[7],
+                    'hearings_checked': row[8],
+                    'hearings_updated': row[9],
+                    'hearings_added': row[10],
+                    'trigger_source': row[11]
+                })
+
+            return jsonify({'executions': executions})
+
+    except Exception as e:
+        logger.error(f"Error getting all executions: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+# Helper functions
+
+def _build_cli_command(lookback_days: int, components: List[str], chamber: str, dry_run: bool, mode: str = 'incremental') -> List[str]:
+    """
+    Build CLI command from UI parameters
+
+    Args:
+        lookback_days: Number of days to look back
+        components: List of components to update
+        chamber: Chamber filter
+        dry_run: Whether to run in dry-run mode
+        mode: Update mode ('incremental' or 'full')
+
+    Returns:
+        Command as list of strings
+    """
+    # Base command
+    command = [
+        sys.executable,  # Use same Python interpreter
+        'cli.py',
+        'update',
+        'incremental',
+        '--congress', '119',
+        '--lookback-days', str(lookback_days),
+        '--mode', mode,
+        '--json-progress'
+    ]
+
+    # Add component flags (hearings is always included)
+    if components:
+        for component in components:
+            command.extend(['--components', component])
+
+    # Add dry-run flag if enabled
+    if dry_run:
+        command.append('--dry-run')
+
+    # Note: Chamber filtering would require additional CLI work
+    # For now, incremental updates process both chambers
+
+    return command
+
+
+def _get_hearing_changes(since_date: str, limit: int) -> List[Dict[str, Any]]:
+    """
+    Query hearings modified since a date
+
+    Args:
+        since_date: Date string in YYYY-MM-DD format
+        limit: Maximum number of records
+
+    Returns:
+        List of hearing change records
+    """
+    try:
+        with db.transaction() as conn:
+            query = """
+                SELECT
+                    event_id,
+                    title,
+                    chamber,
+                    hearing_date,
+                    CASE
+                        WHEN created_at = updated_at THEN 'added'
+                        ELSE 'updated'
+                    END as change_type,
+                    created_at,
+                    updated_at
+                FROM hearings
+                WHERE updated_at > ?
+                ORDER BY updated_at DESC
+                LIMIT ?
+            """
+
+            cursor = conn.execute(query, (since_date, limit))
+            changes = []
+
+            for row in cursor.fetchall():
+                changes.append({
+                    'event_id': row[0],
+                    'title': row[1] or '(No title)',
+                    'chamber': row[2],
+                    'hearing_date': row[3],
+                    'change_type': row[4],
+                    'created_at': row[5],
+                    'updated_at': row[6]
+                })
+
+            return changes
+
+    except Exception as e:
+        logger.error(f"Error querying hearing changes: {e}")
+        return []

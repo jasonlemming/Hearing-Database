@@ -353,3 +353,82 @@ CREATE TABLE import_errors (
 CREATE INDEX idx_errors_entity ON import_errors(entity_type);
 CREATE INDEX idx_errors_severity ON import_errors(severity);
 CREATE INDEX idx_errors_resolved ON import_errors(is_resolved);
+
+-- 18. scheduled_tasks
+-- Defines recurring update schedules for automated data ingestion
+CREATE TABLE scheduled_tasks (
+    task_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,                       -- User-friendly name (e.g., "Daily Hearings Update")
+    description TEXT,                         -- Optional description
+    schedule_cron TEXT NOT NULL,              -- Cron expression (e.g., "0 6 * * *")
+    lookback_days INTEGER NOT NULL DEFAULT 7, -- Days to look back for updates
+    components TEXT NOT NULL,                 -- JSON array of components: ["hearings", "committees", "witnesses"]
+    chamber TEXT DEFAULT 'both',              -- Filter: both, house, senate
+    mode TEXT NOT NULL DEFAULT 'incremental', -- incremental or full
+    is_active BOOLEAN NOT NULL DEFAULT 1,     -- Enable/disable without deletion
+    is_deployed BOOLEAN NOT NULL DEFAULT 0,   -- Tracks if deployed to Vercel
+    last_run_at TIMESTAMP,                    -- Last successful execution time
+    next_run_at TIMESTAMP,                    -- Calculated next run time (for display)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by TEXT DEFAULT 'admin',          -- Track who created it
+
+    CHECK (lookback_days BETWEEN 1 AND 90),
+    CHECK (chamber IN ('both', 'house', 'senate')),
+    CHECK (mode IN ('incremental', 'full'))
+);
+
+CREATE INDEX idx_scheduled_tasks_active ON scheduled_tasks(is_active);
+CREATE INDEX idx_scheduled_tasks_deployed ON scheduled_tasks(is_deployed);
+CREATE INDEX idx_scheduled_tasks_next_run ON scheduled_tasks(next_run_at);
+
+-- 19. update_logs
+-- Tracks all update operations (manual and scheduled) with detailed metrics
+CREATE TABLE update_logs (
+    log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    update_date DATE NOT NULL,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME,
+    duration_seconds REAL,
+    hearings_checked INTEGER DEFAULT 0,
+    hearings_updated INTEGER DEFAULT 0,
+    hearings_added INTEGER DEFAULT 0,
+    committees_updated INTEGER DEFAULT 0,
+    witnesses_updated INTEGER DEFAULT 0,
+    api_requests INTEGER DEFAULT 0,
+    error_count INTEGER DEFAULT 0,
+    errors TEXT,                          -- JSON array of error messages
+    success BOOLEAN DEFAULT 1,
+    trigger_source TEXT DEFAULT 'manual', -- manual, vercel_cron, test
+    schedule_id INTEGER,                  -- NULL for manual updates, FK for scheduled
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (schedule_id) REFERENCES scheduled_tasks(task_id),
+    CHECK (trigger_source IN ('manual', 'vercel_cron', 'test'))
+);
+
+CREATE INDEX idx_update_logs_date ON update_logs(update_date);
+CREATE INDEX idx_update_logs_schedule ON update_logs(schedule_id);
+CREATE INDEX idx_update_logs_success ON update_logs(success);
+CREATE INDEX idx_update_logs_source ON update_logs(trigger_source);
+
+-- 20. schedule_execution_logs
+-- Links scheduled tasks to their execution results for detailed tracking
+CREATE TABLE schedule_execution_logs (
+    execution_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    schedule_id INTEGER NOT NULL,
+    log_id INTEGER NOT NULL,              -- Links to update_logs
+    execution_time DATETIME NOT NULL,
+    success BOOLEAN NOT NULL,
+    error_message TEXT,
+    config_snapshot TEXT,                 -- JSON snapshot of schedule config at execution
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (schedule_id) REFERENCES scheduled_tasks(task_id),
+    FOREIGN KEY (log_id) REFERENCES update_logs(log_id),
+    UNIQUE(schedule_id, log_id)
+);
+
+CREATE INDEX idx_schedule_exec_schedule ON schedule_execution_logs(schedule_id);
+CREATE INDEX idx_schedule_exec_time ON schedule_execution_logs(execution_time);
+CREATE INDEX idx_schedule_exec_success ON schedule_execution_logs(success);

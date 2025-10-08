@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-Daily Congressional Data Update Cron Job for Vercel
+Scheduled Congressional Data Update Cron Job for Vercel
+Integrates with the admin scheduling system and uses DailyUpdater
 """
 import sys
 import os
@@ -14,15 +15,7 @@ sys.path.insert(0, project_root)
 try:
     from flask import Flask, jsonify, request
     from database.manager import DatabaseManager
-    from fetchers.hearing_fetcher import HearingFetcher
-    from fetchers.committee_fetcher import CommitteeFetcher
-    from fetchers.member_fetcher import MemberFetcher
-    from fetchers.witness_fetcher import WitnessFetcher
-    from parsers.hearing_parser import HearingParser
-    from parsers.committee_parser import CommitteeParser
-    from parsers.member_parser import MemberParser
-    from parsers.witness_parser import WitnessParser
-    from api.client import CongressAPIClient
+    from updaters.daily_updater import DailyUpdater
     from config.logging_config import get_logger
 except ImportError as e:
     print(f"Import error: {e}")
@@ -31,301 +24,410 @@ except ImportError as e:
 app = Flask(__name__)
 logger = get_logger(__name__)
 
-def update_congressional_data():
-    """Run daily Congressional data update"""
-    try:
-        # Initialize components
-        api_client = CongressAPIClient()
-        db = DatabaseManager()
 
-        # Initialize fetchers and parsers
-        hearing_fetcher = HearingFetcher(api_client)
-        committee_fetcher = CommitteeFetcher(api_client)
-        member_fetcher = MemberFetcher(api_client)
-        witness_fetcher = WitnessFetcher(api_client)
+def verify_cron_auth():
+    """Verify the request is from Vercel cron with valid auth"""
+    cron_secret = request.headers.get('Authorization')
+    expected_secret = os.environ.get('CRON_SECRET')
 
-        hearing_parser = HearingParser()
-        committee_parser = CommitteeParser()
-        member_parser = MemberParser()
-        witness_parser = WitnessParser()
+    if expected_secret and cron_secret != f"Bearer {expected_secret}":
+        return False
+    return True
 
-        update_results = {
-            'timestamp': datetime.now().isoformat(),
-            'status': 'success',
-            'updates': {}
+
+def get_schedule_config(task_id):
+    """
+    Retrieve schedule configuration from database
+
+    Args:
+        task_id: ID of the scheduled task
+
+    Returns:
+        dict: Schedule configuration or None if not found/enabled
+    """
+    db = DatabaseManager()
+
+    with db.transaction() as conn:
+        cursor = conn.execute('''
+            SELECT task_id, name, lookback_days, mode, components,
+                   schedule_cron, is_active, chamber
+            FROM scheduled_tasks
+            WHERE task_id = ? AND is_active = 1
+        ''', (task_id,))
+
+        row = cursor.fetchone()
+
+        if not row:
+            return None
+
+        # Parse components JSON - may be string or already parsed
+        try:
+            components_raw = row[4]
+            if isinstance(components_raw, str):
+                components = json.loads(components_raw)
+            else:
+                components = components_raw if components_raw else ['hearings', 'witnesses', 'committees']
+        except Exception as e:
+            logger.warning(f"Failed to parse components for task {row[0]}: {e}")
+            components = ['hearings', 'witnesses', 'committees']
+
+        return {
+            'task_id': row[0],
+            'schedule_name': row[1],
+            'congress': 119,  # Currently hardcoded to current congress
+            'lookback_days': row[2],
+            'update_mode': row[3],
+            'enabled_components': components,
+            'cron_expression': row[5],
+            'is_active': row[6],
+            'chamber': row[7]
         }
 
-        # Update hearings (most recent data)
-        logger.info("Updating hearings...")
-        try:
-            recent_hearings = hearing_fetcher.fetch_recent_hearings(119, days_back=2)
-            hearing_count = 0
 
-            for hearing_data in recent_hearings:
-                parsed_hearing = hearing_parser.parse(hearing_data)
-                if parsed_hearing:
-                    with db.transaction() as conn:
-                        # Insert or update hearing
-                        conn.execute('''
-                            INSERT OR REPLACE INTO hearings
-                            (event_id, title, hearing_date, chamber, congress, location, status, hearing_type)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                        ''', (
-                            parsed_hearing.event_id,
-                            parsed_hearing.title,
-                            parsed_hearing.hearing_date,
-                            parsed_hearing.chamber,
-                            parsed_hearing.congress,
-                            parsed_hearing.location,
-                            parsed_hearing.status,
-                            parsed_hearing.hearing_type
-                        ))
-                        hearing_count += 1
+def update_last_run_timestamp(task_id):
+    """Update the last_run_at timestamp for a scheduled task"""
+    db = DatabaseManager()
 
-            update_results['updates']['hearings'] = hearing_count
-            logger.info(f"Updated {hearing_count} hearings")
+    with db.transaction() as conn:
+        conn.execute('''
+            UPDATE scheduled_tasks
+            SET last_run_at = CURRENT_TIMESTAMP
+            WHERE task_id = ?
+        ''', (task_id,))
 
-        except Exception as e:
-            logger.error(f"Error updating hearings: {e}")
-            update_results['updates']['hearings'] = f"Error: {str(e)}"
 
-        # Update committees (weekly only - full update on Sundays)
-        today = datetime.now()
-        is_sunday = today.weekday() == 6  # Sunday = 6
+def create_execution_log(schedule_id, log_id, success, error_message=None, config_snapshot=None):
+    """
+    Create a record in schedule_execution_logs linking schedule to execution
 
-        if is_sunday:
-            logger.info("Updating committees (weekly full update)...")
+    Args:
+        schedule_id: ID of the scheduled task
+        log_id: ID of the update_logs entry
+        success: Whether execution succeeded
+        error_message: Error message if failed
+        config_snapshot: JSON snapshot of schedule config at execution time
+    """
+    db = DatabaseManager()
+
+    with db.transaction() as conn:
+        conn.execute('''
+            INSERT INTO schedule_execution_logs
+            (schedule_id, log_id, execution_time, success, error_message, config_snapshot)
+            VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?, ?)
+        ''', (schedule_id, log_id, success, error_message, json.dumps(config_snapshot) if config_snapshot else None))
+
+
+def run_scheduled_update(schedule_config):
+    """
+    Execute a scheduled update using DailyUpdater
+
+    Args:
+        schedule_config: Dict containing schedule configuration
+
+    Returns:
+        dict: Update results including metrics and status
+    """
+    task_id = schedule_config['task_id']
+    schedule_name = schedule_config['schedule_name']
+
+    try:
+        logger.info(f"Starting scheduled update: {schedule_name} (ID: {task_id})")
+
+        # Create DailyUpdater with schedule configuration
+        updater = DailyUpdater(
+            congress=schedule_config['congress'],
+            lookback_days=schedule_config['lookback_days'],
+            update_mode=schedule_config['update_mode'],
+            components=schedule_config['enabled_components']
+        )
+
+        # Inject schedule context for tracking
+        updater.schedule_id = task_id
+        updater.trigger_source = 'vercel_cron'
+
+        # Run the update
+        logger.info(f"Running DailyUpdater with: congress={schedule_config['congress']}, "
+                   f"lookback={schedule_config['lookback_days']}, "
+                   f"mode={schedule_config['update_mode']}, "
+                   f"components={schedule_config['enabled_components']}")
+
+        updater.run_daily_update()
+
+        # Update last run timestamp
+        update_last_run_timestamp(task_id)
+
+        # Get the log_id that was just created
+        db = DatabaseManager()
+        with db.transaction() as conn:
+            cursor = conn.execute('''
+                SELECT log_id FROM update_logs
+                WHERE schedule_id = ?
+                ORDER BY start_time DESC
+                LIMIT 1
+            ''', (task_id,))
+            row = cursor.fetchone()
+            log_id = row[0] if row else None
+
+        # Create execution log entry (with error handling to avoid duplicate update_logs)
+        if log_id:
             try:
-                committees = committee_fetcher.fetch_all_committees(119)
-                committee_count = 0
+                create_execution_log(
+                    schedule_id=task_id,
+                    log_id=log_id,
+                    success=True,
+                    config_snapshot=schedule_config
+                )
+            except Exception as exec_log_error:
+                logger.warning(f"Failed to create execution log for successful run: {exec_log_error}")
+                # Don't fail the entire update just because execution log creation failed
 
-                for committee_data in committees:  # Full update on Sundays
-                    parsed_committee = committee_parser.parse(committee_data)
-                    if parsed_committee:
-                        with db.transaction() as conn:
-                            conn.execute('''
-                                INSERT OR REPLACE INTO committees
-                                (system_code, name, chamber, type, parent_committee_id, congress)
-                                VALUES (?, ?, ?, ?, ?, ?)
-                            ''', (
-                                parsed_committee.system_code,
-                                parsed_committee.name,
-                                parsed_committee.chamber,
-                                parsed_committee.type,
-                                parsed_committee.parent_committee_id,
-                                parsed_committee.congress
-                            ))
-                            committee_count += 1
+        # Get metrics from the update
+        metrics = updater.metrics.to_dict() if hasattr(updater, 'metrics') else {}
 
-                update_results['updates']['committees'] = committee_count
-                logger.info(f"Updated {committee_count} committees")
+        logger.info(f"Scheduled update completed successfully: {schedule_name}")
 
-            except Exception as e:
-                logger.error(f"Error updating committees: {e}")
-                update_results['updates']['committees'] = f"Error: {str(e)}"
-        else:
-            logger.info("Skipping committee update (only runs on Sundays)")
-            update_results['updates']['committees'] = "Skipped (weekly update)"
-
-        # Update members (weekly only - full update on Mondays)
-        is_monday = today.weekday() == 0  # Monday = 0
-
-        if is_monday:
-            logger.info("Updating members (weekly full update)...")
-            try:
-                members = member_fetcher.fetch_current_members(119)
-                member_count = 0
-
-                for member_data in members:  # Full update on Mondays
-                    parsed_member = member_parser.parse(member_data)
-                    if parsed_member:
-                        with db.transaction() as conn:
-                            conn.execute('''
-                                INSERT OR REPLACE INTO members
-                                (bioguide_id, first_name, middle_name, last_name, full_name,
-                                 party, state, district, birth_year, current_member, congress)
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                            ''', (
-                                parsed_member.bioguide_id,
-                                parsed_member.first_name,
-                                parsed_member.middle_name,
-                                parsed_member.last_name,
-                                parsed_member.full_name,
-                                parsed_member.party,
-                                parsed_member.state,
-                                parsed_member.district,
-                                parsed_member.birth_year,
-                                parsed_member.current_member,
-                                parsed_member.congress
-                            ))
-                            member_count += 1
-
-                update_results['updates']['members'] = member_count
-                logger.info(f"Updated {member_count} members")
-
-            except Exception as e:
-                logger.error(f"Error updating members: {e}")
-                update_results['updates']['members'] = f"Error: {str(e)}"
-        else:
-            logger.info("Skipping member update (only runs on Mondays)")
-            update_results['updates']['members'] = "Skipped (weekly update)"
-
-        # Update witnesses for recent hearings
-        logger.info("Updating witnesses...")
-        try:
-            witness_count = 0
-
-            # Get recent hearings with event IDs
-            with db.transaction() as conn:
-                cursor = conn.execute('''
-                    SELECT hearing_id, event_id FROM hearings
-                    WHERE event_id IS NOT NULL
-                    AND hearing_date >= date('now', '-7 days')
-                    LIMIT 20
-                ''')
-                recent_hearing_events = cursor.fetchall()
-
-            for hearing_id, event_id in recent_hearing_events:
-                try:
-                    # Get chamber from database for this hearing
-                    with db.transaction() as conn:
-                        cursor = conn.execute('''
-                            SELECT chamber FROM hearings WHERE hearing_id = ?
-                        ''', (hearing_id,))
-                        hearing_row = cursor.fetchone()
-
-                    if not hearing_row or not hearing_row[0]:
-                        continue
-
-                    chamber = hearing_row[0].lower()
-                    witnesses, documents = witness_fetcher.fetch_witnesses_for_hearing(119, chamber, event_id)
-
-                    for witness_data in witnesses:
-                        witness_info = witness_fetcher.extract_witness_info(witness_data)
-                        if witness_info and witness_info.get('full_name'):
-                            with db.transaction() as conn:
-                                # Insert or get witness
-                                cursor = conn.execute('''
-                                    INSERT OR IGNORE INTO witnesses
-                                    (first_name, last_name, full_name, title, organization)
-                                    VALUES (?, ?, ?, ?, ?)
-                                ''', (
-                                    witness_info.get('first_name'),
-                                    witness_info.get('last_name'),
-                                    witness_info.get('full_name'),
-                                    witness_info.get('title'),
-                                    witness_info.get('organization')
-                                ))
-
-                                # Get witness ID
-                                cursor = conn.execute('''
-                                    SELECT witness_id FROM witnesses
-                                    WHERE full_name = ? AND COALESCE(organization, '') = COALESCE(?, '')
-                                ''', (witness_info.get('full_name'), witness_info.get('organization')))
-                                witness_row = cursor.fetchone()
-
-                                if witness_row:
-                                    witness_id = witness_row[0]
-                                    # Insert appearance record
-                                    witness_type = witness_fetcher.infer_witness_type(witness_info)
-                                    conn.execute('''
-                                        INSERT OR IGNORE INTO witness_appearances
-                                        (witness_id, hearing_id, witness_type, position)
-                                        VALUES (?, ?, ?, ?)
-                                    ''', (witness_id, hearing_id, witness_type, witness_info.get('title')))
-                                    witness_count += 1
-
-                except Exception as e:
-                    logger.warning(f"Error updating witnesses for hearing {hearing_id}: {e}")
-                    continue
-
-            update_results['updates']['witnesses'] = witness_count
-            logger.info(f"Updated {witness_count} witness records")
-
-        except Exception as e:
-            logger.error(f"Error updating witnesses: {e}")
-            update_results['updates']['witnesses'] = f"Error: {str(e)}"
-
-        # Log update to database
-        try:
-            with db.transaction() as conn:
-                conn.execute('''
-                    CREATE TABLE IF NOT EXISTS update_logs (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        update_date DATE,
-                        start_time TIMESTAMP,
-                        end_time TIMESTAMP,
-                        duration_seconds INTEGER,
-                        hearings_updated INTEGER,
-                        committees_updated INTEGER,
-                        members_updated INTEGER,
-                        witnesses_updated INTEGER,
-                        success BOOLEAN,
-                        error_message TEXT
-                    )
-                ''')
-
-                start_time = datetime.fromisoformat(update_results['timestamp'])
-                end_time = datetime.now()
-                duration = int((end_time - start_time).total_seconds())
-
-                conn.execute('''
-                    INSERT INTO update_logs
-                    (update_date, start_time, end_time, duration_seconds,
-                     hearings_updated, committees_updated, members_updated, witnesses_updated, success)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ''', (
-                    start_time.date(),
-                    start_time,
-                    end_time,
-                    duration,
-                    update_results['updates'].get('hearings', 0),
-                    update_results['updates'].get('committees', 0),
-                    update_results['updates'].get('members', 0),
-                    update_results['updates'].get('witnesses', 0),
-                    True
-                ))
-
-        except Exception as e:
-            logger.error(f"Error logging update: {e}")
-
-        return update_results
+        return {
+            'timestamp': datetime.now().isoformat(),
+            'status': 'success',
+            'schedule_id': task_id,
+            'schedule_name': schedule_name,
+            'metrics': metrics,
+            'log_id': log_id
+        }
 
     except Exception as e:
-        logger.error(f"Daily update failed: {e}")
+        logger.error(f"Scheduled update failed: {schedule_name} - {e}")
+
+        # Try to create execution log for the failure
+        try:
+            db = DatabaseManager()
+
+            # Check if DailyUpdater already created an update_logs entry
+            log_id = None
+            with db.transaction() as conn:
+                cursor = conn.execute('''
+                    SELECT log_id, success FROM update_logs
+                    WHERE schedule_id = ?
+                    ORDER BY start_time DESC
+                    LIMIT 1
+                ''', (task_id,))
+                row = cursor.fetchone()
+
+                # If there's a recent log from this run, use it
+                if row and not row[1]:  # If exists and not successful
+                    log_id = row[0]
+                else:
+                    # Create a minimal update_logs entry for the failure
+                    cursor = conn.execute('''
+                        INSERT INTO update_logs
+                        (update_date, start_time, end_time, success, error_count, errors,
+                         trigger_source, schedule_id)
+                        VALUES (DATE('now'), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, ?, 'vercel_cron', ?)
+                    ''', (json.dumps([str(e)]), task_id))
+                    log_id = cursor.lastrowid
+
+            # Create execution log
+            if log_id:
+                create_execution_log(
+                    schedule_id=task_id,
+                    log_id=log_id,
+                    success=False,
+                    error_message=str(e),
+                    config_snapshot=schedule_config
+                )
+
+        except Exception as log_error:
+            logger.error(f"Failed to create error log: {log_error}")
+
         return {
             'timestamp': datetime.now().isoformat(),
             'status': 'error',
+            'schedule_id': task_id,
+            'schedule_name': schedule_name,
             'error': str(e)
         }
 
-@app.route('/api/cron/daily-update', methods=['GET', 'POST'])
-def daily_update():
-    """Vercel cron job endpoint for daily Congressional data updates"""
-    try:
-        # Verify this is from Vercel cron (check headers)
-        cron_secret = request.headers.get('Authorization')
-        expected_secret = os.environ.get('CRON_SECRET')
 
-        if expected_secret and cron_secret != f"Bearer {expected_secret}":
+@app.route('/api/cron/scheduled-update/<int:task_id>', methods=['GET', 'POST'])
+def scheduled_update(task_id):
+    """
+    Vercel cron job endpoint for scheduled Congressional data updates
+
+    Args:
+        task_id: ID of the scheduled task to execute
+
+    Returns:
+        JSON response with update results
+    """
+    try:
+        # Verify authentication
+        if not verify_cron_auth():
+            logger.warning(f"Unauthorized cron request for task {task_id}")
             return jsonify({'error': 'Unauthorized'}), 401
 
-        logger.info("Starting daily Congressional data update...")
-        result = update_congressional_data()
-        logger.info(f"Daily update completed: {result}")
+        # Get schedule configuration
+        schedule_config = get_schedule_config(task_id)
+
+        if not schedule_config:
+            logger.warning(f"Schedule not found or inactive: {task_id}")
+            return jsonify({
+                'error': 'Schedule not found or inactive',
+                'task_id': task_id
+            }), 404
+
+        # Run the scheduled update
+        result = run_scheduled_update(schedule_config)
 
         return jsonify(result)
 
     except Exception as e:
-        logger.error(f"Cron job failed: {e}")
+        logger.error(f"Cron job failed for task {task_id}: {e}")
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'status': 'error',
+            'task_id': task_id,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/cron/test-schedule/<int:task_id>', methods=['POST'])
+def test_schedule(task_id):
+    """
+    Test endpoint to manually trigger a scheduled update (from admin dashboard)
+    Does not require cron auth, but could be restricted to admin users
+
+    Args:
+        task_id: ID of the scheduled task to test
+
+    Returns:
+        JSON response with update results
+    """
+    try:
+        # Get schedule configuration
+        schedule_config = get_schedule_config(task_id)
+
+        if not schedule_config:
+            return jsonify({
+                'error': 'Schedule not found or inactive',
+                'task_id': task_id
+            }), 404
+
+        # Override trigger source for test runs
+        logger.info(f"Test run initiated for schedule: {schedule_config['schedule_name']}")
+
+        # Run the update with test context
+        result = run_scheduled_update(schedule_config)
+
+        # Update trigger source in the log
+        if result.get('log_id'):
+            db = DatabaseManager()
+            with db.transaction() as conn:
+                conn.execute('''
+                    UPDATE update_logs
+                    SET trigger_source = 'test'
+                    WHERE log_id = ?
+                ''', (result['log_id'],))
+
+        return jsonify(result)
+
+    except Exception as e:
+        logger.error(f"Test schedule failed for task {task_id}: {e}")
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'status': 'error',
+            'task_id': task_id,
+            'error': str(e)
+        }), 500
+
+
+# Legacy endpoint for backwards compatibility (will be deprecated)
+@app.route('/api/cron/daily-update', methods=['GET', 'POST'])
+def legacy_daily_update():
+    """
+    Legacy endpoint - redirects to the first active schedule or returns error
+    This maintains backwards compatibility while migrating to schedule-based updates
+    """
+    try:
+        if not verify_cron_auth():
+            return jsonify({'error': 'Unauthorized'}), 401
+
+        db = DatabaseManager()
+
+        # Try to find the first active schedule
+        with db.transaction() as conn:
+            cursor = conn.execute('''
+                SELECT task_id FROM scheduled_tasks
+                WHERE is_active = 1
+                ORDER BY created_at ASC
+                LIMIT 1
+            ''')
+            row = cursor.fetchone()
+
+        if row:
+            task_id = row[0]
+            logger.info(f"Legacy endpoint redirecting to schedule {task_id}")
+            return scheduled_update(task_id)
+        else:
+            logger.warning("Legacy endpoint called but no active schedules found")
+            return jsonify({
+                'error': 'No active schedules configured. Please create a schedule in the admin dashboard.',
+                'timestamp': datetime.now().isoformat()
+            }), 404
+
+    except Exception as e:
+        logger.error(f"Legacy cron job failed: {e}")
         return jsonify({
             'timestamp': datetime.now().isoformat(),
             'status': 'error',
             'error': str(e)
         }), 500
 
+
 # For local testing
 if __name__ == '__main__':
-    print("Running daily update locally...")
-    result = update_congressional_data()
-    print(json.dumps(result, indent=2))
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Test scheduled updates locally')
+    parser.add_argument('--task-id', type=int, help='Schedule task ID to test')
+    parser.add_argument('--list', action='store_true', help='List all active schedules')
+
+    args = parser.parse_args()
+
+    if args.list:
+        db = DatabaseManager()
+        with db.transaction() as conn:
+            cursor = conn.execute('''
+                SELECT task_id, name, lookback_days, mode, components,
+                       schedule_cron, is_active, chamber
+                FROM scheduled_tasks
+                ORDER BY task_id
+            ''')
+            schedules = cursor.fetchall()
+
+        print("\nActive Schedules:")
+        print("-" * 80)
+        for row in schedules:
+            active = "✓" if row[6] else "✗"
+            print(f"{active} ID: {row[0]} | {row[1]} | Congress: 119 | "
+                  f"Lookback: {row[2]} days | Mode: {row[3]} | Cron: {row[5]}")
+        print("-" * 80)
+
+    elif args.task_id:
+        print(f"\nTesting schedule {args.task_id}...")
+        config = get_schedule_config(args.task_id)
+
+        if not config:
+            print(f"ERROR: Schedule {args.task_id} not found or inactive")
+            sys.exit(1)
+
+        print(f"Schedule: {config['schedule_name']}")
+        print(f"Config: {json.dumps(config, indent=2)}")
+        print("\nRunning update...")
+
+        result = run_scheduled_update(config)
+        print(json.dumps(result, indent=2))
+
+    else:
+        print("Usage:")
+        print("  --list          List all schedules")
+        print("  --task-id N     Test schedule N")

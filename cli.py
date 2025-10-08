@@ -296,26 +296,98 @@ def update():
 @update.command()
 @click.option('--congress', default=119, help='Congress number to update')
 @click.option('--lookback-days', default=7, help='Days to look back for changes')
+@click.option('--mode', type=click.Choice(['incremental', 'full']), default='incremental',
+              help='Update mode: incremental (lookback window) or full (all hearings)')
+@click.option('--components', '-c',
+              multiple=True,
+              type=click.Choice(['hearings', 'witnesses', 'committees'], case_sensitive=False),
+              default=['hearings', 'witnesses', 'committees'],
+              help='Components to update. hearings includes videos (same API response). Omit witnesses/committees for faster updates.')
+@click.option('--dry-run', is_flag=True, help='Preview changes without modifying database')
 @click.option('--quiet', is_flag=True, help='Reduce output for cron jobs')
-def incremental(congress, lookback_days, quiet):
+@click.option('--json-progress', is_flag=True, help='Output progress as JSON for admin dashboard')
+def incremental(congress, lookback_days, mode, components, dry_run, quiet, json_progress):
     """Run incremental daily update (equivalent to daily_update.py)"""
+    import json
+    from datetime import datetime
+
     logger = get_logger(__name__)
 
     if quiet:
         logger.setLevel('WARNING')
 
+    # JSON progress mode: output structured progress to stdout
+    if json_progress:
+        print(json.dumps({
+            'type': 'start',
+            'timestamp': datetime.now().isoformat(),
+            'congress': congress,
+            'lookback_days': lookback_days,
+            'mode': mode
+        }), flush=True)
+
     try:
         from updaters.daily_updater import DailyUpdater
 
-        updater = DailyUpdater(congress=congress, lookback_days=lookback_days)
-        result = updater.run_daily_update()
+        # Convert components tuple to list
+        components_list = list(components) if components else None
 
-        if not quiet:
+        updater = DailyUpdater(
+            congress=congress,
+            lookback_days=lookback_days,
+            update_mode=mode,
+            components=components_list
+        )
+
+        if json_progress:
+            mode_desc = 'full sync of all hearings' if mode == 'full' else f'{lookback_days}-day lookback'
+            dry_run_note = ' (DRY RUN - no database changes)' if dry_run else ''
+            print(json.dumps({
+                'type': 'log',
+                'level': 'info',
+                'message': f'Starting {mode} update for Congress {congress}, {mode_desc}{dry_run_note}',
+                'components': components_list
+            }), flush=True)
+
+        # Create progress callback for JSON mode
+        def progress_callback(data):
+            if json_progress:
+                print(json.dumps({
+                    'type': 'progress',
+                    'data': data,
+                    'timestamp': datetime.now().isoformat()
+                }), flush=True)
+
+        result = updater.run_daily_update(
+            dry_run=dry_run,
+            progress_callback=progress_callback if json_progress else None
+        )
+
+        if json_progress:
+            # Output completion with metrics
+            print(json.dumps({
+                'type': 'complete',
+                'success': result.get('success', False),
+                'metrics': result.get('metrics', {}),
+                'timestamp': datetime.now().isoformat()
+            }), flush=True)
+        elif not quiet:
             logger.info("Daily update completed successfully")
             logger.info(f"Results: {result}")
 
+        # Exit code based on success
+        if not result.get('success', False):
+            sys.exit(1)
+
     except Exception as e:
-        logger.error(f"Daily update failed: {e}")
+        if json_progress:
+            print(json.dumps({
+                'type': 'error',
+                'message': str(e),
+                'timestamp': datetime.now().isoformat()
+            }), flush=True)
+        else:
+            logger.error(f"Daily update failed: {e}")
         sys.exit(1)
 
 
@@ -375,6 +447,143 @@ def committees(congress, chamber):
 
     except Exception as e:
         logger.error(f"Committee refresh failed: {e}")
+        sys.exit(1)
+
+
+@update.command()
+@click.option('--congress', default=119, help='Congress number')
+@click.option('--chamber', type=click.Choice(['house', 'senate', 'all']), default='all')
+@click.option('--lookback-days', default=30, help='Days to look back for updated hearings')
+@click.option('--include-videos', is_flag=True, help='Fetch and update video URLs')
+def hearings(congress, chamber, lookback_days, include_videos):
+    """Update hearing data including titles, dates, status, and optionally videos"""
+    logger = get_logger(__name__)
+
+    try:
+        from updaters.daily_updater import DailyUpdater
+
+        chambers = ['house', 'senate'] if chamber == 'all' else [chamber]
+
+        logger.info(f"Updating hearings for Congress {congress}, lookback: {lookback_days} days")
+        if include_videos:
+            logger.info("Video URL updates enabled")
+
+        # Use DailyUpdater for hearing updates
+        updater = DailyUpdater(congress=congress, lookback_days=lookback_days)
+        result = updater.run_daily_update()
+
+        if result['success']:
+            metrics = result['metrics']
+            logger.info(f"Updated {metrics['hearings_updated']} hearings")
+            logger.info(f"Added {metrics['hearings_added']} new hearings")
+            if metrics['error_count'] > 0:
+                logger.warning(f"Encountered {metrics['error_count']} errors")
+        else:
+            logger.error(f"Update failed: {result.get('error')}")
+            sys.exit(1)
+
+    except Exception as e:
+        logger.error(f"Hearing update failed: {e}")
+        sys.exit(1)
+
+
+@update.command()
+@click.option('--congress', default=119, help='Congress number')
+@click.option('--limit', default=100, help='Maximum number of hearings to update')
+@click.option('--force', is_flag=True, help='Update all hearings, even those with existing videos')
+def videos(congress, limit, force):
+    """Update video URLs and YouTube video IDs for hearings"""
+    logger = get_logger(__name__)
+
+    try:
+        from database.manager import DatabaseManager
+        from fetchers.hearing_fetcher import HearingFetcher
+        from parsers.hearing_parser import HearingParser
+        from api.client import CongressAPIClient
+
+        db = DatabaseManager()
+        api_client = CongressAPIClient()
+        fetcher = HearingFetcher(api_client)
+        parser = HearingParser()
+
+        # Build query
+        video_filter = "" if force else "AND (video_url IS NULL OR video_url = '')"
+
+        with db.transaction() as conn:
+            query = f"""
+                SELECT event_id, congress, chamber
+                FROM hearings
+                WHERE event_id IS NOT NULL
+                {video_filter}
+                ORDER BY hearing_date DESC
+                LIMIT {limit}
+            """
+            cursor = conn.execute(query)
+            hearings_to_update = cursor.fetchall()
+
+        logger.info(f"Found {len(hearings_to_update)} hearings to update with video data")
+
+        updated_count = 0
+        errors = 0
+
+        for row in hearings_to_update:
+            event_id = row['event_id']
+            congress = row['congress']
+            chamber = row['chamber']
+
+            try:
+                # Fetch detailed hearing data including video
+                detailed_data = fetcher.fetch_hearing_details(congress, chamber.lower(), event_id)
+
+                if detailed_data:
+                    # Parse to extract video data
+                    parsed = parser.parse(detailed_data)
+                    if parsed and (parsed.video_url or parsed.youtube_video_id):
+                        # Update using db.upsert_hearing to handle FK constraints properly
+                        hearing_dict = parsed.dict()
+                        hearing_dict['congress'] = congress
+                        db.upsert_hearing(hearing_dict)
+                        updated_count += 1
+                        logger.info(f"Updated video for {event_id}: {parsed.video_url or 'YouTube ID: ' + str(parsed.youtube_video_id)}")
+
+            except Exception as e:
+                logger.error(f"Error updating video for {event_id}: {e}")
+                errors += 1
+
+        logger.info(f"Video update complete: {updated_count} updated, {errors} errors")
+
+    except Exception as e:
+        logger.error(f"Video update failed: {e}")
+        sys.exit(1)
+
+
+@update.command()
+@click.option('--congress', default=119, help='Congress number')
+@click.option('--lookback-days', default=30, help='Update witnesses for hearings in last N days')
+def witnesses(congress, lookback_days):
+    """Update witness information for recent hearings"""
+    logger = get_logger(__name__)
+
+    try:
+        from updaters.daily_updater import DailyUpdater
+
+        logger.info(f"Updating witnesses for hearings in last {lookback_days} days")
+
+        # DailyUpdater handles witness updates as part of its process
+        updater = DailyUpdater(congress=congress, lookback_days=lookback_days)
+        result = updater.run_daily_update()
+
+        if result['success']:
+            metrics = result['metrics']
+            logger.info(f"Updated {metrics['witnesses_updated']} witnesses")
+            if metrics['error_count'] > 0:
+                logger.warning(f"Encountered {metrics['error_count']} errors")
+        else:
+            logger.error(f"Update failed: {result.get('error')}")
+            sys.exit(1)
+
+    except Exception as e:
+        logger.error(f"Witness update failed: {e}")
         sys.exit(1)
 
 

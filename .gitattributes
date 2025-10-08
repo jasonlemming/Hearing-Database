@@ -1,4 +1,2 @@
-# Only track large CRS database with LFS
-crs_products.db filter=lfs diff=lfs merge=lfs -text
-crs_products.db-shm filter=lfs diff=lfs merge=lfs -text
-crs_products.db-wal filter=lfs diff=lfs merge=lfs -text
+# CRS database is hosted on GitHub Releases and downloaded during build
+# No Git LFS needed anymore

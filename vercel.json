@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "buildCommand": "bash scripts/fetch_databases.sh",
   "builds": [
     {
       "src": "api/index.py",

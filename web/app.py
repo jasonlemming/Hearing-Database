@@ -59,6 +59,37 @@ def congress_gov_url_filter(hearing):
     return f"https://www.congress.gov/event/{congress}th-congress/{chamber}-event/{event_id}"
 
 
+@app.template_filter('format_location')
+def format_location_filter(location):
+    """Format location data - handles both dict strings and plain text"""
+    if not location:
+        return ""
+
+    # Try to parse as Python dict literal
+    if isinstance(location, str) and location.startswith('{'):
+        try:
+            import ast
+            location_dict = ast.literal_eval(location)
+
+            # If it's a dict with building/room, format nicely
+            if isinstance(location_dict, dict):
+                building = location_dict.get('building', '')
+                room = location_dict.get('room', '')
+
+                if building and room:
+                    return f"{building}, Room {room}"
+                elif building:
+                    return building
+                elif room:
+                    return f"Room {room}"
+        except (ValueError, SyntaxError):
+            # If parsing fails, return as-is
+            pass
+
+    # Return plain text as-is
+    return location
+
+
 # Main routes
 @app.route('/')
 def index():

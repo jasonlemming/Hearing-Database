@@ -151,28 +151,40 @@
                             </div>
                         </div>
                     {% elif hearing[19] == 'senate_isvp' %}
-                        <!-- Senate ISVP video embed -->
-                        <div class="row">
-                            <div class="col-lg-8 col-md-10">
-                                <div class="video-container">
-                                    <div class="ratio ratio-16x9">
-                                        <iframe
-                                            src="{{ hearing[17] }}"
-                                            title="Senate Hearing Video"
-                                            frameborder="0"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                            allowfullscreen>
-                                        </iframe>
+                        {% if hearing[7] and hearing[7] >= today %}
+                            <!-- Future Senate ISVP hearing - show external link with countdown message -->
+                            <div class="text-center py-4">
+                                <i class="fas fa-clock fa-3x text-info mb-3"></i>
+                                <h5>Senate Video with Countdown</h5>
+                                <p class="text-muted mb-3">This hearing is scheduled for the future. The Senate.gov page shows a countdown timer until the video is available.</p>
+                                <a href="{{ hearing[17] }}" target="_blank" class="btn btn-info">
+                                    <i class="fas fa-external-link-alt me-2"></i>View Countdown on Senate.gov
+                                </a>
+                            </div>
+                        {% else %}
+                            <!-- Past Senate ISVP hearing - embed video player -->
+                            <div class="row">
+                                <div class="col-lg-8 col-md-10">
+                                    <div class="video-container">
+                                        <div class="ratio ratio-16x9">
+                                            <iframe
+                                                src="{{ hearing[17] }}"
+                                                title="Senate Hearing Video"
+                                                frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen>
+                                            </iframe>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-external-link-alt me-1"></i>
+                                            <a href="{{ hearing[17] }}" target="_blank">View on Senate.gov</a>
+                                        </small>
                                     </div>
                                 </div>
-                                <div class="mt-2">
-                                    <small class="text-muted">
-                                        <i class="fas fa-external-link-alt me-1"></i>
-                                        <a href="{{ hearing[17] }}" target="_blank">View on Senate.gov</a>
-                                    </small>
-                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                     {% elif hearing[19] == 'house_video' %}
                         <!-- House video link -->
                         <div class="text-center py-4">

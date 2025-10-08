@@ -3,7 +3,7 @@ Hearing-related routes blueprint
 """
 from flask import Blueprint, render_template, request
 from database.manager import DatabaseManager
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 hearings_bp = Blueprint('hearings', __name__)
 
@@ -222,6 +222,7 @@ def hearing_detail(hearing_id):
                              witnesses=witnesses,
                              transcripts=transcripts,
                              witness_documents=witness_documents,
-                             supporting_documents=supporting_documents)
+                             supporting_documents=supporting_documents,
+                             today=date.today().isoformat())
     except Exception as e:
         return f"Error: {e}", 500

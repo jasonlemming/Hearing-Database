@@ -1,0 +1,131 @@
+{% extends "crs_base.html" %}
+
+{% block title %}{{ product['title'] }}{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col-12">
+        <a href="{{ url_for('crs.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Browse
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0">{{ product['title'] }}</h2>
+            </div>
+            <div class="card-body">
+                <!-- Metadata -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <strong>Product ID:</strong><br>
+                        {{ product['product_id'] }}
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Type:</strong><br>
+                        <span class="badge bg-primary">{{ product['product_type'] }}</span>
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Status:</strong><br>
+                        <span class="badge {% if product['status'] == 'Active' %}bg-success{% else %}bg-secondary{% endif %}">
+                            {{ product['status'] }}
+                        </span>
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Published:</strong><br>
+                        {% if product['publication_date'] %}
+                            {{ product['publication_date'][:10] }}
+                        {% else %}
+                            <span class="text-muted">n.d.</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- Summary -->
+                {% if product['summary'] %}
+                <div class="mb-4">
+                    <h4><i class="fas fa-align-left me-2"></i>Summary</h4>
+                    <p class="text-justify">{{ product['summary'] }}</p>
+                </div>
+                {% endif %}
+
+                <!-- Authors -->
+                {% set authors = product['authors']|from_json if product['authors'] else [] %}
+                {% if authors %}
+                <div class="mb-4">
+                    <h4><i class="fas fa-user me-2"></i>Authors</h4>
+                    <ul>
+                        {% for author in authors %}
+                        <li>{{ author }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- Topics -->
+                {% set topics = product['topics']|from_json if product['topics'] else [] %}
+                {% if topics %}
+                <div class="mb-4">
+                    <h4><i class="fas fa-tags me-2"></i>Topics</h4>
+                    <div>
+                        {% for topic in topics %}
+                        <span class="badge bg-secondary me-1 mb-1">{{ topic }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Links -->
+                <div class="mb-4">
+                    <h4><i class="fas fa-link me-2"></i>Links</h4>
+                    <div>
+                        {% if product['url_html'] %}
+                        <a href="{{ product['url_html'] }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary me-2">
+                            <i class="fas fa-file-alt me-2"></i>View HTML
+                        </a>
+                        {% endif %}
+                        {% if product['url_pdf'] %}
+                        <a href="{{ product['url_pdf'] }}" target="_blank" rel="noopener noreferrer" class="btn btn-danger me-2">
+                            <i class="fas fa-file-pdf me-2"></i>View PDF
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Export -->
+                <div class="mb-4">
+                    <h4><i class="fas fa-download me-2"></i>Export</h4>
+                    <a href="{{ url_for('crs.export_csv', ids=product['product_id']) }}" class="btn btn-success">
+                        <i class="fas fa-download me-2"></i>Export This Product (CSV)
+                    </a>
+                </div>
+
+                <!-- Citation -->
+                <div class="mb-3">
+                    <h4><i class="fas fa-quote-right me-2"></i>Citation</h4>
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <p class="mb-0" style="font-family: monospace;">
+                                {{ product['title'] }} — {{ product['product_id'] }} —
+                                {% if product['publication_date'] %}{{ product['publication_date'][:10] }}{% else %}n.d.{% endif %} —
+                                {% if product['url_html'] %}
+                                {{ product['url_html'] }}
+                                {% elif product['url_pdf'] %}
+                                {{ product['url_pdf'] }}
+                                {% else %}
+                                <span class="text-muted">No URL available</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

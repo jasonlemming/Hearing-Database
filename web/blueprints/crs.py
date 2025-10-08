@@ -5,6 +5,7 @@ from flask import Blueprint, render_template, request, Response
 import sqlite3
 import csv
 import io
+import os
 from datetime import datetime
 
 crs_bp = Blueprint('crs', __name__, url_prefix='/crs')
@@ -13,8 +14,15 @@ crs_bp = Blueprint('crs', __name__, url_prefix='/crs')
 CRS_DB_PATH = 'crs_products.db'
 
 
+def database_available():
+    """Check if CRS database is available"""
+    return os.path.exists(CRS_DB_PATH)
+
+
 def get_crs_db():
     """Get CRS database connection"""
+    if not database_available():
+        raise FileNotFoundError(f"CRS database not found at {CRS_DB_PATH}")
     conn = sqlite3.connect(CRS_DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
@@ -23,6 +31,9 @@ def get_crs_db():
 @crs_bp.route('/')
 def index():
     """Browse CRS products page"""
+    if not database_available():
+        return render_template('crs_unavailable.html')
+
     try:
         # Get filter parameters
         product_type = request.args.get('product_type', '')
@@ -110,6 +121,9 @@ def index():
 @crs_bp.route('/search')
 def search():
     """Search CRS products"""
+    if not database_available():
+        return render_template('crs_unavailable.html')
+
     try:
         query = request.args.get('q', '')
         page = int(request.args.get('page', 1))
@@ -183,6 +197,9 @@ def search():
 @crs_bp.route('/product/<product_id>')
 def product_detail(product_id):
     """Product detail page"""
+    if not database_available():
+        return render_template('crs_unavailable.html')
+
     try:
         conn = get_crs_db()
         cursor = conn.cursor()
@@ -203,6 +220,9 @@ def product_detail(product_id):
 @crs_bp.route('/api/export')
 def export_csv():
     """Export products as CSV"""
+    if not database_available():
+        return "CRS database is not available in this environment", 503
+
     try:
         # Get filter parameters
         product_ids = request.args.get('ids', '')

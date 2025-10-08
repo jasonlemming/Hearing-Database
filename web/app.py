@@ -20,6 +20,7 @@ from web.blueprints.hearings import hearings_bp
 from web.blueprints.main_pages import main_pages_bp
 from web.blueprints.api import api_bp
 from web.blueprints.admin import admin_bp
+from web.blueprints.crs import crs_bp
 
 # Create Flask app
 app = Flask(__name__)
@@ -31,6 +32,7 @@ app.register_blueprint(hearings_bp)
 app.register_blueprint(main_pages_bp)
 app.register_blueprint(api_bp)
 app.register_blueprint(admin_bp)
+app.register_blueprint(crs_bp)
 
 
 # Template filters (shared across all blueprints)
@@ -90,11 +92,24 @@ def format_location_filter(location):
     return location
 
 
+@app.template_filter('from_json')
+def from_json_filter(json_string):
+    """Parse JSON string into Python object"""
+    if not json_string:
+        return []
+    try:
+        import json
+        return json.loads(json_string)
+    except (ValueError, TypeError):
+        return []
+
+
 # Main routes
 @app.route('/')
 def index():
-    """Redirect to hearings page"""
-    return redirect('/hearings')
+    """Landing page"""
+    from flask import render_template
+    return render_template('landing.html')
 
 
 # Error handlers

@@ -69,8 +69,8 @@ class HearingFetcher(BaseFetcher):
         end_date = datetime.now()
         start_date = end_date - timedelta(days=days_back)
 
-        from_date = start_date.strftime('%Y-%m-%d')
-        to_date = end_date.strftime('%Y-%m-%d')
+        from_date = start_date.strftime('%Y-%m-%dT00:00:00Z')
+        to_date = end_date.strftime('%Y-%m-%dT23:59:59Z')
 
         return self.fetch_hearings(congress, from_date=from_date, to_date=to_date)
 

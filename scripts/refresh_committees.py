@@ -29,12 +29,15 @@ def refresh_committees():
     new_committees = []
     updated_committees = []
 
+    # Set congress number
+    congress = 119
+
     for chamber in chambers:
-        print(f"\nFetching {chamber} committees...")
+        print(f"\nFetching {chamber} committees for Congress {congress}...")
 
         try:
-            # Get committees for this chamber
-            endpoint = f"committee/{chamber}"
+            # Get committees for this chamber and congress
+            endpoint = f"committee/{congress}/{chamber}"
             committees_data = list(client.paginate(endpoint))
 
             print(f"Found {len(committees_data)} {chamber} committees from API")
@@ -53,9 +56,6 @@ def refresh_committees():
                     committee_type = 'Joint'
                 else:
                     committee_type = 'Standing'  # Most committees are standing committees
-
-                # Use current congress (118th as of 2024)
-                congress = 118
 
                 if not system_code or not name:
                     continue

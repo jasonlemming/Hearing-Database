@@ -167,7 +167,8 @@ class HearingParser(BaseParser):
         """Extract Congress.gov public URL"""
         # Check for public URL
         public_url_fields = [
-            'congressGovUrl',
+            'congressDotGovUrl',  # Correct API field name
+            'congressGovUrl',      # Legacy fallback
             'publicUrl',
             'webUrl'
         ]

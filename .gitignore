@@ -46,8 +46,9 @@ congress.db
 data/congress.db
 # Include production database for deployment
 !database.db
-# CRS database is downloaded from GitHub Releases during build
+# CRS database - compressed version is committed, uncompressed is generated
 crs_products.db
+!crs_products.db.gz
 
 # Logs
 logs/

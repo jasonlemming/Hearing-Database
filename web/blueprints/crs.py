@@ -5,16 +5,31 @@ from flask import Blueprint, render_template, request, Response
 import sqlite3
 import csv
 import io
+import os
+import gzip
+import shutil
 from datetime import datetime
 
 crs_bp = Blueprint('crs', __name__, url_prefix='/crs')
 
-# Database path
+# Database paths
 CRS_DB_PATH = 'crs_products.db'
+CRS_DB_GZ_PATH = 'crs_products.db.gz'
+
+
+def ensure_database_decompressed():
+    """Decompress database if needed (for production deployment)"""
+    if not os.path.exists(CRS_DB_PATH) and os.path.exists(CRS_DB_GZ_PATH):
+        print(f"Decompressing {CRS_DB_GZ_PATH}...")
+        with gzip.open(CRS_DB_GZ_PATH, 'rb') as f_in:
+            with open(CRS_DB_PATH, 'wb') as f_out:
+                shutil.copyfileobj(f_in, f_out)
+        print("Database decompressed successfully!")
 
 
 def get_crs_db():
     """Get CRS database connection"""
+    ensure_database_decompressed()
     conn = sqlite3.connect(CRS_DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn

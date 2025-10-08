@@ -20,7 +20,7 @@ from web.blueprints.hearings import hearings_bp
 from web.blueprints.main_pages import main_pages_bp
 from web.blueprints.api import api_bp
 from web.blueprints.admin import admin_bp
-import os
+from web.blueprints.crs import crs_bp
 
 # Create Flask app
 app = Flask(__name__)
@@ -32,15 +32,7 @@ app.register_blueprint(hearings_bp)
 app.register_blueprint(main_pages_bp)
 app.register_blueprint(api_bp)
 app.register_blueprint(admin_bp)
-
-# Only register CRS if database exists (local development only)
-CRS_AVAILABLE = os.path.exists('crs_products.db')
-if CRS_AVAILABLE:
-    from web.blueprints.crs import crs_bp
-    app.register_blueprint(crs_bp)
-    app.config['BLUEPRINTS'] = ['crs']
-else:
-    app.config['BLUEPRINTS'] = []
+app.register_blueprint(crs_bp)
 
 
 # Template filters (shared across all blueprints)

@@ -12,6 +12,14 @@
   ],
   "routes": [
     {
+      "src": "/api/cron/scheduled-update/([0-9]+)",
+      "dest": "api/cron-update.py"
+    },
+    {
+      "src": "/api/cron/test-schedule/([0-9]+)",
+      "dest": "api/cron-update.py"
+    },
+    {
       "src": "/api/cron/daily-update",
       "dest": "api/cron-update.py"
     },
@@ -22,8 +30,12 @@
   ],
   "crons": [
     {
-      "path": "/api/cron/daily-update",
-      "schedule": "0 6 * * *"
+      "path": "/api/cron/scheduled-update/3",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/scheduled-update/4",
+      "schedule": "0 0 * * 0"
     }
   ]
 }

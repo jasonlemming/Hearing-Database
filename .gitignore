@@ -42,6 +42,7 @@ venv.bak/
 data/congressional_hearings.db
 data/backups/
 congress_hearings.db
+congress.db
 data/congress.db
 # Include production database for deployment
 !database.db

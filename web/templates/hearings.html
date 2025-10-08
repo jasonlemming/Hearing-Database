@@ -75,8 +75,8 @@
                     </div>
 
                     <!-- Hidden date range inputs for quick filters -->
-                    <input type="hidden" name="date_from" id="date_from" value="{{ request.args.get('date_from', '') }}">
-                    <input type="hidden" name="date_to" id="date_to" value="{{ request.args.get('date_to', '') }}">
+                    <input type="hidden" name="date_from" id="date_from" value="{{ date_from }}">
+                    <input type="hidden" name="date_to" id="date_to" value="{{ date_to }}">
                 </form>
             </div>
         </div>
@@ -103,7 +103,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <a href="{{ url_for('hearings.hearings', search=search, chamber=selected_chamber, committee=selected_committee, page=1, sort='title', order='asc' if sort_by == 'title' and sort_order == 'desc' else 'desc') }}"
+                                    <a href="{{ url_for('hearings.hearings', search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, page=1, sort='title', order='asc' if sort_by == 'title' and sort_order == 'desc' else 'desc') }}"
                                        class="text-decoration-none text-dark">
                                         Title
                                         {% if sort_by == 'title' %}
@@ -114,7 +114,7 @@
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="{{ url_for('hearings.hearings', search=search, chamber=selected_chamber, committee=selected_committee, page=1, sort='committee', order='asc' if sort_by == 'committee' and sort_order == 'desc' else 'desc') }}"
+                                    <a href="{{ url_for('hearings.hearings', search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, page=1, sort='committee', order='asc' if sort_by == 'committee' and sort_order == 'desc' else 'desc') }}"
                                        class="text-decoration-none text-dark">
                                         Committee
                                         {% if sort_by == 'committee' %}
@@ -125,7 +125,7 @@
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="{{ url_for('hearings.hearings', search=search, chamber=selected_chamber, committee=selected_committee, page=1, sort='date', order='asc' if sort_by == 'date' and sort_order == 'desc' else 'desc') }}"
+                                    <a href="{{ url_for('hearings.hearings', search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, page=1, sort='date', order='asc' if sort_by == 'date' and sort_order == 'desc' else 'desc') }}"
                                        class="text-decoration-none text-dark">
                                         Date
                                         {% if sort_by == 'date' %}
@@ -136,7 +136,7 @@
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="{{ url_for('hearings.hearings', search=search, chamber=selected_chamber, committee=selected_committee, page=1, sort='chamber', order='asc' if sort_by == 'chamber' and sort_order == 'desc' else 'desc') }}"
+                                    <a href="{{ url_for('hearings.hearings', search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, page=1, sort='chamber', order='asc' if sort_by == 'chamber' and sort_order == 'desc' else 'desc') }}"
                                        class="text-decoration-none text-dark">
                                         Chamber
                                         {% if sort_by == 'chamber' %}
@@ -147,7 +147,7 @@
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="{{ url_for('hearings.hearings', search=search, chamber=selected_chamber, committee=selected_committee, page=1, sort='status', order='asc' if sort_by == 'status' and sort_order == 'desc' else 'desc') }}"
+                                    <a href="{{ url_for('hearings.hearings', search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, page=1, sort='status', order='asc' if sort_by == 'status' and sort_order == 'desc' else 'desc') }}"
                                        class="text-decoration-none text-dark">
                                         Status
                                         {% if sort_by == 'status' %}
@@ -228,7 +228,7 @@
                     <ul class="pagination justify-content-center mt-3">
                         {% if has_prev %}
                         <li class="page-item">
-                            <a class="page-link" href="{{ url_for('hearings.hearings', page=page-1, search=search, chamber=selected_chamber, committee=selected_committee, sort=sort_by, order=sort_order) }}">
+                            <a class="page-link" href="{{ url_for('hearings.hearings', page=page-1, search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">
                                 <i class="fas fa-chevron-left"></i> Previous
                             </a>
                         </li>
@@ -237,7 +237,7 @@
                         {% for p in range(1, total_pages + 1) %}
                         {% if p <= 3 or p >= total_pages - 2 or (p >= page - 1 and p <= page + 1) %}
                         <li class="page-item {% if p == page %}active{% endif %}">
-                            <a class="page-link" href="{{ url_for('hearings.hearings', page=p, search=search, chamber=selected_chamber, committee=selected_committee, sort=sort_by, order=sort_order) }}">
+                            <a class="page-link" href="{{ url_for('hearings.hearings', page=p, search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">
                                 {{ p }}
                             </a>
                         </li>
@@ -250,7 +250,7 @@
 
                         {% if has_next %}
                         <li class="page-item">
-                            <a class="page-link" href="{{ url_for('hearings.hearings', page=page+1, search=search, chamber=selected_chamber, committee=selected_committee, sort=sort_by, order=sort_order) }}">
+                            <a class="page-link" href="{{ url_for('hearings.hearings', page=page+1, search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">
                                 Next <i class="fas fa-chevron-right"></i>
                             </a>
                         </li>
@@ -359,11 +359,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Initialize active button based on current URL parameters
+    // Initialize active button based on current date filter values
     function initializeActiveButton() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const dateFrom = urlParams.get('date_from');
-        const dateTo = urlParams.get('date_to');
+        // Use form input values (which include defaults) instead of URL params
+        const dateFrom = dateFromInput.value;
+        const dateTo = dateToInput.value;
 
         if (!dateFrom && !dateTo) {
             updateActiveButton('all');

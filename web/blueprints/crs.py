@@ -13,14 +13,17 @@ from datetime import datetime
 crs_bp = Blueprint('crs', __name__, url_prefix='/crs')
 
 # Database paths
-CRS_DB_PATH = 'crs_products.db'
 CRS_DB_GZ_PATH = 'crs_products.db.gz'
+# Use /tmp for decompressed database on Vercel (read-only filesystem)
+CRS_DB_PATH = os.path.join('/tmp', 'crs_products.db') if os.environ.get('VERCEL') else 'crs_products.db'
 
 
 def ensure_database_decompressed():
     """Decompress database if needed (for production deployment)"""
+    # Check if compressed version exists and decompressed doesn't
     if not os.path.exists(CRS_DB_PATH) and os.path.exists(CRS_DB_GZ_PATH):
-        print(f"Decompressing {CRS_DB_GZ_PATH}...")
+        print(f"Decompressing {CRS_DB_GZ_PATH} to {CRS_DB_PATH}...")
+        os.makedirs(os.path.dirname(CRS_DB_PATH), exist_ok=True)
         with gzip.open(CRS_DB_GZ_PATH, 'rb') as f_in:
             with open(CRS_DB_PATH, 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)

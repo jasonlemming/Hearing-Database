@@ -1,0 +1,28 @@
+# Local development requirements (includes ingestion dependencies)
+# For Vercel deployment, use requirements.txt instead (lighter weight, no Playwright)
+
+# Core dependencies
+requests>=2.31.0
+aiohttp>=3.9.0
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+click>=8.1.0
+pyyaml>=6.0
+
+# Development tools
+pytest>=7.4.0
+black>=23.0.0
+
+# Web framework
+flask>=3.0.0
+pydantic-settings>=2.0.0
+
+# Ingestion dependencies (NOT needed for Vercel)
+playwright>=1.40.0  # ~200MB - for web scraping/ingestion only
+PyPDF2>=3.0.0       # PDF extraction
+tqdm>=4.66.0        # Progress bars
+
+# HTML parsing and database
+beautifulsoup4>=4.12.0
+lxml>=5.0.0
+sqlalchemy>=2.0.0

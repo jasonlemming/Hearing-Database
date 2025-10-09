@@ -1,0 +1,25 @@
+# Exclude database files
+*.db
+*.db-shm
+*.db-wal
+data/
+
+# Exclude local development files
+requirements-local.txt
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Exclude ingestion scripts (run locally only)
+discover_brookings_urls.py
+reparse_content.py
+analyze_*.py
+backfill_*.py
+
+# Exclude documentation
+*.md
+!README.md
+
+# Exclude test files
+tests/

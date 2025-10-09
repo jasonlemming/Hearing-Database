@@ -140,28 +140,41 @@ def search():
         conn = get_crs_db()
         cursor = conn.cursor()
 
-        # Ensure FTS table exists
-        cursor.execute('''
-            CREATE VIRTUAL TABLE IF NOT EXISTS products_fts USING fts5(
-                product_id UNINDEXED,
-                title,
-                topics,
-                content=products,
-                content_rowid=rowid
-            )
-        ''')
+        # Check if FTS table exists and has correct schema
+        try:
+            cursor.execute("SELECT summary FROM products_fts LIMIT 1")
+            fts_has_summary = True
+        except sqlite3.OperationalError:
+            # FTS doesn't exist or doesn't have summary column
+            fts_has_summary = False
 
-        # Rebuild FTS if empty
-        cursor.execute('SELECT COUNT(*) FROM products_fts')
-        if cursor.fetchone()[0] == 0:
+        # Rebuild FTS if it doesn't have summary field
+        if not fts_has_summary:
+            print("Rebuilding FTS index to include summary field...")
+            cursor.execute('DROP TABLE IF EXISTS products_fts')
             cursor.execute('''
-                INSERT INTO products_fts(product_id, title, topics)
-                SELECT product_id, title, json_group_array(value)
-                FROM products
-                LEFT JOIN json_each(products.topics)
-                GROUP BY product_id
+                CREATE VIRTUAL TABLE products_fts USING fts5(
+                    product_id UNINDEXED,
+                    title,
+                    summary,
+                    topics,
+                    content=products,
+                    content_rowid=rowid
+                )
+            ''')
+            cursor.execute('''
+                INSERT INTO products_fts(product_id, title, summary, topics)
+                SELECT
+                    p.product_id,
+                    p.title,
+                    COALESCE(p.summary, ''),
+                    json_group_array(j.value)
+                FROM products p
+                LEFT JOIN json_each(p.topics) j
+                GROUP BY p.product_id
             ''')
             conn.commit()
+            print("FTS index rebuilt with summary field!")
 
         # Search query
         search_query = '''

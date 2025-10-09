@@ -2,6 +2,19 @@
 
 {% block title %}Hearings - Congressional Hearing Database{% endblock %}
 
+{% block head %}
+<style>
+    .quick-filter.btn-primary {
+        background-color: #003d82;
+        border-color: #003d82;
+    }
+    .quick-filter.btn-primary:hover {
+        background-color: #002952;
+        border-color: #002952;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col-12">
@@ -16,16 +29,16 @@
 <div class="row mb-3">
     <div class="col-12">
         <div class="d-flex flex-wrap gap-2">
-            <button type="button" class="btn btn-outline-primary quick-filter" data-filter="all">
+            <button type="button" class="btn {% if active_filter == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %} quick-filter" data-filter="all">
                 <i class="fas fa-list me-1"></i>All
             </button>
-            <button type="button" class="btn btn-outline-primary quick-filter" data-filter="today">
+            <button type="button" class="btn {% if active_filter == 'today' %}btn-primary{% else %}btn-outline-primary{% endif %} quick-filter" data-filter="today">
                 <i class="fas fa-calendar-day me-1"></i>Today
             </button>
-            <button type="button" class="btn btn-outline-primary quick-filter" data-filter="this-week">
+            <button type="button" class="btn {% if active_filter == 'this-week' %}btn-primary{% else %}btn-outline-primary{% endif %} quick-filter" data-filter="this-week">
                 <i class="fas fa-calendar-week me-1"></i>This Week
             </button>
-            <button type="button" class="btn btn-outline-primary quick-filter" data-filter="this-month">
+            <button type="button" class="btn {% if active_filter == 'this-month' %}btn-primary{% else %}btn-outline-primary{% endif %} quick-filter" data-filter="this-month">
                 <i class="fas fa-calendar me-1"></i>This Month
             </button>
         </div>

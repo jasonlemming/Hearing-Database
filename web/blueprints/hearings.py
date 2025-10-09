@@ -134,6 +134,28 @@ def hearings():
         has_prev = page > 1
         has_next = page < total_pages
 
+        # Determine active filter based on date range
+        active_filter = 'all'
+        if date_from and date_to:
+            # Check if it's today
+            if date_from == date_to == today.strftime('%Y-%m-%d'):
+                active_filter = 'today'
+            # Check if it's this week
+            elif date_from == monday.strftime('%Y-%m-%d') and date_to == sunday.strftime('%Y-%m-%d'):
+                active_filter = 'this-week'
+            # Check if it's this month
+            else:
+                month_start = today.replace(day=1)
+                # Get last day of month
+                if today.month == 12:
+                    month_end = today.replace(day=31)
+                else:
+                    month_end = (today.replace(month=today.month + 1, day=1) - timedelta(days=1))
+                if date_from == month_start.strftime('%Y-%m-%d') and date_to == month_end.strftime('%Y-%m-%d'):
+                    active_filter = 'this-month'
+        elif not date_from and not date_to:
+            active_filter = 'all'
+
         return render_template('hearings.html',
                              hearings=hearings_data,
                              chambers=chambers,
@@ -149,7 +171,8 @@ def hearings():
                              total_pages=total_pages,
                              has_prev=has_prev,
                              has_next=has_next,
-                             total=total)
+                             total=total,
+                             active_filter=active_filter)
     except Exception as e:
         return f"Error: {e}", 500
 

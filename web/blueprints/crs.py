@@ -166,62 +166,123 @@ def search():
         conn = get_crs_db()
         cursor = conn.cursor()
 
-        # Check if FTS table exists and has correct schema
+        # Check if product_content_fts exists (full HTML content search)
+        has_content_fts = False
         try:
-            cursor.execute("SELECT summary FROM products_fts LIMIT 1")
-            fts_has_summary = True
+            cursor.execute("SELECT COUNT(*) FROM product_content_fts LIMIT 1")
+            has_content_fts = True
         except sqlite3.OperationalError:
-            # FTS doesn't exist or doesn't have summary column
-            fts_has_summary = False
+            pass
 
-        # Rebuild FTS if it doesn't have summary field
-        if not fts_has_summary:
-            print("Rebuilding FTS index to include summary field...")
-            cursor.execute('DROP TABLE IF EXISTS products_fts')
-            # Use column weights: title=3, summary=1, topics=2 for better ranking
-            cursor.execute('''
-                CREATE VIRTUAL TABLE products_fts USING fts5(
-                    product_id UNINDEXED,
-                    title,
-                    summary,
-                    topics,
-                    tokenize='porter'
+        if has_content_fts:
+            # Search both metadata AND full content with proper weighting
+            # title:5, headings:3, text_content:1, summary:1, topics:2
+            search_query = '''
+                WITH content_matches AS (
+                    SELECT
+                        cfts.product_id,
+                        bm25(product_content_fts, 5.0, 3.0, 1.0) as content_score
+                    FROM product_content_fts cfts
+                    WHERE product_content_fts MATCH ?
+                ),
+                metadata_matches AS (
+                    SELECT
+                        pfts.product_id,
+                        bm25(products_fts, 3.0, 1.0, 2.0) as metadata_score
+                    FROM products_fts pfts
+                    WHERE products_fts MATCH ?
                 )
-            ''')
-            cursor.execute('''
-                INSERT INTO products_fts(product_id, title, summary, topics)
-                SELECT
-                    p.product_id,
-                    p.title,
-                    COALESCE(p.summary, ''),
-                    COALESCE(json_group_array(j.value), '')
+                SELECT DISTINCT
+                    p.*,
+                    COALESCE(cm.content_score, 0) + COALESCE(mm.metadata_score, 0) as combined_score,
+                    CASE WHEN cm.product_id IS NOT NULL THEN 1 ELSE 0 END as has_content_match
                 FROM products p
-                LEFT JOIN json_each(p.topics) j
-                GROUP BY p.product_id
-            ''')
-            conn.commit()
-            print("FTS index rebuilt with summary field!")
+                LEFT JOIN content_matches cm ON p.product_id = cm.product_id
+                LEFT JOIN metadata_matches mm ON p.product_id = mm.product_id
+                WHERE cm.product_id IS NOT NULL OR mm.product_id IS NOT NULL
+                ORDER BY combined_score
+                LIMIT ? OFFSET ?
+            '''
+            results = cursor.execute(search_query, (query, query, limit, offset)).fetchall()
 
-        # Search query with column weights (title:3, summary:1, topics:2)
-        # Use BM25 ranking for better relevance
-        search_query = '''
-            SELECT p.*, bm25(products_fts, 3.0, 1.0, 2.0) as score
-            FROM products_fts fts
-            JOIN products p ON fts.product_id = p.product_id
-            WHERE products_fts MATCH ?
-            ORDER BY score
-            LIMIT ? OFFSET ?
-        '''
+            # Get total count
+            count_query = '''
+                WITH content_matches AS (
+                    SELECT DISTINCT product_id
+                    FROM product_content_fts
+                    WHERE product_content_fts MATCH ?
+                ),
+                metadata_matches AS (
+                    SELECT DISTINCT product_id
+                    FROM products_fts
+                    WHERE products_fts MATCH ?
+                )
+                SELECT COUNT(DISTINCT product_id)
+                FROM (
+                    SELECT product_id FROM content_matches
+                    UNION
+                    SELECT product_id FROM metadata_matches
+                )
+            '''
+            total = cursor.execute(count_query, (query, query)).fetchone()[0]
+        else:
+            # Fallback to metadata-only search
+            # Check if FTS table exists and has correct schema
+            try:
+                cursor.execute("SELECT summary FROM products_fts LIMIT 1")
+                fts_has_summary = True
+            except sqlite3.OperationalError:
+                # FTS doesn't exist or doesn't have summary column
+                fts_has_summary = False
 
-        results = cursor.execute(search_query, (query, limit, offset)).fetchall()
+            # Rebuild FTS if it doesn't have summary field
+            if not fts_has_summary:
+                print("Rebuilding FTS index to include summary field...")
+                cursor.execute('DROP TABLE IF EXISTS products_fts')
+                # Use column weights: title=3, summary=1, topics=2 for better ranking
+                cursor.execute('''
+                    CREATE VIRTUAL TABLE products_fts USING fts5(
+                        product_id UNINDEXED,
+                        title,
+                        summary,
+                        topics,
+                        tokenize='porter'
+                    )
+                ''')
+                cursor.execute('''
+                    INSERT INTO products_fts(product_id, title, summary, topics)
+                    SELECT
+                        p.product_id,
+                        p.title,
+                        COALESCE(p.summary, ''),
+                        COALESCE(json_group_array(j.value), '')
+                    FROM products p
+                    LEFT JOIN json_each(p.topics) j
+                    GROUP BY p.product_id
+                ''')
+                conn.commit()
+                print("FTS index rebuilt with summary field!")
 
-        # Get total count
-        count_query = '''
-            SELECT COUNT(*)
-            FROM products_fts
-            WHERE products_fts MATCH ?
-        '''
-        total = cursor.execute(count_query, (query,)).fetchone()[0]
+            # Search query with column weights (title:3, summary:1, topics:2)
+            # Use BM25 ranking for better relevance
+            search_query = '''
+                SELECT p.*, bm25(products_fts, 3.0, 1.0, 2.0) as score
+                FROM products_fts fts
+                JOIN products p ON fts.product_id = p.product_id
+                WHERE products_fts MATCH ?
+                ORDER BY score
+                LIMIT ? OFFSET ?
+            '''
+
+            results = cursor.execute(search_query, (query, limit, offset)).fetchall()
+
+            # Get total count
+            count_query = '''
+                SELECT COUNT(*)
+                FROM products_fts
+                WHERE products_fts MATCH ?
+            '''
+            total = cursor.execute(count_query, (query,)).fetchone()[0]
 
         conn.close()
 
@@ -233,7 +294,8 @@ def search():
                              total=total,
                              page=page,
                              total_pages=total_pages,
-                             limit=limit)
+                             limit=limit,
+                             has_content_search=has_content_fts)
     except Exception as e:
         return f"Error: {e}", 500
 
@@ -248,12 +310,27 @@ def product_detail(product_id):
         cursor.execute('SELECT * FROM products WHERE product_id = ?', (product_id,))
         product = cursor.fetchone()
 
-        conn.close()
-
         if not product:
+            conn.close()
             return "Product not found", 404
 
-        return render_template('crs_detail.html', product=product)
+        # Try to fetch current version content
+        content_version = None
+        try:
+            cursor.execute('''
+                SELECT version_id, version_number, html_content, text_content,
+                       structure_json, word_count, ingested_at
+                FROM product_versions
+                WHERE product_id = ? AND is_current = 1
+            ''', (product_id,))
+            content_version = cursor.fetchone()
+        except sqlite3.OperationalError:
+            # product_versions table doesn't exist yet
+            pass
+
+        conn.close()
+
+        return render_template('crs_detail.html', product=product, content_version=content_version)
     except Exception as e:
         return f"Error: {e}", 500
 

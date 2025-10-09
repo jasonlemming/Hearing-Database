@@ -784,6 +784,477 @@ def serve(host, port, debug):
         sys.exit(1)
 
 
+@cli.group(name='crs-content')
+def crs_content():
+    """CRS content management operations (HTML text ingestion)"""
+    pass
+
+
+@crs_content.command()
+@click.option('--limit', default=None, type=int, help='Limit number of products to backfill')
+@click.option('--product-id', help='Backfill specific product only')
+@click.option('--skip-existing', is_flag=True, default=True, help='Skip products with existing content')
+def backfill(limit, product_id, skip_existing):
+    """
+    Initial backfill of CRS HTML content for all products
+
+    This will fetch HTML content from congress.gov using headless browser
+    to bypass Cloudflare protection, parse the content, and store it in the database.
+    """
+    logger = get_logger(__name__)
+
+    try:
+        from fetchers.crs_content_fetcher import CRSContentFetcher
+        from parsers.crs_html_parser import CRSHTMLParser
+        from database.crs_content_manager import CRSContentManager
+        import sqlite3
+
+        logger.info("Starting CRS content backfill...")
+
+        # Initialize components
+        fetcher = CRSContentFetcher(rate_limit_delay=1.0)  # Slower for backfill
+        parser = CRSHTMLParser()
+        manager = CRSContentManager()
+
+        # Start ingestion log
+        log_id = manager.start_ingestion_log('backfill')
+
+        # Get products to process
+        if product_id:
+            # Single product
+            conn = sqlite3.connect('crs_products.db')
+            conn.row_factory = sqlite3.Row
+            product = conn.execute("SELECT * FROM products WHERE product_id = ?", (product_id,)).fetchone()
+            conn.close()
+
+            if not product:
+                logger.error(f"Product {product_id} not found")
+                sys.exit(1)
+
+            products = [dict(product)]
+            logger.info(f"Processing single product: {product_id}")
+        else:
+            # Get products needing content
+            if skip_existing:
+                products = manager.get_products_needing_content(limit=limit)
+                logger.info(f"Found {len(products)} products without content")
+            else:
+                # Get all products
+                conn = sqlite3.connect('crs_products.db')
+                conn.row_factory = sqlite3.Row
+                query = "SELECT * FROM products ORDER BY publication_date DESC"
+                if limit:
+                    query += f" LIMIT {limit}"
+                products = [dict(row) for row in conn.execute(query).fetchall()]
+                conn.close()
+                logger.info(f"Processing {len(products)} products (including existing)")
+
+        # Process products
+        total = len(products)
+        success_count = 0
+        error_count = 0
+        skip_count = 0
+        errors = []
+
+        for i, product in enumerate(products, 1):
+            product_id = product['product_id']
+            version_number = product.get('version', 1)
+            html_url = product.get('url_html')
+
+            if not html_url:
+                logger.warning(f"[{i}/{total}] Skipping {product_id}: No HTML URL")
+                skip_count += 1
+                continue
+
+            try:
+                logger.info(f"[{i}/{total}] Processing {product_id} v{version_number}...")
+
+                # Check if needs update
+                if skip_existing and not manager.needs_update(product_id, version_number, html_url):
+                    logger.info(f"  Skipping {product_id}: Already have current version")
+                    skip_count += 1
+                    continue
+
+                # Fetch HTML with browser
+                result = fetcher.fetch_html_with_browser(html_url)
+                if not result:
+                    raise Exception("Failed to fetch HTML")
+
+                html_content, metadata = result
+
+                # Parse HTML
+                parsed = parser.parse(html_content, product_id)
+                if not parsed:
+                    raise Exception("Failed to parse HTML")
+
+                # Store in database
+                version_id = manager.upsert_version(
+                    product_id=product_id,
+                    version_number=version_number,
+                    html_content=parsed.html_content,
+                    text_content=parsed.text_content,
+                    structure_json=parsed.structure_json,
+                    content_hash=parsed.content_hash,
+                    word_count=parsed.word_count,
+                    html_url=html_url
+                )
+
+                success_count += 1
+                logger.info(f"  ✓ Success: {parsed.word_count:,} words, {len(parsed.structure_json['headings'])} headings")
+
+            except Exception as e:
+                error_count += 1
+                error_msg = f"{product_id}: {str(e)}"
+                errors.append(error_msg)
+                logger.error(f"  ✗ Error: {e}")
+
+        # Update log
+        manager.update_ingestion_log(
+            log_id,
+            products_checked=total,
+            content_fetched=success_count,
+            content_skipped=skip_count,
+            errors_count=error_count,
+            error_details=errors[:100]  # Limit to 100 errors
+        )
+
+        # Complete log
+        status = 'completed' if error_count == 0 else ('partial' if success_count > 0 else 'failed')
+        manager.complete_ingestion_log(log_id, status)
+
+        # Show statistics
+        stats = fetcher.get_stats()
+        logger.info("\n" + "=" * 70)
+        logger.info("Backfill Complete!")
+        logger.info(f"  Processed: {total} products")
+        logger.info(f"  Success: {success_count}")
+        logger.info(f"  Skipped: {skip_count}")
+        logger.info(f"  Errors: {error_count}")
+        logger.info(f"  Avg fetch time: {stats['avg_fetch_time_ms']:.0f}ms")
+        logger.info(f"  Total size: {stats['total_bytes'] / 1024 / 1024:.1f} MB")
+        logger.info("=" * 70)
+
+        if error_count > 0:
+            logger.warning(f"{error_count} errors occurred during backfill")
+            sys.exit(1)
+
+    except Exception as e:
+        logger.error(f"Backfill failed: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
+
+
+@crs_content.command()
+@click.option('--days', default=30, help='Update products modified in last N days')
+def update(days):
+    """
+    Update CRS content for recently modified products
+
+    Checks for products updated in the last N days and fetches their latest content.
+    """
+    logger = get_logger(__name__)
+
+    try:
+        from fetchers.crs_content_fetcher import CRSContentFetcher
+        from parsers.crs_html_parser import CRSHTMLParser
+        from database.crs_content_manager import CRSContentManager
+        from datetime import datetime, timedelta
+        import sqlite3
+
+        logger.info(f"Updating CRS content for products modified in last {days} days...")
+
+        # Initialize components
+        fetcher = CRSContentFetcher()
+        parser = CRSHTMLParser()
+        manager = CRSContentManager()
+
+        # Get recently updated products
+        cutoff = (datetime.now() - timedelta(days=days)).isoformat()
+        conn = sqlite3.connect('crs_products.db')
+        conn.row_factory = sqlite3.Row
+        products = conn.execute("""
+            SELECT * FROM products
+            WHERE updated_at >= ?
+            OR publication_date >= ?
+            ORDER BY updated_at DESC
+        """, (cutoff, cutoff)).fetchall()
+        conn.close()
+
+        products = [dict(p) for p in products]
+        logger.info(f"Found {len(products)} recently updated products")
+
+        if not products:
+            logger.info("No products to update")
+            return
+
+        # Start ingestion log
+        log_id = manager.start_ingestion_log('update')
+
+        # Process products
+        success_count = 0
+        error_count = 0
+
+        for i, product in enumerate(products, 1):
+            product_id = product['product_id']
+            version_number = product.get('version', 1)
+            html_url = product.get('url_html')
+
+            if not html_url:
+                continue
+
+            try:
+                if not manager.needs_update(product_id, version_number, html_url):
+                    continue
+
+                logger.info(f"[{i}/{len(products)}] Updating {product_id}...")
+
+                result = fetcher.fetch_html_with_browser(html_url)
+                if result:
+                    html_content, _ = result
+                    parsed = parser.parse(html_content, product_id)
+                    if parsed:
+                        manager.upsert_version(
+                            product_id=product_id,
+                            version_number=version_number,
+                            html_content=parsed.html_content,
+                            text_content=parsed.text_content,
+                            structure_json=parsed.structure_json,
+                            content_hash=parsed.content_hash,
+                            word_count=parsed.word_count,
+                            html_url=html_url
+                        )
+                        success_count += 1
+
+            except Exception as e:
+                error_count += 1
+                logger.error(f"Error updating {product_id}: {e}")
+
+        # Complete log
+        manager.update_ingestion_log(log_id, content_fetched=success_count, errors_count=error_count)
+        manager.complete_ingestion_log(log_id)
+
+        logger.info(f"Update complete: {success_count} updated, {error_count} errors")
+
+    except Exception as e:
+        logger.error(f"Update failed: {e}")
+        sys.exit(1)
+
+
+@crs_content.command()
+def stats():
+    """Show CRS content ingestion statistics"""
+    logger = get_logger(__name__)
+
+    try:
+        from database.crs_content_manager import CRSContentManager
+
+        manager = CRSContentManager()
+        stats = manager.get_ingestion_stats()
+
+        click.echo("\n" + "=" * 70)
+        click.echo("CRS Content Statistics")
+        click.echo("=" * 70)
+        click.echo(f"Total products:        {stats['total_products']:>10,}")
+        click.echo(f"With content:          {stats['products_with_content']:>10,} ({stats['coverage_percent']}%)")
+        click.echo(f"Current versions:      {stats['current_versions']:>10,}")
+        click.echo(f"Total versions:        {stats['total_versions']:>10,}")
+        click.echo(f"Storage used:          {stats['total_storage_bytes'] / 1024 / 1024:>10.1f} MB")
+        click.echo(f"Avg word count:        {stats['avg_word_count']:>10,.0f}")
+
+        if stats.get('last_ingestion'):
+            last = stats['last_ingestion']
+            click.echo(f"\nLast ingestion:        {last['started_at']}")
+            click.echo(f"  Status:              {last['status']}")
+            click.echo(f"  Items fetched:       {last['content_fetched']}")
+
+        click.echo("=" * 70 + "\n")
+
+    except Exception as e:
+        logger.error(f"Stats failed: {e}")
+        sys.exit(1)
+
+
+@cli.group(name='brookings')
+def brookings():
+    """Brookings Institution content management operations"""
+    pass
+
+
+@brookings.command()
+def init():
+    """Initialize Brookings database and seed sources"""
+    logger = get_logger(__name__)
+
+    try:
+        from brookings_ingester.init_db import main as init_main
+        result = init_main()
+
+        if result == 0:
+            logger.info("Brookings database initialized successfully")
+        else:
+            logger.error("Brookings database initialization failed")
+            sys.exit(1)
+
+    except Exception as e:
+        logger.error(f"Initialization failed: {e}")
+        sys.exit(1)
+
+
+@brookings.command()
+@click.option('--limit', default=None, type=int, help='Limit number of documents to ingest')
+@click.option('--skip-existing', is_flag=True, default=True, help='Skip documents that already exist')
+@click.option('--method', type=click.Choice(['api', 'sitemap', 'both']), default='api',
+              help='Discovery method: api (WordPress), sitemap, or both')
+@click.option('--since-date', default='2024-01-01', help='Only ingest documents published on/after this date (YYYY-MM-DD)')
+def backfill(limit, skip_existing, method, since_date):
+    """Initial backfill of Brookings content"""
+    logger = get_logger(__name__)
+
+    try:
+        from brookings_ingester.ingesters import BrookingsIngester
+
+        logger.info(f"Starting Brookings backfill (method={method}, since={since_date})")
+        ingester = BrookingsIngester()
+
+        result = ingester.run_ingestion(
+            limit=limit,
+            skip_existing=skip_existing,
+            run_type='backfill',
+            method=method,
+            since_date=since_date
+        )
+
+        if result['success']:
+            logger.info("Backfill completed successfully")
+            stats = result['stats']
+            logger.info(f"Checked: {stats['documents_checked']}, "
+                       f"Fetched: {stats['documents_fetched']}, "
+                       f"Updated: {stats['documents_updated']}, "
+                       f"Skipped: {stats['documents_skipped']}, "
+                       f"Errors: {stats['errors_count']}")
+        else:
+            logger.error(f"Backfill failed: {result.get('error', 'Unknown error')}")
+            sys.exit(1)
+
+    except Exception as e:
+        logger.error(f"Backfill failed: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
+
+
+@brookings.command()
+@click.option('--days', default=30, help='Update documents modified in last N days')
+@click.option('--method', type=click.Choice(['api', 'sitemap', 'both']), default='api')
+def update(days, method):
+    """Update Brookings content for recently modified documents"""
+    logger = get_logger(__name__)
+
+    try:
+        from brookings_ingester.ingesters import BrookingsIngester
+        from datetime import datetime, timedelta
+
+        since_date = (datetime.now() - timedelta(days=days)).strftime('%Y-%m-%d')
+        logger.info(f"Updating Brookings content modified since {since_date}")
+
+        ingester = BrookingsIngester()
+        result = ingester.run_ingestion(
+            limit=None,
+            skip_existing=False,
+            run_type='update',
+            method=method,
+            since_date=since_date
+        )
+
+        if result['success']:
+            logger.info("Update completed successfully")
+            stats = result['stats']
+            logger.info(f"Checked: {stats['documents_checked']}, "
+                       f"Updated: {stats['documents_updated']}, "
+                       f"Errors: {stats['errors_count']}")
+        else:
+            logger.error(f"Update failed: {result.get('error')}")
+            sys.exit(1)
+
+    except Exception as e:
+        logger.error(f"Update failed: {e}")
+        sys.exit(1)
+
+
+@brookings.command()
+@click.option('--detailed', is_flag=True, help='Show detailed statistics')
+def stats(detailed):
+    """Show Brookings content statistics"""
+    logger = get_logger(__name__)
+
+    try:
+        from brookings_ingester.models import get_session, Document, Source, IngestionLog
+        from sqlalchemy import func
+
+        session = get_session()
+        brookings = session.query(Source).filter_by(source_code='BROOKINGS').first()
+
+        if not brookings:
+            logger.error("Brookings source not found. Run: python cli.py brookings init")
+            sys.exit(1)
+
+        total_docs = session.query(Document).filter_by(source_id=brookings.source_id).count()
+        total_words = session.query(func.sum(Document.word_count)).filter_by(source_id=brookings.source_id).scalar() or 0
+        with_pdfs = session.query(Document).filter(
+            Document.source_id == brookings.source_id,
+            Document.pdf_url.isnot(None)
+        ).count()
+
+        click.echo("\n" + "=" * 70)
+        click.echo("Brookings Content Statistics")
+        click.echo("=" * 70)
+        click.echo(f"Total documents:       {total_docs:>10,}")
+        click.echo(f"Total words:           {total_words:>10,}")
+        click.echo(f"Documents with PDFs:   {with_pdfs:>10,}")
+        click.echo("=" * 70 + "\n")
+
+        session.close()
+
+    except Exception as e:
+        logger.error(f"Stats failed: {e}")
+        sys.exit(1)
+
+
+@brookings.command()
+@click.option('--url', required=True, help='Brookings document URL to ingest')
+def ingest_url(url):
+    """Ingest a single Brookings document by URL"""
+    logger = get_logger(__name__)
+
+    try:
+        from brookings_ingester.ingesters import BrookingsIngester
+
+        ingester = BrookingsIngester()
+        doc_meta = {'document_identifier': ingester._extract_slug(url), 'url': url}
+
+        fetched = ingester.fetch(doc_meta)
+        if not fetched:
+            logger.error("Failed to fetch content")
+            sys.exit(1)
+
+        parsed = ingester.parse(doc_meta, fetched)
+        if not parsed:
+            logger.error("Failed to parse content")
+            sys.exit(1)
+
+        document_id = ingester.store(parsed)
+        if not document_id:
+            logger.error("Failed to store document")
+            sys.exit(1)
+
+        logger.info(f"✓ Successfully ingested document (ID: {document_id})")
+
+    except Exception as e:
+        logger.error(f"Ingestion failed: {e}")
+        sys.exit(1)
+
+
 # Helper functions
 def check_configuration():
     """Check configuration and API connectivity"""

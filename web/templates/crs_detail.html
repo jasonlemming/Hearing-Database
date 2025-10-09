@@ -2,6 +2,362 @@
 
 {% block title %}{{ product['title'] }}{% endblock %}
 
+{% block head %}
+<style>
+    /* CRS Report Content Styling */
+    .crs-report-content {
+        line-height: 1.8;
+        color: #2c3e50;
+    }
+
+    /* Hide entire report header (title, date, and jump link already in card header) */
+    .crs-report-content .ReportHeader {
+        display: none;
+    }
+
+    /* Hide horizontal rule after report header */
+    .crs-report-content .ReportHeader + hr {
+        display: none;
+    }
+
+    /* Hide main TOC (only show in sidebar) */
+    .crs-report-content .TOC {
+        display: none;
+    }
+
+    /* Hide duplicate title for Insight/Posts products */
+    .crs-report-content .Title {
+        display: none;
+    }
+
+    /* Hide cover date line for Insight/Posts products (already in card header) */
+    .crs-report-content .CoverDate {
+        display: none;
+    }
+
+    /* Hide the border div that contains CoverDate */
+    .crs-report-content > div[style*="border-bottom"] {
+        display: none;
+    }
+
+    /* Content Typography */
+    .crs-report-content h1,
+    .crs-report-content h2,
+    .crs-report-content h3 {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        color: #1a1a1a;
+        font-weight: 600;
+        scroll-margin-top: 80px;
+    }
+
+    .crs-report-content h1 {
+        font-size: 1.5rem;
+        border-bottom: 2px solid #dee2e6;
+        padding-bottom: 0.5rem;
+    }
+
+    .crs-report-content h2 {
+        font-size: 1.25rem;
+        border-bottom: 1px solid #e9ecef;
+        padding-bottom: 0.3rem;
+    }
+
+    .crs-report-content h3 {
+        font-size: 1.1rem;
+    }
+
+    .crs-report-content p {
+        margin-bottom: 1rem;
+        text-align: justify;
+    }
+
+    .crs-report-content ul,
+    .crs-report-content ol {
+        margin-bottom: 1rem;
+        padding-left: 2rem;
+    }
+
+    .crs-report-content li {
+        margin-bottom: 0.5rem;
+    }
+
+    /* Tables */
+    .crs-report-content table {
+        width: 100%;
+        margin: 1.5rem 0;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    .crs-report-content table th,
+    .crs-report-content table td {
+        padding: 0.75rem;
+        border: 1px solid #dee2e6;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .crs-report-content table th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .crs-report-content table tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    /* Images */
+    .crs-report-content img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 1.5rem auto;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+    }
+
+    /* Footnotes */
+    .crs-report-content .Footnote {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-top: 0.5rem;
+        padding-left: 1rem;
+        border-left: 3px solid #dee2e6;
+    }
+
+    /* Report-specific content classes */
+    .crs-report-content .Heading1,
+    .crs-report-content .SummaryHeading {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #dee2e6;
+        padding-bottom: 0.5rem;
+    }
+
+    .crs-report-content .Heading2 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        border-bottom: 1px solid #e9ecef;
+        padding-bottom: 0.3rem;
+    }
+
+    .crs-report-content .Heading3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .crs-report-content .BodyText,
+    .crs-report-content .BodySummaryText {
+        margin-bottom: 1rem;
+        line-height: 1.8;
+        text-align: justify;
+    }
+
+    .crs-report-content .ReportSummary {
+        background: #f8f9fa;
+        border-left: 4px solid #007bff;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        border-radius: 4px;
+    }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Reading badge stats */
+    .content-stats {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: #e7f3ff;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        color: #0056b3;
+    }
+
+    .stat-badge i {
+        color: #007bff;
+    }
+
+    /* Sticky TOC Sidebar */
+    .sticky-toc-sidebar {
+        position: sticky;
+        top: 20px;
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .sticky-toc {
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .sticky-toc h2 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    /* Make Figures and Tables headings match Contents heading size */
+    .sticky-toc h1 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #495057;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .sticky-toc ul {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 0;
+    }
+
+    .sticky-toc li {
+        margin-bottom: 0.25rem;
+    }
+
+    .sticky-toc a {
+        color: #6c757d;
+        text-decoration: none;
+        padding: 0.25rem 0.5rem;
+        display: block;
+        border-radius: 4px;
+        transition: all 0.2s;
+        font-size: 0.85rem;
+    }
+
+    .sticky-toc a:hover {
+        color: #007bff;
+        background: #f8f9fa;
+    }
+
+    .sticky-toc a.active {
+        color: #007bff;
+        background: #e7f3ff;
+        font-weight: 600;
+    }
+
+    .sticky-toc .TOC2 {
+        padding-left: 1rem;
+    }
+
+    .sticky-toc .TOC3 {
+        padding-left: 2rem;
+    }
+
+    /* Hide sticky TOC on mobile */
+    @media (max-width: 991px) {
+        .sticky-toc-sidebar {
+            display: none;
+        }
+    }
+</style>
+<script>
+    // Fix missing anchor for Introduction heading and setup floating TOC
+    document.addEventListener('DOMContentLoaded', function() {
+        const headings = document.querySelectorAll('.crs-report-content .Heading1');
+        headings.forEach(function(heading) {
+            if (heading.textContent.trim() === 'Introduction' && !heading.querySelector('a[name]')) {
+                const anchor = document.createElement('a');
+                anchor.name = '_Toc210283484';
+                heading.insertBefore(anchor, heading.firstChild);
+            }
+        });
+
+        // Clone TOC to sidebar
+        const originalToc = document.querySelector('.crs-report-content .TOC');
+        const sidebar = document.getElementById('sticky-toc-sidebar');
+
+        if (originalToc && sidebar) {
+            // Create sticky TOC
+            const stickyTocDiv = document.createElement('div');
+            stickyTocDiv.className = 'sticky-toc';
+
+            // Add header
+            const header = document.createElement('h2');
+            header.textContent = 'Contents';
+            stickyTocDiv.appendChild(header);
+
+            // Clone TOC content
+            const tocContent = originalToc.cloneNode(true);
+            // Remove the h1 "Contents" heading from cloned version
+            const h1 = tocContent.querySelector('h1');
+            if (h1) h1.remove();
+
+            stickyTocDiv.appendChild(tocContent);
+            sidebar.appendChild(stickyTocDiv);
+
+            // Scroll spy - highlight current section
+            const tocLinks = stickyTocDiv.querySelectorAll('a');
+            const sections = [];
+
+            tocLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    const targetId = href.substring(1);
+                    const target = document.querySelector(`[name="${targetId}"], #${targetId}`);
+                    if (target) {
+                        sections.push({ link: link, element: target });
+                    }
+                }
+            });
+
+            function updateActiveSection() {
+                const scrollPosition = window.scrollY + 100;
+
+                let currentSection = null;
+                sections.forEach(section => {
+                    const rect = section.element.getBoundingClientRect();
+                    const elementTop = rect.top + window.scrollY;
+
+                    if (scrollPosition >= elementTop) {
+                        currentSection = section;
+                    }
+                });
+
+                tocLinks.forEach(link => link.classList.remove('active'));
+                if (currentSection) {
+                    currentSection.link.classList.add('active');
+                }
+            }
+
+            window.addEventListener('scroll', updateActiveSection);
+            updateActiveSection();
+        }
+    });
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="row mb-3">
     <div class="col-12">
@@ -12,7 +368,9 @@
 </div>
 
 <div class="row">
-    <div class="col-12">
+    <!-- Main Content Column -->
+    {% set has_toc = content_version and (content_version['structure_json']|from_json).get('toc', [])|length > 0 %}
+    <div class="{% if has_toc %}col-lg-9{% else %}col-12{% endif %}">
         <div class="card">
             <div class="card-header">
                 <h2 class="mb-0">{{ product['title'] }}</h2>
@@ -46,12 +404,64 @@
 
                 <hr>
 
-                <!-- Summary -->
+                <!-- Full Content (if available) -->
+                {% if content_version %}
+                {% set structure = content_version['structure_json']|from_json %}
+
+                <!-- Content Statistics -->
+                <div class="content-stats">
+                    <div class="stat-badge">
+                        <i class="fas fa-check-circle"></i>
+                        <span><strong>Full content available</strong></span>
+                    </div>
+                    <div class="stat-badge">
+                        <i class="fas fa-file-alt"></i>
+                        <span><strong>{{ "{:,}".format(content_version['word_count']|int) }}</strong> words</span>
+                    </div>
+                    {% if structure.headings %}
+                    <div class="stat-badge">
+                        <i class="fas fa-list-ul"></i>
+                        <span><strong>{{ structure.headings|length }}</strong> sections</span>
+                    </div>
+                    {% endif %}
+                    <div class="stat-badge">
+                        <i class="fas fa-calendar"></i>
+                        <span>Ingested {{ content_version['ingested_at'][:10] }}</span>
+                    </div>
+                    <div class="stat-badge">
+                        <i class="fas fa-clock"></i>
+                        <span>~{{ (content_version['word_count']|int / 200)|round|int }} min read</span>
+                    </div>
+                </div>
+
+                <!-- Report Content -->
+                <div class="mb-4">
+                    <div class="card">
+                        <div class="card-body crs-report-content">
+                            {{ content_version['html_content']|safe }}
+                        </div>
+                    </div>
+                </div>
+
+                {% else %}
+                <!-- Summary (fallback when no full content) -->
                 {% if product['summary'] %}
                 <div class="mb-4">
                     <h4><i class="fas fa-align-left me-2"></i>Summary</h4>
                     <p class="text-justify">{{ product['summary'] }}</p>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Full report content not yet ingested. Only API summary available.
+                    </div>
                 </div>
+                {% else %}
+                <div class="mb-4">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Full report content not yet ingested.
+                    </div>
+                </div>
+                {% endif %}
                 {% endif %}
 
                 <!-- Authors -->
@@ -127,5 +537,14 @@
             </div>
         </div>
     </div>
+
+    <!-- Sticky TOC Sidebar (only shown when TOC is available) -->
+    {% if has_toc %}
+    <div class="col-lg-3">
+        <div class="sticky-toc-sidebar" id="sticky-toc-sidebar">
+            <!-- TOC will be cloned here by JavaScript -->
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

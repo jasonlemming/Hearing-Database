@@ -21,6 +21,7 @@ from web.blueprints.main_pages import main_pages_bp
 from web.blueprints.api import api_bp
 from web.blueprints.admin import admin_bp
 from web.blueprints.crs import crs_bp
+from web.blueprints.brookings import brookings_bp
 
 # Create Flask app
 app = Flask(__name__)
@@ -33,6 +34,7 @@ app.register_blueprint(main_pages_bp)
 app.register_blueprint(api_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(crs_bp)
+app.register_blueprint(brookings_bp)
 
 
 # Template filters (shared across all blueprints)
@@ -102,6 +104,15 @@ def from_json_filter(json_string):
         return json.loads(json_string)
     except (ValueError, TypeError):
         return []
+
+
+@app.template_filter('number_format')
+def number_format_filter(value):
+    """Format number with thousand separators"""
+    try:
+        return f"{int(value):,}"
+    except (ValueError, TypeError):
+        return value
 
 
 # Main routes

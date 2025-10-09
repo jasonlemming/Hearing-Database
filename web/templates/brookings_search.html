@@ -1,0 +1,173 @@
+{% extends "brookings_base.html" %}
+
+{% block title %}Search Policy Library{% endblock %}
+
+{% block head_style %}
+.search-form {
+    margin-bottom: 3rem;
+}
+
+.search-input {
+    font-size: 1.1rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.search-button {
+    width: 100%;
+}
+
+.results-header {
+    margin-bottom: 2rem;
+}
+
+.document-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.document-link {
+    display: block;
+    text-decoration: none;
+    color: #1a1a1a;
+    padding: 2rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.document-link:hover {
+    transform: translateX(5px);
+    color: #0d6efd;
+}
+
+.document-link:hover .document-title {
+    color: #0d6efd;
+}
+
+.document-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.document-meta {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.document-summary {
+    font-size: 0.95rem;
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+.pagination {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 4rem;
+    align-items: center;
+}
+
+.pagination a,
+.pagination span {
+    color: #6c757d;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.pagination a:hover {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.pagination .active {
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+.export-link {
+    font-size: 0.85rem;
+    color: #6c757d;
+    float: right;
+}
+
+@media (max-width: 768px) {
+    .document-link:hover {
+        transform: none;
+    }
+}
+{% endblock %}
+
+{% block content %}
+<h1>Search</h1>
+{% if query %}
+<p class="text-secondary mb-4">{{ total }} results for "{{ query }}"</p>
+{% else %}
+<p class="text-secondary mb-4">Search policy research documents from the Brookings Institution</p>
+{% endif %}
+
+<!-- Search Form -->
+<form method="GET" action="{{ url_for('brookings.search') }}" class="search-form">
+    <input type="search" name="q" class="search-input" placeholder="Search research documents..." value="{{ query }}" autofocus>
+    <button type="submit" class="search-button">Search</button>
+</form>
+
+<!-- Results -->
+{% if query %}
+    {% if results %}
+    <div class="results-header">
+        <span class="text-secondary" style="font-size: 0.9rem;">{{ total }} results</span>
+        <a href="{{ url_for('brookings.export_csv', q=query) }}" class="export-link">Export CSV</a>
+        <div style="clear: both;"></div>
+    </div>
+
+    <div class="document-list">
+        {% for doc in results %}
+        <a href="{{ url_for('brookings.document_detail', document_id=doc.document_id) }}" class="document-link">
+            <div class="document-title">{{ doc.title }}</div>
+            <div class="document-meta">
+                Brookings Institution
+                · {{ doc.publication_date or 'No date' }}
+                {% if doc.document_type %} · {{ doc.document_type }}{% endif %}
+                · {{ doc.word_count|number_format or 0 }} words
+                {% if doc.pdf_url %} · PDF available{% endif %}
+            </div>
+            {% if doc.summary %}
+            <div class="document-summary">{{ doc.summary[:250] }}{% if doc.summary|length > 250 %}...{% endif %}</div>
+            {% endif %}
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if total_pages > 1 %}
+    <nav class="pagination">
+        {% if page > 1 %}
+        <a href="{{ url_for('brookings.search', q=query, page=page-1) }}">← Previous</a>
+        {% endif %}
+
+        {% for p in range(1, total_pages + 1) %}
+        {% if p == page %}
+        <span class="active">{{ p }}</span>
+        {% elif p <= 3 or p >= total_pages - 2 or (p >= page - 2 and p <= page + 2) %}
+        <a href="{{ url_for('brookings.search', q=query, page=p) }}">{{ p }}</a>
+        {% elif p == 4 or p == total_pages - 3 %}
+        <span>...</span>
+        {% endif %}
+        {% endfor %}
+
+        {% if page < total_pages %}
+        <a href="{{ url_for('brookings.search', q=query, page=page+1) }}">Next →</a>
+        {% endif %}
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <p class="text-secondary">No documents found for "{{ query }}". Try different keywords or <a href="{{ url_for('brookings.index') }}">browse all documents</a>.</p>
+    {% endif %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Policy Library{% endblock %}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #ffffff;
+            color: #1a1a1a;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .brookings-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 3rem 6rem;
+        }
+
+        /* Minimal navigation */
+        .top-nav {
+            padding: 2rem 3rem 0;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .top-nav a {
+            color: #6c757d;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-right: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .top-nav a:hover {
+            color: #1a1a1a;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .text-secondary {
+            color: #6c757d;
+        }
+
+        /* Links */
+        a {
+            color: #0d6efd;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Forms */
+        input[type="text"],
+        input[type="search"],
+        input[type="date"],
+        select {
+            font-family: inherit;
+            font-size: 1rem;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d0d0d0;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus,
+        input[type="search"]:focus,
+        input[type="date"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #1a1a1a;
+        }
+
+        button[type="submit"],
+        .btn {
+            font-family: inherit;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            background: #1a1a1a;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button[type="submit"]:hover,
+        .btn:hover {
+            background: #0d6efd;
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        /* Spacing utilities */
+        .mb-6 { margin-bottom: 6rem; }
+        .mb-4 { margin-bottom: 4rem; }
+        .mb-3 { margin-bottom: 3rem; }
+        .mb-2 { margin-bottom: 2rem; }
+        .mb-1 { margin-bottom: 1rem; }
+        .mt-4 { margin-top: 4rem; }
+        .mt-2 { margin-top: 2rem; }
+        .mt-1 { margin-top: 1rem; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .brookings-container {
+                padding: 3rem 2rem 4rem;
+            }
+
+            .top-nav {
+                padding: 1.5rem 2rem 0;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        {% block head_style %}{% endblock %}
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <!-- Minimal top navigation -->
+    <nav class="top-nav">
+        <a href="/">← Home</a>
+        <a href="{{ url_for('brookings.index') }}">Browse</a>
+        <a href="{{ url_for('brookings.search') }}">Search</a>
+        <a href="{{ url_for('brookings.stats') }}">Statistics</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="brookings-container">
+        {% block content %}{% endblock %}
+    </div>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

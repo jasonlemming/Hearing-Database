@@ -125,17 +125,43 @@ def index():
         return f"Error: {e}", 500
 
 
+def expand_search_query(query):
+    """Expand common compound words to improve search results"""
+    # Common compound words that should also search for their separated forms
+    expansions = {
+        'healthcare': 'healthcare OR health',
+        'cybersecurity': 'cybersecurity OR cyber OR security',
+        'cryptocurrency': 'cryptocurrency OR crypto',
+        'blockchain': 'blockchain OR block',
+    }
+
+    # Simple word-by-word expansion
+    words = query.lower().split()
+    expanded_words = []
+
+    for word in words:
+        if word in expansions:
+            expanded_words.append(f'({expansions[word]})')
+        else:
+            expanded_words.append(word)
+
+    return ' '.join(expanded_words)
+
+
 @crs_bp.route('/search')
 def search():
     """Search CRS products"""
     try:
-        query = request.args.get('q', '')
+        original_query = request.args.get('q', '')
         page = int(request.args.get('page', 1))
         limit = 50
         offset = (page - 1) * limit
 
-        if not query:
+        if not original_query:
             return render_template('crs_search.html', query='', results=[], total=0)
+
+        # Expand query for better results
+        query = expand_search_query(original_query)
 
         conn = get_crs_db()
         cursor = conn.cursor()
@@ -202,7 +228,7 @@ def search():
         total_pages = (total + limit - 1) // limit
 
         return render_template('crs_search.html',
-                             query=query,
+                             query=original_query,  # Show original query to user
                              results=results,
                              total=total,
                              page=page,
@@ -238,7 +264,7 @@ def export_csv():
     try:
         # Get filter parameters
         product_ids = request.args.get('ids', '')
-        query = request.args.get('q', '')
+        original_query = request.args.get('q', '')
         product_type = request.args.get('product_type', '')
         status = request.args.get('status', 'Active')
         topic = request.args.get('topic', '')
@@ -253,14 +279,15 @@ def export_csv():
             placeholders = ','.join('?' * len(ids))
             sql_query = f'SELECT * FROM products WHERE product_id IN ({placeholders})'
             products = cursor.execute(sql_query, ids).fetchall()
-        elif query:
-            # Export search results
+        elif original_query:
+            # Export search results - expand query for better results
+            query = expand_search_query(original_query)
             search_query = '''
                 SELECT p.*
                 FROM products_fts fts
                 JOIN products p ON fts.product_id = p.product_id
                 WHERE products_fts MATCH ?
-                ORDER BY fts.rank
+                ORDER BY bm25(products_fts, 3.0, 1.0, 2.0)
             '''
             products = cursor.execute(search_query, (query,)).fetchall()
         else:

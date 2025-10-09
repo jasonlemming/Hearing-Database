@@ -152,14 +152,14 @@ def search():
         if not fts_has_summary:
             print("Rebuilding FTS index to include summary field...")
             cursor.execute('DROP TABLE IF EXISTS products_fts')
+            # Use column weights: title=3, summary=1, topics=2 for better ranking
             cursor.execute('''
                 CREATE VIRTUAL TABLE products_fts USING fts5(
                     product_id UNINDEXED,
                     title,
                     summary,
                     topics,
-                    content=products,
-                    content_rowid=rowid
+                    tokenize='porter'
                 )
             ''')
             cursor.execute('''
@@ -168,7 +168,7 @@ def search():
                     p.product_id,
                     p.title,
                     COALESCE(p.summary, ''),
-                    json_group_array(j.value)
+                    COALESCE(json_group_array(j.value), '')
                 FROM products p
                 LEFT JOIN json_each(p.topics) j
                 GROUP BY p.product_id
@@ -176,13 +176,14 @@ def search():
             conn.commit()
             print("FTS index rebuilt with summary field!")
 
-        # Search query
+        # Search query with column weights (title:3, summary:1, topics:2)
+        # Use BM25 ranking for better relevance
         search_query = '''
-            SELECT p.*, fts.rank
+            SELECT p.*, bm25(products_fts, 3.0, 1.0, 2.0) as score
             FROM products_fts fts
             JOIN products p ON fts.product_id = p.product_id
             WHERE products_fts MATCH ?
-            ORDER BY fts.rank
+            ORDER BY score
             LIMIT ? OFFSET ?
         '''
 

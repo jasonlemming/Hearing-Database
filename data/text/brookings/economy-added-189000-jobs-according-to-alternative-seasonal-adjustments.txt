@@ -1,0 +1,84 @@
+Commentary
+Economy Added 189,000 Jobs According to Alternative Seasonal Adjustments
+Jonathan Wright
+Jonathan Wright
+Professor
+- Johns Hopkins University
+April 4, 2014
+2 min read
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+Print
+There are massive seasonal patterns in employment data. For example, in July, it is typical for the U.S. economy to lose over a million jobs. Adjusting for this normal seasonal variation is essential to interpreting month-to-month changes in employment. The approach for this seasonal adjustment that is presently used by the Bureau of Labor Statistics (BLS) puts very heavy weight on the current and last two years of data in assessing what are the typical patterns for each month.
+Jonathan Wright of Johns Hopkins University argues in “
+Unseasonal Seasonals?
+” that a longer window should be used to estimate seasonal effects. He finds that using a different seasonal filter, known as the 3×9 filter, produces better results and more accurate forecasts. The key difference in the 3×9 filter is that it spreads weight over the most recent six years in estimating seasonal patterns. This makes the seasonal patterns more stable over time than in the current BLS seasonal adjustment method.
+We calculate the month-over-month change in total nonfarm payrolls, seasonally adjusted by the 3×9 filter, for the most recent month. The corresponding data as published by the BLS are shown for comparison purposes. According to the alternative seasonal adjustments, the economy gained 189 thousand jobs last month. The Bureau of Labor Statistics reported that the economy gained 192 thousand jobs last month. The discrepancies between the two series are explained in Dr. Wright’s BPEA paper.
+Thousands of Jobs Added
+BLS
+Wright
+2013-April
+203
+220
+2013-May
+199
+180
+2013-June
+201
+183
+2013-July
+149
+138
+2013-August
+202
+210
+2013-September
+164
+173
+2013-October
+237
+221
+2013-November
+274
+288
+2013-December
+84
+93
+2014-January
+144
+119
+2014-February
+197
+230
+2014-March
+192
+189
+The Brookings Institution is committed to quality, independence, and impact.
+We are supported by a
+diverse array of funders
+. In line with our
+values and policies
+, each Brookings publication represents the sole views of its author(s).
+More On
+U.S. Economy
+Sub-Topics
+Labor & Unemployment
+Program
+Economic Studies
+Project
+Brookings Papers on Economic Activity
+Hype and harm: Why we must ask harder questions about AI and its alignment with human values
+Artificial Intelligence
+Hype and harm: Why we must ask harder questions about AI and its alignment with human values
+Malihe Alikhani, Sabit Hassan
+October 9, 2025
+How do tariffs hurt the dollar?
+U.S. Economy
+How do tariffs hurt the dollar?
+Janice C. Eberly, Tarek A. Hassan, Kari Heerman, Jón Steinsson
+October 9, 2025
+Donald Trump’s digital mercantilism
+Technology Policy & Regulation
+Donald Trump’s digital mercantilism
+Tom Wheeler
+October 8, 2025

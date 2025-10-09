@@ -1,0 +1,384 @@
+Research
+Who falls short: The scope and spread of family need
+Jeffrey C. Fuhrer
+Jeffrey C. Fuhrer
+Nonresident Senior Fellow
+-
+Governance Studies
+,
+Race, Prosperity, and Inclusion Initiative (RPII)
+October 2, 2025
+From 2020 to 2023, the cost of basic necessities rose faster than family incomes, leaving a growing share of U.S. families unable to cover essential needs.
+More than half of Black and Hispanic families nationwide still fall short of the resources required to survive, with the problem affecting at least one-quarter of families in every state.
+The scale of the shortfalls—totaling an estimated $880 billion annually—underscores the need for systemic reforms and substantial policy responses beyond modest aid programs.
+Residents pick up free groceries at La Colaborativa's food pantry in the Boston suburb of Chelsea, Massachusetts, U.S., on March 12, 2025. REUTERS/Brian Snyder
+19 min read
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+Print
+In a recent
+post
+, I documented the share of families in the U
+.
+S
+.
+in 2020
+whose economic resources were insufficient to pay for
+basic necessities
+. The numbers
+were
+distressing: Over one-third of all families fell short
+(
+see
+T
+ables 1 and 2)
+,
+with
+Black and Hispanic families
+much
+more likely to
+be affected
+.
+Similar estimates have been provided in recent years by the Urban Institute and the United Way. Those estimates, based on comparisons of income to more generous budgets than those used here and in the
+previous
+post, show that many families are not
+thriving
+—
+perhaps more
+than half of them
+.
+But
+even more disheartening, my results indicate that far too many families do not have the resources to
+survive
+.
+1
+What has happened to these families since 2020? The national economy has undergone profound shifts: a sharp contraction during the pandemic followed by recovery, the rise and fall of public assistance programs designed to cushion shutdowns, and a surge of inflation driven largely by COVID-19 supply disruptions—all developments that likely had a significant impact on these families.
+2
+But overall, are families doing better or worse now? And are there areas of the country where need is concentrated, or are struggling families a national phenomenon? We know that Black and Hispanic families on average fare worse than white families, but do they fare noticeably better in some states than others? And how large a gap are we talking about in absolute terms? Would a few thousand dollars move many families to economic sustainability?
+These questions matter because they bear on the appropriate scale and location of aid. If need only affects those in small pockets of the nation, then economic aid should be tailored accordingly. If need is more widespread, aid will need to address underlying systems that produce shortfalls. If need is modest, then perhaps only modest interventions are required. This post provides answers to those questions.
+Back to top
+Regress, 2020 to 2023
+High-level statistics provide only partial insight into the welfare of families. From 2020 to 2023, Census
+data
+report that median family income rose 19.5% (from about $84,000 to nearly $101,000) before adjusting for inflation. After adjusting for inflation, incomes rose 2.1% over that period, about 0.7% per year.
+3
+But these aggregate statistics mask
+important
+differences
+by income level, race and ethnicity, and geography. To begin with, the inflation-adjusted gains vary across lower and higher incomes. Families with the lowest one-fifth of incomes
+(below $38,200 in 2020)
+saw their incomes rise almost 3%
+faster than inflation, while
+growth for
+the middle 60
+%
+of incomes
+($38,
+2
+00 to $10
+3
+,
+9
+00 in 2020)
+exceeded inflation by
+0.9
+%
+to 1.6
+%
+.
+4
+These official income gains are adjusted
+by
+the overall inflation rate, which does not accurately reflect the inflation experienced by lower- and middle-income families, as I documented in a
+recent
+post
+.
+Lower-income families spend proportionately more on necessities, whose
+prices have risen more rapidly in recent decades than non-
+essential items
+. From 2020 to 2023, prices for food and housing rose
+especially quickly, eroding the purchasing power of family incomes and reducing the value of government benefits they
+receive.
+5
+Table 1
+shows the percentage increase in family budgets
+(the
+estimated
+cost of necessities)
+by family composition from 2020 to 2023. F
+or
+many
+families
+with children, the
+cost
+of necessities
+rose by as much as 25
+%
+during this period, outpacing
+median
+income gains and
+likely
+leaving
+them worse off than in 2020.
+Table 1
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+A closer comparison of total family resources—including income from all sources plus government benefits—to family budgets confirms the high-level implications of Table 1. Table 2 shows the share of families whose total income falls short of the cost of necessities, updating the 2020 results with the most recent data from 2023.
+6
+Table 2
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+In
+all
+case
+s
+, the rise in the cost of necessities appears to have outpaced gains in
+total resources (
+income
+plus
+benefits
+)
+, so the share of families whose resources fall short has
+risen
+over the past three years. The fractions for Blacks and Hispanics
+remain
+above 50
+%
+, a shockingly high figure. Similarly, female-headed families
+(not shown)
+fare significantly worse than male
+-headed
+families.
+7
+Back to top
+The geography and demography of need
+Is this a nationwide problem, or is it concentrated in a few urban or rural areas? To answer this question, I mapped the share of families in need—using the data behind the percentages in Table 2—by state for 2023. Figure 1 shows the share of all families in need, regardless of race, ethnicity, or gender.
+There are differences across the states, although no state has fewer than one-quarter of its families in need. Only two states—Minnesota and North Dakota—have percentages of needy families between 25% and 30%. Many of the largest states—California, New York, and Florida—register shares between 40% and 50%. Central states such as Nebraska, Illinois, Ohio, and Oregon fall between 30% and 35%. In short, falling short is a nationwide problem, with even the best-performing states doing quite poorly.
+Figures 1-4
+Total population
+Black
+Hispanic
+White
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+How does this map change when we focus on families headed by white, Black, or Hispanic individuals? The contrasts are dramatic. The next figure shows the map for families headed by a white individual. It is immediately clear that the map is much lighter in color, with far fewer states showing shares of needy families above 35%.
+Figure 2
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+By contrast, the next two figures—for families headed by Black and Hispanic individuals—show that falling short of the cost of basic necessities is far more common. Most states are dark blue, indicating 40% to 50% of families, or more, lack sufficient resources. In Figure 3, a few states such as Montana, New Mexico, and Colorado have relatively small Black populations, and the share of these families falling short is more modest.
+8
+Maryland is an interesting exception—the Black share of the population is 29.6%, but the fraction of families falling short is
+33
+%.
+9
+Figure 3
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+Figure 4 presents the same data for families headed by a Hispanic individual. Here the
+plight of insufficient resources
+is
+nearly universal
+, with all but two states
+(Virginia and Vermont)
+registering shortfall percentages at 40
+%
+or higher. Most are above 45
+%
+, as the overall statistics would
+suggest.
+10
+Figure 4
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+Economic need is a national problem, not a local or regional one. In very few places do fewer than one-third of families lack the resources to meet basic needs. That is a national tragedy. The maps for families headed by Black and Hispanic individuals are stark, showing how commonplace it is for these families to struggle for survival. White families fare better, but even then about one-third fall short. That figure is less dire than the plight of Black and Hispanic families, but it should still be unacceptable.
+Back to top
+The scale of the problem
+It is critical to measure the size of these shortfalls. Using the data behind Table 2, Figure 5 shows the share of families facing a resource gap of the indicated size or larger, for all families and broken down by the race and ethnicity of the household head. For example, 20% of Black families face an annual shortfall of $24,845 or more. The worst-off—the bottom 5% of families with the largest gaps—are in especially dire straits, with shortfalls ranging from $36,026 for white families to $61,273 for Hispanic families.
+11
+Figure 5
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+Back to top
+Policy implications and conclusions
+Why do the magnitudes of shortfalls in Figure 5 matter? They measure not only the prevalence but also the size of the gaps, which in turn determines the scale and cost of potential policy responses. A significant increase in the earned income tax credit—roughly doubling the average benefit from about $2,500 to $5,000—would move very few families out of need.
+12
+A substantial targeted guaranteed income program that provides sizable annual cash grants to the neediest families might close these gaps.
+13
+But the size of such
+a
+program would need to be hefty
+, as the
+aggregate
+annual
+shortfall
+implied by
+the data underlying
+Figure 5 is
+$
+880
+billion
+.
+14
+In the long run, policymakers should address the underlying sources of economic need, which affect all races and ethnicities but have been deepened by systemic discrimination. They can close the gaps shown in Figures 2 through 5 by ensuring universal access to high-quality education from early childhood through secondary school, along with clear employment tracks that lead to jobs with sustainable wages and benefits, including health care and child care. They can also enact programs to build the wealth of Black and Hispanic families in the same ways the government did for white families in the wake of the New Deal.
+15
+The impact of disparities in access to education, wealth-building through housing and entrepreneurship, and affordable housing and health care is clear in the data presented here. It is not credible to blame the lack of economic success for one-third to one-half of the population on laziness. Systemic changes are needed to provide equal opportunity to succeed and to allow everyone the chance to build human and financial capital.
+Related Content
+The cost of being poor is rising. And it’s worse for poor families of color.
+Children & Families
+The cost of being poor is rising. And it’s worse for poor families of color.
+Jeffrey C. Fuhrer
+July 29, 2024
+How many are in need in the US? The poverty rate is the tip of the iceberg.
+Society & Culture
+How many are in need in the US? The poverty rate is the tip of the iceberg.
+Jeffrey C. Fuhrer
+June 20, 2024
+Author
+Jeffrey C. Fuhrer
+Nonresident Senior Fellow
+-
+Governance Studies
+,
+Race, Prosperity, and Inclusion Initiative (RPII)
+Footnotes
+Efforts include the United Way’s “ALICE” program (
+here
+), and the Urban Institute’s recently announced “True Cost of Economic Security” (
+here
+). Both of these measures yield higher estimates of the fraction of families in need, largely because the proposed budgets are significantly more generous than the budgets I use in this and the previous study. One can think of these budgets as more aspirational. Indeed, the subtitle of the Urban Institute study is “What Does it Take to Thrive, Not Just Survive in the US Today?”
+See
+this
+summary of economic relief during the COVID-19 pandemic, and Bernanke and Blanchard’s
+summary
+of the sources of inflation during the pandemic.
+See Table F-7 for real median incomes across time.
+See Table F-1 for real incomes by quintile across time.
+The Bureau of Labor Statistics shows the prices of food-at-home and rent of primary residence rising 25% and 21%, respectively, from January 2020 through December 2023. Source:
+FRED
+economic data, St. Louis Fed.
+The methodology is the same as that reported in
+Fuhrer
+2024, with the modifications noted in the previous endnote. The family resource data are collected from the IPUMS Census database, with adjustments to family resources as noted in the previous post. The family budget data correspond to the “robust” family budgets, which begin with the Economic Policy Institute’s
+budget
+by county, and pare back housing and food budgets to correspond to the (estimated) 20th percentile of rents in the relevant county (versus the “fair market rents” in the EPI’s measure, typically the 40th percentile), and the USDA’s “thrifty”
+food budget
+(versus the “low-cost” budgets in the EPI measure).
+The data for 2020 differ a bit from that reported in the original post. In this post, I have been able to match more families’ resources to their corresponding budgets. A considerable share of families in the Census files do not report a county of residence. In the previous post, I excluded them, although noting that they were disproportionately lower-income families, thus biasing the results downward. Here, I use the average of family budgets within a state for those families who do not report county data. These matches capture more low-income families, raising the percentage falling short by a couple of percentage points for most family structures, and across race and ethnicity. This matching is imperfect, but preferable to excluding all these families from the calculation of economic need.
+Montana’s Black population is 0.5% of the total as of 2023; Colorado’s is 4.0%, and New Mexico’s is 2.1%. See the Census Bureau’s
+Data Profiles
+for more details.
+Census Bureau American Community Survey 2023,
+here
+, percentage for one race, Black or African-American. Exploring the source of Maryland’s relative success lies outside the scope of this post.
+The District of Columbia (not a state) is also an outlier here, registering 26.2% of families falling short. It’s nearly impossible to see D.C. on the map in Figure 4.
+It is likely that the lowest income earners underreport earnings, as documented in a number of studies (see for example Han, Meyer, and Sullivan (2021), “The Consumption, Income and Well-Being of Single Mother Headed Families 25 Years After Welfare Reform,” National Tax Journal 74:3, pp. 791-824, linked
+here
+.). Underreporting is significant at the 5th percentile—perhaps as much as 50%—but quite modest (likely less than 10%) at the 10th percentile of incomes. Underreporting is far less likely to be problematic for earners in the 20th to 40th percentiles. According to Han et al., underreporting appears largest for very low income single mothers, who often receive income from multiple sources, often not earned income (other sources include government transfers such as AFDC and food stamps, as well as unreported work, and domestic partners). Given the relatively low incomes in the lowest 10% of incomes, such underreporting might reduce the size of the largest gaps by $5,000 or so, which certainly does not change the qualitative conclusions drawn in this post.
+The EITC for 2024 provides a maximum credit of $7,830 for a family with three or more children, subject to a limit on adjusted gross income (see more details
+here
+). The average EITC benefit in 2022 was $2,541 (
+here
+).
+See a discussion of such programs
+here.
+Computed from adding up the shortfall for each percentile times the number of families per percentile. Family estimates from Census Department “Historical Family Tables” FM-1,
+here
+.
+See a quick summary
+here
+, and in chapter 10 of my 2023
+book
+)
+Efforts include the United Way’s “ALICE” program (
+here
+), and the Urban Institute’s recently announced “True Cost of Economic Security” (
+here
+). Both of these measures yield higher estimates of the fraction of families in need, largely because the proposed budgets are significantly more generous than the budgets I use in this and the previous study. One can think of these budgets as more aspirational. Indeed, the subtitle of the Urban Institute study is “What Does it Take to Thrive, Not Just Survive in the US Today?”
+See
+this
+summary of economic relief during the COVID-19 pandemic, and Bernanke and Blanchard’s
+summary
+of the sources of inflation during the pandemic.
+See Table F-7 for real median incomes across time.
+See Table F-1 for real incomes by quintile across time.
+The Bureau of Labor Statistics shows the prices of food-at-home and rent of primary residence rising 25% and 21%, respectively, from January 2020 through December 2023. Source:
+FRED
+economic data, St. Louis Fed.
+The methodology is the same as that reported in
+Fuhrer
+2024, with the modifications noted in the previous endnote. The family resource data are collected from the IPUMS Census database, with adjustments to family resources as noted in the previous post. The family budget data correspond to the “robust” family budgets, which begin with the Economic Policy Institute’s
+budget
+by county, and pare back housing and food budgets to correspond to the (estimated) 20th percentile of rents in the relevant county (versus the “fair market rents” in the EPI’s measure, typically the 40th percentile), and the USDA’s “thrifty”
+food budget
+(versus the “low-cost” budgets in the EPI measure).
+The data for 2020 differ a bit from that reported in the original post. In this post, I have been able to match more families’ resources to their corresponding budgets. A considerable share of families in the Census files do not report a county of residence. In the previous post, I excluded them, although noting that they were disproportionately lower-income families, thus biasing the results downward. Here, I use the average of family budgets within a state for those families who do not report county data. These matches capture more low-income families, raising the percentage falling short by a couple of percentage points for most family structures, and across race and ethnicity. This matching is imperfect, but preferable to excluding all these families from the calculation of economic need.
+Montana’s Black population is 0.5% of the total as of 2023; Colorado’s is 4.0%, and New Mexico’s is 2.1%. See the Census Bureau’s
+Data Profiles
+for more details.
+Census Bureau American Community Survey 2023,
+here
+, percentage for one race, Black or African-American. Exploring the source of Maryland’s relative success lies outside the scope of this post.
+The District of Columbia (not a state) is also an outlier here, registering 26.2% of families falling short. It’s nearly impossible to see D.C. on the map in Figure 4.
+It is likely that the lowest income earners underreport earnings, as documented in a number of studies (see for example Han, Meyer, and Sullivan (2021), “The Consumption, Income and Well-Being of Single Mother Headed Families 25 Years After Welfare Reform,” National Tax Journal 74:3, pp. 791-824, linked
+here
+.). Underreporting is significant at the 5th percentile—perhaps as much as 50%—but quite modest (likely less than 10%) at the 10th percentile of incomes. Underreporting is far less likely to be problematic for earners in the 20th to 40th percentiles. According to Han et al., underreporting appears largest for very low income single mothers, who often receive income from multiple sources, often not earned income (other sources include government transfers such as AFDC and food stamps, as well as unreported work, and domestic partners). Given the relatively low incomes in the lowest 10% of incomes, such underreporting might reduce the size of the largest gaps by $5,000 or so, which certainly does not change the qualitative conclusions drawn in this post.
+The EITC for 2024 provides a maximum credit of $7,830 for a family with three or more children, subject to a limit on adjusted gross income (see more details
+here
+). The average EITC benefit in 2022 was $2,541 (
+here
+).
+See a discussion of such programs
+here.
+Computed from adding up the shortfall for each percentile times the number of families per percentile. Family estimates from Census Department “Historical Family Tables” FM-1,
+here
+.
+See a quick summary
+here
+, and in chapter 10 of my 2023
+book
+)
+The Brookings Institution is committed to quality, independence, and impact.
+We are supported by a
+diverse array of funders
+. In line with our
+values and policies
+, each Brookings publication represents the sole views of its author(s).
+More On
+Cities & Communities
+Sub-Topics
+Economic Development
+Society & Culture
+Sub-Topics
+Children & Families
+Demographics & Population
+Economic Security & Mobility
+Race in Public Policy
+U.S. Economy
+Sub-Topics
+Economic Indicators
+U.S. Government & Politics
+North America
+Sub-Topics
+U.S. States and Territories
+Program
+Governance Studies
+Region
+North America
+U.S. States and Territories
+Project
+Race, Prosperity, and Inclusion Initiative (RPII)
+SNAP cuts in the One Big Beautiful Bill Act will significantly impair recession response
+Society & Culture
+SNAP cuts in the One Big Beautiful Bill Act will significantly impair recession response
+Lauren Bauer, Diane Whitmore Schanzenbach
+October 8, 2025
+Assessing SNAP work requirement waiver policies by applying OBBBA rules to the Great Recession
+U.S. Government & Politics
+Assessing SNAP work requirement waiver policies by applying OBBBA rules to the Great Recession
+Lauren Bauer, Asha Patt
+October 8, 2025
+The value of a shorter forgiveness timeline for low-balance student loan borrowers
+Education Policy
+The value of a shorter forgiveness timeline for low-balance student loan borrowers
+Sarah Reber, Sarah Calame
+October 8, 2025

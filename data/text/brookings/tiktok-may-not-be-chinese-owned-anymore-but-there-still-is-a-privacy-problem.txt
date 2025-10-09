@@ -1,0 +1,175 @@
+Commentary
+TikTok may not be Chinese-owned anymore, but there still is a privacy problem
+Nicol Turner Lee
+Nicol Turner Lee
+Director
+-
+Center for Technology Innovation (CTI)
+,
+Senior Fellow
+-
+Governance Studies
+October 2, 2025
+The Trump administration negotiated a deal to keep TikTok functional in the U.S. following a law requiring its owner to divest or face a ban.
+The deal follows concerns from U.S. lawmakers about the national security and privacy implications of the app’s ties to its Chinese parent company, ByteDance.
+The terms of the deal are still unclear. However, the absence of a comprehensive U.S. privacy law means that even with TikTok in the hands of American investors, concerns about user protections would persist.
+TikTok booth at an exhibition in Hangzhou, Zhejiang Province, China on September 25, 2025. Credit: Reuters/CFOTO/Sipa USA
+8 min read
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+Print
+President Trump signed an
+executive order
+last week approving a deal to keep TikTok available in the U.S. after a
+2024 law
+required the app’s Chinese parent company, ByteDance, to divest or face a ban. According to the White House, the deal is purported to be valued at
+$14 billion
+. It would put control of the popular social media platform’s U.S. operations into the hands of a group of American and international investors. The administration has
+suggested
+that these investors will also gain control of the app’s algorithm, which has been both the prime asset for the social media giant and a point of concern for U.S. legislators, especially after
+allegations
+that the Chinese government was leveraging it to surveil American users.
+As the details of the deal unfold, questions remain around how consumer privacy will be protected and whether the absence of a U.S. national privacy law leaves users vulnerable to surveillance. Concerns also extend to the murkiness of government intervention, particularly with the prospect of increased monitoring of social media activity. Meanwhile, control of the social media app, along with other media properties, could become increasingly concentrated in the hands of Trump allies.
+TikTok’s origin story
+Douyin, the version of TikTok available in China, was launched in 2016. It allows users to create, share, watch, and comment on short video content, from dances to commentaries. When the app made its international release the following year, its primary focus on video made it stand out among its competitors, such as Facebook and Instagram. A year later, ByteDance
+acquired Musical.ly
+, an app that enabled users to create and post short music videos on their personal pages. The company also offered a more personalized experience for users through its refined search and recommendation algorithm.
+In 2017, Musical.ly had
+200 million users
+before
+merging
+with what soon became TikTok in August 2018, enabling ByteDance to create a new social media app that boasted
+1.6 billion
+users as of last year.
+The skepticism of U.S. lawmakers
+As TikTok gained traction with American audiences, the debate around its ownership intensified. While the parent company and its investors insisted that the Chinese government
+did not own
+a stake in the company, U.S. lawmakers
+were skeptical
+. This led to an
+unprecedented ban
+on the social media app in 2024, which was set in motion under the
+first Trump presidency
+when claims against TikTok were already growing. In February 2019, the company
+settled claims
+that it violated U.S. child privacy laws, resulting in a $5.7 million fine. A few months later, the app
+faced
+accusations
+of censoring protests in Beijing; ByteDance, headquartered in the Chinese capital, faced intense scrutiny from U.S. lawmakers over concerns that its app could be compelled to comply with demands from the Chinese government. TikTok was later accused of illegally surveilling American users and controlling its proprietary algorithm to facilitate national security intrusions.
+During his first term, President Trump issued an
+executive order
+focused on the “unusual and extraordinary” national security threats related to the use of technologies created and operated by foreign adversaries like China. The following year, he signed
+two more
+orders
+banning
+both TikTok and a Chinese instant messaging app, WeChat, unless they were sold. Immediate litigation
+halted
+the implementation of the first Trump bans, which
+were revoked
+by the Biden administration in 2021. A year later, former President Biden signed
+a ban
+that limited the use of the social media app by federal employees, and in 2024, he signed a wider ban that was part of a
+legislative package
+focused on providing foreign aid to Ukraine, Israel, and Taiwan. The law required ByteDance to divest by
+Jan. 19, 2025
+,
+or be shut down in the United States, leaving the second Trump presidency responsible for the platform’s fate.
+What happens to TikTok now
+After multiple extensions and negotiations with both ByteDance and the Chinese government, President Trump has reached a deal to put TikTok in the hands of U.S. investors. Yet, the new arrangement may not exactly reflect the original hands-off approach that Congress envisioned. Instead, Trump—as he did during the first potential shutdown of the social media app—appeared to rescue the app for millions of American users, and this time, he personally led the negotiations. News reports reveal that the current deal was made with Chinese President Xi Jinping’s direct approval, and according to
+CNBC
+, “no representatives from ByteDance were present at the signing.”
+Upon the conclusion of the TikTok saga, Trump is expected to sign another executive order, outlining the details of the transaction that appears to value the company at $14 billion and the transfer of majority ownership to a group of U.S. and international investors. The latter will
+own 65%
+of the company, while ByteDance and Chinese investors will hold less than 20% of ownership stakes. The order is reported to give the new investors oversight of the algorithm, along with six
+out of the seven
+seats
+on a board of directors that, according to
+the White House
+, will be filled by national security advisers and cybersecurity experts.
+What this might mean for TikTok users
+Concerns over national security and mass surveillance fueled intense pressure on a Chinese company with close ties to Beijing to unbundle its investments through the sale to a U.S.-based entity. But now, the tables have turned. The U.S. government has taken a very hands-on approach to the TikTok case in the absence of a comprehensive national data privacy law, which would protect the data of users on TikTok or any other internet-enabled application. There should be concerns about how the new company, whose investors appear to be handpicked by President Trump, will handle user data, maintain consumer privacy, protect free speech, and place limits on government surveillance of social media activities.
+A March 2025
+Pew Research Center poll
+found that 34% of Americans supported a TikTok ban. 75% of that group said they had concerns about the app’s ownership by a Chinese company. In the same survey, 74% of Americans who opposed the ban felt it would restrict free speech.
+In the absence of congressional guardrails, TikTok users may find that the transition in ownership could come with its own tradeoffs, affecting their privacy, free speech, and the expectation that personal data will be beyond the government’s reach.
+For example, politicians who leverage the social media platform for campaigning or fundraising may find themselves in a quagmire as they seek to use a tool that, in many respects, may be influenced by government actors or partisan forces. Small businesses, who argued that a TikTok ban would negatively impact their profits, may find their pages surveilled to ensure compliance with government regulations like tariffs. Civil society organizations opposing the current administration’s policies might also be monitored. A social media platform as massive as TikTok could be leveraged to either dismiss opposing viewpoints or amplify those favorable to the current government, which could affect voters’ behavior. Changing control of the algorithm might also allow its owners to placate the concerns of parents’ groups about
+harms to children online
+, especially as children’s online safety laws are in limbo.
+Concerns about Chinese ownership led to a takeover that will place control of one of the world’s most influential social media applications into U.S. hands. Yet, the lack of consumer privacy protections may blur the lines between legitimate government oversight and overreach, leaving TikTok users vulnerable at a time when Congress has made little progress on either comprehensive privacy legislation or limits to government surveillance. As a result, U.S. investors approved by the president not only have newfound control, but also access to very detailed information on Americans’ online behavior, despite the opaque nature of the current deal and its arrangements.
+Related Content
+The TikTok ban that wasn’t
+Social Media
+The TikTok ban that wasn’t
+Alan Z. Rozenshtein
+June 20, 2025
+What’s next for TikTok? | The TechTank Podcast
+Social Media
+What’s next for TikTok? | The TechTank Podcast
+Nicol Turner Lee, Darrell M. West, Justin Sherman
+February 3, 2025
+How AI can enable public surveillance
+Artificial Intelligence
+How AI can enable public surveillance
+Darrell M. West
+April 15, 2025
+Author
+Nicol Turner Lee
+Director
+-
+Center for Technology Innovation (CTI)
+,
+Senior Fellow
+-
+Governance Studies
+@drturnerlee
+Acknowledgements and disclosures
+Meta is a
+general, unrestricted donor to the Brookings Institution. The findings, interpretations, and conclusions posted in this piece are solely those of the authors and are not influenced by any donation.
+The Brookings Institution is committed to quality, independence, and impact.
+We are supported by a
+diverse array of funders
+. In line with our
+values and policies
+, each Brookings publication represents the sole views of its author(s).
+More On
+Business & Workforce
+Sub-Topics
+Corporations
+Technology & Information
+Sub-Topics
+Privacy
+Social Media
+Technology Policy & Regulation
+U.S. Government & Politics
+Sub-Topics
+Presidency
+Asia & the Pacific
+Sub-Topics
+China
+North America
+Sub-Topics
+U.S. States and Territories
+Program
+Governance Studies
+Region
+Asia & the Pacific
+China
+North America
+U.S. States and Territories
+Center
+Center for Technology Innovation (CTI)
+Donald Trump’s digital mercantilism
+Technology Policy & Regulation
+Donald Trump’s digital mercantilism
+Tom Wheeler
+October 8, 2025
+How tech powers immigration enforcement
+Immigrants & Immigration
+How tech powers immigration enforcement
+Josie Stewart, Michelle Du, Nicol Turner Lee
+October 6, 2025
+How technology is altering citizen protests
+Human Rights & Civil Liberties
+How technology is altering citizen protests
+Darrell M. West
+September 30, 2025

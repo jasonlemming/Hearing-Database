@@ -1,0 +1,570 @@
+Editor's note:
+This report is the fourth in a series on “ Europe’s energy transition: Balancing the trilemma ” produced by the Brookings Institution in partnership with the Fundação Francisco Manuel dos Santos.
+
+[H2]Executive summary
+
+Despite being less dependent on Russian fossil fuels than other members of the European Union (EU), Portugal and Spain suffered from the abrupt increase in energy prices and energy market instability caused by the 2022 European energy crisis.
+
+Both countries reacted promptly to the crisis with energy policy proposals at the EU level—including an Iberian exception mechanism in electricity markets, which temporarily capped the price of gas used for power generation—and several domestic measures to reduce electricity prices.
+
+They also immediately aligned with EU sanctions on Russia, while accelerating renewable deployment to gain strategic autonomy.
+
+Thanks to its liquefied natural gas (LNG) terminals and imports from the United States and Nigeria, the Iberian Peninsula weathered the crisis and supported France through record gas and electricity exports.
+
+If more interconnections had been in place, Iberia’s contribution to the EU’s energy security would have been greater.
+
+Connecting the Iberian Peninsula—often described as a renewable island—with the rest of Europe has become a priority for the EU’s strategic autonomy and competitiveness.
+
+This paper seeks to build on the lessons and the opportunities that result from the ongoing energy transition in Portugal and Spain, and the geopolitical tensions and the EU policy response that followed.
+
+Its conclusions can be summarized as follows:
+
+While the Iberian Peninsula’s initial dependency on Russian energy was limited, its energy security has nonetheless been affected by volatile market dynamics, prolonged drought, and shifting geopolitics in North Africa.
+
+Spain continues to import Russian LNG under legacy long-term contracts, which are expected to be phased out by 2027 if EU-level measures are successfully implemented.
+
+U.S.
+
+LNG is expected to play a major role in replacing Russian supply, opening new avenues for transatlantic cooperation in energy and infrastructure.
+
+The Iberian energy market remains poorly interconnected with France and the wider EU.
+
+Current projects fall short of EU interconnection goals, limiting Iberia’s role in enhancing European energy security and decarbonization.
+
+Stronger interconnections would have enabled a greater Iberian contribution during the energy crisis—a strategic consideration that policymakers should not overlook.
+
+Portuguese and Spanish citizens are concerned about climate change and generally supportive of the energy transition, which they also see as an economic opportunity.
+
+This social acceptance offers a competitive edge in capturing green industrial opportunities.
+
+Still, sustaining this momentum will require stronger engagement with local communities, clear communication throughout project lifecycles, and fair sharing of economic benefits.
+
+Portugal and Spain are well positioned to benefit from the energy transition due to abundant renewable resources, technical know-how, and solid institutions.
+
+While neither the Portuguese National Energy and Climate Plan nor the Spanish National Integrated Energy and Climate Plan may fully meet its targets, both set a clear direction toward electrification and renewables.
+
+For both countries, the transition represents an industrial opportunity, supported by trends like nearshoring and greenshoring.
+
+This ambitious transformation of the energy system also requires addressing key bottlenecks, particularly in grid capacity and digitalization, storage, ancillary services, and demand-side flexibility, as well as licensing, incentives, price signals, and local support.
+
+[H2]Introduction
+
+The Russian invasion of Ukraine in early 2022 marked a turning point for energy markets, exposing the vulnerabilities of Europe’s fossil-fuel-dependent energy systems.
+
+While the immediate impact was felt through soaring prices and supply uncertainty, the crisis also accelerated the European Union’s (EU) drive toward energy diversification and a low-carbon future.
+
+Within Europe, the Iberian Peninsula, although less directly exposed to Russia but nevertheless affected by the energy crisis, responded to the turmoil in a distinctive way.
+
+This paper analyzes why and looks into the future, identifying opportunities and core policy areas.
+
+To account for the impact of the 2022 energy crisis and the Iberian policy responses that followed, this paper starts by presenting the Portuguese and Spanish energy mix, including their energy imports from Russia, in the run-up to the crisis.
+
+The following section analyzes the impacts of the crisis and how it coincided with the closure of the Maghreb-Europe Gas Pipeline coming from Algeria, and a severe drought affecting hydropower in both countries.
+
+Then, the paper focuses on the Portuguese and Spanish energy policy responses, including price-stabilization mechanisms, sanctions enforcement, agreements on new interconnections and supply diversification, and how those responses transformed the Iberian energy system.
+
+Finally, the paper explores the way forward, presenting the Portuguese and Spanish energy and climate plans, the prospects for new electricity and hydrogen interconnections, and both countries’ green industrialization strategies.
+
+The conclusion summarizes the main post-crisis Iberian energy messages.
+
+[H2]Energy mix and Russian imports in the run-up to the energy crisis1
+
+At the onset of the full-scale Russian invasion of Ukraine—and of the turmoil in energy markets that followed—Europe’s energy mix was still highly tilted toward fossil fuels.
+
+Indeed, in 2021, oil, natural gas, and coal accounted for 70% of the energy mix in the EU (Figure 1).
+
+Portugal and Spain were close to the EU average (67% and 69%, respectively).
+
+There were, however, some differences in the composition: Portugal and Spain were, in comparison to the EU aggregate, more reliant on oil and less reliant on natural gas and coal; for coal, the Iberian Peninsula’s phaseout had greatly reduced imported volumes to negligible levels. 2 In the case of Portugal, renewable energy accounted for 30% of the energy mix, the sixth-highest share in the EU, where the aggregate figure was still at 17%.
+
+Iberia’s electricity mix had also shifted toward domestic renewable and low-carbon sources: By 2021, 60% of Portugal’s electricity was sourced from renewables, while Spain’s electricity consisted of 50% renewables and 20% from nuclear. 3
+
+Energy imports met a substantial share of European internal demand.
+
+For the EU, 56% of the energy needs were met by imports, mainly from commodities such as: petroleum products, gas, and solid fuels.
+
+The figure was even higher in Portugal and Spain, reaching 67% and 69%, respectively.
+
+Iberia was, however, among the least dependent on Russian energy: only 5% of Portugal’s and 8% of Spain’s gross available energy 4 came from Russia in 2020 (Figure 2).
+
+In comparison, this figure was 24% for the whole of the EU, where Russia was the leading trade partner for all three main primary energy sources.
+
+Portugal’s and Spain’s lower dependence on Russia and their LNG diversification strategy, together with a strong political commitment to deploy renewable energy sources, meant that they were in a more favorable position to weather the impact of the Russian invasion of Ukraine and the turbulence in energy markets that ensued.
+
+[H2]The energy crisis’ impact on the Iberian Peninsula
+
+The energy crisis triggered by the Russian invasion of Ukraine exposed European markets to significant price volatility, driving inflation across the continent.
+
+The Harmonized Index of Consumer Prices surged to 9.2% in the EU, 8.3% in Spain, and 8.1% in Portugal—largely fueled by soaring energy prices.
+
+While Spain and Portugal had relatively low direct energy imports from Russia, they were not immune to the consequences of rising costs in electricity, natural gas, and road fuels due to the integration of the different energy markets.
+
+The Iberian Electricity Market saw average spot prices rise to 167 euros per megawatt-hour (MWh) in 2022—50% higher than in 2021 and nearly 390% above 2020 levels, fueled by skyrocketing natural gas prices.
+
+In the third quarter of 2022, the Iberian Gas Market recorded an average price of 138 euros per MWh (approximately $41 per million British thermal units), up nearly 50 euros per MWh from the previous quarter and 88 euros per MWh year-on-year.
+
+Electricity prices for domestic and non-domestic consumers in Portugal remained below the euro area, EU, and Spanish averages.
+
+Portugal entered the energy crisis with a higher proportion of long-term fixed-price contracts in the wholesale market, which contributed to more stable electricity prices.
+
+In contrast, Spain saw electricity prices peak in late 2022 before stabilizing in 2023, though electricity prices remained above prewar levels.
+
+Spain’s regulated electricity tariff, which applies to most households, was directly indexed to intraday hourly wholesale prices, making it highly susceptible to extreme volatility.
+
+Amid the European energy crisis, Iberia faced two major challenges: the closure of the Maghreb-Europe Gas Pipeline (MEG) and a severe drought that reduced hydropower output.
+
+The MEG pipeline, which supplied 12 billion cubic meters (bcm) of gas from Algeria via Morocco, was shut down in November 2021 due to Algeria-Morocco tensions.
+
+This forced Iberia to rely on LNG imports and the Medgaz pipeline, which was expanded from 8 bcm to 10.5 bcm.
+
+The shift increased Iberia’s dependence on LNG, driving up gas and electricity prices.
+
+While supply security was maintained, pipeline import capacity and diversification suffered.
+
+Morocco was hit hardest, losing transit fees and access to Algerian gas.
+
+In June 2022, the MEG was reversed to transport gas imported as LNG from Spain to Morocco.
+
+The second impact was drought.
+
+At the peak of the energy crisis (2021 and 2022, Figure 3), hydropower generation in Spain and Portugal reached one of its lowest levels since the 1990s.
+
+Supported by its combined cycle gas-fired power plants, LNG terminals, wind power, and increasingly, solar energy, the Iberian Peninsula managed to maintain a stable electricity supply while achieving record electricity exports to France, whose nuclear fleet was suffering from record low availability, and to Morocco, which was also afflicted by drought and the MEG’s closure.
+
+[H2]The policy response to the energy crisis
+
+The EU implemented several policy measures to address the energy crisis, focusing on protecting EU citizens from high prices, reducing dependence on Russian fossil fuels, stabilizing energy markets, and enhancing energy security.
+
+The 2022 REPowerEU Plan prioritized energy savings, the diversification of suppliers, and an accelerated transition to renewables.
+
+To support these objectives, member states received additional funding through the Recovery and Resilience Facility, enabling investments in energy infrastructure, renewable projects, and energy efficiency.
+
+The EU acted on two fronts simultaneously: securing alternative energy supplies and ensuring energy security within the bloc.
+
+On the supply side, it intensified efforts to diversify gas imports, significantly increasing LNG shipments from the United States, Norway, and Qatar—with imports from the United States nearly tripling in 2023 compared to 2021.
+
+On energy security, the European Commission and member states agreed on a binding target that gas storage facilities be filled to at least 90% by November 1 each year, ensuring sufficient reserves for winter, and established (non-binding) natural gas consumption reduction targets.
+
+It also reinforced solidarity mechanisms among member states to facilitate gas-sharing in case of supply disruptions.
+
+These measures contributed to mitigating the energy crisis, stabilizing markets, and accelerating the EU’s green transition, significantly reducing reliance on Russian energy imports while strengthening long-term energy resilience.
+
+[H3]Energy policy responses in the Iberian Peninsula
+
+The Iberian Peninsula’s distinct electricity market characteristics—low interconnections with the rest of the European market and high renewable share—allowed for a distinctive and targeted policy response to address the energy crisis.
+
+Akey initiative was the Iberian Exception Mechanism, designed by Portugal and Spain to decouple the wholesale electricity price in the Iberian market from the wholesale market price of natural gas. 5 This measure aimed to protect consumers from the volatility of gas prices and mitigate the economic impact of rising energy costs, offering stability in a time of crisis.
+
+Approved by the European Commission on the grounds of low energy interconnections with the rest of Europe and a high share of renewables in electricity generation, the mechanism acted as a cap on the price of natural gas used for electricity generation.
+
+In doing so, it limited the daily clearing price in the electricity market for the cases when the price was set by the gas-fired power plants.
+
+To ensure that gas-fired power electricity producers were not financially penalized by the cap, they were compensated for the difference between the capped gas price and the actual market price.
+
+Electricity producers of non-gas technologies (inframarginal producers) saw their potential revenues reduced, as the cap limited the clearing price.
+
+The measure was effective in reducing electricity prices compared to a situation without the mechanism in place.
+
+In Portugal, with a high share of fixed-term contracts in the wholesale market, the Iberian Exception Mechanism allowed for a swifter stabilization of electricity prices.
+
+In Spain, it managed to lower wholesale electricity prices (Figure 4), despite indirectly increasing gas consumption for power generation and artificially low-cost electricity exports to France.
+
+The mechanism ended on December 31, 2023, when it was no longer necessary, as gas prices had fallen below the cap, and the measure worked mainly as a safeguard in the event of future stress.
+
+Moreover, in Portugal, reductions in electricity bills funded by electricity system revenues (via the reduction of the network access tariffs, resulting from the application of the regulatory model in place, with embedded stabilization features), further supported by the state budget, also contributed to containing the rise in electricity prices.
+
+In both Portugal and Spain, the value-added tax (VAT) and other electricity-related taxes were reduced.
+
+In Portugal, this included reductions in the electric bill and the prices of solar panels and other energy-efficient equipment; in Spain, reductions focused mainly on VAT for electricity.
+
+Concerning natural gas, Portugal provided targeted support, with direct subsidies to firms reliant on natural gas (also in the form of an insurance mechanism, providing predictability in an uncertain context) and to vulnerable households.
+
+Consumers were also given the option to return to regulated tariffs, which had been previously set to phase out.
+
+Spain implemented measures to shield consumers by capping price increases for regulated tariffs, lowering the VAT on natural gas, and offering targeted support to vulnerable households.
+
+Beyond electricity and gas, oil price volatility also affected consumers as gasoline and diesel prices spiked.
+
+Overall, trends were similar in both countries, which granted a discount to consumers linked to the extra revenue collected in taxes and duties due to the price hike.
+
+These events highlight the significant impact of energy market disruptions on consumers in the Iberian Peninsula and on broader inflation dynamics, as well as the critical role played by the emergency measures adopted in response.
+
+However, as in other parts of the EU, a recurring criticism is that some of the subsidies were implemented without consideration of either the recipient’s income level or the energy source’s carbon intensity, thereby potentially undermining the fundamental principles of green and progressive fiscal policy.
+
+It remains challenging to strike a balance across different policy goals.
+
+[H3]Diversification of oil and gas imports and sanctions enforcement
+
+Iberian diversification efforts have been minimal in comparison with other EU countries, as the peninsula started with a very low level of oil and gas dependency on Russia.
+
+Both Spain and Portugal ceased importing Russian crude oil well in advance of the EU’s sixth sanctions package that officially banned such imports, while diesel and fuel oil were phased out by the end of 2022.
+
+Iberia’s gas supply is relatively diversified due to LNG terminals, which offer the lowest-cost regasification capacity in Europe and remain generally underutilized.
+
+However, strengthening Iberian energy interconnections with the rest of the EU became a priority.
+
+Natural gas pipeline capacity with France was expanded by 20%, but from a very low level, limiting its immediate impact.
+
+Spain also contributed to Europe-wide energy security by reactivating its mothballed LNG plant in El Musel for storage and trading operations.
+
+Spain also supported Italy’s gas diversification strategy by allowing the Barcelona LNG terminal to be used for transshipment operations, enabling smaller LNG vessels to re-export cargo to the Livorno terminal.
+
+During the 2022 energy crisis, the United States became Spain’s main natural gas supplier, a role Algeria played for more than 30 years.
+
+By 2024, Algeria regained its position as Spain’s top supplier, significantly ahead of Russia and the United States.
+
+However, since Russia’s invasion of Ukraine, Spain has increased its imports of Russian LNG, which in 2024 accounted for 21% of the total gas supply, largely due to long-term contracts with take-or-pay and destination clauses that Spanish utilities signed before the invasion.
+
+Without specific sanctions on Russian gas imports, these utilities are unable to invoke force majeure to terminate the contracts without facing significant compensation costs.
+
+Amid heightened media and political scrutiny in other EU countries, foreign traders and energy companies have been taking advantage of the Iberian Peninsula’s ample spare LNG regasification capacity to import additional spot cargoes of Russian LNG.
+
+The EU’s 14th sanctions package bans transshipment services for Russian LNG at EU ports starting in March 2025, but only if the cargo’s final destination is outside the EU.
+
+While this measure is expected to reduce the profits of Novatek, Russia’s largest independent natural gas producer, it could temporarily boost Iberian LNG imports by attracting cargoes that were previously transhipped through the EU—provided no additional restrictions are imposed.
+
+Both Spain and Portugal have pledged to halt Russian LNG imports by 2027, aligning with REPowerEU, but the 16th sanctions package has failed to reach unanimity in the European Council.
+
+Algeria deserves a dedicated comment because it is the main natural gas supplier to Spain and there is renewed interest in its natural gas resources.
+
+The diplomatic standoff with Spain’s traditional main energy partner started in March 2022, when Spanish Prime Minister Pedro Sánchez wrote a letter to Mohammed VI considering the Moroccan proposal for Western Sahara (a limited autonomy) the “most serious, credible and realistic foundation” to solve that conflict.
+
+The letter infuriated Algeria, but Spanish gas contracts with the country, valid until 2030, have undergone successful renegotiation.
+
+By October 2022, with spot market gas prices surpassing 180 euros per MWh, Sonatrach (the Algerian state-owned enterprise) and Naturgy (the Spanish utility) had reached an agreement to retroactively revise prices for that year and then continued negotiations for the prices applicable from 2023 onwards.
+
+The fact that the diplomatic standoff did not spill over into the energy relationship was a major success for EU energy security and underscored Algeria’s reliability as a gas supplier.
+
+Following the loss of most Russian gas supplies, a second disruption in the Mediterranean would have severely strained the European LNG market and compromised the continent’s overall gas security.
+
+In Portugal, the United States remained the second-largest supplier, but its share surged from 19% in 2020 to 42% in 2023.
+
+Nigeria remained the top Portuguese gas supplier for the entire period, with its share fluctuating between 44% and 52% annually.
+
+Over the same period, Portugal’s reliance on Russian gas fell from 14% in 2021 to 7% in 2024.
+
+Nigeria’s role in Portugal’s energy security has been vital, though not without challenges.
+
+In 2022, Nigeria faced significant disruptions due to extensive flooding, which—combined with internal political instability and security risks, particularly from insurgencies and issues related to its gas infrastructure—triggered potential additional stress on the Iberian gas market.
+
+Despite these challenges, and also due to political and diplomatic efforts from Portugal to ensure the fulfillment of the contracted shipments, Nigeria was able to meet most of them without affecting the overall supply’s stability.
+
+In this context, U.S.
+
+LNG has become increasingly important for the Iberian Peninsula’s gas mix and energy security, with Portuguese and Spanish utilities signing in the last decade several long-term contracts with U.S. companies.
+
+While U.S.
+
+LNG remains key to Europe’s decoupling from Russian energy, it may face challenges from upcoming EU methane regulations affecting high-intensity shale gas from 2027, as well as Iberian utilities’ decarbonization plans, trade tensions, and transatlantic rifts that could undermine future long-term agreements.
+
+[H3]The evolution of the energy system: 2021-2024
+
+Comparing 2023 (the latest year available) with 2019 (pre-pandemic values), primary energy consumption decreased in Portugal by 8%, with the phasing out of coal and reductions of 28% and 10% for natural gas and oil, respectively.
+
+During the same period, primary energy from renewables increased by 20%. 6 In line with the commitment to decarbonize the power sector (Figure 5), Portugal closed all of its coal power plants in 2021.
+
+In 2022, the installed capacity of renewables increased by 2 gigawatts (GW), the largest annual increase ever recorded, followed by increases of 1.4 GW and 1.5 GW in 2023 and 2024, respectively.
+
+In total, from 2021 to 2024 renewables installed capacity increased by more than 30%, from 15.5 GW to 20.4 GW, driven by solar (3.4 GW) and hydro (1.2 GW).
+
+At the same time, electrification efforts have intensified, particularly in road transport.
+
+The share of electric vehicles (EVs) surged from 5% in 2020 to 18% in 2023.
+
+Asimilar trend is observed in the heat pump market, which has shown steady growth in recent years, culminating in record numbers of sales in 2022 and 2023.
+
+Spain followed a similar trajectory, with primary energy consumption declining by approximately 7% between 2019 and 2023.
+
+This reduction was driven by the coal phaseout in the power sector, efficiency gains across the economy, and some industrial closures due to the energy crisis.
+
+The expansion of renewables has been significant, with installed capacity increasing by over 25% from 2021 to 2024.
+
+Solar PV (photovoltaic) led this growth, adding more than 10 GW, followed by wind which added 4 GW, directly impacting the electricity mix (Figure 6).
+
+However, electrification remains a challenge, as the adoption of heat pumps and EVs, while growing, is still relatively low compared to leading European countries, including Portugal.
+
+[H2]The way forward: Key political questions
+
+The Iberian Peninsula has made significant progress in its energy transition, keeping ambitious renewable targets and increasing electrification efforts.
+
+However, political and economic challenges persist.
+
+Meeting the goals of the Portuguese and Spanish national energy and climate plans will require overcoming infrastructure constraints—including the development of new grid, but also a more efficient use of the existing infrastructure—investing in storage, and ensuring public support for policies at national and local levels.
+
+At the same time, both Portugal and Spain seek to capitalize on green industrialization, with renewables and hydrogen as competitive drivers.
+
+This section examines the key political questions that will shape the Iberian Peninsula’s energy future.
+
+[H3]What the Iberian energy and climate plans reveal
+
+The recently revised Portuguese National Energy and Climate Plan 2021-2030 (PNEC 2030) reinforced renewable, storage, and energy efficiency targets.
+
+PNEC 2030 estimates electricity demand surging from around 50 terawatt-hours (TWh) in recent years to 90 TWh by 2030, driven by sectoral electrification and green industrial development.
+
+It envisions a 93% renewable electricity share by 2030, with onshore and offshore wind contributing 40% and solar accounting for 42%.
+
+This transformation requires a significant expansion of installed renewable capacity, which is expected to increase from 15 GW in 2020 to 44 GW by 2030.
+
+Equally important is the role of storage, for which PNEC 2030 outlines a 2 GW 2030 target through pumped hydropower and batteries.
+
+The Spanish National Integrated Energy and Climate Plan (PNIEC 2030) has been criticized for being too ambitious but, as with Portugal’s PNEC 2030, it sets a clear horizon: rapid electrification of the economy, a larger share of renewables, and a progressive phase out of nuclear energy.
+
+PNIEC 2030 outlines ambitious goals for renewables to reach an 81% generation share by 2030.
+
+While solar has seen rapid growth, wind energy development remains off track.
+
+Targets for grid deployment, EVs, and storage could prove more difficult to achieve, while regulation on storage raises doubts about its effectiveness due to the limited incentives offered to investors.
+
+The Spanish and Portuguese renewable energy sector is facing growing challenges from increasing market price cannibalization, with low capture prices and zero or even negative prices during solar hours becoming more frequent.
+
+Although commercial and technical curtailment levels remain low, they are rising due to high renewable penetration.
+
+In addition, local opposition to renewable energy deployment and grid expansion is becoming increasingly contentious, with communities more actively challenging new projects.
+
+As a result, ensuring that renewable energy’s benefits reach local populations—for instance, with lump-sum or regular payments associated with installed capacity and/or mechanisms for sharing the electricity produced with local communities—must become a priority for authorities and developers, who are now further recognizing the importance of a just transition, not only for regions affected by the phase out of coal and nuclear power but also for those undergoing the phase-in of renewables.
+
+In Portugal, there is legislation related to compensation mechanisms for municipalities affected by strategic projects for grid expansion and by new renewable energy projects, although challenges remain.
+
+Another contentious issue is the gradual phase out of the Spanish nuclear fleet from the end of 2027 to 2035, following a plan agreed to in 2019 between the government and the utilities operating the reactors.
+
+Spain’s PNIEC 2030 permits the closures to be suspended should supply security be at risk, but the first closures in 2027 and 2028 are approaching and will likely proceed despite growing public and political opposition.
+
+For Spain and Portugal to meet their renewable energy and electrification targets, they must accelerate grid development, expand cross-border interconnections, enhance storage, improve demand flexibility, develop capacity markets, and streamline permitting—all while maintaining public support through effective local engagement.
+
+It should be noted that the ambitious climate goals in both countries are supported by the general public.
+
+According to polls, Portuguese and Spanish citizens broadly support the energy transition and fighting climate change.
+
+They have a reason for that: Europe is the fastest warming continent, and extreme climate events are becoming more frequent and more intense; Southern Europe is particularly prone to multiple climate risks, including droughts, deadly floods, and massive forest fires.
+
+This attitude represents a major contribution to the European energy transition, especially as it translates into policy action in Portugal and Spain at a time when support for climate action is diminishing in other member states.
+
+[H3]The 2025 Iberian Peninsula blackout
+
+On the morning of Monday, April 28, 2025, the Iberian Peninsula was affected by a significant power blackout that impacted mainland Portugal and Spain.
+
+Electricity supply was interrupted for approximately 10 hours in most of the peninsula and for even longer in some areas.
+
+The blackout caused severe disruptions in telecommunications, transportation systems, and essential sectors such as emergency services.
+
+While the causes of this unprecedented event are still under investigation, analysts have emphasized the urgent need to accelerate international interconnections, strengthen the power and its digitalization, bolster ancillary services and demand flexibility, and advance the deployment of low-carbon storage solutions such as batteries and pumped hydro.
+
+Cooperation among the two countries’ system operators is also essential.
+
+Interconnections were especially relevant in recovering the electricity system thanks to French and Moroccan supplies, but their role in the blackout remains to be seen.
+
+Since this paper’s primary focus lies in energy geopolitics, and that reliable information on the blackout remains limited at the time of publication, a detailed assessment of the blackout is not included.
+
+[H3]Electricity and hydrogen interconnections
+
+Spain and Portugal maintain a highly integrated electricity and power system, facilitating a functioning Iberian energy market.
+
+This stands in contrast to the limited Iberian-Europe interconnections, which have reinforced the concept of the Iberian Peninsula as an energy island in the popular geo-imaginary.
+
+Spain and France have one of the lowest levels of electricity integration between neighboring countries in the EU, with an interconnection capacity of approximately 2,800 megawatts (MW).
+
+This stands in sharp contrast to France’s total interconnection capacity with five other European countries—Great Britain, Belgium, Germany, Italy, and Switzerland—which amounts to more than 15,000 MW.
+
+This asymmetric integration has historically discouraged France from investing, both economically and politically, in its interconnections with Spain.
+
+Anew subsea interconnection through the Gulf of Biscay, connecting Spain and France, is progressing, despite delays and budget overruns, with its entry into operation now expected by 2027.
+
+Once completed, it will almost double the exchange capacity to 5,000 MW, enhancing the complementarity between France’s nuclear-based and Iberia’s renewables-dominated power systems.
+
+Other proposed cables through the Pyrenees are encountering significant delays due to environmental concerns, complex terrain, and lack of support from the French government, making their realization improbable soon.
+
+The updated PNIEC 2030 acknowledges that these Pyrenean interconnections will not be operational by 2030.
+
+Spain and Portugal are also working on new interconnections to keep pace with market evolution and reinforce supply security.
+
+Anew interconnection is planned between Minho (Ponte de Lima) and Galicia (Fontefría).
+
+Once completed, it will increase exchange capacity by around 1,000 MW, reaching a total of 4,200 MW of exchange capacity from Spain to Portugal and 3,500 MW from Portugal to Spain.
+
+There are other electricity corridors being considered.
+
+The Mediterranean Solar Bridge is a proposed 2 GW high voltage direct current subsea cable aiming to connect Spain and Italy to facilitate renewable energy exchange, but the project faces significant regulatory challenges and high costs.
+
+Iberia is also looking to engage Morocco.
+
+Since the closure of the MEG, Spain has been a net exporter of electricity to Morocco, whose electricity system also benefits from being synchronized with Europe’s.
+
+Spanish planning includes the building of a third electricity interconnection with Morocco, which will export Iberian renewable energy to Morocco in the short term, rather than the other way around.
+
+Only in the long run, when Morocco has made more progress in decarbonizing its electricity mix (which today is only 20% renewable), could the country reduce the cost impact of the EU’s carbon border adjustment mechanism to its electricity exports and remain competitive in the European power market.
+
+Morocco and Portugal are also considering a 1 GW interconnection (possibly as an alternative to the new Morocco-Spain interconnection), which would be the first direct link between the two countries.
+
+Long-distance cross-border interconnections are also being considered by private market participants (e. g., Morocco-U.K., through the Portuguese coast), although technological and administrative hurdles remain.
+
+In October 2022, Spain, Portugal, and France agreed to develop new hydrogen interconnections, primarily through the H2Med pipeline.
+
+The project, which includes a connection between Portugal and Spain (Celorico da Beira-Zamora) and extends into Portugal (via the so-called “enablers,” connecting the main grid to industrial projects producing green hydrogen in the country), aims to integrate the Iberian Peninsula’s hydrogen market with the broader European network.
+
+The initiative has attracted interest from other European countries, particularly Germany, which has expressed strong political support for extending the infrastructure beyond France.
+
+However, given the current state of the renewable hydrogen sector, the future of the pipeline, and especially its timeline for completion, originally set for 2030, remains uncertain and is likely to face delays.
+
+In the Iberian Peninsula, key ports such as Algeciras, Huelva, and Bilbao (Spain) and Sines (Portugal) are developing large-scale projects to export hydrogen derivatives like green ammonia, methanol, and synthetic fuels to Northern Europe, particularly Germany, the Netherlands, and Belgium.
+
+These initiatives aim to retrofit existing brownfield industrial sites, including refineries and fertilizer plants, and create new low-carbon bunkering hubs.
+
+As with renewable electricity exports, hydrogen entails an apparent Iberian dilemma between exporting or using it to foster Iberian industrial modernization and decarbonization.
+
+This trade-off has to be nuanced because the electricity and hydrogen interconnections needed for exporting are not in place and will take years to develop.
+
+In the meantime, and by default, the Iberian Peninsula would have to follow a more inward strategy using its abundant but temporarily unexportable renewable resources to gain competitiveness in decarbonized industries (see below).
+
+How long the Iberian Peninsula will remain a renewable island within the EU will depend on interconnection projects across the Pyrenees or other alternatives (usually more costly, although technological advances may change this).
+
+The Letta and Draghi reports advocate for a rapid physical and normative integration of EU energy markets into a functioning energy union to advance European competitiveness and energy security.
+
+Meanwhile, the absence of energy interconnections offers a natural industrial protection to Iberia: as renewables continue slashing record generation figures, Portugal and Spain feature cost-competitive green energy that is attracting industries.
+
+At the same time, low prices may limit incentives for new renewable investments, and issues concerning grid access and other regulatory and permitting hurdles may also delay a faster deployment.
+
+The electricity market reform in the context of the EU, focusing on long-term contracts (power purchase agreements and contracts for difference), a review of marginal pricing, and the development of capacity markets and flexible demand mechanisms, are essential to ensure stability and predictability while retaining investment incentives.
+
+[H3]Toward green industrialization in the Iberian Peninsula
+
+The Iberian approach to the energy transition is fully aligned with EU priorities.
+
+Portugal and Spain are among the most pro-EU member states and have always argued for greater energy integration with Europe.
+
+The close Iberian collaboration on the energy transition over recent years contributes to solidifying the peninsula’s position as a leading green industrial hub for Europe.
+
+Decarbonization also presents a major opportunity for the Iberian Peninsula, which benefits from a unique combination of competitive green energy, critical raw materials, and a strong industrial base.
+
+Future energy prices further underscore this competitiveness, with the Iberian Electricity Market being among the most cost-efficient in Europe for the coming years.
+
+Additionally, the complementarity of renewable sources (solar, wind, and hydro) also ensures the green energy supply’s stability, an added competitive advantage.
+
+Regarding renewable hydrogen, the Iberian approach has evolved in response to economic and geopolitical factors.
+
+In Spain, renewable hydrogen was initially framed as a tool for post-COVID-19 industrial development, but the Russian invasion of Ukraine and the European Commission’s REPowerEU Plan prompted a strategic shift toward green hydrogen.
+
+Portugal initially considered green hydrogen as a new export good, given Portuguese producers’ cost-competitiveness, but soon moved to a strategic industrial approach that sought to use green hydrogen to decarbonize its hard-to-abate industries and attract new ones.
+
+As a result, both Spain and Portugal raised their 2030 targets for electrolyzer capacity, from 4 GW to 11 GW and from 2.5 GW to 3 GW, respectively.
+
+As part of a global trend in the hydrogen sector, these targets are unlikely to be fully met for commercial and technical reasons; nonetheless, they have served as a strong political signal of ambition.
+
+To ensure a swift deployment of new hydrogen projects, Portugal created a streamlined regulatory framework and auctioned long-term public contracts to kick-start the industry.
+
+Both countries aim to start replacing grey hydrogen, which is produced from natural gas, in refining and chemical industries, while attracting investment in low-carbon industrial processes such as green steel, ammonia, and synthetic fuels.
+
+Portugal and Spain lead Europe in newly installed renewable capacity and in the signing of power purchase agreements.
+
+They are also bringing in electro-intensive and clean-tech industries, including those associated with the digital economy.
+
+Moreover, both nations hold strategic roles in Europe’s clean technology value chain.
+
+Portugal and Spain are aiming to leverage their significant lithium reserves to obtain investments across the entire value chain—from refining to batteries and recycling, while also focusing on local strategies that ensure benefits for the communities where the projects are located.
+
+By advancing into these high-value segments, the ambition is to unlock greater economic benefits, create skilled jobs, and reinforce their importance within European strategic autonomy and low-carbon value chains.
+
+Akey competitive advantage shared by Portugal and Spain is their highly skilled workforce in science, technology, engineering, and mathematics (STEM).
+
+Portugal boasts one of the highest shares of STEM graduates among the members of the Organization for Economic Cooperation and Development and partner countries, having attracted several services and engineering centers into the country in recent years.
+
+Spanish engineers are also internationally recognized for their competence, and they support a robust private sector in renewable energy with global utilities, project developers, and leading wind operations and maintenance firms.
+
+Portugal and Spain also benefit from well-developed infrastructures, including deep-sea ports and modern gas grids, so they are better prepared than other economic competitors for hydrogen integration.
+
+Rising geopolitical rivalries are changing the geoeconomics of industrial supply chains.
+
+While nearshoring and friendshoring aim to prevent supply disruptions by fostering integration with neighbors and allies, respectively, abundant (and complementary) renewable resources provide opportunities for powershoring: the process of relocating industry to countries with competitive and reliable renewable energy production.
+
+The strategy can be more properly termed greenshoring when it involves an open, competitive decarbonization pathway plus socio-environmental sustainability.
+
+The Clean Industrial Deal, published in February 2025 by the European Commission as a follow-up to the Draghi Report, is fully aligned with the Iberian strategy.
+
+As frontrunners in the energy transition, Portugal and Spain can also swiftly benefit from new European content requirements.
+
+Finally, Portugal and Spain are fully aligned with the European decarbonization pathway, both regarding internal and external action.
+
+For the latter, both countries support the more open version of the EU’s open strategic autonomy, favoring open regionalism and multilateralism.
+
+These preferences particularly apply to the Mediterranean neighborhood, Africa, Latin America, and the Caribbean, with both countries advocating for the EU to embrace an open decarbonization approach (e. g., via the Global Gateway).
+
+These regions have a significant untapped renewable production potential and provide key inputs for European economies—from oil and gas to critical minerals—and Portuguese and Spanish companies have heavily invested in their energy sectors (in some cases, benefiting from the ease of communication from a shared language).
+
+[H2]Conclusions
+
+Building on the lessons and the opportunities that result from the ongoing energy transition in Portugal and Spain—and in the context of the geopolitical tensions and the EU policy response that followed—this paper’s post-crisis energy messages can be summarized as follows:
+
+Portuguese and Spanish citizens are concerned with climate change and broadly open and receptive to the energy transition, viewing it also as an economic opportunity.
+
+This provides a competitive edge to seize the existing and emerging green industrial opportunities.
+
+However, to continue on the path of energy and climate transition, mechanisms to engage with local communities should be reinforced, with clear ex-ante and ex-post communication and with the sharing of economic benefits.
+
+Portugal and Spain are poised to benefit economically and geopolitically from the energy transition, thanks to world-class renewable resources, technical know-how, and strong institutions.
+
+While the Portuguese PNEC 2030 and Spanish PNIEC 2030 may not achieve all of their ambitious targets, they establish a clear direction focused on electrification and renewables and provide clear signals to the market participants.
+
+For both Portugal and Spain, the energy transition is an industrial opportunity, driven by nearshoring and greenshoring within a model of open decarbonization.
+
+Policy action should continue to address the main bottlenecks, namely grid availability, predictability of licensing and administrative procedures, investor incentives, price formation mechanisms, and local acceptability.
+
+The Iberian Peninsula’s energy market is insufficiently interconnected with France and the rest of the EU.
+
+Ongoing projects remain inadequate to meet EU interconnection targets, limiting Iberia’s contribution to European energy security and decarbonization efforts.
+
+Higher interconnection could have allowed the Iberian countries to provide a stronger contribution during the energy crisis.
+
+This security element—beyond the economic dimension—should be carefully considered by policymakers and political actors going forward.
+
+The Iberian Peninsula’s initial energy dependency on Russia was low, but shifting energy market dynamics and other factors, such as drought and North African geopolitics, have impacted its energy security.
+
+Imports of Russian LNG, tied to legacy long-term contracts, are expected to phase out by 2027 if the EU successfully implements coordinated measures, reinforcing the role of Iberia as a gateway for U.S.
+
+LNG into the EU.
+
+In the long term, the development of an EU green hydrogen market will also contribute to the diversification of energy sources and energy origins, and Portugal and Spain can play a pivotal role given their competitive advantages in green hydrogen production.
+
+In Partnership With
+
+Fundação Francisco Manuel dos Santos
+
+Fundação Francisco Manuel dos Santos
+
+Footnotes
+
+In this analysis, the energy crisis is defined as the process that began in the autumn of 2021, leading to historically high energy prices in Europe—particularly for natural gas and electricity, though not exclusively.
+
+The causes of this crisis, detailed below, range from geopolitical tensions following Russia’s invasion of Ukraine to the severe drought that affected the entire continent.
+
+In Portugal, the shut down of the two remaining coal power plants occurred in 2021.
+
+According to the latest  Eurostat data, in 2024, renewables accounted for 88% of Portugal’s electricity production, while in Spain renewables made up 56%, with an additional 20% from nuclear energy.​
+
+It includes both primary energy and the energy needs for energy transformation.
+
+To understand how the Iberian Exception Mechanism operated and its estimated effect in the wholesale electricity market see​​​, for instance,​​​ Manuel Hidalgo-Pérez et al., “The Iberian exception: Estimating the impact of a cap on gas prices for electricity generation on consumer prices and market dynamics,”  Energy Policy 188, no. 2 (May 2024): 114092, https://doi. org/10.1016/j. enpol.2024.114092.
+
+The shift from fossil fuels to renewables like wind and solar reduces primary energy consumption because these sources do not involve conversion losses.
+
+As a result, when renewables replace coal or natural gas, primary energy use declines even if the final energy output remains relatively unchanged.​​
+
+In this analysis, the energy crisis is defined as the process that began in the autumn of 2021, leading to historically high energy prices in Europe—particularly for natural gas and electricity, though not exclusively.
+
+The causes of this crisis, detailed below, range from geopolitical tensions following Russia’s invasion of Ukraine to the severe drought that affected the entire continent.
+
+In Portugal, the shut down of the two remaining coal power plants occurred in 2021.
+
+According to the latest  Eurostat data, in 2024, renewables accounted for 88% of Portugal’s electricity production, while in Spain renewables made up 56%, with an additional 20% from nuclear energy.​
+
+It includes both primary energy and the energy needs for energy transformation.
+
+To understand how the Iberian Exception Mechanism operated and its estimated effect in the wholesale electricity market see​​​, for instance,​​​ Manuel Hidalgo-Pérez et al., “The Iberian exception: Estimating the impact of a cap on gas prices for electricity generation on consumer prices and market dynamics,”  Energy Policy 188, no. 2 (May 2024): 114092, https://doi. org/10.1016/j. enpol.2024.114092.
+
+The shift from fossil fuels to renewables like wind and solar reduces primary energy consumption because these sources do not involve conversion losses.
+
+As a result, when renewables replace coal or natural gas, primary energy use declines even if the final energy output remains relatively unchanged.​​
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

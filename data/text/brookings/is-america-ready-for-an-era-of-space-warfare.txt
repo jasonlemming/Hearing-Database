@@ -1,0 +1,213 @@
+For technological, political, and practical reasons, space has yet to be weaponized like the other domains of warfare.
+
+Now, however, the United States Space Force’s chief of space operations, General B.
+
+Chance Saltzman, has said that the Space Force  will do whatever it takes  to militarily dominate space.
+
+Russia and China are likewise  building combat capabilities that could be used to attack U.S. satellites.
+
+Regardless of one’s beliefs on the wisdom and outcomes of fighting a war in space, it is clear that a new era, in which the United States organizes, trains, and equips for space combat, has arrived.
+
+[H2]Why fight in space?
+
+The technical answer to why space has become a militarily contested domain has its roots in 20th-century airpower theory.
+
+Like the sky, space is a unique operational area that provides access to places that ground and naval forces cannot reach.
+
+Spacecraft have the same ability attributed to aircraft: they can look down—and what they see can be of military value—they can be communicated with, or they can be attacked.
+
+The other quality, one that is new to space, is persistence.
+
+Satellites were once expensive to build, expensive to launch, and few in number; they are now much less expensive and abundant.
+
+This economic shift allows spacecraft to operate in mega-constellations  and be overhead all the time.
+
+The United States leverages space by using satellites to contribute to the military’s information architecture.
+
+Space systems collect information, whether we are talking about the  surveillance and reconnaissance  of adversary actions or watching the planet to monitor  the weather.
+
+Space systems, like the  MILSTAR  satellite, also allow military forces to communicate with each other.
+
+Lastly, satellites form the backbone of the  Global Positioning System  (GPS), which is used to provide the high-fidelity position, navigation, and timing information necessary for U.S. precision munitions.
+
+Information, whether it is generated in space or merely transiting through space, has become an essential component of the American way of war.
+
+As space power theorist Colin S.
+
+Gray  observed, “Space warfare is a certainty in the future because the use of space in war has become vital.” By making critical contributions to the military’s information architecture, space has become vital to success on the battlefield, meaning that space will be embroiled in combat operations.
+
+In fact, space is an  actively contested area  in the Ukraine war: Communication satellites supporting Ukrainian military operations along the northern frontlines are being jammed by Russia.
+
+[H2]Why fight in space now?
+
+Typically, new domains of warfare are rapidly weaponized.
+
+The first submarine,  the Turtle, was built to destroy British ships during the American Revolution.
+
+Eight years after the first powered flight by the Wright brothers, airplanes were used as  bombers in the 1911 Italo-Turkish War.
+
+Unlike these other domains of warfare, space did not weaponize immediately.
+
+This historical anomaly results from a combination of technology, policy, and world events.
+
+Though Robert Goddard built the first liquid-fueled rocket in 1926, satellites would remain a theoretical concept until the Soviet Union launched Sputnik in 1957.
+
+The first satellites were insufficiently advanced for combat use, but they could surveil the Earth and provide over-the-horizon communications, which they did for the U.S. and Soviet militaries during the Cold War.
+
+As tensions between the United States and the Soviet Union heightened, the United States signed the 1967  Outer Space Treaty, which prohibited stationing nuclear weapons in space.
+
+Since space weapons could threaten missile warning or nuclear command and control satellites, thereby undermining nuclear stability, the United States decided not to put weapons in space.
+
+This decision helped reduce the risk of nuclear conflict.
+
+At the end of the Cold War, the United States lacked a peer adversary, resulting in the  U.S. defense budget declining  for 11 straight years.
+
+However, the military’s use of and reliance on space continued to grow. 1991’s Operation Desert Storm became known as  the first space war  due to U.S. forces’ extensive use of GPS and satellite communications.
+
+The Kosovo War in the late 1990s saw space forces providing “ unparalleled battlefield awareness, and permitted rapid target selection and precision strike.” These types of military space contributions led Secretary of Defense Donald Rumsfeld to oversee a  national commission  on military space that considered creating a space force and deploying weapons in space.
+
+However, the attacks of September 11, 2001, deferred the discussion on warfare in space, until now.
+
+In 2025, we enjoy a vibrant space industry that supports private, civil, and national security activities.
+
+Accessing space is easier and much less expensive than ever before as rockets have become reusable.
+
+Satellite manufacturing has captured the efficiencies and cost savings of mass production, leading to  thousands of satellites  being launched every year.
+
+These trends are occurring as U.S. adversaries like China and Russia are also militarizing space and  threatening U.S. satellites.
+
+As recently as March 18, the second in command of the U.S.
+
+Space Force, General Michael Guetlein, said that China has been practicing “ dogfighting ” in space with experimental satellites.
+
+[H2]What does space warfare look like?
+
+The United States strengthened the military’s role in space with the creation of the U.S.
+
+Space Force and an associated combatant command, the United States Space Command, in 2019.
+
+An assistant secretary of defense for space policy position was created in 2020.
+
+This organizational growth reflects the evolution of military space operations.
+
+The  mission statement  of the U.S.
+
+Space Force, the military branch responsible for space warfare, is to “secure our nation’s interests in, from, and to space.” Thus, we can view space warfare as the acts of fighting in space, from space, and to space.
+
+Fighting “to space” means weapons on Earth attacking spacecraft.
+
+The United States,  China, and  Russia have developed anti-satellite missiles to physically destroy satellites.
+
+Satellites are also vulnerable to jamming by terrestrial electronic warfare capabilities.
+
+This is not merely theoretical: Russia has successfully and repeatedly jammed  Starlink communications satellites used by Ukraine.
+
+The U.S.
+
+Space Force has also entered the ring by fielding a satellite jammer called the  Counter Communications system.
+
+Fighting “from space” means spacecraft in orbit attacking targets on the Earth.
+
+This capability remains academic and theoretical as no orbital bombardment capability has been demonstrated by any nation.
+
+Saltzman, the Space Force’s chief of space operations, recently  made the case to prepare  “to contest and control … to fight and win” in “the space domain.”  In effect, Saltzman is describing how the United States must fight to ensure that U.S. forces have access to space while denying adversaries the same.
+
+It is not enough, though, to prevent U.S. satellites from being harmed.
+
+Just as the United States uses satellites for targeting, navigation, positioning, communications, and weather monitoring, so do adversaries like Russia and China.
+
+If, for example, China were to use its satellites for offensive military operations, such as  targeting U.S. warships  and extending the range of its ballistic missiles, those satellites would become valid military targets.
+
+How the Space Force would attack these satellites could involve orbital warfare (combat operations in space), electromagnetic warfare, and using terrestrial weapons like anti-satellite missiles to disrupt, degrade, and even destroy adversarial capabilities.
+
+This makes space warfare somewhat unique: In the traditional domains of warfare, there is a self-evident need to sink ships, shoot down airplanes, and destroy tanks.
+
+In space, however, one can achieve military objectives without destruction.
+
+Asatellite that has been jammed, for example, can be rendered useless for a prescribed period of time.
+
+This type of attack, referred to as a “reversible effect,” might be less provocative than one that destroys the satellite.
+
+This ability to suppress an adversary’s space capability for a short amount of time, perhaps preventing communications or information gathering during a limited strike or rescue operation, might enable the mission’s success while reducing the strategic costs that are associated with destroying a high-cost, high-value satellite.
+
+Reversible effects can also be used to try to deter an adversary by employing military power short of combat.
+
+Think of a satellite loitering near another satellite and jamming its signals as a form of information blockade.
+
+If an adversary requires the use of a satellite for their mission to succeed, then demonstrating both the ability and willingness to deny its use may force them to reconsider their action.
+
+[H2]What should policymakers do?
+
+The United States’ next steps in military space are critical to U.S. security.
+
+Losing a space war, before or during a terrestrial conflict, would have devastating consequences for U.S. air, land, and sea forces.
+
+Failing to fully leverage the military advantages that space provides may also be economically and militarily unwise.
+
+So, what should be done?
+
+[H3]Commit to winning a space war
+
+General Douglas MacArthur  said, “The history of failure in war can almost always be summed up in two words: ‘Too late.’” The good news is that when it comes to space warfare, the United States is not “too late.” The Space Force is prudently preparing for space warfare.
+
+Given the United States’ decisive advantages in  space launch  and  satellite manufacturing, preparing for war in space should be embraced as an opportunity to dominate this new domain.
+
+For those who desire to  prevent the placement of weapons in outer space, understand that the alternative to U.S. dominance in space is not a return to the status quo where space operations are a military support activity providing and conveying information.
+
+The alternative is a domain weaponized and dominated by China and Russia.
+
+Commitment, in the short term, must take the form of funding.
+
+Saltzman has asked for an additional  $10 billion  for the Space Force budget.
+
+He should get it.
+
+[H3]Take no actions that destabilize nuclear stability
+
+The disruption of nuclear stability by putting weapons in space remains a valid and high-risk concern.
+
+These concerns can be mitigated by following these three common sense rules.
+
+Do not put nuclear weapons in space.
+
+Honor the  Outer Space Treaty.
+
+In support of the United Nations’ efforts to  reduce space threats  through norms, rules, and principles of responsible behaviors, spacecraft that could disrupt, destroy, or deny the use of nuclear command and control and missile warning satellites must not engage in reckless behavior and should maintain a non-threatening distance from those types of satellites.
+
+Should a nation ever develop a space-to-Earth attack capability, it would be prudent to establish behavioral norms before fielding the weapons.
+
+For example, spacecraft that can bombard the Earth should be of sufficient altitude so that adversaries such as Russia and China have ample time to observe and characterize the nature and general location of an incoming strike, allowing them to discern that it is a conventional attack and not the first strike of a nuclear conflict.
+
+[H3]Build a full-spectrum arsenal, but prioritize low debris and reversible weaponry when practical
+
+The Space Force should seek to develop a full spectrum set of capabilities that can achieve its military objectives in multiple ways.
+
+However, the budget, technology, and policy will influence the force mix, and certain classes of weapons (reversible vs. non-reversible, kinetic vs. non-kinetic) will be favored over others.
+
+When all other considerations are equal, weapons in space should be non-kinetic to create insignificant amounts of debris.
+
+This minimizes the risk to other spacecraft in nearby orbits, which would be at risk from large debris clouds created by high-velocity  missile impacts.
+
+Weapons that can create reversible effects are also preferable as they provide military commanders with flexibility in the planning and conduct of their operations.
+
+[H3]Research, test, and evaluate orbital bombardment capabilities
+
+Today’s military faces anti-access/area denial challenges.
+
+For the Navy to attack certain targets, a carrier battle group is required to escort an aircraft carrier to a location where a fighter can fly toward a target and launch a missile.
+
+The economics of this weapon delivery chain when compared to a satellite simply releasing a bomb are worthy of exploration on their financial merits alone.
+
+Adding a new and menacing class of weapons to the U.S. arsenal should also be evaluated on its military merits, particularly if it can mitigate anti-access/area denial challenges.
+
+Acknowledgements and disclosures
+
+The opinions expressed in this commentary are solely the author’s and not those of the Office of the Director of National Intelligence or any other U.S.
+
+Government agency.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

@@ -1,0 +1,320 @@
+Commentary
+Podcast
+How do tariffs hurt the dollar?
+Listen on
+Apple Podcasts
+Spotify
+YouTube
+Pod.link
+More
+Brookings Podcast on Economic Activity
+Brookings Podcast on Economic Activity
+Janice C. Eberly
+,
+Janice C. Eberly
+Nonresident Senior Fellow
+-
+Economic Studies
+Tarek A. Hassan
+,
+Tarek A. Hassan
+Professor of Economics
+- Boston University
+Kari Heerman
+, and
+Kari Heerman
+Director
+- Trade and Economic Statecraft,
+Senior Fellow
+-
+Economic Studies
+Jón Steinsson
+Jón Steinsson
+Nonresident Senior Fellow
+-
+Economic Studies
+October 9, 2025
+R
+oughly two
+thirds of countries in the world have some stabilization policy for their currency against the U.S. dollar.
+T
+he dollar’s
+status as the
+safe haven
+offers considerable benefits to the U.S. government and American companie
+s.
+U
+.S. tariffs and retaliations by other
+countries
+could eventually make other currencies more attractive as the anchor for
+smaller nations.
+25 min read
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+Print
+Roughly two
+thirds of
+countries on Earth stabilize their
+currency
+against the U.S. dollar
+. The relationship has benefits in both directions: Smaller countries
+enjoy better stability for their national currencies, and
+U.S. companies and
+government get low borrowing rates, among other benefits. But
+a new BPEA paper, “Trade War and the dollar anchor,” highlights how U.S. tariffs and
+retaliatory tariffs by other countries are putting pressure on
+the dollar
+’
+s place at the heart of world monetary system
+. On this episode of the Brookings Podcast on Economic Activity, one of the paper’s coauthors, Tarek Hassan of
+Boston University, will speak with Brookings Director of Trade and Economic Statecraft Kari Heerman about his study.
+Related Content
+Trade war and the dollar anchor
+U.S. Trade Policy
+Trade war and the dollar anchor
+Tarek A. Hassan, Thomas M. Mertens, Jingye Wang, Tony Zhang
+September 24, 2025
+Listen to the Brookings Podcast on Economic Activity on
+Apple
+,
+Spotify
+,
+YouTube
+, or
+wherever
+you like to get podcasts.
+Learn about other Brookings podcasts from the
+Brookings Podcast Network
+.
+Sign up for the
+podcasts newsletter
+for occasional updates on featured episodes and new shows.
+Send feedback email to
+podcasts@Brookings.edu
+.
+Transcript
+[music]
+EBERLY:
+I am Jan Eberly, the James R. and Helen D. Russell Professor of Finance at Northwestern University.
+STEINNSON:
+And I’m Jón Steinsson, Marek Professor of Public Policy and Economics at the University of California Berkeley.
+EBERLY:
+We are the co-editors of the
+Brookings Papers on Economic Activity
+, a semi-annual academic conference and journal that pairs rigorous research with real-time policy analysis to address the most urgent economic challenges of the day.
+STEINNSON:
+And this is the
+Brookings Podcast on Economic Activity
+, where we share conversations with leading economists on the research they do and how it will affect economic policy.
+EBERLY:
+Thank you for joining us for season seven of the podcast. This season we’ll be listening to discussions about papers from the fall 2025 BPEA conference hosted by Brookings on September 25th and 26th.
+STEINNSON:
+We’re excited this season to have some new voices contributing to our discussions with experts from Brookings Metro and Foreign Policy programs leading interviews in addition to scholars in the Economic Studies program.
+EBERLY:
+That’s right, and they’ll be discussing a wide range of topics as usual, from climate change to fertility rates to automation.
+But let’s jump into today’s discussion, which focuses on a particularly timely topic, international trade. Hosting today’s interview will be Kari Heerman, Brookings’ new Director of Trade and Economic Statecraft, who will be speaking with Tarek Hassan of Boston University, co-author of the new BPEA research “Trade War and the Dollar Anchor” with Thomas Mertens, Jingye Wang, and Tony Zhang.
+STEINNSON:
+This is absolutely a very timely topic. Steven Miran, who is currently on leave from serving as the Chairman of the Council of Economic Advisors while he serves as a governor at the Federal Reserve, has argued that the U.S. dollar’s central role in the global trading system is a burden that has contributed to the hollowing out of the U.S. manufacturing sector.
+This view contrasts strongly with the more conventional view that the dollar generates an exorbitant privilege that is a benefit to the United States. Tarek’s paper seeks to understand how the trade war will affect the role of the dollar.
+EBERLY:
+Now let’s turn it over to Kari.
+HEERMAN:
+Thanks, Jan and Jón, happy to be here, and welcome, Tarek.
+Tarek, if I understand correctly, the key insight in your paper is that the dollar’s special role as the world’s anchor currency and the benefits it provides to American businesses and families could be lost if the U.S. engages in trade wars. I’d like to start by unpacking the two key terms in your title, “trade war,” and “dollar anchor.”
+Let’s start with the second one. What exactly is the dollar anchor and how does it connect to the idea of the dollar’s safe haven status and exorbitant privilege that you mentioned in the paper? And what does all that mean in practical terms for American businesses and families?
+[3:15]
+HASSAN:
+Yeah, gladly. Thanks for having me. So, the dollar anchor means that the U.S. dollar is very much at the center of the world monetary system. So, this is not necessarily widely known, but most currencies in the world are stabilized against the U.S. dollar, meaning other countries that are trying to improve the safety properties of their own currencies, intervene in currency markets to minimize fluctuations against the dollar.
+So, the dollar is special among the world currencies in that it appreciates in times of global stress. So a key example of this is during COVID or during the global financial crisis, when basically the world economy tanks, the U.S. dollar appreciates, it’s a safer store of value for that reason, and that’s why people call it a safe haven, or it’s probably the world’s safest currency in that sense.
+HEERMAN:
+So, it gets more valuable when things are going wrong in the world. The dollar becomes more valuable, more or less.
+[4:15]
+HASSAN:
+That’s right. People often call it “flight to safety” or something like that, but the fact is that the dollar is one of the few currencies in the world that retained their value even in bad times. That’s what we mean by that.
+HEERMAN:
+Great. And what about that exorbitant privilege? How does that connect to the Safe Haven status and what does it mean for everyday Americans?
+[4:34]
+HASSAN:
+Yeah, so the famous fact about the U.S. dollar is that it has famously low interest rates. So compared to other similar currencies, the interest rates that Americans pay on their car loans or their mortgages, and that the U.S. government pays when it borrows, are lower than comparable other countries.
+And that’s what we mean by exorbitant privilege. And the reason this happens is because the dollar is a safe currency. Companies around the world from many other countries are willing to lend in U.S. dollars. So that means that Americans and American companies can borrow from foreigners in U.S. dollars and at lower interest rates.
+So, in other words, it makes us richer. You get more investment because we have low interest rates and because our currency is safe.
+HEERMAN:
+Great. Now as a final step, let’s get to that term in the title of your paper, the dollar anchor. What is the dollar anchor and how does it relate to those other two concepts that you just talked about?
+[5:38]
+HASSAN:
+Yeah, so because the dollar is safe and has low interest rates, other countries, when they want to attract foreign investment intervene in their currency markets to stabilize their exchange rates against the U.S. dollar. So roughly two thirds of countries in the world have some stabilization policy against the U.S. dollar.
+So, in this sense, the dollar is the anchor of the world monetary system. The vast majority of countries are trying to stabilize the value of their currencies against this central anchor, the US dollar, and that has many, many different implications for Reserve holdings and many other policies that foreign countries adopt.
+HEERMAN:
+That all sounds really good, sounds really good for us. Being richer and having famously low interest rates sounds like a great thing to have. I feel like we should try to hold onto that. Have you seen anything in the data or in the news lately that suggests that all of this is at all on shaky ground?
+[6:37]
+HASSAN:
+Yeah, so I mentioned that the reason we know the dollar is safe is that it appreciates generally when there’s times of stress in the global economy. We are now in such a time of stress. So, in the same way that COVID and the global financial crisis were sort of a problem for the world economy, the trade war that started in April of this year is a similarly sized problem, if you go and look at measures that we have of how worried managers are around the world, for example.
+So, what we would’ve expected, typically in times of global stress, we see two things happening: the U.S. dollar appreciating and U.S. interest rates dropping. What we saw this time around and what we’re currently seeing is actually the opposite.
+So, the dollar has been flat or has actually depreciated against many foreign currencies, and US interest rates are actually increasing rather than decreasing.
+HEERMAN:
+That’s a little troubling. For some lighter fare, let’s turn to the trade war. That’s something, as you mentioned, people have probably been hearing about in the news lately. Can you talk a little bit about how you defined a trade war and what you’re seeing in trade policy globally that fits that definition and how it appears in your model?
+[7:51]
+HASSAN:
+Yeah, so the trade war that we study in our model is a bit simplified. So essentially, we’re saying the U.S. is gonna tax imports at some rate. Let’s say 17% and foreign countries retaliate, meaning that U.S. exports are also taxed at 17%.
+In the data, what we’ve seen is a little bit less than that. So, at the time of this recording, as of September 2025, on average, the U.S. now charges 17% on imports, and foreign countries have retaliated about half that. So the average tariff, if you take the average between imports and exports is closer to 12% now.
+So, a trade war happens when one country starts levying tariffs and other countries respond.
+HEERMAN:
+Now let’s just put this all together. Can you break down the mechanics that link this trade war, trade policy to the dollar special benefits and all that good, famously, low interest rates making us richer, goodness.
+[8:51]
+HASSAN:
+Yeah. So what happens in our model actually happens in many, many macro models is a fairly standard thing. We just basically point out that this applies to the current situation. So, a prediction of many macro models is that when a country’s currency appreciates that countries starts importing more traded goods.
+So, when your currency appreciates, you import more from the world, and that’s true for countries of all sizes. So what makes the U.S. special in our model is that the U.S. is just a bigger economy. So, while all countries, when they appreciate, import more traded goods per capita, that has a bigger effect on the world market when it happens in the U.S.
+So think about, for example, Australia. Australia is a big place, but it’s a small economy, not all that many people living there. So, when the Australian dollar appreciates, Australia starts importing more traded goods, but the price of traded goods in the world doesn’t really react to that because frankly, Australia’s not such a big economy.
+When the U.S. dollar appreciates and Americans start importing more traded goods from the world, then that’s gonna suck in a lot of the world’s traded goods. So, the price of traded goods in the world is gonna go up, and the price of traded goods in the world is an important measure of the stress of the global economy.
+So, what you get immediately out of this very standard model is that when a large economy appreciates, the price of trade goods in the world goes up. As a result, the currency of that largest economy in the world appreciates in times of global stress. The shocks that appreciates our exchange rates transfer to the rest of the world. It affects everyone.
+HEERMAN:
+So if our currency can buy more stuff, it really gets everybody making more stuff and sending it to us and gets the global economy going.
+HASSAN:
+That’s correct.
+HEERMAN:
+That is a jargon-free explanation stuff.
+HASSAN:
+Sorry.
+HEERMAN:
+Alright. So, if you would, could you just elaborate a little bit more on how the trade war, how a trade war might disrupt this usual system? This usual thing that we see in models and we observe in the data country’s currency appreciates, they import more things. When the U.S. appreciates, we really get everybody going because we demand so much more. How does a trade war disrupt that system?
+[11:18]
+HASSAN:
+So the dollar is safe because we import more when our currency appreciates. What the trade war does, it stops exactly that.
+So. when you now have a trade war and we try to import more proportionally, we now have to pay more taxes on those imports. So, we’re gonna actually import less than we would otherwise. So, in effect, what the trade war does, it puts up a wall between the U.S. and the rest of the world and therefore also dampens the effect that the US dollar has on the world market of traded goods.
+So we’re basically reducing the impact that we have on the world market, and by reducing the impact that we have on the world market, we also reduce the dollar safety property. We dilute the safety of the U.S. dollar.
+HEERMAN:
+So when we put up a, a wall in the form of higher tariffs that we impose and our partners impose on us when we put up that wall, basically what happens is we do less of this engine like property of demanding a lot of foreign goods when they’re already scarce and the extra investment that we attract in that process also diminishes. And what goes with it is our famously low interest rates and the bump we get in our pay.
+[12:33]
+HASSAN:
+Yeah, so let me explain that a little bit more. So, because we dampen the effect that the dollar has on the rest of the world, we make the dollar less safe. So, because the dollar is less safe, that means that foreigners are less willing to buy assets that are denominated in U.S. dollars.
+So, what that means is we’re gonna have to pay for, and there’s more in interest rates and higher returns, for what we borrow from them. So, as we’re talking now in mid-September of 2025, tariffs are about 12%. So, we’ve estimated that the current level of tariffs have already raised US interest rates by half a percentage point. That doesn’t sound like much, but remember, you know, interest rates are 3 to 4%. Increasing them by half a percentage point makes quite a big difference. So, what that means is that it’s gonna erode the willingness of foreigners to send money to the US. It’s also gonna erode the willingness of foreigners to lend to us in dollars.
+So that’s a key privilege that we have, that we get to borrow from the rest of the world in our own currency. And making the dollar less safe undermines precisely that.
+HEERMAN:
+So, as a follow up, you’ve been saying a little bit about how the dollar strengthening in bad times means we buy more imports.
+Should we interpret this as meaning, the U.S. is burdened by having to import more than their fair share? More than Australia has to import to keep the global economy in a hard times leading to harmful trade deficits. Is this something that places a burden on the United States?
+[14:14]
+HASSAN:
+No, it’s the other way around. It’s more like the rest of the world provides goods when we need them. That’s the way to think about it. I should also say that, this is not directly in our paper, but I think it’s important to know that this whole debate about trade deficits is really kind of rather misguided.
+So, trade deficits are not inherently good or bad. There are a number that are produced by national accounts, and a trade deficit is actually the flip side of an investment surplus. So, when people say they wanna lower the U.S. trade deficit, what they’re also saying is they wanna lower the extent to which foreigners invest in the U.S. And when I say it that way around, doesn’t sound like such a good idea to lower the trade deficit, right?
+So, a trade deficit on its own really is neither good nor bad. I think the big thing that like economists have been banging on about for a long time, and that is becoming more acute, is that, we are just borrowing an awful lot from foreigners. But it’s kind of weird to blame the foreigners for that, right?
+So, we keep saying to foreigners, can you please give us some more money? And they are obliging and giving us more money at a low interest rate, and now we’re complaining about it. So that, so complaining about the trade deficit is basically complaining about the fact that foreigners are willing to lend us money at low interest rates.
+So that doesn’t make a whole lot of sense.
+HEERMAN:
+When you put it that way, I agree.
+So here’s a penalty, if you will, for writing such a timely and relevant paper. I’m gonna put you on the spot. I’ve spent a lot of my career working inside government in the White House Council of Economic Advisors, or in the office of the U.S. Trade Representative.
+So let’s just say, I can imagine there might be an instance where one of the senior officials I work for might say, hey, we’re thinking about raising tariffs to deal with unfair competition or to protect a domestic industry, because we wanna be mean or because we wanna protect national security. Usually, it’s something more like the latter, but we’ve heard in this paper that we read that if we do that, it could put the dollars role as the world’s anchor currency at risk. And we understand that we like to have those low interest rates and higher wages than we would otherwise have.
+So, let’s assume this official sees real value in keeping that dollar anchor. Let’s just say I hand them the introduction of your very excellent paper and say, I’m not gonna write a memo. This guy’s got it all. It’s perfect. All right. Your paper says, and I’m paraphrasing a little bit, that if the trade war drags on and average tariffs go above 28%, the global monetary system would switch to using the Euro as an anchor instead of the dollar.
+So, I’ve got three follow up questions that I can imagine getting from senior officials.
+So, does that mean we’re fine as long as average tariffs stay at 27%? Can we raise our tariffs up to that level and keep all the benefits of having the dollar as an anchor currency that you describe in your paper?
+[17:02]
+HASSAN:
+No. So the damage from higher tariffs starts immediately. So, the higher the level of tariffs that we levy on the rest of the world, the higher the interest rates and the more capital is gonna flow out of the U.S.
+And by the way, you mentioned this in passing, when capital flows out of the U.S., we expect wages in the U.S. relative to the rest of the world to also fall, so that’s the connection between capital flows and wages.
+So, in our model, basically at any level of tariffs, foreign countries already start loosening their stabilizations. What happens at 27% is just a point where they just switch to another anchor. And in our model, it’s the euro that arises as a new anchor. Now, we don’t model this exactly, but you would expect additional damage when that switch occurs. And the reason for this is that presumably, one big reason why the U.S. government can borrow so cheaply is because central banks around the world hold dollar reserves.
+The reason they hold dollar reserves is because they’re planning to stabilize their exchange rate against the U.S. dollar. Now, if they switch to the Euro anchor, they’re gonna essentially need to get rid of those dollar reserves and buy Euro reserves instead. So that’s not exactly in our model, but that’s gonna be an additional source of damage that kicks in at those 27%.
+So, I would say the damage that we describe full on is happening right now, and then you can expect additional damages at 27%.
+HEERMAN:
+And you say that, you’re saying that this is ongoing right now, what, can you elaborate a little bit on what kind of data you’re looking at and what kind of warning signs you’re seeing?
+And how are we gonna know, if I’m talking to my senior official about when we’re getting a little too close and are really starting to risk the dollars anchor status, what are the warning signs that you’re seeing in the data? And how do we know when we’re really starting to get into scary territory?
+[18:56]
+HASSAN:
+Yeah, so the clearest thing that we see in the data is that U.S. interest rates have been taking up since the trade war started, and that results directly from the fact that foreigners are less willing to lend to the United States. The other thing that we see is that the dollar has depreciated against the rest of the world, and the value of U.S. firms relative to foreign firms has decreased, and this is exactly what the model says we should expect.
+HEERMAN:
+Alright, next question from the senior official. Your paper says a trade war happens when one country raises tariffs and the other one retaliates. Do your conclusions change if nobody retaliates? Can we just put on tariffs and hope nobody retaliates and everything’s fine?
+[19:38]
+HASSAN:
+No, because the key thing is, do the same forces that make the dollar appreciate, how much does that show up in the price of traded goods in the world? Now, if you just have tariff on U.S. imports, it dampens one side of that. If you have retaliations that dampens the other side of that. But essentially, when we say, we do this calculation for a certain percentage of tariffs in the paper, then basically what we mean is the average tariff on U.S. imports and exports.
+When we started writing this paper, we thought it was gonna be 17% because the U.S. basically put on 17% and foreigners, I think most commentators were expecting full retaliation. That’s kind of what happened with China in the beginning. Now it looks more that like there’s partial retaliation, so the average tariff on U.S. trade imports and exports is closer to 12% now.
+But all the conclusions remain the same. I guess that’s the point.
+HEERMAN:
+Great. And your last question from the senior official, your paper says the Euro’s gonna take over as the next anchor. That means Europe is gonna be the place that gets the extra investment, that gets the higher wages, it gets the lower borrowing costs, that those families and those businesses are gonna get the advantages we used to get.
+That doesn’t seem great. We would like to keep them for ourselves, but what I’m really worried about is knowing how confident you are that it wouldn’t be China that replaces us as the world’s anchor currency instead of Europe.
+[21;02]
+HASSAN:
+We kind of talked about this. It turns out that like the EU and China, about similarly sized economies, so it could go either way. The reason we kind of think the Euro is the more realistic anchor is because European capital markets and European goods markets are largely open. China has not just restrictions on trade, but also much more severe restrictions on capital flows that might make it difficult for it to serve as the anchor currency.
+But I have to say, like in principle, we don’t really know. It could be either of the two.
+HEERMAN:
+But fair to say that you would think that China’s keeping itself closed off to the rest of the world is one of the factors that keeps it from having some of these benefits, the exorbitant privilege, the safe haven status, and all those things that we get because we are open.
+HASSAN:
+Correct.
+All right, thanks Tarek. You passed the briefing test. Now. If you were the one who was briefing the official who’s thinking about raising tariffs and they decided that they were gonna allow you to give them the last word, which rarely happens in real life in my experience, what would you say is the one thing you’d really want them to walk away with?
+[22:10]
+HASSAN:
+Yeah, so we basically kind of come up with another reason why the type of tariffs that are being imposed are not such a great idea. I think in general, and this is the general message from economics, I think, is that levying tariffs on entire foreign countries makes no sense and is also not in the national interest.
+So let me kind of just make that very clear. So if we’re levying tariffs on China, for example, because we think that that is gonna bring manufacturing back to the United States, then what you’re doing is you’re not only taxing the goods that maybe you wanna make in the us, but you’re also taxing imports of the machines that are needed to make those goods. So, you’re making it more expensive for U.S. firms to actually compete. So as an industrial policy, it makes no sense.
+And we have a course here at BU where we teach our students how to conduct trade policy strictly in the national interest. So, let’s say you don’t care about foreigners at all and you just wanna push U.S. advantage as much as you can. What you do in that circumstance is you put targeted tariffs on a specific type of good. So that means the list that the president comes out with, it’s like, here’s a list of goods that we want to make in the U.S. and that’s the list of goods that we’re gonna have tariffs on. Instead of what we’re doing is, we have a list of countries, right? And that just makes no sense because there’s some things that come from China that we cannot make ourselves like rare earths. Why are we putting a tariff on that? That makes just no sense. And that’s Econ 101 and I don’t think it’s being said enough.
+If you wanna push the U.S. advantage at the expense of others, which maybe I don’t like that, but I can tell you how to do it. The way to push the U.S. advantage is you keep U.S. trade largely free and you put specific tariffs on the things that you wanna make in the U.S. and you don’t tariff, for example, the things that you need to import in order to make those things. That’s it.
+HEERMAN:
+Well, Tarek, I think you’ve set us up for a sequel where we talk about all of the exemptions to the country level tariffs and we start talking about national security level tariffs. I’m using section 232 authority and all kinds of really interesting stuff. So, I look forward to continuing the conversation and I really enjoyed this paper and thank you for this great contribution.
+[24:32]
+HASSAN:
+Thanks
+so
+much for having me.
+STEINNSON:
+Once again, I’m Jón Steinsson.
+EBERLY:
+And I’m Jan Eberly.
+STEINNSON:
+And this has been the
+Brookings Podcast on Economic Activity
+. Thanks to our guests for this great conversation and be sure to subscribe to get notifications about new releases of this podcast.
+EBERLY:
+The
+Brookings Podcast on Economic Activity
+is produced by the Brookings Podcast Network. Learn more about this and our other podcasts at Brookings dot edu slash podcasts. Send feedback to podcasts at Brookings dot edu and find out more about the
+Brookings Papers on Economic Activity
+online at Brookings dot edu slash B-P-E-A.
+STEINNSON:
+Thanks to the team that makes this podcast possible: Fred Dews, supervising producer, Chris Miller, co-producer, Gaston Reboredo, co-producer and audio engineer. Show art was designed by Katie Meris and promotional support comes from our colleagues in Brookings Communications.
+Participants
+Janice C. Eberly
+Nonresident Senior Fellow
+-
+Economic Studies
+Tarek A. Hassan
+Professor of Economics
+- Boston University
+Kari Heerman
+Director
+- Trade and Economic Statecraft,
+Senior Fellow
+-
+Economic Studies
+Jón Steinsson
+Nonresident Senior Fellow
+-
+Economic Studies
+@JonSteinsson
+The Brookings Institution is committed to quality, independence, and impact.
+We are supported by a
+diverse array of funders
+. In line with our
+values and policies
+, each Brookings publication represents the sole views of its author(s).
+More On
+Global Economy & Development
+Sub-Topics
+Global Trade
+U.S. Economy
+Sub-Topics
+U.S. Trade Policy
+Program
+Economic Studies
+Project
+Brookings Papers on Economic Activity
+Hype and harm: Why we must ask harder questions about AI and its alignment with human values
+Artificial Intelligence
+Hype and harm: Why we must ask harder questions about AI and its alignment with human values
+Malihe Alikhani, Sabit Hassan
+October 9, 2025
+Donald Trump’s digital mercantilism
+Technology Policy & Regulation
+Donald Trump’s digital mercantilism
+Tom Wheeler
+October 8, 2025
+SNAP cuts in the One Big Beautiful Bill Act will significantly impair recession response
+Society & Culture
+SNAP cuts in the One Big Beautiful Bill Act will significantly impair recession response
+Lauren Bauer, Diane Whitmore Schanzenbach
+October 8, 2025

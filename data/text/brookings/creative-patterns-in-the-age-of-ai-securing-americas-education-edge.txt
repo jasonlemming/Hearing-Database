@@ -1,0 +1,154 @@
+Editor's note:
+This commentary is an expanded version of the authors’ contribution to a Brookings Around the Halls titled “How will AI influence US-China relations in the next 5 years?”
+
+Artificial Intelligence (AI) is transforming education.
+
+The traditional strengths and weaknesses of educational systems, particularly those of the United States and China, are being recalibrated.
+
+This essay introduces a new conceptual framework to understand this transformation: the contrast between “creative patterns” and “algorithmic thinking” in learning.
+
+We propose that by understanding and cultivating creative patterns, the U.S. education system may find its comparative edge in the global competition.
+
+[H2]The impact of AI on education: From algorithmic to creative patterns
+
+AI is democratizing access to information.
+
+Tools such as ChatGPT and other large language models can increasingly provide on-demand explanations, personalized tutoring, and even automated assessment.
+
+This development challenges traditional education models, which prioritize step-by-step mastery and factual accuracy.
+
+Traditional models are excellent at building foundations but are increasingly vulnerable to being automated and scaled by machines.
+
+As a result, conventional teaching and learning approaches are being disrupted.
+
+To better understand the new terrain, we propose a conceptual pivot: from algorithmic patterns to creative patterns.
+
+Algorithmic patterns refer to structured, rule-based learning pathways, which are essential in mathematics and coding.
+
+They form the backbone of foundational education, especially in test-oriented systems like China’s.
+
+These patterns emphasize step-by-step problem-solving, procedural thinking, and precision.
+
+In contrast, creative patterns are emergent, non-linear, and divergent.
+
+They emphasize exploration, discovery, and making novel connections—often involving brainstorming, interdisciplinary synthesis, and open-ended inquiry.
+
+While algorithmic thinking solves defined problems efficiently, creative thinking generates new possibilities, reframes questions, and adapts across unpredictable contexts.
+
+Crucially, the rise of AI changes the education and professional landscape.
+
+Tasks once requiring algorithmic mastery—such as language translation, code generation, and data sorting—are now performed by machines with superhuman efficiency.
+
+What remains uniquely human is the capacity for curiosity, imagination, empathy, collaboration, and ethical judgment.
+
+Creative patterns should not be seen as a rejection of algorithmic thinking but as its extension and transformation.
+
+They build upon foundational pattern fluency—often learned through algorithmic methods—but push further into ambiguity tolerance, contextual understanding, and reflective judgment.
+
+They represent a layered cognition: grounded in rules, yet capable of transcending, recontextualizing, and recombining them.
+
+[H2]Comparative strengths and weaknesses: United States vs.
+
+China before AI
+
+Before the rise of AI, the Chinese and U.S. educational systems exhibited starkly contrasting strengths and weaknesses.
+
+China’s education system has long excelled in building strong foundations.
+
+Through a centralized, standardized, and highly competitive structure—exemplified by the Gaokao, the national college entrance exam—Chinese students often emerge with strong algorithmic thinking and mastery in subjects like mathematics and natural sciences.
+
+This system has powered China’s success in international assessments like PISA and fueled its rapid growth in science, technology, engineering, and math (STEM).
+
+However, this success comes at a cost.
+
+The emphasis on standardization often suppresses individuality, creativity, and risk-taking.
+
+The intense academic pressure has created damage to students’ social and emotional health.
+
+Interdisciplinary thinking, open-ended exploration, and intrinsic motivation are underdeveloped in such systems.
+
+Original thinking, when it emerges, tends to be the product of individuals who break away from the dominant model.
+
+Afamous question by Qian Xuesen, the father of China’s missile and space programs—“Why can’t China produce great original thinkers?”—epitomizes this long-standing concern.
+
+Much of the recent innovation seen in Chinese society, from high-speed rail to electric vehicles, represents success in scaling original ideas—going from 1 to 100—rather than creating them, the leap from zero to one.
+
+In contrast, the U.S. education system is highly decentralized, emphasizing independent and critical thinking and liberal arts exposure.
+
+American classrooms often prioritize discussion, project-based learning, and the freedom to pursue intellectual curiosity.
+
+This environment nurtures creative patterns by encouraging students to challenge assumptions, synthesize across disciplines, and develop unique voices.
+
+Yet the American system suffers from deep inequalities and a lack of standards.
+
+Access to high-quality education varies dramatically by geography, income, and race.
+
+The absence of national standards leads to disparities in foundational skills.
+
+For subjects like math that are highly structured and linear in knowledge order, the American education system tends to leave a large swath of students behind.
+
+The National Science Board states in its 2024 report that “the vast majority” of eighth graders scored below proficiency in the National Assessment of Educational Progress math assessment from 2020-2023.
+
+Many students in the United States fall behind in math and science compared to their international peers.
+
+This is also why the United States depends on foreign talent in many STEM fields.
+
+[H2]Rethinking competition and talent development in the age of AI
+
+AI is redefining the terms of global education competition.
+
+As machines take on more routine cognitive labor, human value will hinge on our ability to ask meaningful questions, engage in moral complexity, and imagine futures beyond the data.
+
+These are precisely the abilities cultivated through “creative patterns”—a domain where the United States possesses latent strengths that, if strategically nurtured, could become a decisive advantage.
+
+Moreover, the United States can integrate creative patterns into higher education and workforce preparation.
+
+Interdisciplinary programs that blend computer science with ethics, or biology with data visualization, can produce graduates who think holistically and creatively about complex problems.
+
+China, too, is aware of this shift.
+
+China’s innovation model is evolving rapidly—from imitation to application to original breakthroughs—fueled by centralized state investment, targeted talent development, and industrial policy.
+
+Recent reforms encourage more exploratory learning and the integration of arts and sciences.
+
+However, the inertia of the exam-based system and cultural emphasis on conformity make large-scale transformation difficult.
+
+To fully realize this potential, the United States must address its own limitations by ensuring equitable access to AI tools and evolving teacher training to include AI literacy and facilitation of creative learning.
+
+Education policy must support flexibility in curriculum design, assessment methods, and interdisciplinary teaching.
+
+[H2]Conclusion and policy recommendations
+
+While algorithmic competency remains foundational, its relative value is diminishing in an era where AI can execute such tasks with superhuman efficiency.
+
+In contrast, the demand for creative, interdisciplinary learning is rising.
+
+The framework of creative patterns provides a powerful lens for rethinking how education systems prepare students not just to adapt to a world shaped by AI, but to lead within it.
+
+China continues to excel in building foundational competencies through structured, algorithmic learning, despite the fact that enormous academic stress carries costs to students’ social and emotional well-being.
+
+However, the United States, which is rooted in traditions of independent thinking, innovation, and interdisciplinary exploration, is well-positioned to lead in the future.
+
+Whether it can continue to lead, however, is no longer a foregone conclusion.
+
+Legislative efforts to curtail academic freedom, chronic under-investment in public colleges, and tightening restrictions on international research collaboration are threatening the very conditions that make American education creative and competitive.
+
+To retain its leadership position, the United States must make systematic investments in three areas:
+
+Robust AI infrastructure in schools, including equitable access to devices, broadband, and AI-powered learning tools.
+
+Comprehensive teacher training to support creative, interdisciplinary, and AI-literate pedagogy.
+
+Curricular reform that embeds creative pattern development—from ethical reasoning to project-based learning—across K-12 and higher education.
+
+These investments need to be set with a concrete timeline and goals, such as ensuring that all K-12 schools have access to AI-integrated learning environments by the next five years, and training at least 1 million teachers in creative, interdisciplinary AI pedagogy by 2028.
+
+It is vital to align federal, state, and local funding streams to explicitly include AI infrastructure and teacher training, and to incentivize regional legislatures and school districts to invest in curricular innovation aligned with creative pattern development.
+
+By investing in education to cultivate learning creative patterns—and ensuring all students have access to the tools and opportunities that foster them—the United States has a unique chance to compete, not by imitating China’s strengths but by amplifying its own.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

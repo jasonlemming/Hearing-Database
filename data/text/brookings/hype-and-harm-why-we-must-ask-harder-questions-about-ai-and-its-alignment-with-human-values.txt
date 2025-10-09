@@ -1,0 +1,263 @@
+Research
+Hype and harm: Why we must ask harder questions about AI and its alignment with human values
+Malihe Alikhani
+and
+Malihe Alikhani
+Visiting Fellow
+-
+Economic Studies
+,
+Center on Regulation and Markets
+Sabit Hassan
+Sabit Hassan
+Chief Executive Officer
+- Moonworks AI
+October 9, 2025
+Shutterstock / Inkoly
+19 min read
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+Print
+Editor's note:
+Hassan’s contributions to this work came from experiments he helped lead as a PhD student under Alikhani at the University of Pittsburgh.
+Executive summary
+As AI permeates health care, home safety, and online interactions, its alignment with human values demand scrutiny. By introducing an active learning approach, selectively retraining AI models to handle uncertain or underrepresented scenarios, research demonstrates significant improvements in safety and fairness, particularly in scenarios involving physical safety and online harms. Case studies involving multimodal embodied agents in household environments and promoting respectful dialogue online illustrate how targeted training can create more reliable and ethically aligned AI systems. The findings underscore the necessity for policymakers and technologists to collaborate closely, ensuring AI is thoughtfully designed, context sensitive, and genuinely aligned with human priorities, promoting safer and more equitable outcomes across society.
+Introduction
+Artificial intelligence has quickly transitioned from speculative fiction into a reality deeply embedded in everyday life, significantly changing the way we work, communicate, and make important decisions. What once existed primarily in research laboratories is now widely used across various fields, from health care to education to creative industries. Leaders such as Anthropic CEO
+Dario Amodei
+and Meta CEO
+Mark Zuckerberg
+have suggested that AI could soon replace rather than merely assist human roles, even those requiring specialized expertise. This shift in AI’s role, from supportive assistant toward autonomous agents, raises critical questions about readiness of the technology and its alignment with human values. In his book, “
+The Alignment Problem: Machine Learning and Human Values
+,” Brian Christian introduces the concepts of thin and thick alignment. Thin alignment refers to AI systems superficially meeting human-specified criteria, whereas thick alignment emphasizes a deeper, contextual understanding of human values and intentions. This distinction closely mirrors the central concern of this article, highlighting why we must ensure AI systems not only perform tasks correctly but also genuinely reflect nuanced and diverse human needs, priorities, and values across different real-world scenarios.
+The values of alignment may be very different depending on the use case, particularly with AI promising remarkable breakthroughs across sectors, from assistive technology in education to supporting patients in health care. Alignment in safety needs to encompass likelihood and impact of harm, be it physical, psychological, economic, or societal. Residual risks must be understood, proportionate, and controllable; for example, when robots assist the elderly we may prioritize physical safety, while in online environments we may prioritize psychological wellbeing. As policymakers across the world roll out AI regulations, such as the
+EU AI Act
+, the
+Korean Basic AI act
+,
+and the
+Workforce of the Future Act of 2024
+in the U.S., these alignment values may vary. Dr. Alondra Nelson,  former director of the White House Office of Science and Technology Policy, asked the critical question in a 2023
+keynote address
+: “how we can build AI models and systems and tools in a way that’s compatible with . . . human values.”
+The central question then becomes not just whether AI is aligned with universal human values but whether it is aligned to our specific and varied human needs. Ensuring AI alignment for new scenarios or particular requirements is challenging. General AI learns from training data, using statistical probabilities—such as the likelihood of a safety concern—to inform its decisions. But these probabilities in training data may not reflect alignment in safety levels required in different scenarios. As the real world has countless possible scenarios, it is perhaps unreasonable to expect that AI would learn the probabilities in a perfect way to operate in all possible environments. In her
+work
+, computer scientist Dr. Yejin Choi observes that AI models can be “incredibly smart and shockingly stupid,” as they can still fail at basic tasks. Dr. Choi goes on to suggest benefits of training smaller models that are more closely aligned with human norms and values.
+Smaller and specialized AI models could be the solution to the problem of misaligned AI. By
+rebalancing or changing the data distribution
+that an AI learns from, its behavior can be adapted to reduce errors. One such technique is
+active learning
+, which can be used to direct AI systems to fix their behavior by showing examples that the AI might be failing on. By repeatedly identifying and refining these uncertain points across many different parts of the data, we can gradually build models that better reflect the diverse necessities of human-AI interactions.
+To further explore this idea, we conducted two case studies—one in a household safety environment with
+embodied agents
+and one to promote respectful content
+online
+. Our intention was not only to improve model performance but to evaluate whether the approach could lead to safer and fairer alignments for AI. Not only did our models make fewer mistakes but the active‐learning process itself revealed how targeted, data‐driven interventions can be used—both technically and in policy—to foster a healthier, more trustworthy, and better aligned AI ecosystem.
+Active learning framework
+In real life, we rarely know exactly how our data are distributed—who has which health conditions, what ages or backgrounds they come from, or how safety rules differ by region. That makes it easy for a general AI to encounter situations it wasn’t trained for and then fail in unexpected ways. When developing these AI models, we would not know what exactly we should look for. Should we try to have a balanced representation of mental health conditions or physical health conditions? Which dimensions should we prioritize? As such, we need a method that can take an AI model and shift its learned probabilities to account for novel or uncommon scenarios for specific applications.
+While there can be different approaches to addressing this problem, we focus on changing the model behavior by showing samples to the AI where it may lack proper representation. We begin by selecting an AI model we want to improve, with the goal of aligning it in new scenarios. The model enters a continuous loop where it generates output on instances from diverse regions in data. An auxiliary model detects instances that the model is likely failing on (e.g., it is not promoting safety when responding to a post supporting self-harm). When such instances arise, an external, more powerful language model is employed to help annotate these challenging examples. These newly labeled examples are then added to the training data, allowing the model to update its knowledge and improve over time. This approach in our framework follows the principles of
+clustering-based active learning
+.
+This approach, however, has a critical challenge. How do we know that a model is uncertain about an instance? Measuring a generative AI model’s uncertainty is very
+complex
+as it can generate many possible outputs. To address this, we introduce an auxiliary model that transforms the model’s output into a numerical score depending on the desired behavior. We believe this approach can be useful to policymakers and other stakeholders, who can adjust this score to align AI with desired values and principles.
+Case studies of safety alignment
+In our work, we consider two case studies where AI may need to be adapted for improved safety. While the first case study focuses on physical safety, the second focuses on online safety. In
+the first case study
+, we study physical safety in household environments in the presence of embodied agents and in the second case study, we target
+promoting healthier dialogue
+on social media.
+Case study 1: Alignment of safety in multimodal embodied agents
+AI is already changing the limits of how we interact with technology. We are already seeing
+autonomous taxis
+,
+drones for food delivery
+,
+and robots to deliver documents in
+hospitals
+. The next frontier of AI is set to be multimodal agents deployed with embodied agents. It is very likely that in the future robots will assist us in our everyday life with household tasks like cooking. We are not far away from the science fiction world of
+Isaac Asimov
+,
+and we have to think about whether these robots can operate safely around us. For example, a robot helping the elderly must prioritize safety of the user, even if the elderly person is reluctant about it. Equipping large language or multimodal models with robots can make them very capable. However, in an investigation of “AI biology,”
+Anthropic
+found that language models can make up fake reasoning to show to users. As such, language models, when deployed with assistive robots, could overlook or not provide proper responses in safety-critical scenarios.
+Recognizing the potential of multimodal AI agents deployed with robots, in our
+recent work
+we present a framework for a multimodal dialogue system, M-CoDAL. M-CoDAL is specifically designed for embodied agents to better understand and communicate in safety-critical situations. To train this system, we first obtain potential safety violations from a given image (we obtain hundreds of safety-related images from Reddit, which is
+well known
+for its diversity of input). This is then followed by turns of dialogues between the user and the system. During training, we follow the concept of clustering-based active learning mechanism that utilizes an external large language model (LLM) to identify informative instances. These instances are then used to train a smaller language model that holds conversations about the safety violation in the image.
+In our results, we observe that when clustering-based active learning is used, the safety score increases to 82.03 from baseline of 79.95 on a 0-100 scale, using just 200 safety violation images, while also improving the sentiment and resolution score. While the sentiment and resolution scores are lower than GPT-4o, a well-known LLM, the safety score is substantially higher than GPT-4o (78.65). By default, GPT-4o may simply agree with the user, thereby preserving sentiment or resolution scores at the expense of safety. Our dialogue system, M-CoDAL on the other hand, prioritizes safety.
+Figure 1
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+We set up a study where every participant tried out two different systems in a 2X2 within-subjects design where we varied both the type of language model used, as well as severeity of safety violation. Participants interacted with a robot powered by either GPT-4o or a robot powered by our proposed M-CoDAL system in two severity scenarios. In the low-severity scenario, participants left twisted cables on a table and in the high-severity scenario, they placed a knife at the edge of a table. Fake tools and appliances were used so that no hazardous situations are created for the participants. Figure 1 shows the results of the study where we observed that there was a significant difference between how persuasive the participants found the two models (χ² = 15.972, p = 0.001).
+Case Study 2: Alignment in promoting healthier dialogue on social media
+Harmful or offensive text, particularly on social media, has been a persistent concern over the years. Such content includes hate speech (for example slurs targeting racial or religious groups), harassment or bullying directed at individuals, and misinformation with potentially severe psychosocial consequences (for example misleading claims about climate change). Exposure to these kinds of harmful content can significantly affect the
+psychological wellbeing
+of adolescents and young people, leading to anxiety, existential distress, or feelings of helplessness.
+Social media platforms have adopted numerous approaches to limit this harm. On platforms such as
+Reddit
+, human moderators play a crucial role in removing slurs, targeted harassment, or violent content that violates community policies. Twitter has deployed community notes, which allow users to collaboratively add context to potentially misleading posts such as those spreading false or distorted information about climate science. Facebook has
+followed suit
+, discontinuing its centralized fact checking system and adopting a user driven community notes system, a change that has drawn
+backlash
+from users and advocacy groups concerned about its effectiveness, consistency, and risk of bias.
+Other alternative approaches have also been suggested such as
+paraphrasing
+text to remove offensiveness or to
+counter
+offensive texts on social media. There is a longstanding notion that more speech can counteract harmful speech, with U.S. Supreme Court Justice
+Louis Brandeis
+declaring in 1927 that “the remedy to be applied is more speech, not enforced silence.” As such, we consider the task of generating “counter-narratives.” Counter-narratives, also referred to as counterspeech, are broadly defined as statements that pose opposing views to offensive or hateful content.
+Previous studies
+have shown that counter-narratives have been effective in battling hateful content.
+Figure 2
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+Counter-narratives can play a critical role in moderating on social media platforms. AI-generated counter-narratives can effectively reduce human exposure and psychological strain by responding directly to harmful speech. Further, counter-narratives can be deployed
+with fact-checking mechanisms
+to debunk misinformation. The varied nature of social media platforms with different communities, however, poses a challenging environment to these AI models.
+Meng et al.
+(2023) point out that rules governing acceptable content vary widely across online communities—for example, medical advice might be appropriate on one part of Reddit such as r/MedicalAdvice but inappropriate on another part of Reddit such as r/FinancialAdvice. Therefore, AI-generated counter-narratives must be carefully tailored to specific community guidelines and contexts.
+To address this, our experiment aimed to equip a pre-trained language model to generate counter-narratives in diverse scenarios. We set up our experiment by first combining a dataset from
+Reddit
+and a dataset compiled by
+NGO workers
+. This dataset contains offensive language targeting different groups such as persons of color, women, or immigrants. To generate counter-narratives for these offensive texts, we fine-tune Flan-T5, an instruction-tuned large language model with relatively small size. We allocate the same number of training data, acquired either through standard random sampling or through our proposed method. From Figure 2, we can observe that the original data had very low frequency groups such as people of color (POC). Standard fine-tuning with random sampling results in a high error rate for these classes. Our proposed method, on the other hand, has a more uniform error distribution, with errors for low-frequency groups such as people of color substantially reduced from 52% to 30%. Aggregated, our proposed approach has overall accuracy of 75.8% while standard random sampling has overall accuracy of 65.0%. This suggests that a general-purpose model language model can be more effectively tuned for specific tasks with our approach.
+Policy implications
+As AI systems become more deeply embedded in high-stakes scenarios, recent legislative and policy developments underscore the urgency of implementing concrete AI safety frameworks. At the federal level, the
+Take It Down Act
+, passed in April 2025, specifically addresses harms from AI-generated deepfakes and non-consensual imagery. It requires platforms to remove reported content within 48 hours, establishing accountability for AI misuse in digital spaces. This move demonstrates a clear acknowledgment by lawmakers of the psychological and reputational harms posed by generative AI.
+Similarly, the
+Workforce of the Future Act of 2024
+(S.5031) empowers agencies like the Department of Labor and the National Science Foundation to prepare the workforce for AI disruption. It supports programs that reskill workers and integrate AI literacy into early education, aligning with our proposed framework that adapts AI to specific, high-stakes domains.
+At the state level, the
+Colorado Artificial Intelligence Act
+(SB24-205) will take effect in February 2026. It mandates disclosures when AI is used and prohibits discriminatory outcomes in automated decisions. Notably, it follows a risk-based model inspired by the EU’s AI Act, offering a pragmatic regulatory approach for broader adoption. In the state of New York, the
+Artificial Intelligence Bill of Rights
+(A3265) proposes resident protections against opaque AI decision making, reinforcing transparency and fairness in automated systems.
+Internationally, in
+May 2024,
+the EU
+approved
+its
+landmark AI Act
+, classifying AI systems by risk level and imposing strict requirements—such as mandatory impact assessments for “high-risk” applications in healthcare, transportation, and law enforcement. Enacted in August 2024, it establishes a central AI Safety Committee, mandates transparency around model architectures and training data, and sets penalties for safety lapses in consumer-facing AI products. South Korea passed the
+AI Basic Act
+in December 2024, with risk-based provisions for high-impact AI systems
+scheduled to take effect
+in
+January, 2026
+.  . It also mandates that overseas AI providers exceeding revenue or user thresholds appoint a domestic representative to oversee safety assurance reports and ensure compliance with trust requirements.
+These efforts reflect a growing international consensus that AI alignment must be context-sensitive, transparent, adaptable and aligned with local requirements—precisely the kind of framework we have outlined in our work. Taken together, national policies and technical research can foster an ecosystem in which AI is not only powerful but also demonstrably aligned with different human experiences.
+Conclusions
+As we navigate the extraordinary pace of AI advancement, it is becoming clear that our enthusiasm for innovation needs to be tempered by caution. The promise of AI is deeply intertwined with questions of safety, fairness, and alignment with human values. By exploring active learning frameworks, we discovered practical methods to identify and correct AI misalignment, significantly improving performance in both physical and online safety scenarios.
+Our studies in multimodal embodied agents demonstrate that AI can become more effective and safer when tailored to specific contexts, prioritizing users’ wellbeing even when faced with complex scenarios. Similarly, in addressing harmful online speech, our approach not only improves the overall performance but also provides a safer way of aligning with different communities on social media.
+However, technical advances alone will not resolve all concerns around AI’s integration into our daily lives. Meaningful progress also demands thoughtful policymaking, careful oversight, and continued public dialogue. The recent wave of legislation in the U.S. and internationally reflects a growing acknowledgment of AI’s impact, setting crucial foundations for transparency, accountability, and ethical usage.
+Looking ahead, researchers, policymakers, and community leaders must continue collaborating closely, recognizing that AI alignment is always context specific. We must embrace approaches that balance technical innovation with ethical responsibility, always considering who benefits from these technologies and who might be left behind. Through careful attention and deliberate action, we can guide AI toward genuinely supporting human experiences, ensuring it remains an empowering force rather than a disruptive one. Our work shows that we do have the right tools for aligning AI with human values of safety. Echoing Dr. Yejin Choi’s insights, smaller models can indeed be aligned with the values of individuals and entities, whether they are patients or doctors or businesses, given that right policies and governance are in place.
+Related Content
+Making AI work for schools
+Artificial Intelligence
+Making AI work for schools
+Sofoklis Goulas
+July 31, 2025
+Is generative AI a job killer? Evidence from the freelance market
+Artificial Intelligence
+Is generative AI a job killer? Evidence from the freelance market
+Xiang Hui, Oren Reshef
+July 8, 2025
+Breaking the AI mirror
+Artificial Intelligence
+Breaking the AI mirror
+Malihe Alikhani
+April 15, 2025
+Authors
+Malihe Alikhani
+Visiting Fellow
+-
+Economic Studies
+,
+Center on Regulation and Markets
+Sabit Hassan
+Chief Executive Officer
+- Moonworks AI
+References
+Atwell, Katherine, Sabit Hassan, and Malihe Alikhani. “APPDIA: A Discourse-Aware Transformer-Based Style Transfer Model for Offensive Social Media Conversations.”
+Proceedings of the 29th International Conference on Computational Linguistics
+, October 2022, 6063–6074.
+https://aclanthology.org/2022.coling-1.530/
+.
+Benesch, Susan, Derek Ruths, Kelly P Dillon, Haji Mohammad Saleem, and Lucas Wright. “Considerations for Successful Counterspeech.” Dangerous Speech Project, October 15, 2016.
+https://www.dangerousspeech.org/libraries/considerations-for-successful-counterspeech
+.
+Burke, Garance, and Hilke Schellmann. “Researchers Say an AI-Powered Transcription Tool Used in Hospitals Invents Things No One Ever Said.” AP News, October 26, 2024.
+https://apnews.com/article/ai-artificial-intelligence-health-business-90020cdf5fa16c79ca2e5b6c4c9bbb14
+.
+Christian, Brian.
+The Alignment Problem: Machine Learning and Human Values
+. New York, NY: W.W. Norton & Company, 2021.
+Fanton, Margherita, Helena Bonaldi, Serra Sinem Tekiroğlu, and Marco Guerini. “Human-in-the-Loop for Data Collection: A Multi-Target Counter Narrative Dataset to Fight Online Hate Speech.”
+Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers)
+, 2021, 3226–3240.
+https://aclanthology.org/2021.acl-long.250/
+.
+Han, Xudong, Timothy Baldwin, and Trevor Cohn. “Balancing out Bias: Achieving Fairness through Balanced Training.” ArXiv, September 16, 2023.
+https://arxiv.org/abs/2109.08253
+.
+Hassan, Sabit, and Malihe Alikhani. “D-Calm: A Dynamic Clustering-Based Active Learning Approach for Mitigating Bias.” ArXiv, May 26, 2023.
+https://arxiv.org/abs/2305.17013
+.
+Hassan, Sabit, Hye-Young Chung, Xiang Zhi Tan, and Malihe Alikhani. “Coherence-Driven Multimodal Safety Dialogue with Active Learning for Embodied Agents.” ArXiv, October 18, 2024.
+https://arxiv.org/abs/2410.14141
+.
+Hassan, Sabit, Anthony B Sicilia, and Malihe Alikhani. “An Active Learning Framework for Inclusive Generation by Large Language Models.”
+Proceedings of the 31st International Conference on Computational Linguistics
+, 2025, 5403–14.
+https://aclanthology.org/2025.coling-main.362/
+.
+Marks, Gene. “Business Tech News: Zuckerberg Says AI Will Replace Mid-Level Engineers Soon.” Forbes, January 28, 2025.
+https://www.forbes.com/sites/quickerbettertech/2025/01/26/business-tech-news-zuckerberg-says-ai-will-replace-mid-level-engineers-soon/
+.
+Perlitz, Yotam, Ariel Gera, Michal Shmueli-Scheuer, Dafna Sheinwald, Noam Slonim, and Liat Ein-Dor. “Active Learning for Natural Language Generation.”
+Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing
+, December 2023, 9862-9877.
+https://aclanthology.org/2023.emnlp-main.611/
+.
+Settles, Burr. “Active Learning Literature Survey.” UW-Madison Libraries, January 2009.
+http://digital.library.wisc.edu/1793/60660
+.
+VandeHei, Him, and Mike Allen. “Behind the Curtain: Top Ai CEO Foresees White-Collar Bloodbath.” Axios, May 28, 2025.
+https://www.axios.com/2025/05/28/ai-jobs-white-collar-unemployment-anthropic
+.
+The Brookings Institution is committed to quality, independence, and impact.
+We are supported by a
+diverse array of funders
+. In line with our
+values and policies
+, each Brookings publication represents the sole views of its author(s).
+More On
+Technology & Information
+Sub-Topics
+Artificial Intelligence
+U.S. Economy
+Sub-Topics
+Regulatory Policy
+Program
+Economic Studies
+Center
+Center on Regulation and Markets
+Reimagining the future of data and AI labor in the Global South
+Human Rights & Civil Liberties
+Reimagining the future of data and AI labor in the Global South
+Michelle Du, Chinasa T. Okolo
+October 7, 2025
+We should all be Luddites
+Technology & Information
+We should all be Luddites
+Courtney C. Radsch
+October 6, 2025
+Will AI democratize financial services? | The TechTank Podcast
+Banking & Finance
+Will AI democratize financial services? | The TechTank Podcast
+Nicol Turner Lee, Aaron Klein
+October 6, 2025

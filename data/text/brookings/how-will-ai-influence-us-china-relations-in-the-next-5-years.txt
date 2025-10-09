@@ -1,0 +1,434 @@
+There is a lot of discussion in Washington and Beijing about the implications of the artificial intelligence (AI) revolution, but no clear consensus on how AI advances will impact how the world’s two leading powers relate to each other.
+
+In the following collection of short essays, Brookings scholars from different disciplines offer their forecasts on how AI will influence U.S.-China relations over the next five years.
+
+The collection of short essays spans security issues, export controls, education, disinformation, risk reduction, public-private partnerships, and shared threats from AI in the hands of rogue actors.
+
+R.
+
+David Edelman
+
+[H2]AI as a source of (unexpected) risk reduction
+
+The human tendency to hallucinate about AI may ultimately prove more dangerous than AI hallucinations themselves, especially when those musings feature in the U.S.-China relationship.
+
+And yet one episode from the last five years might point to a rare hopeful sign for the next five, on the cheery topic of inadvertent AI-directed nuclear war.
+
+Five years ago, serious defense officials could be found in both Washington and Beijing who shared a suspicion bordering on conviction: that the other was in the process of putting AI systems on (or very near) “the button” of nuclear command and control.
+
+They believed this despite the broad understanding that the AI systems of the day—those before the generative AI era of ChatGPT—were often brittle, biased, and their actions unexplainable.
+
+Thus, we encountered a hallucination of another sort: projecting the (real) worst of an emerging technology onto the (plausible) worst instincts of adversaries, leading to a worst-case for international stability too scary to resist planning around.
+
+Yet just a few years later, the presidents of the United States and China released a joint statement pledging “to maintain human control over the decision to use nuclear weapons.” While terse, it was striking in many ways.
+
+First, it articulated that laying the groundwork for a real-life Skynet is probably best avoided, and that a solid step in that direction would be leaving the gravest of national security decisions to a human leader, not machines that continue to struggle with high reliability.
+
+The depths of the cratered U.S.-China relationship created conditions of mistrust so dire that such a common-sense statement was needed, and from national leaders no less.
+
+Second, the statement may offer a way forward on hard issues with great uncertainty, such as certain, significant military uses of AI.
+
+The statement’s release raised eyebrows among longtime watchers of U.S.-China nuclear matters: had Beijing’s long-cherished aversion to seriously discussing its nuclear posture been shattered by AI anxieties?
+
+It certainly seemed so, if in a small way.
+
+Third, such a statement came about after careful and at a time when formal engagement was non-existent.
+
+It was sustained by nongovernmental players across administrations of both political parties.
+
+And it was accelerated by quiet and politically risky diplomacy when expectations were notably low.
+
+Talks on both “tracks” were animated by a mutual desire to affirm some baseline of stability precisely because AI has created a space without custom, where policy was driven by mutual interest, before conditions embodied such fears.
+
+This playbook—using technically- and policy-grounded Track 2 dialogues to demystify the tool and its actual uses; interfacing with governments to motivate and understand the evolving space for official confidence-building commitments; and using that foundation to establish norms in an emerging space—may well be repeatable in other areas of complex and consequential emerging technology.
+
+Indeed, the arrival of new technologies with national security implications, such as functional quantum computing and new frontiers in synthetic biology, may motivate similar efforts in the coming years, particularly if both spaces are accelerated by AI itself.
+
+New technologies can make dangerous dyads do dumb things, and the powder keg that is the U.S.-China relationship needs more AI “myth-busting” than idle ideation.
+
+But like cyber before it, AI’s reconfiguration of long-held beliefs about international security has the potential to jar even powerful states to brush the dust off potentially stale (and destabilizing) policies.
+
+It might also allow us to affirm both the common sense and the less obvious at a time when such matters should not go unsaid.
+
+Other emerging technologies are ripe subjects for policymakers to imagine the harrowing unknown—then swiftly find value in dispelling the worst myths they conjure.
+
+Diana Fu
+
+[H2]Disinformation and foreign interference
+
+The United States is arguably more susceptible to foreign interference from the People’s Republic of China (PRC) and other foreign actors than perhaps ever in its history.
+
+This is due to a two-pronged effect.
+
+One prong is the leveraging of artificial intelligence as foreign powers go on the “offensive” to drive wedges into the U.S. voter base.
+
+This entails Hollywood-effect propaganda images and videos depicting the United States as a violence-ridden society and a weapons laboratory leading to environmental disasters such as the Maui wildfires.
+
+The PRC has also created AI-generated deepfakes of U.S. politicians who Beijing dislikes to discredit or lie about their positions on key policy issues.
+
+These forms of AI-augmented disinformation meet the criteria for a higher threshold threat on the continuum between influence and interference.
+
+Another prong is the United States’ castration of its own defense mechanisms, coupled with a rolling back of regulatory oversight over private companies’ AI innovation.
+
+This vulnerability comes in part from the undermining of institutions whose very mandates are to guard against foreign interference, such as the U.S.
+
+State Department’s Counter Foreign Information Manipulation and Interference Office and the Cybersecurity and Infrastructure Security Agency.
+
+Admittedly, these institutions can become overzealous and trample on the civil liberties of diaspora populations, as evidenced by the Department of Justice’s China Initiative that deliberately criminalized Chinese scientists.
+
+As such, re-empowering national security task forces and agencies should not be the primary solution.
+
+Importantly, this institutional lacuna is accompanied by the federal government’s reluctance to regulate tech companies, resulting in them assuming a pseudo-government role.
+
+Already, social media companies are spreading authoritarian practices by creating an information environment that breeds falsehoods in the collective consciousness before they can be corrected.
+
+Into this under-regulated digital swamp enters foreign governments’ disinformation campaigns, augmented by AI-generated content.
+
+Although thus far, Beijing’s experiments with AI-enabled electoral election interference in the United States have been quite restrained compared to the Russian government’s efforts, one needs to look no further than Canada to see its potential.
+
+Beijing’s meddling in Canada’s 2019 and 2021 federal elections primarily relied on non-AI generated content, including spreading disinformation via its spamouflage campaign, economic inducements, mobilizing the diaspora, and cultivating long-term ties with targets, all elements of an interference playbook not unique to the PRC.
+
+Looking ahead, the Canadian Centre for Cyber Security warns that the PRC and Russia “will continue to be responsible for most of the attributable nation-state AI-enabled cyber threat and disinformation activity targeting democratic processes.” To armor themselves, state governments should continue to push back against Washington’s propensity to let AI companies operate unfettered.
+
+They should also consciously cultivate a civic culture of fact-checking by investing in disinformation watchdogs.
+
+In this regard, U.S. state and civil society actors should take a note from the Taiwanese, who have developed such a culture of vigilance against disinformation from the PRC.
+
+Ryan Hass
+
+[H2]The US and China will be running side-by-side in AI development
+
+The rapid development and wide-scale adoption of artificial intelligence often is described as a race between the United States and China, the world’s two leading AI superpowers.
+
+In this framing, the two sides are in a battle for AI dominance, with the winner gaining enduring economic and geopolitical advantages over the other.
+
+OpenAI CEO Sam Altman often relies on this rhetorical device to advocate for whatever incentive or exemption from regulation he is pursuing at the moment.
+
+Former National Security Advisor Jake Sullivan also bought into the concept of a race and used it to justify the sweeping export control regime the Biden administration launched on October 7, 2022.
+
+Sullivan explained that the stakes of the U.
+
+S-China tech competition were so dramatic that the United States must implement unconditional export controls to try to throttle China’s advancements in foundational technologies to “maintain as large a lead as possible” over China.
+
+The problem with this framing is that it is built on an assumption that the United States has the capacity to control—or heavily influence—the pace of China’s technological progress.
+
+The Biden administration’s export control regime has not throttled China’s progress.
+
+If anything, it has had the opposite effect by reducing Chinese firms’ dependence on American products and instead galvanizing a national campaign for greater self-reliance.
+
+The Biden administration’s actions also have preemptively removed a future source of leverage to raise the cost and risk to Beijing of pursuing aggression against American security partners such as Taiwan.
+
+Critics will counter that China always was bent on pursuing technological self-reliance and that China’s indigenous innovation push long predated America’s enhanced export control restrictions.
+
+Iagree with this counterargument; however, the scale and velocity of China’s technological self-reliance campaign have increased from the trajectory China was on before America’s October 2022 export control regime was enacted.
+
+Rather than obsessing over which country is in the lead and what more the United States can do to slow China’s progress, U.S. policymakers must quickly gain comfort with the fact that America and China are going to be navigating the frontiers of AI side-by-side over the coming years.
+
+Neither side likely will gain a decisive edge over the other.
+
+China has a deep pool of engineering talent; it generates four times as many science, technology, engineering, and mathematics (STEM) graduates annually as the United States.
+
+China also can funnel immense state resources toward AI.
+
+China will not passively accept a role as the world’s second-place AI power.
+
+Already, the performance gap between the best Chinese and U.S.
+
+AI models had shrunk from 9.3% in 2024 to 1.7% in February.
+
+This will be the new normal.
+
+Leading U.S. and Chinese labs will push forward in parallel toward agentic AI and artificial general intelligence in the coming years.
+
+President Donald Trump is uniquely capable of reorienting America’s mindset on technology competition with China.
+
+As an outsider to America’s national security establishment, he does not hold a rigid view on the need to hold back China’s technological advances.
+
+He does not seem encumbered by anxiety about being labeled as “weak on China.” He also is focused on finding ways to strengthen America’s goods exports.
+
+On the one hand, if American and Chinese leaders can jointly take concrete steps to reciprocally limit the uses of AI in ways that could generate harm, then their coordination could contribute to bilateral stability.
+
+On the other hand, if American and Chinese leaders view AI solely through the lens of a race, both countries would come to view every action as a challenge and a threat, and both sides would grow even more reactive to the other.
+
+To escape this descent into oversimplified zero-sum thinking, Washington and Beijing will need to move beyond thinking of AI developments as a race with a winner and loser and instead come to accept that both sides will be running side-by-side for the foreseeable future.
+
+Patricia M.
+
+Kim
+
+[H2]Rogue actors are the real AI wild card
+
+AI is the new front line in great power competition.
+
+The United States and China are locked in a high-stakes race to harness AI for economic, military, and strategic advantage.
+
+The implications are profound, and the AI race between the two great powers rightly commands attention.
+
+As with nuclear weapons during the Cold War—when the fear of catastrophic escalation drove the United States and the Soviet Union to avoid direct confrontation and eventually pursue arms control—a similar dynamic could emerge around AI.
+
+For instance, in a rare moment of alignment in November 2024, Washington and Beijing publicly pledged to exclude AI from nuclear command and control systems.
+
+Implementation and verification will, of course, matter far more than rhetoric.
+
+But the underlying reality remains: both powers have too much at stake to risk an uncontrollable AI-driven escalation.
+
+The real wild card, however, is the set of actors who don’t share this calculus.
+
+While the United States and China will remain geopolitical competitors for the foreseeable future, they also face a shared—and growing—threat from rogue states and nonstate actors who may be more willing to exploit AI without restraint.
+
+Unlike nuclear technology, which requires enriched uranium and complex infrastructure, AI is far more accessible and significantly harder to monitor.
+
+Terrorist groups, rogue regimes, and even lone wolf actors—operating outside conventional deterrence frameworks and often with little to lose—could weaponize AI to scale their destructive capabilities far beyond what is possible today.
+
+As former Google CEO Eric Schmidt, Scale AI CEO Alexandr Wang, and Center for AI Safety Director Dan Hendrycks warn in their Superintelligence Strategy paper: “Technologies that can revolutionize healthcare or simplify software development also have the potential to empower individuals to create bioweapons and conduct cyberattacks.
+
+This amplification effect lowers the barriers for terrorists, enabling them to execute large-scale attacks that were previously limited to nation-states.”
+This diffusion of capability fundamentally shifts the threat landscape.
+
+The United States and China will not only need to manage their own strategic rivalry but also take steps to guard against AI misuse by rogue actors.
+
+This shared vulnerability should compel both powers to act in parallel.
+
+To be sure, differences in strategic priorities and risk perceptions—as well as an increasingly strained bilateral relationship—will complicate coordination.
+
+Addressing this challenge will require a flexible, multilayered approach—one that includes developing new multilateral coalitions and mechanisms, such as export control frameworks or dedicated monitoring regimes, while also leveraging existing international forums like the U.
+
+N. and advancing targeted bilateral efforts to establish safeguards, enhance oversight, and curb the proliferation of high-risk AI capabilities.
+
+In short, while the AI rivalry between the United States and China is real and consequential, it should not be the only concern in both capitals.
+
+The future of global security will not be determined solely by which power leads in AI innovation—but by whether those innovations can be kept out of the hands of those most willing to use them irresponsibly.
+
+Yingyi Ma and Ying Lin
+
+[H2]How AI can help U.S. education lead
+
+AI is transforming education.
+
+The traditional strengths and weaknesses of educational systems, particularly those of the United States and China, are being recalibrated.
+
+This essay introduces a new conceptual framework to understand this transformation: the contrast between creative patterns and algorithmic patterns in learning.
+
+By understanding and cultivating creative patterns, the U.S. education system may find its comparative edge in the global competition.
+
+[H3]From algorithmic to creative patterns
+
+Algorithmic patterns refer to structured, rule-based learning pathways, which are essential in mathematics and coding.
+
+They form the backbone of foundational education, especially in test-oriented systems like China’s.
+
+In contrast, creative patterns are emergent, non-linear, and divergent.
+
+They involve open-ended inquiry, interdisciplinary synthesis, and ethical reflection—qualities essential for navigating complexity and uncertainty.
+
+Rather than rejecting algorithmic patterns, creative patterns build upon them but push further into ambiguity tolerance, contextual understanding, and reflective judgment.
+
+[H3]Comparative strengths and weaknesses: U.S.-China education before AI
+
+AI challenges both education systems in the United States and China in different ways.
+
+China’s education system is centralized and has long excelled in building strong foundations.
+
+This system has powered China’s success in international assessments like PISA and fueled its rapid growth in STEM fields.
+
+However, this success comes at a cost.
+
+Interdisciplinary thinking, open-ended exploration, and intrinsic motivation are underdeveloped in such systems.
+
+In contrast, the U.S. education system is highly decentralized, emphasizing independent and critical thinking and liberal arts exposure.
+
+This environment nurtures creative patterns by encouraging students to challenge assumptions, synthesize across disciplines, and develop unique voices.
+
+However, the American system suffers from deep structural inequality and uneven foundational skills, particularly in mathematics and science—gaps that are well-documented in national assessments.
+
+[H3]Rethinking U.S.-China competition and talent development in the age of AI
+
+AI is redefining the terms of global education competition.
+
+As machines handle routine cognitive tasks, human value will lie in asking meaningful questions, grappling with moral complexity, and imagining futures beyond data, where the United States holds latent strengths that could become a strategic edge if cultivated.
+
+China, too, is aware of this shift.
+
+Recent reforms encourage more exploratory learning and the integration of arts and sciences.
+
+However, the inertia of the exam-based system and emphasis on conformity make large-scale transformation difficult.
+
+To cultivate learning creative patterns and realize the comparative edge in the age of AI, the United States needs to invest in the following: (1) robust AI infrastructure in schools, including equitable access to AI-powered learning tools; (2) comprehensive teacher training to support creative, interdisciplinary, and AI-literate pedagogy; and (3) curricular reform that embeds creative pattern development—from project-based learning to ethical reasoning—across K-12 and higher education.
+
+By investing in education to cultivate learning creative patterns—and ensuring all students have access to the AI tools and opportunities that foster them—the United States has a unique chance to compete not by imitating China’s strengths but by amplifying its own.
+
+Michael E.
+
+O'Hanlon
+
+[H2]AI and near-term military modernization
+
+Having already written on questions like whether AI will make the chances of a U.S.-China war higher or lower overall, Iwould like to answer this question more narrowly and specifically.
+
+With an eye toward military matters, Ibelieve that over the next five years, AI will enter into the military picture primarily in three areas: intelligence, data processing and battle management, and coordination of robotic swarms (be they offensive or defensive in mission).
+
+Since five years is a relatively short time horizon for military planners, it is in such specific yet quite important domains where significant progress is possible on the proposed time horizon.
+
+Begin with intelligence.
+
+This may be the most obvious area where raw processing power helps enormously with huge amounts of data.
+
+Given that we are now collectively imaging the entire surface of the Earth multiple times a day, any organization bent on tracking the movements and locations of another organization (in this case, the People’s Liberation Army and the American armed forces vis-à-vis each other) will benefit greatly from automatic data processing.
+
+Humans simply can’t do the job by traditional means.
+
+And machine-learning methods are very well-suited to this task (better than old-fashioned software with algorithms for distinguishing military systems from other types of objects, the main alternative means of automating this task).
+
+Then there is data processing and battle management in the intense period of a future fight.
+
+Consider, for example, figuring out how to defend against a barrage attack involving missiles and drones of the type that Iran launched at Israel last year—and of a type that China might in the future launch at Taiwan (or Okinawa or Guam) with at least 10 times the ferocity and sheer mass should it wish to.
+
+The United States could bring comparable firepower to bear against China.
+
+AI may not be essential for small, limited attacks.
+
+But it is indispensable for figuring out, in real-time, how to handle salvos that could have hundreds or even thousands (or someday even tens of thousands) of objects nearing their targets almost simultaneously.
+
+Coordinating defenses and allocating interceptors against such incoming attacks would likely be beyond the capacities of human battle managers.
+
+Finally, there are robotic swarms.
+
+Soon, we may learn more about America’s “ Replicator ” initiative, designed to field large numbers of uninhabited systems (on or under the sea, in the air, or on the ground) for the U.S.
+
+Department of Defense starting this summer.
+
+There are many missions one could imagine for such capabilities.
+
+The Ukraine war already hints at some.
+
+Much more will happen in this regard by 2030.
+
+It will be a fraught yet fascinating time.
+
+Melanie W.
+
+Sisson
+
+[H2]The limits of hindering China’s high-technology sector
+
+In October 2022, the Biden administration introduced the first of what would be successive rounds of controls on the export to China of semiconductors and placed restrictions on China’s access to related technologies.
+
+The administration was clear that the purpose of these measures was to impede China’s ability to advance its AI capabilities.
+
+If the bilateral relationship to that point had been a boulder rolling slowly downhill, these technology policies pushed it over a cliff.
+
+Continuation of these measures, or even the addition of new ones should the Trump administration choose to do so, will therefore have a substantially less dramatic effect on the relationship, either as a signal of U.S. intent or as a means of hindering China’s ability to develop and apply AI-enabled technologies.
+
+China has factored in the former and made adjustments for the latter.
+
+The release of DeepSeek’s R1 large language model in early 2025, however, hints at other possibilities for AI’s role in the U.S.-China relationship.
+
+DeepSeek developed and trained its first model under the constraints of U.S. technology restrictions.
+
+Its success, therefore, is a canary in the coal mine, warning that there is a limit to what trying to stymie China’s high-technology sector can achieve.
+
+Necessity, after all, breeds invention.
+
+If U.S. policymakers are alert to this message, then they might consider reorienting U.S. policy to focus on making America strong rather than on trying to make China weak.
+
+The United States has an encouraging history of achieving technological success through wise investments in industry, infrastructure, and talent.
+
+Pursuing such a course faces non-trivial domestic impediments—a gridlocked and generally hawkish Congress primary among them.
+
+But a less outwardly confrontational and more inwardly constructive approach offers considerable domestic benefits.
+
+It might also have the salutary effect of creating space for the two nations to try to mutually manage the risks of AI.
+
+This would be especially useful if it were to intensify mutual engagement on the uses of AI in the military domain.
+
+There are multiple unofficial but regular convenings among think tank and academic specialists—so-called Track 2 dialogues—and high-level intergovernmental summits and commissions that might prove useful.
+
+Such efforts will require patience and persistence.
+
+But replacing possibly fruitless attempts to slow China’s industry with an effort to make progress on reducing the likelihood that AI will cause, complicate, or accelerate armed crises seems a tradespace worth exploring.
+
+Elham Tabassi
+
+[H2]Atechnology development perspective
+
+The AI revolution is reshaping U.S.-China relations, with technological development likely to be a primary driver of bilateral dynamics over the next five years.
+
+[H3]Semiconductor controls
+
+The United States has imposed export controls to limit China’s access to advanced semiconductors, including restrictions in January 2025 on AI chips and model weights which were rescinded by the Trump administration in May 2025.
+
+While aimed at preserving U.S. technological leadership, some analysts, including figures such as Alvin Wang Graylin, argue these measures may unintentionally accelerate Chinese innovation by forcing efficiency improvements.
+
+For example, Huawei has introduced chips achieving approximately 60% of Nvidia’s H100 performance, while offering cost advantages for specific applications.
+
+Others, including senior officials responsible for export control in the Biden administration, contend that export controls remain essential for safeguarding national security, though they require better coordination and refinement.
+
+[H3]Open-source AI strategy
+
+The release of DeepSeek’s R1 model under an MIT License has catalyzed a broader shift toward open-source AI development, with major Chinese firms such as Baidu, Alibaba, and Tencent embracing open-source approaches.
+
+While U.S. companies like Meta have also released open models (e. g., Llama), China’s adoption appears more coordinated and perhaps strategically driven.
+
+AI model transparency varies: fully open-source models provide training data, code, and weights; open-weight models share only trained parameters; closed models (e. g., from OpenAI or Anthropic) remain entirely proprietary.
+
+Open-weight models allow users to independently deploy and modify AI systems, making it easier to integrate models into infrastructure, which may create lasting dependencies—offering not just technical benefits but also long-term strategic influence.
+
+Open-weight models can present security and misuse risks.
+
+Unlike closed models with built-in safety guardrails, open-weight models can be modified to remove safety constraints, potentially enabling harmful applications such as automated cyberattacks through developing malicious codes.
+
+[H3]The case for cooperation
+
+Over the next five years, the U.S.-China AI relationship will be shaped by tensions between strategic competition and the potential for collaboration.
+
+While controls may slow China’s access to frontier technologies, they can also incentivize domestic innovation.
+
+China’s gains in efficiency show that progress can come from constraint.
+
+Cooperation in AI need not be zero-sum.
+
+Transparency and international standards could help mitigate risk, prevent miscalculation, and support global innovation.
+
+Shared technical benchmarks and governance frameworks would build trust and enable responsible development that benefits both national interests and global technological advancement.
+
+However, national security concerns remain central.
+
+Amore nuanced policy—restricting military applications while allowing for open collaboration in non-military research—could better balance competition with cooperation.
+
+The key question is whether managed competition and selective cooperation, grounded in transparency and standards, can better advance both national interests and global AI progress than continued technological decoupling.
+
+Nicol Turner Lee
+
+[H2]The AI race will depend on how the U.S. supports the private tech sector
+
+The often-repeated recommendation that the United States and China cooperate on AI seems to now be far out of reach.
+
+Vice President JD Vance has explicitly called competition on AI with China an “ arms race ” and the Trump administration has repeatedly threatened U.S. tech companies with tariffs to get them to relocate supply chains from China to American soil.
+
+But for the United States to remain competitive, it must rely on the innovation of the private sector, which despite the fragmented efforts led by the tech giants, will ultimately deliver advanced capabilities in software, applications, and compute power.
+
+Yet, the “research triangle” between academia, industry, and government, which Brookings scholar Ryan Hass cited as a pillar to American leadership in AI in the first Trump administration, is being dismantled due to slashed funding of government labs and top research universities.
+
+The administration’s cuts to the National Science Foundation’s budget have shrunk funding in computer science by 31%, and some researchers estimate increases in AI and quantum funding are marginal compared to inflation rates.
+
+The United States’ unfavorable talent policy risks sabotaging AI leadership in the next five years.
+
+Given the number of international students pursuing AI-related degrees, Trump’s sudden revocation and reinstalment of 1,800 student visas in April will likely impact those who may accelerate AI innovation.
+
+Further, Trump’s efforts toward “aggressively revoking” the visas of Chinese international students working in critical fields will deter current and future foreign students from pursuing opportunities in the United States.
+
+In contrast to the push toward deferred student visas, Chinese universities are moving quickly to divert top talent from around the world to their educational institutions, elevating them as global hubs of AI research.
+
+The reversal in talent attraction between the two countries demonstrates stark differences that will have greater impacts on the U.S. talent pipeline.
+
+The loss of talent will undermine American leadership in STEM and derail critical AI research, handing the competitive edge to China with its favorable talent policy and centralized, state-led strategy for AI innovation and deployment.
+
+To secure leadership in AI in the next five years, the United States must reestablish and reinvest in the partnerships between industry, academia, and government that have facilitated American growth in technology.
+
+Federal policy can frame this technological revival by supplying research funding in AI and related fields to ensure the institutions that have long contributed to U.S. leadership are given the space to develop new ideas, attract top talent, and thrive amid global competition.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

@@ -1,0 +1,199 @@
+The 2024 drug fatality data from the Centers for Disease Control and Prevention (CDC) revealed a striking and encouraging trend: Overdose deaths in the United States fell by nearly 25% from 2023 to 2024.
+
+This dramatic decline marks real progress toward a key goal of the National Drug Control Strategy—one that seemed nearly out of reach just a few years ago.
+
+Policy reforms that removed barriers to evidence-based care through the expansion of syringe services programs (and related health hubs ), naloxone distribution, and access to evidence-based medications for opioid use disorder all contributed to this decrease.
+
+However, we stand at an important crossroads as the Trump administration and Congress propose and implement policies that endanger this progress.
+
+The reductions in Medicaid that will result from passage of the “ One Big Beautiful Bill Act,” as well as cuts to grant and research funding administered by the Department of Health and Human Services (HHS), will make it difficult to maintain these positive trends.
+
+Medicaid is the primary payer for both substance use and mental health treatment, and reductions in its coverage will have devastating consequences.
+
+These funding reductions, coupled with cuts to critical staff and a retreat from public health approaches to substance use disorders and bipartisanship toward addiction, pose serious challenges to progress.
+
+The devastating but avoidable outcome will likely be a significant increase in drug overdoses and increased economic costs and trauma to U.S. society.
+
+[H2]Latest trends and unequal progress
+
+The CDC’s predicted fatal overdose numbers for the 12-month period ending February 2025 show another decrease in overdose deaths.
+
+However, a central question remains for 2025: will drug fatality reduction progress continue this year, stagnate, or reverse to 2023 levels (or worse)?
+
+It is imperative that everything possible in terms of programmatic and policy implementation be done to ensure that it is the former of these three scenarios and not either of the latter two.
+
+While the 2024 reduction in overdose mortality was a powerful sign of progress in combating the most devastating consequence of the overdose epidemic, we must not lose sight of the broader and lasting toll this epidemic has taken on individuals, families, and communities across the country.
+
+Overdose death rates are inconsistent across demographic groups.
+
+While we don’t yet have health disparity data for all of 2024, 2022 to 2023 data showed that overdose death rates increased in American Indian/Alaska Native and Black communities, in the majority of states, while overdose deaths in non-Hispanic white demographic groups decreased.
+
+Despite overall declines in 2024, the loss of approximately 80,000 people a year to preventable overdose deaths is not a cause for celebration or complacency.
+
+Rather, it’s a sign to closely examine the policies driving the decrease in overdoses, determine best practices to continue the declines, and identify how to improve outcomes in every community.
+
+[H2]Contributing factors to reductions in overdose deaths
+
+It is difficult to precisely pinpoint which public health strategies directly led to the 2024 decreases in overdose mortality, perhaps because it has likely been due to a complex interaction of factors.
+
+Still, it’s worth reflecting on the significant policy changes that were implemented to remove barriers to care and harm reduction services for people with substance use disorder.
+
+Afew items stand out:
+
+Removing the cumbersome X-waiver requirement for prescribing buprenorphine.
+
+Increasing access to naloxone and adoption of Good Samaritan laws nationwide.
+
+Expanding access to syringe services programs in states that had previously banned such programs.
+
+Revising methadone laws to allow greater access to this evidence-based medication for opioid use disorder.
+
+Removal of the X-waiver.
+
+Eliminating the X-waiver, a bipartisan policy action, removed the burdensome training requirement that had long restricted clinicians from prescribing buprenorphine.
+
+This reform addressed a key regulatory barrier that limited the health care system’s ability to respond effectively to opioid use disorder by expanding access to evidence-based treatment.
+
+The legislation, passed by Congress in 2022, was marked by overwhelming congressional support.
+
+However, research has not yet found that the X-waiver removal has resulted in a clearly identifiable increase in buprenorphine prescribing.
+
+At the same time, removing the X-waiver wasn’t a mistake (especially considering the counterfactual of the possible effects had it been left in place).
+
+Rather, it marks just the first step in a longer reform process.
+
+Prescribers have identified a number of reasons why they choose not to treat patients with opioid use disorder with buprenorphine, including stigma against the medication as well as the patient.
+
+The presence of such stigma points to the additional work needed to ensure that people with substance use disorder receive compassionate, accessible care.
+
+Naloxone distribution, training, and use.
+
+The second significant policy change that took place over the last decade was increased availability of the opioid overdose antidote naloxone.
+
+Naloxone, once used almost exclusively by medical professionals to reverse an overdose, became more widely available to first responders (including police departments) and was distributed by harm reductionists in a wide variety of community-based settings.
+
+Innovations like vending machines have expanded access to naloxone and other harm-reduction supplies for individuals who might not otherwise be able to obtain them.
+
+Every state in the country now has a Good Samaritan law, protecting people at the scene of an overdose when they call 911.
+
+In 2022, HHS, through the State Opioid Response grant program, required states to develop naloxone saturation plans.
+
+Saturation plans are designed to ensure that people most likely to witness an overdose, or those living in communities with elevated overdose risk, have access to naloxone.
+
+These are all positive steps.
+
+However, CDC SUDORS data indicates that 42.6% of fatal overdoses between October 2020 and March 2024 occurred while a potential bystander was present; therefore, too many individuals overdose with someone nearby who did not have the tools or training in how to recognize and reverse an overdose.
+
+Scaling up overdose education and naloxone distribution programs, to include related training and public health communication efforts, are critical but often neglected dimensions of service design and delivery.
+
+Syringe services programs expanded, but barriers remain.
+
+The 2015 HIV outbreak in Indiana that was linked to injection drug use and a lack of syringe exchange programs spurred states such as Kentucky, Tennessee, and North Carolina to change their laws to permit syringe services programs.
+
+According to the Legislative Analysis and Public Policy Association, as of March 2025, 37 states, the District of Columbia, and Puerto Rico allow syringe services programs to operate legally.
+
+Although syringe services programs exist in most U.S. states, significant barriers still hinder the implementation of best practices.
+
+For example, six states require a “one-to-one” exchange in which an individual can receive one syringe in return for turning in one syringe.
+
+This practice can lead to increased risk of infection due to needle sharing—exactly the practice that syringe services programs prevent.
+
+Further, over the decades, syringe services programs have evolved in many cases to offering a variety of health-related services and pathways to other needed medical and social supports; when syringe services programs are disrupted, the impact on clients can go well beyond substance use and infectious disease impacts.
+
+At the same time, syringe services programs remain limited due to ongoing stigma manifesting in legal and funding challenges.
+
+Methadone access expansion.
+
+Another advance in the past few years was the historic reform to methadone access in 2023.
+
+One of the revisions made to the methadone rule was patients’ increased ability to take home methadone.
+
+The revised methadone rule allowed individuals, after stabilization, to securely take home their medication rather than requiring a visit to an opioid treatment program every day.
+
+This revised rule came about after the relaxation of take-home rules during COVID-19, allowing for a natural experiment that demonstrated there were no greater harms associated with take-home methadone for opioid use disorder.
+
+In fact, people were more likely to stay in treatment without a daily visit requirement.
+
+While the rule change is a positive step, not every state has complied with the new federal rule, and moratoria on new methadone clinics remain in a few states, keeping methadone out of reach for individuals who would benefit from this Food and Drug Administration-approved medication.
+
+These policy changes were important (again, especially compared to the counterfactual of all the barriers being left in place)—but alone, they are insufficient to meet the enormity of our challenge.
+
+The most recent data available finds that more than 48 million people in the United States have a substance use disorder, which includes both alcohol and other drugs.
+
+We cannot walk away from building the type of holistic continuum of care needed to reduce harms, prevent substance use, and increase treatment and recovery efforts.
+
+[H2]Long-term generational harms
+
+For nearly two decades, the United States has been living through an era of unprecedented rates of overdoses, leaving in its wake serious consequences and exposing clear public health inequities.
+
+Racial and ethnic inequities.
+
+According to internal research conducted by The O’Neill Institute, the fatal overdose rate for Black Americans has been significantly higher than that of white Americans since 2020.
+
+Between 2018 and 2021, the number of annual fatal overdoses increased for all races and ethnicities.
+
+However, the number of fatal overdoses for white Americans peaked in 2021 and began decreasing in 2022 and 2023 (a decline of 2.47% and 5.83%, respectively).
+
+Overdose deaths for Black, American Indian/Alaska Native, Hispanic, and Asian Americans rose, with all four groups reporting their highest annual fatal overdose numbers to date in 2023.
+
+However, given the overall drug fatality declines seen in 2024, it will be important to analyze these disparities as the most recent full-year data are finalized.
+
+Impact on children.
+
+As we grapple with solutions to curb overdose death rates, we often overlook one of the most serious consequences of the overdose epidemic: the estimated 321,000 children who, between 2011 and 2021, lost a parent to overdose.
+
+Raised by other family members or placed in foster care, the trauma these children have experienced places them at greater risk of mental health conditions and the development of substance use disorder.
+
+Family members in many states bear the primary responsibility for raising these children, but families are often left without adequate support or resources.
+
+At a time when a grandparent may be preparing for retirement, they are instead looking at preschool options for their grandchild.
+
+[H2]Effects of recent policies
+
+Recent proposals and policies that reduce research funding, Medicaid, and grants to states and communities will have a profoundly negative impact on the nation’s ability to effectively respond to overdose deaths.
+
+Acomprehensive approach to drug policy in the United States includes effective measures to reduce the flow of illicit drugs into the United States, but border policies alone will not reduce overdose deaths or untreated substance use disorder.
+
+Federal disinvestment.
+
+In the face of what can be considered a concerted effort by the federal government to disinvest in funding for addiction services, whether through the elimination or reduction in grant programs administered by HHS or Medicaid, the way forward is difficult.
+
+The One Big Beautiful Bill Act will have a devastating impact on people with substance use disorders by posing significant procedural barriers to Medicaid eligibility.
+
+Medicaid is the primary payer for both substance use and mental health treatment, and without it, most individuals will have no viable way to access care.
+
+Even those who are employed may find that private insurance does not cover necessary treatment, or that high co-pays and deductibles place care out of reach.
+
+Further, the proposed cuts to HHS grant programs, including the block grant program that funds treatment for individuals without insurance, will leave millions without access to needed care.
+
+Reductions to critical staff and a retreat from bipartisanship.
+
+Reductions in critical staff capacity, including expertise to track and respond to the evolving synthetic drug supply, put the nation’s public health and safety at risk.
+
+Further, any retreat from a bipartisan public health approach to curbing overdose deaths, which includes supporting research, investing in the addiction workforce, and adequate funding, threatens our future approach to addiction.
+
+Retreat from public health approaches.
+
+Any strategy that emphasizes supply reduction to the exclusion of other proven public health approaches to substance use will not decrease overdose deaths and other harms, and in fact, may increase fatality.
+
+As the recently released National Drug Threat Assessment has shown, other synthetic drugs, including xylazine, are increasingly showing up in our drug supply.
+
+The synthetic drug xylazine is not an opioid, but fentanyl adulterated or associated with xylazine was declared an emerging drug threat in 2023 because of the geographically widespread, serious harms associated with its use.
+
+However, proposals to eliminate data systems like the Drug Abuse Warning Network will limit our ability to spot emerging trends.
+
+Given the toxic and ever-evolving drug supply, efforts to reduce the harms associated with drug use and make treatment and other care available to people in need take on added importance.
+
+This is no time to retreat from the public health approaches needed to continue to curb overdose deaths, but reduced mortality numbers alone should not be our only goal.
+
+We must also ensure improvements in mental and physical health and overall well-being.
+
+Our vision for the future must include building on past policy successes, improving outcomes in every community, and leaving no one behind as we confront the third decade of the epidemic.
+
+We must do everything possible to make 2025 a year of continued progress, and not stagnation or reversal.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

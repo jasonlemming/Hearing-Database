@@ -1,0 +1,486 @@
+Editor's note:
+This report is the third in a series on “ Europe’s energy transition: Balancing the trilemma ” produced by the Brookings Institution in partnership with the Fundação Francisco Manuel dos Santos.
+
+The European Union (EU) is often characterized as a “ regulatory superpower “—that is, an entity capable of shaping the behavior of public officials and private-sector actors well beyond its own borders.
+
+European regulations influence the regulatory practices of other governments; firms serving multiple export markets often adopt European requirements to minimize compliance burdens.
+
+This regulatory norm-shaping power, also known as the “ Brussels effect,” is a reflection not only of the size of the EU market—among the world’s largest in terms of economic value—but also of European regulators’ ambition and their corresponding tendency to outpace other leading economies in setting the standards in a broad swath of policy domains.
+
+The Brussels effect has been particularly pronounced in climate and sustainability policy, an area where the EU has for many years led the world in ambition.
+
+The European Green Deal (EGD), a sprawling regulatory and investment package that aims to make the continent a net-zero emitter by 2050, has positioned Europe to be a global standard-setter in areas such as fuel and energy efficiency, building construction, agricultural and forestry practices, and heating and cooling systems.
+
+The EGD builds on preexisting high standards in these and other areas and the decarbonization incentives under the EU Emissions Trading System, the world’s oldest greenhouse gas emissions trading scheme.
+
+The EU’s climate ambition has led to an increasing emphasis on emissions reduction in European trade policy, extending the Brussels effect to the nascent arena of “ green trade.” Trade policy traditionally has played an important role in reinforcing EU regulatory practices both at home and abroad by setting the conditions for accessing the European market, typically through import restrictions and the inclusion of baseline environmental, labor, safety, and privacy standards in free trade agreements (FTAs).
+
+As the European Commission observed in a recent communication, “Thanks to the common commercial policy, the EU speaks with one voice on the global scene.
+
+This is a unique lever.”
+In tandem with the EGD, European policymakers have repurposed trade tools to complement European decarbonization efforts and encourage climate action in trading partners, most prominently in the adoption of the world’s first carbon tariff, the EU Carbon Border Adjustment Mechanism.
+
+These efforts have won Brussels both praise and criticism from governments, civil society groups, and private-sector actors around the world.
+
+They have also catalyzed discussion about the wisdom of and appropriate pathways for aligning trade and climate among the world’s leading economies and multilateral forums such as the World Trade Organization (WTO) and the United Nations Framework Convention on Climate Change (UNFCCC) that govern and facilitate policy cooperation in these domains.
+
+Europe’s first-mover status on green trade means that the success of its policies, both in terms of reducing the continent’s carbon footprint and in persuading trading partners to adopt similar measures, carries outsized implications for the future of the global trade system and a coordinated international approach to the green transition.
+
+Europe’s assertive approach to climate-aligned trade is advancing at a moment of upheaval and tension on both sides of the Atlantic.
+
+Returning to the White House, President Donald Trump has pledged to reverse course on climate action, roll back investments in the energy transition at home and abroad, and impose economy-wide tariffs and trade restrictions on adversaries and allies alike—including the European Union.
+
+This whiplash in U.S. climate policy and the antagonism embedded in U.S. trade policy will almost certainly erode U.S. diplomatic influence and lead spurned trade partners to seek out new markets and supply chain relationships.
+
+In this context, Europe’s outsized influence and its commitment to an open global trading order carry great opportunity and great risk.
+
+If successful, the EU approach could serve as a model for integrating climate goals into trade policies, incentivizing other major economies to adopt similar aligned—or even harmonized—measures that galvanize global momentum toward decarbonization.
+
+But poorly designed, uncoordinated approaches could exacerbate underlying trade tensions, fragment markets, and disproportionately burden emerging markets and developing economies with compliance costs.
+
+As Brussels navigates this complex landscape, it will need to carefully balance climate ambition with its trade relationships.
+
+This paper examines those policies, the motivations behind them, and the opportunities and risks they present for European industry and consumers amid an uncertain international economic outlook.
+
+[H2]Trade and climate: Amissed connection for Europe (and the world)
+
+Historically, climate has not been a focus of trade policy or the global trade system.
+
+None of the 60 legal agreements that comprise the WTO system reference climate, and the vast majority of FTAs are likewise silent on the topic.
+
+Environmental standards that do not specifically reference climate have become more common in FTAs over the past two decades—with some evidence that they reduce emissions—but even today there is not a settled expectation that trade policy should mitigate the environmental impacts.
+
+As WTO Deputy Director General and former French WTO Ambassador Jean Marie Paugam remarked in 2024, “For a long time, the environment was treated with a form of benign neglect by trade negotiators: environmental losses were often considered unfortunate externalities to be corrected by non-trade measures and policies.”
+This omission is striking given trade’s contributions to—and potential role in mitigating—climate change.
+
+Trade accounts for around 20%-30% of global emissions according to the WTO, largely attributable to the direct and indirect emissions associated with the manufacturing of widely-traded industrial goods such as steel and aluminum and the fuels involved in their transportation across national boundaries.
+
+Economic integration achieved through accession to the WTO and FTAs has been assessed to increase emissions among trading partners, for example through stimulating demand for carbon-intensive primary commodities and downstream products like automobiles and aircraft.
+
+Reduced trade barriers, in conjunction with greater capital mobility, increase the risk that manufacturing will migrate to jurisdictions with comparatively weak climate regulations, a phenomenon referred to as “ carbon leakage. “ 1
+This state of affairs is largely a product of chronology.
+
+The modern global trade system came into being during a period before most governments became aware of and took seriously the threat of climate change.
+
+Since then, institutional inertia and a lack of consensus on the role of climate in trade policy have impeded the reform of trade rules to create policy space for climate ambition.
+
+The WTO has been unable to conclude a significant agreement in two decades, and even today, some members take the position that the organization’s mandate does not include addressing climate change.
+
+Members of other multilateral forums like the UNFCCC and G20 have sought to address the climate-trade nexus, but those efforts are nascent and have produced little in the way of tangible results.
+
+The trade system’s indifference to climate change represents a missed opportunity for Europe, arguably more so than for any other major economy, given its “regulatory superpower” status.
+
+For decades, European leaders have sought to elevate global climate ambition through a combination of stiff regulation, diplomatic engagement, and foreign assistance and lending.
+
+Aligning EU trade policy with climate action is a logical extension of these efforts, for several reasons:
+
+Europe’s greenhouse gas footprint does not stop at European borders.
+
+The continent is deeply integrated into and dependent on transnational value chains, and European consumer and industrial demand drives commercial and agricultural activity in virtually every corner of the world.
+
+The EU, with its carbon market and strong environmental regulation, faces a serious risk of carbon leakage, compounding concerns over deindustrialization amid high energy prices.
+
+By leveraging its immense market power, Europe can encourage greener production elsewhere, disrupting an unsustainable race to the bottom, while at the same time ensuring that carbon-intensive production methods do not provide a competitive advantage for imports into the European market.
+
+Trade policy is a comparatively under-leveraged climate tool.
+
+At a time when conventional approaches to reducing emissions such as diplomacy and finance are yielding diminishing returns at an international level, trade policy offers a new set of tools and incentives to catalyze climate ambition.
+
+Europe, like virtually every other region, cannot source the goods and services needed to power a decarbonized economy using only domestic suppliers.
+
+FTAs and other trade arrangements can contribute to robust and cost-effective clean energy supply chains.
+
+Trade can ease consumer burdens associated with the green transition.
+
+New circularity and energy efficiency requirements may have inflationary impacts in sectors such as construction, agriculture, and electronics.
+
+Trade policy can potentially blunt these impacts by reducing tariffs and fostering greater competition along clean energy supply chains.
+
+[H2]Why Brussels (finally) embraced green trade: Climate, competitiveness, and cost
+
+The European Commission acknowledged the siloing of trade from climate and other environmental concerns in a 2021 Trade Policy Review, which offered the striking assessment that “the EU needs a new trade policy strategy – one that will support achieving its domestic and external policy objectives and promote greater sustainability.” Under the leadership of President Ursula von der Leyen, the commission has responded to that call by designing and adopting a raft of climate-aligned trade policies such as the Carbon Border Adjustment Mechanism, new environmental standards and due diligence requirements for goods imported into the European market, and binding climate commitments in FTAs.
+
+This pivot can be explained in part as a reflection of Europe’s broader policy reorientation toward rapid decarbonization under the EGD, which aims to make sustainability a core feature of the European economic model and a mainstream climate ambition across numerous policy areas to meet 2050 targets under the Paris Agreement.
+
+It is not surprising that European trade policy, Brussels’ “unique lever,” has been affected by this recalibration.
+
+Yet climate leadership is not the only reason for Europe’s embrace of green trade.
+
+Just as importantly, trade policy is seen as a means of offsetting growing concerns about European competitiveness amid faltering support for the EGD.
+
+From the outset, European leaders have presented the EGD not just as an emissions reduction strategy, but also as a framework for economic recovery and growth in the wake of the COVID-19 pandemic and eurozone sovereign debt crisis.
+
+The hope in Brussels is that burgeoning clean energy industries and the eventual cost reductions afforded by the transition to renewable power and energy-efficient goods and materials will lead to economic expansion.
+
+In the words of the European Commission, “The European Green Deal will transform the EU into a modern, resource-efficient and competitive economy.”
+European politics has recently called this vision for climate-aligned growth into question.
+
+In the last EU-wide elections, EGD supporters, including the European Greens, sustained significant electoral losses, and the European People’s Party, von der Leyen’s political home, has increasingly criticized climate and clean energy goals—and the EGD itself.
+
+Critics consistently and cogently contend that the regulatory burdens and costs associated with the transition to net zero have put European firms at a competitive disadvantage relative to foreign competition.
+
+These concerns have been particularly acute for hard-to-abate industrial sectors, which under the EGD will have increased exposure under the EU Emissions Trading System.
+
+Faced with such concerns, it is not surprising that Brussels would see value in trade policies that neutralize the cost advantage enjoyed by exporters based in countries with low environmental standards and enhance access to critical minerals and other key commodities.
+
+It is notable that Brussels has stuck by its climate ambition even as it wrestles with concerns about industrial competitiveness.
+
+In February, the European Commission announced its “ Clean Industrial Deal,” a comprehensive strategy aimed at reversing the continent’s declining industrial manufacturing sector.
+
+European energy costs have been persistently high since the Russian full-scale invasion of Ukraine, after which Moscow halted nearly all flows of piped gas.
+
+These structurally higher costs have made European industrial production less globally competitive and prompted Brussels to refocus on reducing them.
+
+The plan seeks to address these concerns without substantially departing from European climate goals.
+
+Von der Leyen still views decarbonization as a means to bolster European manufacturing, though Europe is neither on track to meet its 2030 climate goals nor achieve zero emissions by 2050.
+
+Beyond the EGD, two factors outside of Brussels’ control have also encouraged the adoption of climate-aligned trade policies.
+
+The first is the Russian invasion of Ukraine and the associated volatility in European energy costs, which has added considerable urgency to building a diversified and resilient European energy base and improving economy-wide energy efficiency.
+
+The second is the United States’ turn toward industrial policy under the Biden administration, and in particular, the Inflation Reduction Act, which has increased demand for critical minerals and other inputs into renewable power generation and zero-emissions transportation.
+
+Both of these developments have put pressure on European governments and firms to preserve and enhance economic competitiveness, especially in energy-intensive industries; maintain and expand relationships with exporters of raw materials and clean energy products; and neutralize the cost-advantage foreign firms may reap from cheap and abundant power.
+
+[H2]Overview of key policies
+
+Europe’s climate-aligned trade agenda can be roughly divided into three categories: (1) policies aimed at deterring carbon leakage and internalizing the cost of carbon in the cost of goods; (2) import standards and due diligence requirements that promote sustainable economic activity with climate benefits; and (3) integrating climate goals and standards into trade partnerships.
+
+[H3]Deterring carbon leakage and internalizing the cost of carbon
+
+In 2005, the European Union became the first major economy to institute a broad carbon price, the EU Emissions Trading System (ETS).
+
+The EU ETS is a cap-and-trade system with a fluctuating, market-driven price on greenhouse gas emissions in covered sectors.
+
+Firms must hold allowances for each ton of carbon dioxide they emit.
+
+Companies can buy, sell, and trade these allowances.
+
+By creating a financial cost for emissions, the ETS incentivizes companies to reduce their carbon footprint through efficiency improvements, fuel switching, and investment in low-carbon technologies.
+
+From the outset, this landmark policy raised concerns that it would contribute to carbon leakage and weaken the competitive position of EU-based firms in markets with no or a substantially lower carbon price.
+
+Brussels’ primary response to such concerns has been to provide free emissions allowances to operators of manufacturing facilities in some trade-exposed industries and carbon-intensive sectors.
+
+This allocation of free allowances creates tensions between competitiveness and decarbonization goals, however.
+
+Additionally, the ETS, while covering an impressive range of economic activity, excludes some key components of the continent’s carbon footprint, including the emissions associated with the manufacturing and transportation of goods imported into the European market.
+
+Brussels has sought to simultaneously rectify these two challenges by pairing the phase-out of free allowances with the Carbon Border Adjustment Mechanism, which extends the ETS to certain imported products, and increases the ETS’s scope to cover maritime emissions.
+
+Although the primary intent of these policies will be to accelerate European decarbonization, they have the auxiliary benefit of encouraging manufacturers and ship operators outside Europe to shift to more sustainable practices.
+
+[H4]Carbon border adjustment mechanism (CBAM)
+
+Until recently, emissions-linked tariffs or border fees were theoretical, abstract policies not part of any government’s approach to tackling either climate change or international trade.
+
+That changed in December 2022, when the EU finalized the CBAM.
+
+The EU CBAM imposes tariffs on certain products and selected precursors in emissions-intensive, trade-exposed sectors.
+
+Companies importing goods in CBAM-covered sectors are required to purchase certificates priced according to the weekly EU ETS auction average.
+
+Its coverage applies to all trade partners, including least-developed countries.
+
+Currently, importers are only required to collect data on the embedded carbon of the products they bring into the European market, though compliance costs and administrative issues have been an issue for European businesses.
+
+In 2024, thousands of companies across Europe missed reporting deadlines.
+
+Starting in 2026, the EU CBAM will place a border levy on imports of covered products such as steel and aluminum.
+
+The fee is calculated based on the EU ETS and whether the exporting country has a comparable carbon pricing scheme that could offset the levy.
+
+Initially, the fee will be a small percentage of the weekly EU ETS average price.
+
+Over eight years, the fee will increase gradually to 100% of that weekly average.
+
+In tandem with the implementation of the CBAM, the EU will gradually eliminate the free allowances it has granted to domestic producers of carbon-intensive, trade-exposed goods to offset the cost of the ETS in their sectors.
+
+Countries and firms affected by the CBAM have expressed concerns about the technical and financial obstacles to compliance.
+
+Many countries supplying covered goods to the European market do not have national or regional carbon prices; firms in these countries will accordingly need to invest and develop the capacity to operate emissions monitoring and verification systems to comply with the CBAM or otherwise pay a fee based on a generic “default value” set by the EU.
+
+To complicate matters further, there is no universal standard for measuring emissions.
+
+Although the European Union has a sophisticated carbon accounting system for measuring liability under the ETS, that methodology calculates emissions at the facility, rather than the product, level.
+
+Attributing emissions across different products made in a facility is inexact at best.
+
+These concerns do not appear to have fallen on deaf ears.
+
+In February 2025, as part of the Clean Industrial Deal, the European Commission published revisions to the CBAM that limit the policy’s application to firms importing 50 tons of covered goods or more, a change that Brussels claims will exclude 90% of importers while covering 99% of in-scope emissions.
+
+This change would exempt smaller businesses while maintaining the CBAM for large companies that account for most emissions-intensive imports.
+
+[H4]Maritime emissions
+
+The CBAM currently does not cover indirect emissions associated with transporting goods in large part because such emissions were not a part of the ETS at the time the CBAM was designed and passed into law—with the notable exception of aviation.
+
+Including transportation emissions in the CBAM would have been inconsistent with the policy’s guiding logic that covered imports should receive comparable treatment to equivalent goods produced in Europe.
+
+This omission, while understandable given the measurement and verification challenges associated with the transportation of goods along value chains, leaves a significant source of emissions unpriced in the European carbon market.
+
+Maritime emissions in particular are a major source of greenhouse gasses within the trade system—far more so than aviation, where emissions are mostly attributable to commercial passenger flights rather than the flow of goods.
+
+Ships transport around 80% of traded goods, and the emissions associated with this activity comprise around 2%-3% of total emissions annually.
+
+In 2024, the European Union took a major step in bringing transportation-related emissions within the scope of the ETS by extending the policy to emissions generated by large cargo ships.
+
+Operators of ships traveling between EU ports are responsible for 100% of the emissions generated as a result of that voyage.
+
+That liability is reduced to 50% for voyages between an EU and a foreign port (it does not matter which port is the origin and which the destination) on the reasoning that the foreign country should be allowed to “decide on appropriate action for the remaining share of emissions”—that is, given an opportunity to collect revenues on those emissions via a carbon tax.
+
+The ETS’s expansion could lay the foundation for revising the CBAM to cover the remaining 50% of emissions attributable to the shipment of covered goods on large cargo ships to the EU from a foreign country (provided emissions are not already taxed by the host government of the exporting country).
+
+In addition, should the CBAM ever be broadened to account for complex finished products substantially composed of covered goods (e. g., steel and aluminum in automobiles), the CBAM could be extended to maritime emissions associated with the transportation of those primary goods to the location where the finished goods were manufactured or assembled.
+
+This could entail, for example, the emissions associated with shipping Russian aluminum to China for use in electric vehicles (EVs) and solar panels that are in turn sold on the European market.
+
+These emissions should be comparatively easy to determine for primary goods given the existence of broadly-accepted protocols for measuring the emissions intensity of maritime fuels; allocating those emissions to downstream products is likely to prove more challenging, but this is true of all sources of emissions, not just those from shipping.
+
+[H3]Import standards and due diligence requirements that promote sustainable economic activity with climate benefits
+
+Imposing a carbon price on imported goods is only one tool to reduce European supply chains’ carbon footprint.
+
+Another mechanism, while less direct and measurable in its impact, is to restrict imports of goods produced or associated with practices that contribute to climate change and other environmental harms such as loss of biodiversity.
+
+Athird, even more indirect approach is to impose supply chain due diligence and reporting obligations on private-sector actors who import or resell goods produced or assembled abroad, which in theory makes it easier for consumers and investors to distinguish between and opt for goods and firms based on their sustainability record.
+
+European policymakers have pursued both types of these policies in the past half-decade.
+
+With respect to import restrictions, Brussels has established a Regulation on Deforestation-free Products and a regulation on methane emissions.
+
+As for due diligence, officials are in the process of implementing new sustainability requirements through the Corporate Sustainability Due Diligence and Corporate Social Responsibility directives.
+
+[H4]Import restrictions: EU deforestation regulation (EUDR) and methane regulation
+
+The agricultural sector is a major driver of climate change, both directly through the use of fertilizers and livestock methane emissions and indirectly through the conversion of forests and other carbon sinks to pasture and farmland.
+
+Few governments have attempted to impose a carbon price on agricultural activity.
+
+New Zealand’s recent attempt to tax agricultural emissions was stymied by intense political backlash led by its dairy sector.
+
+Given the sensitive character of agricultural issues in European politics, it is hard to imagine European leaders following Wellington’s lead en masse, though Denmark is in the process of establishing an emissions tax on livestock.
+
+Furthermore, as long as agricultural emissions are excluded from the EU ETS, they will likewise be off the table for the CBAM.
+
+This is not to say that European policymakers have eschewed measures to reduce the carbon intensity of the agricultural products they use and consume.
+
+Within the European Union, Brussels and national governments have promoted agricultural decarbonization through non-price instruments such as regulation and financial support for sustainable agriculture practices.
+
+These tools do not easily lend themselves to reducing the emissions associated with imported goods, however.
+
+Among other challenges, WTO jurisprudence is highly skeptical of regulatory measures that appear to extraterritorially force a particular regulatory regimen on a trading partner.
+
+Despite these obstacles, Brussels has taken action to reduce European exposure to one of the agricultural practices most responsible for climate change and a host of other environmental ills such as loss of biodiversity and desertification: deforestation.
+
+In 2023, the EU adopted a Regulation on Deforestation-free Products (EUDR).
+
+The EUDR prohibits the import of goods such as cacao, cattle, soy, wood, rubber, and palm oil, as well as derived products like furniture and leather, if they are produced or raised on deforested land.
+
+It also imposes due diligence requirements on companies involved in bringing these goods to the European market based on an assessment of whether the exporting country presents a low, standard, or high deforestation risk.
+
+Following pushback from firms and exporting countries, the European Commission earlier this year postponed enforcement of the EUDR by one year for large companies and 18 months for smaller ones.
+
+The EU also announced that most countries will be designated “low-risk” in the traffic-light classification system to reduce the regulatory burden.
+
+Emerging economies including Brazil, Malaysia, Indonesia, and India argued the law is a discriminatory trade barrier targeting their economies and undermining their national sovereignty by imposing external environmental standards.
+
+Politicians and industry groups within the EU also raised concerns or asked for postponements, warning of the impact on European farmers, for whom the EUDR also applies, and the law’s complex data requirements, which might trigger shortages and price hikes.
+
+In addition to the EUDR, the EU has imposed rules designed to reduce energy-sector methane emissions.
+
+The EU methane regulation, which entered into force in August 2024, requires relevant firms to measure and report methane emissions and monitor for leaks—and eventually bans flaring and venting with limited exceptions.
+
+The regulation applies to imports and will require that companies importing oil and gas into the EU demonstrate that their supply chain has EU-equivalent monitoring standards starting in 2027.
+
+In contrast, the Trump administration and Congress will likely roll back the Environmental Protection Agency methane fee, which requires U.S.-based producers to report methane emissions and imposes costs if they do not abate them.
+
+This dynamic could mean that U.S. exports, including liquified natural gas, could incur added costs when selling to the European market.
+
+[H4]Due diligence requirements: The corporate sustainability due diligence and corporate social responsibility directives
+
+Beyond the EUDR, Brussels issued a landmark directive in 2024 instructing EU member states to establish a “ corporate sustainability due diligence “ directive (CSDDD) for some of the companies they regulate by 2026.
+
+Among the directive’s many requirements is a corporate duty to monitor supply chains for adverse environmental impacts.
+
+The directive defines such impacts to include “harmful emissions,” which could conceivably be interpreted to encompass greenhouse gasses.
+
+In addition to supply chain monitoring, the directive also requires covered companies to develop a “transition plan” to ensure the “compatibility of the business model and of the strategy of the company with the transition to a sustainable economy and with the limiting of global warming to 1,5 o C.” Significantly, the CSDDD only applies to European companies with over 1,000 employees and an annual worldwide turnover of 450 million euros and non-European companies with an annual turnover of 450 million euros in the European market, which excludes the vast majority of firms operating in or selling into the continent.
+
+Similarly, the EU Corporate Sustainability Reporting Directive (CSRD), which went into effect at the beginning of 2023, requires companies—including multinationals with EU subsidiaries—to disclose climate-related data including Scope 3 emissions as well as other environmental, social, and governance indicators.
+
+The European Commission, amid competitiveness concerns, is exploring legislation aimed at delaying requirements for and weakening the CSDDD and CSRD, among other changes.
+
+The legislation will likely prove contentious, with some member states advocating against changes and others urging stronger rollbacks.
+
+[H3]Integrating climate goals and standards into trade partnerships
+
+FTAs commonly include provisions relating to environmental regulation and stewardship, ranging from narrow commitments to establish baseline product standards to broad commitments to enforce environmental laws and regulations and implement multilateral environmental agreements.
+
+Climate has historically not featured prominently in the environmental aspects of FTAs, however, except indirectly through commitments around adjacent issues such as energy efficiency, deforestation, and agriculture.
+
+None of the United States’ FTAs reference climate or the Paris Agreement for example, nor does the Comprehensive and Progressive Agreement for Trans-Pacific Partnership, the world’s largest FTA by market size.
+
+Efforts to update the rules of the WTO system to encourage climate action have gained little to no momentum.
+
+The recognition that trade contributes to climate change has led some governments to explore ways to mainstream climate into pending FTA negotiations or to expressly negotiate trade partnerships around the transition to a low-carbon economy.
+
+Under President von der Leyen, the European Commission has signaled its interest in better aligning its FTAs and other forms of trade cooperation with its broader climate ambition.
+
+In a 2022 publication, for example, the commission recommended using FTAs to assist trading partners in “meeting the sustainability requirements of the EU trade related autonomous instruments,” a term that refers to the CBAM, EUDR, and other unilateral measures impacting trade flows.
+
+That same publication made the intriguing proposal that Brussels use trade sanctions “as a last resort” in addressing “serious violations” of environmental commitments in FTAs, including those relating to the Paris Agreement.
+
+To date, however, the commission has not sought sanctions under an FTA related to diminished climate ambition.
+
+Since 2021, Brussels has made modest progress in incorporating climate into its bilateral and multilateral trade relations, principally through the inclusion of climate-positive provisions in its FTAs, but also through the negotiation of narrowly tailored trade arrangements aimed at the expansion of markets for low-carbon goods and inputs into clean energy technologies.
+
+[H4]FTAs
+
+In 2021, EU negotiators concluded a Trade and Cooperation Agreement (TCA) with the United Kingdom, which includes a joint commitment to reaching net-zero emissions by 2050 and encourages cooperation over renewable power and energy efficiency standards.
+
+The TCA notably does not commit either party to specific decarbonization policies but does include “non-regression” provisions that prohibit the lowering of environmental or climate standards.
+
+In 2022, Brussels signed an FTA with New Zealand that likewise included mid-century net-zero commitments, lowered market barriers on environmental goods and services, and promoted collaboration on deforestation and the circular economy.
+
+The climate dimensions of these two FTAs are in part a reflection of the fact that both the United Kingdom and New Zealand are advanced economies with high levels of climate ambition and relatively small extractive sectors.
+
+Achieving climate-positive outcomes in FTAs with developing countries, particularly those with abundant forest and fossil fuel resources, will prove more challenging.
+
+The terms of the proposed FTA between the European Union and the Mercosur trade bloc countries of South America, which is now being considered by the European Parliament and Council of Ministers after 25 years of negotiations, offer an instructive contrast.
+
+The draft text affirms Paris Agreement commitments, sets deforestation-reduction targets, and liberalizes trade in goods deemed to protect forests, but lacks strong, enforceable environmental standards, including around deforestation.
+
+Some critics of the agreement have described provisions that would commit Brussels to using Mercosur government information to verify compliance with the EUDR as weakening the regulation’s integrity.
+
+The Mercosur FTA may be a special case given the complexity of negotiations and the number and diversity of economies covered by the agreement.
+
+European officials have recently restarted trade negotiations with India and Malaysia, a densely forested oil-exporting country that has strongly criticized the EUDR.
+
+Should Brussels succeed in negotiating an FTA with Malaysia that includes strong climate and deforestation standards or one with India with climate commitments and clean technology cooperation, it would be a significant step forward in Europe’s green trade agenda.
+
+[H4]Other trade arrangements
+
+The EU, among other countries, is also engaging in efforts to build clean-energy supply chains that—while short of a formal trade agreement—could meaningfully shape trade flows by aligning policies and access to investment tools and domestic subsidies.
+
+For example, the EU and Japan have sought an agreement to create common rules on subsidies and the procurement of renewable energy and EVs.
+
+By aligning their sustainability and transparency principles and environmental standards, the two countries could leverage their market power to jointly deconcentrate their solar supply chains.
+
+Beyond procurement standards, Brussels has also entered into “partnerships” with 13 resource-rich countries under the Critical Raw Minerals Act (CRMA) to ensure a reliable supply of critical minerals as global and European demand grows in the coming decade.
+
+These critical mineral partnerships are non-binding instruments aimed at facilitating and coordinating investment into critical minerals extraction and production to supply the European market.
+
+The partnerships aim to realize the CRMA’s requirement that by 2030 no one country can account for more than 65% of the EU’s annual consumption of any mineral.
+
+Finally, it bears noting that the EU also unsuccessfully sought several similar supply-chain agreements with the Biden administration.
+
+For example, the EU sought a critical minerals agreement with the United States that would have extended access to the Inflation Reduction Act’s clean vehicle tax credit to EU critical minerals and some supply-chain components.
+
+The United States and the EU similarly pursued a so-called Global Arrangement on Sustainable Steel and Aluminum, which would have created a protected transatlantic market for low-carbon steel and aluminum.
+
+These initiatives sought to coordinate green supply-chain policies between the United States and the EU, which otherwise lack an economy-wide trade agreement.
+
+Both stalled over fundamental disagreements about how to structure the arrangement and European concerns about potential conflicts with the CBAM—a reflection of long-standing challenges in aligning U.S. and EU regulatory approaches, evidenced most notably in the demise of the U.S.-EU FTA proposed by the Obama administration, the Transatlantic Trade and Investment Partnership.
+
+Looking forward, Brussels, as part of the Clean Industrial Deal, is calling for Europe to pursue “Clean Trade and Investment Partnerships” as a more flexible, targeted complement to FTAs.
+
+Such agreements would be aimed at reducing European supply-chain dependencies and improving access to raw materials.
+
+[H2]Impacts, challenges, and opportunities
+
+In seeking greater alignment between trade policy and climate ambition, Brussels finds itself in the familiar position of broadening the regulatory project’s horizon and setting new boundaries between economic life and the interests of society and the natural world.
+
+Even by the standards of the Brussels effect, Europe’s green trade experiment has proven unusually successful in shaping global norms, in particular by validating the once-fringe position that the trading system should consciously take climate concerns into account.
+
+Since the enactment of the EU CBAM, the United Kingdom has announced it will implement its own CBAM.
+
+Australia is considering following suit; Canada has also explored border carbon adjustments.
+
+There is likewise bipartisan interest in some form of carbon tariff in the U.S.
+
+Congress, a remarkable development given the intense hostility efforts to price carbon domestically have generated in the past.
+
+Middle-income countries including Brazil, India, Columbia, Turkey, and Chile have strengthened or introduced carbon pricing schemes since the CBAM was passed, according to the World Bank.
+
+The addition of maritime emissions into the ETS has similarly spurred the members of the International Maritime Organization to move credibly toward a global carbon levy on regulated vessels after years of inaction.
+
+The EUDR, CSRD, and CSDDD may prove similarly influential in the long run, although they differ from the CBAM in key respects.
+
+In particular, compliance with these policies entails a greater degree of subjectivity than carbon pricing, and effective enforcement will require monitoring intricate supply chains over multiple jurisdictions and with disparate capabilities and governance structures.
+
+Given these challenges, it is not surprising Brussels has delayed the implementation of the EUDR and CSDDD to give affected firms and governments more time to prepare and to allow for additional feedback.
+
+Brussels’ first-mover position on green trade is not an unambiguously positive story, however.
+
+Greening trade can both reward the EU industry’s carbon advantage and drive deep decarbonization in hard-to-abate sectors, reinforcing the bloc’s leadership in climate policy.
+
+Conversely, the transition is likely to cause economic dislocation, particularly for industries facing higher costs under stricter carbon regulations as free allowances are withdrawn.
+
+Moreover, without export rebates or the establishment of parallel carbon border adjustment mechanisms in key markets, EU industries may struggle to compete globally, risking carbon leakage and undermining the broader effectiveness of the EU’s green trade strategy.
+
+Tackling competitiveness concerns now seems to be the primary policy motivation in Brussels and various European capitals.
+
+Furthermore, the EU will need to balance these trade policies with its broader policy toward China, which is both a major export market for European manufacturers and increasingly, a threat to European national security and European industry’s competitiveness at home and abroad.
+
+Brussels has imposed relatively measured tariffs on Chinese EVs in a bid to entice Chinese automakers to manufacture in and locally source from the European market.
+
+It will likely need to impose similar trade barriers on other Chinese clean tech to build competitive domestic industries in those sectors, achieve domestic manufacturing targets outlined in the Net-Zero Industry Act, and avoid excessive dependence on foreign supply chains.
+
+These efforts will be backstopped by a novel trade enforcement tool, the Foreign Subsidies Regulation, which addresses market-distorting subsidies provided by foreign governments to firms operating in the European market.
+
+Last, the unilateral (or “autonomous”) character of Europe’s signature green trade measures—the CBAM and EUDR—has rankled other governments, particularly in the Global South.
+
+In contrast to more strictly domestic areas of policy, trade policy has historically been viewed as a cooperative project between governments, and Brussels’ deployment of border measures and import restrictions has opened itself up to allegations of “ regulatory imperialism.” Critics of such policies have framed them as “ green protectionism,” an intrusion on the sovereign right to regulate, and an infringement on the core principle of the Paris Agreement that countries can decarbonize on their own terms.
+
+The EU’s green trade measures are likely to aggravate its already strained trade relations with the United States.
+
+U.S.
+
+Commerce Secretary Howard Lutnick has stated that the Trump administration would “consider using all available trade tools including tariffs at [its] disposal” to counter EU environmental regulations that affect American companies.
+
+In this context, EU leadership on climate and trade is even more crucial given the U.S. retreat from the global trading system—and more broadly from the principle of neutral, rules-based international governance.
+
+In this respect, European officials may find themselves walking a tightrope: should they grant exemptions to the United States to avoid retaliatory measures, it is likely to offend Europe’s other trading partners, who will demand similar concessions.
+
+At the same time, punitive tariffs of the kind Trump has threatened to impose on EU products could damage an already sluggish European economy.
+
+Ultimately, Brussels cannot afford to pursue a trade agenda that simultaneously alienates the United States, China, and the Global South.
+
+This being said, Europe can likely do more to assuage other countries’ concerns and defuse accusations that it is an inflexible, imperious counterparty.
+
+For example, Brussels could clearly establish the requirements for regulatory equivalency, by which products and firms under CBAM, EUDR, and other schemes could be exempt.
+
+Importantly, albeit controversially, this approach will require the EU to offer flexibility to countries without domestic carbon pricing schemes.
+
+Further, increasing assistance to countries that face new regulatory requirements may reduce opposition.
+
+Europe, with its “Clean Trade and Investment Partnerships,” could seek to fashion novel trade arrangements that address concerns like carbon leakage and the relocation of manufacturing to countries with comparatively weak climate regulations; improve access to minerals and transition minerals; and align markets on carbon tariffs and other trade tools.
+
+Importantly, it could address them less unilaterally than the EU CBAM and various EU regulations that have elicited recriminations of heavy-handedness and sovereignty encroachment from the Global South.
+
+Given the U.S. withdrawal from climate policy and international leadership, Europe should embrace the opportunity to lead on an innovative trade tool that could embody the agenda-setting Brussels effect rather than Europe’s more recent reputation for indecisiveness and economic malaise.
+
+It has become increasingly important that Brussels succeeds in this balance as the United States deprioritizes climate both at home and abroad and reverts from strategically applied trade measures to threats of wholesale tariffs against allies and adversaries alike.
+
+As the only major economy still committed both in principle and in practice to open and fair trade, Europe is uniquely positioned to cultivate favorable trading relationships that strengthen clean supply chains and build support for the proposition that the global trade system can and should do more to address the existential threat of climate change.
+
+In Partnership With
+
+Fundação Francisco Manuel dos Santos
+
+Fundação Francisco Manuel dos Santos
+
+Footnotes
+
+Although there is some dispute over whether carbon leakage has occurred at meaningful levels in the global economy to date, as countries pursue greater climate ambition the incentives for leakage will grow commensurately.
+
+Although there is some dispute over whether carbon leakage has occurred at meaningful levels in the global economy to date, as countries pursue greater climate ambition the incentives for leakage will grow commensurately.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

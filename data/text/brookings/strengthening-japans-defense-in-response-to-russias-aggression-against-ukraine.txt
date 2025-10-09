@@ -1,0 +1,55 @@
+[H2]Executive summary
+
+Japan’s 2022 National Security Strategy emphasizes the importance of maintaining sovereignty, ensuring territorial integrity, and securing the safety of its citizens.
+
+To achieve these ends, Japan aims to strengthen its defense system, enhance the Japan-U.S. alliance’s deterrence and response capabilities, and reinforce cooperation with like-minded countries.
+
+Given that Japan is an island nation, air and maritime transport capabilities for rapid deployment and supply are crucial.
+
+However, the Japan Self-Defense Forces (SDF) faces several challenges in its current state of readiness.
+
+If ground-deployed missile defense systems or medium-range air defense missiles are subjected to concentrated enemy attacks, the destruction of fire control systems could render them inoperable, even if ammunition remains.
+
+Additionally, the lack of compatibility between systems makes it difficult to repair damaged units using parts from other units or to supplement ammunition supplies from other sources within the arsenal.
+
+Furthermore, challenges related to rapid production raise concerns about Japan’s ability to sustain weapon and ammunition supplies during prolonged conflicts.
+
+This paper proposes three measures to address these challenges.
+
+The first is to develop combined offensive and defensive systems to enhance operational flexibility and strengthen sustained combat capabilities under concentrated enemy attacks.
+
+The second is to invest in low-cost, mass-produced interception systems such as short-range surface-to-air missiles and man-portable air defense systems to counter large numbers of low-end aerial threats.
+
+The third is to utilize 3D-printing (also known as “additive manufacturing,” or AM) technology to ensure a rapid and stable supply of weapons and ammunition, thereby overcoming the limitations of traditional supply chains.
+
+However, implementing these measures involves several challenges, including ensuring system compatibility, developing a strategy for AM technology, and addressing policy and budgetary constraints.
+
+In order for integration to run smoothly, any new systems must be compatible with existing SDF equipment.
+
+Additionally, a comprehensive AM technology strategy must be in place to address potential disruptions in the supply chain.
+
+Overcoming policy and budgetary constraints requires obtaining approval and securing funding for new defense projects not included in the current Defense Buildup Program.
+
+Though these challenges are significant, they can be overcome if addressed in the right way.
+
+The recommendations put forth in this paper to enhance the SDF’s combat sustainment capabilities align with Japan’s national security interests and are crucial for maintaining regional peace and stability.
+
+Implementing these recommendations would not only improve Japan’s defense capabilities but also strengthen the Japan-U.S. alliance and, potentially, further advance Japan’s overall industrial and technological progress.
+
+By addressing new threats and preparing for prolonged conflicts, Japan can ensure its peace and stability in an increasingly uncertain world.
+
+Download the full report
+
+Acknowledgements and disclosures
+
+The opinions expressed here are the author’s alone and do not represent the position of the Japan Air Self-Defense Force, the Japan Ministry of Defense, or the Japanese government.
+
+The author would like to thank Michael O’Hanlon, Jeffrey Hornung, Derek Solen, Yoichiro Koga, Makoto Minoya, Enora Rogers, David Blair, Wesley Martin, Robert Norris, Masataka Oguro, Takao Inoue, Yukihiro Asao, and Aya Yano for their helpful comments and feedback on this paper.
+
+He would also like to thank Adam Lammon for the editing of this paper and Rachel Slattery for layout.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

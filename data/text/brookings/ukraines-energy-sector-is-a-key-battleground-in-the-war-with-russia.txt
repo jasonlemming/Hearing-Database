@@ -1,0 +1,283 @@
+Research
+Ukraine’s energy sector is a key battleground in the war with Russia
+Maciej Zaniewicz
+and
+Maciej Zaniewicz
+Senior Fellow
+- Forum Energii
+Danylo Moiseienko
+Danylo Moiseienko
+Analyst
+- Forum Energii
+October 7, 2025
+Ukraine has chosen European integration and decided to sever its long-standing ties with Russia.
+Moscow does not accept Kyiv’s sovereign decision and wants to prove that the only alternative to integration with Russia in the region is war and destruction.
+The Ukrainian energy sector has proved to be a key element in this struggle.
+Customers use camera flashes in a supermarket during a power outage in Kyiv, Ukraine, on November 27, 2024. (Ukrinform/NurPhoto via Reuters Connect)
+26 min read
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+Print
+Editor's note:
+This report is the fifth in a series on “
+Europe’s energy transition: Balancing the trilemma
+” produced by the Brookings Institution in partnership with the
+Fundação Francisco Manuel dos Santos
+.
+Soviet legacy and modern challenges
+Most of the Ukrainian energy system was built during Soviet times, when Ukrainian and Russian engineers collaborated to construct transmission networks and power plants. The Ukrainian energy sector was designed to be oversized with significant redundancy in order to meet huge Soviet-era industrial demand as well as to make it more resilient to a future world war.
+Following the dissolution of the USSR, Ukraine began its challenging path to true independence. For years, the country was politically torn between East and West, and in terms of energy, it relied on its Soviet legacy. Successive governments exploited the aging system by building their support on promises of consistently cheap energy. This resulted not only in delayed reforms and a lack of investment, but above all in continued dependence on Russian energy sources.
+A radical change did not occur until 2014, when Ukrainians overthrew the pro-Russian president, Viktor Yanukovych. In the decade since then, Ukraine has pursued a policy of European Union (EU) integration with determination and without interruption. Its aspiration to join the EU and NATO is even enshrined in the constitution.
+That meant undertaking changes in the energy sector. In March 2014, Ukraine signed an association agreement with the EU, putting it on the path to aligning its regulations and laws with European standards. This is particularly important for Ukraine, given its aging power plants and networks. Without reforms, investors would have been discouraged, and Ukraine could have faced a power deficit in a few decades, even without war, due to the deteriorating condition of its coal-fired power plants.
+The real prospect of an improvement in the quality of life and development of Ukraine through integration with the EU and NATO was unacceptable to Russia, which first annexed Crimea and covertly attacked the Ukrainian Donbas, before launching a full-scale invasion of Ukraine on February 24, 2022. Russia’s in-depth knowledge of the Ukrainian power system, dating back to the Soviet Union, was used to carry out a well-planned operation to cut off electricity to Ukrainians. The aim was to break the morale of Ukrainians to continue defending themselves and to collapse the economy so that it could not support the Ukrainian military effort. Ironically, however, the size of the energy system, which had been scaled up in case of war, and the enormous Western support, unexpectedly ensured its resilience to Russian attacks.
+Ukraine’s energy sector before 2022
+Ukraine’s energy sector had historically been marked by a lack of transparency and dominated by monopolies, creating opportunities for corrupt officials and oligarchs to profit, while also acting as a means for Russian influence. The sector also remained structurally inefficient: high energy use stemmed from outdated technologies and cross-subsidization that kept household prices low at industry’s expense. Although both overall energy consumption and the entire economy’s energy intensity have fallen significantly between 1990 and 2022, Ukraine remains far behind European energy efficiency standards.
+Figure 1
+Source:
+Our World in Data
+Power sector
+Ukraine’s power system relies primarily on nuclear energy, with coal and gas together accounting for about a quarter of generation and renewables accounting for around 11%. The remainder was supplied by combined heat and power (CHP) plants—mostly coal-fired.
+Figure 2
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+From the perspective of the system’s operation, nuclear power plants ensured a stable supply of cheap electricity, but their downside was their low flexibility—their production does not follow demand but remains at a constant level. To cover daily fluctuations in demand, the most flexible power plants, primarily hydroelectric, are used, with coal-fired power plants playing a lesser role. Renewable sources played a marginally important role before Russia’s invasion of Ukraine.
+Until 2022, Ukraine’s power grid operated in synchronization with the larger Russian-controlled IPS/UPS (Integrated Power System/Unified Power System), to which it was connected via interconnectors with Belarus and Russia. Its headquarters were located in Moscow, and Russia was responsible for providing Ukraine with support in the event of system difficulties. This also hampered electricity trade between Ukraine and its western neighbors. To make this possible, in 2002, Ukraine created the so-called
+Burshtyn Energy Island
+—an area synchronized with its western neighbors. This meant that there were effectively two systems within one country, which also constrained internal energy exchange.
+Figure 3
+Source:
+Lukas Feldhaus, Kirsten Westphal, Georg Zachmann, “Connecting Ukraine to Europe’s Electricity Grid, Stiftung Wissenschaft und Politik, 2021,
+https://www.swp-berlin.org/10.18449/2021C57/
+As a result of this structure, Ukrainian electricity trade with Western partners was marginal, and connections with EU countries had no impact on the system’s security, energy pricing, or coverage of any potential deficits. Trade with Russia and Belarus, on the other hand, was suspended (with a brief interruption) due to its corrupt nature and security issues.
+Natural gas and liquid fuels
+Historically, Ukraine and Russia have been closely linked by gas agreements. Although Ukraine has natural gas production, it only covered about two-thirds of its demand, which, before Russia’s full-scale invasion, amounted to approximately 30 billion cubic meters (bcm) annually. The rest of Ukraine’s gas supply was imported from Russia, and Ukraine had no alternatives to these supplies—its western neighbors were also dependent on Russian gas. This allowed Moscow to use gas agreements for political purposes. Notable episodes include the 1999
+transfer of strategic bombers to Russia
+for gas debts and the
+2010 extension of the Russian Black Sea Fleet’s stay in Crimea
+to 2042 in exchange for a gas “discount” (actually, prices were higher than for some European consumers).
+The turning point came with Russia’s illegal annexation of Crimea and the beginning of its proxy war in the Donbas in 2014. A year later, Ukraine stopped importing gas from Russia, relying entirely on contracts with western traders, but physically, some of the imported natural gas was still Russian. At the same time, thanks to the ongoing diversification of supplies in Poland, where a liquified natural gas (LNG) terminal was built in the same year, it became possible to import non-Russian molecules as well—for example, U.S. LNG.
+In 2021, on the eve of Russia’s full-scale invasion, Ukrainian natural gas production was around 20 bcm per year against demand of around 27 bcm, with the gap covered by approximately 6.85 bcm of imports (via reverse‑flow from the EU).
+Ukraine was also important to Russia as the main transit country for Russian gas exports to Europe. The Ukrainian transit pipeline was operational until the end of 2024, even though Ukraine had had no contract for Russian gas imports since 2015. The total capacity of the Ukrainian transmission network was around 140 bcm per year. For Ukraine, in turn, the transit of Russian gas was an important source of revenue, amounting to between
+$1 billion and $1.7 billion per year
+in 2020-2024. It continued until the agreement expired at the end of 2024.
+Figure 4
+Source:
+Euromaidan Press
+Ukraine’s dependence on Russia was also evident in the liquid fuels market, including for supplies of aviation fuel and diesel oil, which are particularly important for the army. Before the Russian invasion,
+about two-thirds
+of domestically consumed liquid fuels came from Russia or Belarus, giving the Kremlin leverage, through licensing and control over supplies, to influence prices and potentially block deliveries. This instrument was used immediately after the first Russian forces entered Ukraine, when all liquid fuels supplies were halted, and attacks on Ukrainian refineries began.
+Post-2014 energy reforms
+Russia’s escalating political and economic pressure against Ukraine, culminating in hybrid warfare from 2014 to 2022, pushed Kyiv to undertake genuine energy-sector reform. Between 2014 and 2017, Ukraine created the first comprehensive legal framework for competitive gas and electricity markets aligned with the European Union’s rules. It strengthened consumer protection and security of supply and began preparing for synchronization with the European electricity network.
+Reverse-flow projects enabled Ukraine to stop buying gas directly from Gazprom (the largest Russian state-owned gas production company) in 2015, and Naftogaz (the largest Ukrainian state-owned energy company) later
+won a landmark Stockholm arbitration case
+, securing over $2.5 billion based on unjust 2009 contracts between the two companies. Ukraine also started replacing Russian-made nuclear fuel rods with those made by Westinghouse Sweden, making Ukraine’s nuclear sector independent from its eastern neighbor.
+The pressures of war, economic struggles, and the International Monetary Fund’s demands reinforced Ukraine’s EU-aligned energy reforms: unbundling supply from infrastructure management, liberalizing markets to foster competition, enhancing the regulator’s autonomy, transitioning to limited market-driven pricing, and improving corporate governance in state-owned energy enterprises.
+Progress, however, was uneven, and reforms remain incomplete: households still do not pay market prices, and the state periodically attempts to interfere in the management of state-owned enterprises. From 2014 to 2019, domestic populism and Russian influence persisted as key shaping factors in Ukraine’s energy policy.
+The energy front of the Russian invasion
+The Russian invasion began on the very day that Ukraine launched its so-called island test. This involved completely isolating the Ukrainian and Moldovan power systems from their neighbors to check whether the system was stable. This is a mandatory procedure prior to synchronization with the European grid.
+Synchronization is the process of connecting power systems from Ukraine to Portugal so that they function as a single organism. This makes it easier to stabilize disturbances in grid frequency—the larger the system, the more resilient it is. Trade also becomes much easier—it became possible between the EU and the whole of Ukraine, not just the Burshtyn Energy Island.
+Despite this, Ukraine managed not only to militarily defend itself but also to maintain grid stability in wartime conditions and implement all the solutions necessary for an unprecedented synchronization on March 16, 2022. Although the synchronization process itself began in 2017, the last few weeks were crucial. Since then, the potential for electricity trade has grown steadily—up to
+2.1 gigawatts (GW) from the EU to Ukraine
+and up to
+900 megawatts (MW) in the opposite direction
+.
+Figure 5
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+However, Ukraine’s energy infrastructure is now deeply damaged, operating at only about a third of its pre-invasion generation capacity. This critical state is the result of relentless Russian assaults intended to cripple Ukraine’s economy and undermine its population’s resolve to resist Russian aggression, with the ultimate goal of compelling the Kyiv government to surrender.
+According to the World Bank’s
+Fourth Rapid Damage and Needs Assessment
+(RDNA4), as of December 2024, war-related damage to Ukraine’s energy system had reached $20.5 billion. The damage has plunged Ukrainians into rolling blackouts that disrupted heat, water, transport, health care, telecommunications, and schooling, disproportionately affecting older adults, women, low-income families with small children, and the internally displaced.
+Figure 6
+Source:
+DiXi Group
+During the first two years of the war, Russia
+fired nearly 2,000 missiles and drones
+at Ukrainian energy infrastructure. The first peak of attacks took place during the winter of 2022/2023. As a result of Russian shelling in November 2022, the first and so far the only mass blackout occurred, during which the whole of Ukraine was deprived of electricity. Due to severe damage to the grid and frequency disturbances, all operating nuclear reactors had to be shut down for safety reasons.
+Figure 7
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+As a result of Russia’s continuous attacks, Ukraine faced a
+power deficit of up to around 2-3 GW
+during the last heating season in the peak demand hours. In the first two years of the war, the main way of dealing with this situation was through imports from the EU (limited for technical reasons) and load shedding—planned power cuts for industrial and individual consumers. This occurred mainly during the winter season and sometimes resulted in power outages lasting several to more than a dozen hours a day.
+The 2024–2025 autumn-winter period was one of the most difficult for Ukraine’s energy sector since the beginning of the full-scale invasion. But, despite expectations of extensive blackouts and ongoing Russian assaults, the energy system proved resilient. The country managed to navigate the 2024–2025 heating season without large-scale load shedding or blackouts, largely thanks to favorable weather conditions, stable nuclear power generation, enhanced protection of energy facilities, quick repairs, and the deployment of more decentralized power sources, including mostly gas-fired generation and renewables.
+Figure 8
+Source:
+Green Deal Ukraїna
+Furthermore, around 4-5 GW of capacity—mostly coal-fired power plants—has been restored thanks to the speed and quantity at which energy equipment was shipped in by the EU countries as well as Japan. These plants, together with gas turbines and generators as well as hydroelectric plants, are indispensable for maintaining a stable energy system; they ramp up quickly to balance short-term fluctuations and peak demand. Therefore, every Russian missile or drone that knocks them offline erodes Ukraine’s ability to balance the grid, forcing greater reliance on imports from the EU, load shedding, and other emergency measures.
+Nuclear power still accounts for about half of Ukraine’s electricity, making it a crucial component of the country’s energy mix. However, the
+construction of new nuclear plants
+competes with the country’s urgent need for flexible generation capacity (e.g., small gas piston plants) to replace infrastructure damaged by Russian attacks. Despite no active nuclear plants being destroyed since the war began, the risk to these facilities remains a significant concern. Russia’s seizure and continued occupation of the Zaporizhzhia nuclear power plant (the largest in Europe) deprived Ukraine of a quarter of its generating capacity. It also demonstrates Russia’s disregard for nuclear safety and security. The International Atomic Energy Agency (IAEA) has
+documented shelling and explosions
+in and around the site and fires near the cooling-pond area. Although all units of the Zaporizhzhia nuclear power plant are in cold shutdown, an accident could still lead to radiological consequences for the region. Separately, the IAEA
+reports
+that following a February 2025 drone strike that “severely damaged” the Chernobyl nuclear power plant’s New Safe Confinement (the shelter built to prevent releases of radiation and protect from external hazards), Ukraine will begin repairs this fall.
+Due to large-scale generating units’ vulnerability to attacks, Ukraine has been seeking to decentralize its energy system, focusing on energy security rather than sustainability concerns. That led to the deployment of small modular gas turbines (5-40 MW), but also of rooftop solar installations with battery energy storage systems, leading to
+almost 1,500 MW
+of consumer-installed solar photovoltaic (PV) capacity by early 2024. Distributed and decentralized renewable energy capacity, such as solar PV and wind turbines, together with energy storage, is expected to continue growing in Ukraine over the next few years.
+The war has also had an impact on the Ukrainian gas sector. The most drastic consequence is the sharp decline in natural gas consumption as a result of the destruction of many industrial plants, the occupation of part of the country’s territory, and the emigration of residents. As a result, demand fell from approximately 27 bcm in 2021 to around
+22 bcm in 2024
+. Domestic production has also suffered, since Russia continues to target Ukraine’s onshore production infrastructure. As a result, domestic production has fallen
+to around 19 bcm
+in 2024. In early 2025, Russia additionally
+damaged around 40% of Ukraine’s gas production facilities.
+Meeting Ukrainian natural gas demand remains a challenge due to the high cost of natural gas compared to prewar prices.
+Figure 9
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+Why integrate Ukraine’s energy sector into Europe’s?
+In the years leading up to the invasion of Ukraine, Russia built its influence in Europe using its natural resources, mainly natural gas. In 2021, approximately
+45% of gas imported into the EU
+came from Russia, and for
+Hungary
+, this figure was over 90%. At that time, it was easy to find European advocates for imports from Russia (mostly in Austria, Germany, Hungary, and Slovakia), who argued that cooperation with Russia was safe because the European market was too important for Russia to risk losing it.
+However, in the fall of 2021,
+Russia decided to exploit the EU’s dependence on gas
+. At that time, Moscow escalated the war in eastern Ukraine’s Donbas region, which Russia had started in 2014. Russian tanks bearing their now-famous markings, including the letter “Z,” appeared on the Ukrainian border. Moscow pressured Europe to force Ukraine to make far-reaching concessions to Russia before a full-scale invasion began. Russia significantly reduced gas supplies to European customers and did not fill the gas storage facilities it controlled in the EU.
+Figure 10
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+By the fall of 2021, natural gas prices in the EU had risen by over 500%, resulting in higher electricity prices. This threatened not only an economic crisis, but also a heating shortage. However, European capitals sided with Kyiv, and Russia decided to use military force against Ukraine, which had chosen integration with Europe.
+In response to the Russian invasion and Russia’s blatant use of gas to blackmail European countries, the European Commission on May 6, 2022, launched the
+REPowerEU plan
+, which aims to completely decouple the EU from Russian fossil fuel imports by the end of 2027. The goal of reducing dependence on Russia had been part of the EU’s 2014 energy strategy, but many countries ignored these guidelines. This time, however, the REPowerEU plan was followed by a series of policies implementing these goals.
+Within three years, EU countries
+reduced the value
+of their energy imports from Russia by 80%. At the same time, the EU seriously emphasized supporting Ukraine’s integration into the EU’s energy sector and rebuilding Ukraine’s own energy infrastructure.
+From an energy perspective, Ukraine is a valuable partner in the EU’s energy transition. The first element of this cooperation is the synchronization of the energy systems. The benefits are mutual, although Ukraine gains more. Synchronization has enabled greater energy trade between Ukraine and the EU, which has led to lower prices on both sides of the border. In addition, Ukraine can now cover the power deficit caused by Russian attacks to a greater extent with imports, limiting the scale of planned power outages.
+In the long term, however, the potential for cooperation is much greater. Ukraine has the largest gas storage facilities in Europe,
+with a capacity of over 30 bcm
+—this is about 10% of the entire EU’s annual demand and about 30% of the current capacity of all storage facilities in the EU (about 100 bcm). Already, under EU-Ukraine cooperation, European companies can use Ukrainian storage facilities as a
+customs warehouse
+. Making full use of Ukrainian storage facilities within the EU market would strengthen Europe’s energy security by reducing its vulnerability to price fluctuations, especially seasonal ones. These facilities could be particularly important for Slovakia and Hungary, as they have no access to the sea and currently depend on Russian imports via pipelines. To prevent the EU from benefiting from Ukrainian storage facilities, Russia is bombing the Ukrainian underground storage facilities’ above-ground infrastructure, fortunately with limited effect.
+Another potential area of cooperation is the import of biomethane. With the largest agricultural potential in Europe, Ukraine could become a major producer of biomethane, a zero-emission alternative to imported natural gas. The first pilot batches of this resource produced in Ukraine have already reached customers in the EU. Forum Energii and Green Deal Ukraïna
+estimate
+that by 2030, approximately 1 bcm of Ukrainian biomethane could reach the EU, replacing Russian gas and helping the EU achieve its climate neutrality goal by 2050.
+Another potential area of cooperation is the use of Ukrainian deposits of critical raw materials (CRMs). Currently, the EU is around 80% dependent on imports of CRMs and clean technology from China. In 2024, the EU adopted the
+Critical Raw Materials Act
+, which establishes measures to reduce dependence on China to no more than 65% of CRMs consumption by 2030. Ukraine could be a valuable partner in diversifying the supplies essential for the energy transition and a modern economy, such as lithium and graphite. Ukraine could extract and refine these materials and produce batteries, which are necessary for utilizing renewable sources.
+However, the most important aspect of Ukraine’s cooperation with the EU is European integration itself. Currently, this primarily involves implementing the EU’s regulatory framework, also known as the “EU acquis.” In the field of energy, Ukraine must incorporate into its legal system acts
+totaling approximately 170,000 pages
+. This is a significant challenge. In the energy sector alone, candidate countries have spent an average of three years on this process, which takes an average of 10 years overall. However, since the last EU enlargement, the acquis has grown, making the process more difficult.
+Additionally, no other country has sought to join the EU during wartime, with all its associated casualties, economic difficulties, conscription, and emigration. These factors result in significant staff and financial shortages within Ukraine’s energy administration. For this reason, grant projects in the field of capacity building are of immense value. These projects train and partially pay staff who work on adapting Ukrainian law to EU standards.
+The stakes are much higher than just legal consistency. Compliance with EU regulations attracts foreign investors by guaranteeing a familiar, predictable, and consistent investment environment. The transposition of the energy packages (there are four legislative packages, regulating the EU energy market) and compliance with
+REMIT
+, a part of the acquis, guarantee transparent, market-based energy pricing, which is currently lacking, as well as market competitiveness. Implementing the Emissions Trading System will give Ukraine access to the European market without requiring it to pay the
+carbon border adjustment mechanism
+. Harmonizing the certification of goods and services will facilitate the import of technology and the export of, for example, biomethane to the EU.
+Ultimately, the implementation of EU regulations would serve to anchor Ukraine in the European legal and regulatory environment. Even without formal accession to the European Union, this implementation will contribute to Ukraine’s accelerating economic development. An
+analysis by the Polish Economic Institute
+indicates that the Central European countries that joined the EU in 2004 achieved an average of 27% higher combined GDP per capita (adjusted for purchasing power parity) growth rate when compared to the counterfactual scenario, i.e., if they had not joined the EU.
+How to get Ukraine’s energy sector back on its feet?
+Looking forward, the World Bank’s
+RDNA4
+damage assessment puts the total cost of Ukraine’s energy-sector recovery needs (as of December 2024) at $67.78 billion and its damages at $20.51 billion. Most of that sum is needed to modernize and decarbonize power generation, following a more resilient and sustainable reconstruction approach aligned with Ukraine’s EU commitments. The southern and eastern regions of Ukraine, which were heavily affected by the ongoing war, have the largest recovery needs.
+Private sector investment is expected to cover a significant portion of these recovery costs, particularly in renewable energy generation, flexible capacity, energy efficiency, and cogeneration technologies. The International Finance Corporation, part of the World Bank Group, in its 2023 assessment based on the RDNA2,
+estimated
+that private investments could cover around 75% of the funding needed for the energy and extractive sectors, as long as the needed policies and regulations are in place. However, if reforms are not made, this contribution could fall to around 5%. By opening more subsectors such as wind turbines, electricity transmission and distribution, solar power plants, energy storage, biomethane, and hydrogen to private-public partnerships and private investment, the Ukrainian government and the business sector are ready to unlock additional funding.
+Recently, Ukraine took key legislative and organizational steps to boost distributed generation, particularly by private investors. Additionally, a new de-risking mechanism for the renewable energy projects launched by the European Bank for Reconstruction and Development and the European Commission has been developed: the
+Ukraine Renewable Energy Risk Mitigation Mechanism
+, supported by the EU and other member states, aims to attract 1.5 billion euros (about $1.8 billion) in renewables to provide 1 GW capacity.
+Figure 11
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+However, further reforms are needed to promote private sector participation and competition. These reforms include raising electricity price caps, resolving debt issues related to balancing market services, introducing competitive forward markets, improving renewable energy auctions, and adjusting tariffs to allow for cost recovery in various energy segments. Engaging smaller customers, such as households and small enterprises, to become both producers and consumers of energy is an important step in decentralizing the power sector.
+Donors have been highly important in helping Ukraine’s energy recovery through supplying in-kind assistance, grants, and concessional loans. EU institutions have helped a lot, mostly by supporting repairs to the electricity grid with high-voltage transmission equipment and by providing power generators and other power production capacity, thereby making the country more energy self-sufficient. The Ukraine Energy Support Fund, which is run by the Energy Community in cooperation with the European Commission and Ukraine’s Ministry of Energy, is another important source of funding for the country’s energy sector recovery. As of September 2025, the fund has received
+over 1.28 billion euros
+(about $1.52 billion) in pledges, of which 1.25 billion euros (about $1.48 billion) has already been transferred. U.N. agencies have helped greatly in the district heating subsector, particularly by assisting in organizing humanitarian relief for district heating enterprises. As of 2024,
+1.5 million people
+have received help from the U.N. thanks to funds from different contributors. With its Energy Security Project, the U.S. Agency for International Development has helped Ukraine purchase and set up cogeneration units on a significant scale. By the end of 2024, these units were intended to ensure
+a heat supply for over 1.6 million residents
+—slightly fewer than the population of West Virginia. Without this support, Russia’s strategy of destroying Ukraine’s energy sector would have succeeded in crippling Ukraine’s economy and morale.
+Gaps in funding and equipment remain, despite the extensive support. For instance, although nearly 276 million euros (about $446 million) have been allocated for repairs to existing power plants and transmission lines,
+an additional 473 million euros
+(about $560 million) are still needed. Other gaps include shortages of mobile boiler houses, cogeneration systems, and power capacity.
+Figure 12
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+Ukraine must quickly rebuild its gas infrastructure. Repairs to damaged gas production facilities are estimated to cost between
+$160 million and $180 million
+. Construction of physical protection against Russian air attacks will require additional financing of
+$600 million to $800 million
+. Naftogaz may encounter elevated procurement expenses due to heightened demand on the European gas spot market. Existing public service obligations create financial issues from delays in remuneration for gas companies, adversely affecting liquidity and efforts to raise funds.
+However, securing Ukraine’s energy stability for the forthcoming winter necessitates immediate expenditures, especially in acquiring natural gas for the approaching heating season. It is
+estimated by Ukrainian energy market experts
+that around $2.5 billion is required for the import of 4 bcm to 4.5 bcm of natural gas. The European Bank for Reconstruction and Development, Ukrainian banks, and funds from Norway have mostly covered these needs, but further efforts should be made to inject sufficient volumes of gas into Ukraine’s underground gas storage.
+European home vs. Russian world
+Ukraine successfully navigated the 2024-2025 heating season, a crucial test, aided by favorable weather, international support, and domestic efforts to restore infrastructure and develop new distributed and decentralized generation capacities. The energy system’s future stability now depends on protecting infrastructure, integrating new capacities, and addressing financial challenges in the sector.
+In the long term, the country faces two scenarios in the energy sector. The first is continued European integration. Implementing the required reforms will increase Ukraine’s attractiveness to investors and put the country on the path to modernization. Most likely, Ukraine’s energy sector will mostly rely on nuclear, natural gas, and renewable energy in the future, and the system will be much more decentralized.
+An alternative scenario is the success of Russian policy. A prolonged war with insufficient air-defense supplies will result in an energy deficit and weaken Ukraine’s defense capabilities.
+If Ukraine were to be defeated by Russia, pro-European reforms would halt, closing the market to Western investors. As a result, at best, the old system will be rebuilt, but it will not provide a basis for the country’s economic recovery, as it will be condemned to isolation and to await more Russian aggression.
+In the energy sector, EU membership offers Ukraine the prospect of long-awaited modernization. In turn, Russia responded with massive shelling and interruptions in electricity and heating supplies. Therefore, supporting the reconstruction of Ukraine’s energy sector is not only a humanitarian issue but also a struggle to maintain a Western-based order of rule of law, trade, and technological cooperation, rather than an Eastern-based order of military power.
+The stakes in this war go far beyond Ukraine’s own security and independence.
+In Partnership With
+Fundação Francisco Manuel dos Santos
+Fundação Francisco Manuel dos Santos
+Authors
+Maciej Zaniewicz
+Senior Fellow
+- Forum Energii
+maciej-zaniewicz-ab042a108
+Danylo Moiseienko
+Analyst
+- Forum Energii
+danmsnk
+Related Content
+Europe’s energy transition: Balancing the trilemma
+Climate & Energy
+Europe’s energy transition: Balancing the trilemma
+March 11, 2025
+After the energy crisis: Policy responses in the Iberian Peninsula
+Energy Security
+After the energy crisis: Policy responses in the Iberian Peninsula
+Gonzalo Escribano, Ana Fontoura Gouveia, João Fachada, Ignacio Urbasos Arbeloa
+July 20, 2025
+Europe’s messy Russian gas divorce
+Energy Security
+Europe’s messy Russian gas divorce
+Samantha Gross, Constanze Stelzenmüller
+June 18, 2024
+The Brookings Institution is committed to quality, independence, and impact.
+We are supported by a
+diverse array of funders
+. In line with our
+values and policies
+, each Brookings publication represents the sole views of its author(s).
+More On
+Climate & Energy
+Sub-Topics
+Energy Markets & Governance
+Energy Security
+International Affairs
+Sub-Topics
+Democracy, Conflict, & Governance
+Geopolitics
+Europe & Eurasia
+Sub-Topics
+Russia
+Ukraine
+Program
+Foreign Policy
+Region
+Europe & Eurasia
+Russia
+Ukraine
+Center
+Center on the United States and Europe
+Project
+Energy Security and Climate Initiative
+How is Trump’s reelection likely to affect US foreign policy?
+U.S. Foreign Policy
+How is Trump’s reelection likely to affect US foreign policy?
+Pavel K. Baev, Vanda Felbab-Brown, Jeffrey Feltman, James Goldgeier, Samantha Gross, Ryan Hass, Mara Karlin, Patricia M. Kim, Lynn Kuok, Tanvi Madan, Suzanne Maloney, Alexander Noyes, Sophie Rutenbar, Natan Sachs, Mireya Solís, Constanze Stelzenmüller, Shibley Telhami, Valerie Wirtschafter, Andrew Yeo
+November 14, 2024
+Brookings experts on what to watch for at the 2023 UN General Assembly
+International Affairs
+Brookings experts on what to watch for at the 2023 UN General Assembly
+George Ingram, Bruce Jones, John W. McArthur, Anthony F. Pipa, Amna Qayyum, Danielle Resnick, Landry Signé, Priya Vora
+September 15, 2023
+What to do about the Zaporizhzhia nuclear power plant
+U.S. Foreign Policy
+What to do about the Zaporizhzhia nuclear power plant
+Amy J. Nelson, Chinon Norteman
+March 23, 2023

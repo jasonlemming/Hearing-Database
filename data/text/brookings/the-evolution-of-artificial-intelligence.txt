@@ -1,0 +1,189 @@
+Research
+The evolution of artificial intelligence (AI) spending by the U.S. government
+Jacob Larson
+,
+Jacob Larson
+Researcher
+- W.P. Carey School of Business, Arizona State University
+James S. Denford
+,
+James S. Denford
+Professor, Management Department
+- Royal Military College of Canada
+Gregory S. Dawson
+, and
+Gregory S. Dawson
+Clinical Professor, the W. P. Carey School of Business
+- Arizona State University
+Kevin C. Desouza
+Kevin C. Desouza
+Nonresident Senior Fellow
+-
+Governance Studies
+,
+Center for Technology Innovation (CTI)
+March 26, 2024
+In concert with advancements in artificial intelligence technology, the U.S. federal government’s investments in AI have rapidly accelerated in recent years.
+The authors analyze hundreds of federal contracts related to AI, and find a tremendous growth in contracts in the last year especially.
+Notably, 2022-2023 saw massive new investment from the Department of Defense (DoD) in AI-related contracts.
+General Dyanamics' TRX SHORAD robotic combat vehicle which utilizes technology developed by Moog during is displayed during the Association of the United States Army (AUSA) Global Force Symposium & Exposition in Huntsville, Alabama, U.S. March 28, 2023. REUTERS/Cheney Orr
+14 min read
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+Print
+In April 2023, a
+Stanford study
+found rapid acceleration in the U.S. federal government spending in 2022. In parallel, the House Appropriations Committee was
+reported
+in June 2023 to be focusing on advancing legislation to incorporate artificial intelligence (AI) in an increasing number of programs and
+third-party reports
+tracking the progress of this legislation corroborates those findings. In November 2023, both the
+Department of Defense
+(DoD) and the
+Department of State
+(DoS) released AI strategies, illustrating that policy is starting to catch up to, and potentially shape, expenditures. Recognizing this criticality of this domain on government, The Brookings Institution’s
+Artificial Intelligence and Emerging Technology Initiative
+(AIET) has been established to advance good governance of transformative new technologies to promote effective solutions to the most pressing challenges posed by AI and emerging technologies.
+In this second in a series of articles on AI spending in the U.S. federal government, we continue to follow the trail of money to understand the federal market for AI work. In our
+last article
+, we analyzed five years of federal contracts. Key findings included that over 95% of AI-labeled expenditures were in
+NAICS 54
+(professional, scientific, and technical services); that within this category over half of the contracts and nearly 90% of contract value sit within the Department of Defense; and that the vast majority of vendors had a single contract, reflecting a very fragmented vendor community operating in very narrow niches.
+Back to top
+Data and methodology
+All of the data for this series has been taken directly from federal contracts and was consolidated and provided to us by
+Leadership Connect
+. Leadership Connect has an extensive repository of federal contracts and their data forms the basis for this series of papers.
+In this analysis, we analyzed all new federal contracts since our original report that had the term “artificial intelligence” (or “AI”) in the contract description. As such, our dataset included 489 new contracts to compare with 472 existing contracts. Existing values are based on our previous study, tracking the five years up to August 2022; new values are based on the year following to August 2023.
+Back to top
+Findings
+Out of the 15 NAICS code categories we identified in the first paper, there were only 13 NAICS codes still in use from previous contract and only five used in new contracts, demonstrating a refinement and focusing of categorization of AI work. In the current analysis, we differentiate between funding obligated and potential value of award as the former is indicative of current investment and the latter is representative of future appetite. During the period of the study, the value of funding obligated increased over 150% from $261 million to $675 million while the value of potential value of award increased almost 1200% from $355 million to $4.561 billion. For funding obligated, NAICS 54 (Professional, Scientific and Technical Services) was the most common code used followed by NAICS 51 (Information and Cultural Industries), where NAICS 54 increased from $219 million for existing contracts to $366 million for new contracts, while NAICS 51 grew from $5 million of existing to $17 million of new contracts. For potential value of award, NAICS 54 increased from $311 million of existing to $1.932 billion of new contracts, while NAICS 51 grew from $5 million of existing to $2.195 billion of new contracts, eclipsing all other NAICS codes.
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+The number of federal agencies with contracts rose from 17 to 23 in the last year, with notable additions including the Department of the Treasury, the Nuclear Regulatory Commission, and the National Science Foundation. With an astounding growth from 254 contracts to 657 in the last year, the Department of Defense continues to dominate in AI contracts, with NASA and Health and Human Services being distant a second and third with 115 and 49 contracts respectively. From a potential value perspective, defense rose from $269 million with 76% of all federal funding to $4.323 billion with 95%. In comparison, NASA and HHS increased their AI contract values by between 25% and 30% each, but still fell to 1% each from 11% and 6% respectively of the overall federal government AI contract potential value due to the 1500% increase in the DoD AI contract values. In essence, DoD grew their AI investment to such a degree that all other agencies become a rounding error.
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+For existing contracts, there were four vendors with over $10 million in contract value, of which one was over $50 million. For new contracts, there were 205 vendors with over $10 million in contract value, of which six were over $50 million and a seventh was over $100 million. The driver for the change in potential value of contracts appears to be the proliferation of $15 million and $30 million maximum potential value contracts, of which 226 and 25 were awarded respectively in the last year, but none of which have funds obligated yet to them. We posit that these are contract vehicles established at the maximum signing authority value for future funding allocation and expenditure. It is notable that only one of the firms in the top 10 potential contract value in the previous study were in the top 10 of new contract awards (MORSE Corp), that the top firm in previous years did not receive any new contract (AI Signal Research) and that the new top firm did not receive any contracts in previous study years (Palantir USG).
+Bluesky Streamline Icon: https://streamlinehq.com
+Bluesky
+In our previous analysis, we reported 62 firms with multiple awards, while over the past year there were 72 firms receiving multiple awards. However, the maximum number of awards has changed significantly, where the highest number of existing contracts was 69 (AI Solutions) while for new contracts the maximum is four. In fact, there were 10 vendors with four or more existing contracts but only three vendors with four or more new ones (Booz Allen Hamilton, Leidos, and EpiSys Science). This reflects a continued fragmented vendor community that is operating in very narrow niches with a single agency.
+Back to top
+Analysis
+Growth in private sector R&D
+has been at above 10% per year for a decade while the federal government has shown more modest growth over the last five years after a period of stagnation, however the 1200% one-year increase in AI potential value of awards of over $4.2 billion is indicative of a new imperative in government AI R&D leading to deployment.
+In our previous analysis, we noted that the vendor side of the market was highly fragmented with many small players whose main source of revenues were likely a single contract with a nearby federal client. The market remains fragmented with smaller vendors, but larger players such as Accenture,
+Booz Allen Hamilton
+,
+General Atomics
+, and
+Lockheed Martin
+, are moving quickly into the market, following, or perhaps resulting in, the significant increase of the value of contracts. In our previous analysis, we identified that these larger firms would be establishing beachheads for entry into AI and we expect this trend to continue with other large defense players such as RAND, Northrop Grumman, and Raytheon amongst others as vendors integrate AI in their offerings.
+From the client side, we had previously discussed the large number of relatively small contracts demonstrating an experimental phase of purchasing AI. The explosion of large, maximum potential value contracts appears to be a shift from experimentation to implementation, which would be bolstered by the shift from almost uniquely NAICS 54 to a balance between NAICS 54 and 51. While research and experimentation are still ongoing, there are definite signs of vendors bringing to the federal market concrete technologies and systems. The thousand flowers are starting to bloom and agencies–particularly DoD–are tending to them carefully.
+We had identified that the focus on federal AI spending was DoD and over the last year, this focus has proportionally become almost total. Defense AI applications
+have long been touted
+as a potential long term growth area and it appears that 2022/23 has been a turning point in the realization of those aspirations. While other agencies are continuing to invest in AI, either adding to existing investment or just starting, DoD is massively investing in AI as a new technology across a range of applications. In January 2024, Michael C. Horowitz (deputy assistant secretary of defense for force development and emerging capabilities) confirmed a
+wide swath of investments
+in research, development, test and evaluation, and new initiatives to speed up experimentation with AI within the department.
+We have noted in
+other analyses
+that there are different national approaches to AI development, where the U.S. and its allies have been focusing on the traditional “guardrails” of technology management (e.g., data governance, data management, education, public service reform) and so spreading their expenditures between governance and capacity development, while potential adversaries are almost exclusively focused on building up their R&D capacity and are largely ignoring the guardrails. While we had identified risks with a broad-based approach leading to a winnowing of projects for a focused ramp-up of investment, we rather see a more muscular approach where a wide range of projects are receiving considerable funding. The vast increase in overall spending–particularly in defense applications–appears to indicate that the U.S. is substantially ramping up its investment in this area to address the threat of potential competitors. At the same time,
+public statements by federal agency leaders
+often strike a balance between the potential benefits and the risks of AI while outlining potential legislative and policy avenues while
+agencies seek means
+of controlling the potential negative impacts of AI. The recent advancement of U.S. Congress legislation and agency strategies coupled with the significant investment increase identified in the current study demonstrate that well-resourced countries such as the U.S. can have both security and capacity when it comes to AI.
+The current framework for solving this coordination issue is the National Artificial Intelligence Initiative Office (NAIIO), which was established by the
+National Artificial Intelligence Initiative Act of 2020
+. Under this Act, the NAIIO is directed to “sustain consistent support for AI R&D, support AI education…support interdisciplinary AI research…plan and coordinate Federal interagency AI activities…and support opportunities for international cooperation with strategic AI…for trustworthy AI systems.” While the intent of this Act and its formal structure are admirable, the current federal spending does not seem to reflect these lofty goals. Rather, we are seeing a federal market that appears to be much more chaotic than desirable, especially given the lead that China already has on the U.S. in AI activities. This fragmented federal market may resolve itself as the impact of recent
+Executive Order on the Safe, Secure, and Trustworthy Development and Use of Artificial Intelligence
+directs agency engagement on the issue of monitoring and regulation of AI.
+Back to top
+Conclusion
+In conclusion, the analysis of the U.S. federal government’s AI spending over the past year reveals a remarkable surge in investment, particularly within the DoD. The shift from experimental contracts to large, maximum potential value contracts indicates a transition from testing to implementation, with a significant increase in both funding obligated and potential value of awards. The federal government’s focus on AI, as evidenced by the substantial investments and legislative initiatives, reflects a strategic response to global competition and security challenges. While the market remains fragmented with smaller vendors, the concentration of investments in defense applications signals a turning point in the realization of AI’s potential across various government agencies. The current trajectory, led by the DoD, aligns with the broader national approach that combines governance and capacity development to ensure both security and innovation in AI technologies.
+As we noted in our
+first article in this series
+, if one wants to know what the real strategy is, one must follow the money. In the case of the U.S. federal government, the strategy is clearly focused on defense applications of AI. The spillover of this focus is a likelihood of defense and security priorities, needs and values being the dominant ones in government applications. This is a double-edged sword as while it may lead to more secure national systems or more effective defenses against hostile uses of AI against the U.S. and its allies, it may also involve trade-offs in individual privacy or decision-making transparency. However, the appropriate deployment of AI by government has the potential to increase both security and freedom, as noted in
+other contexts such as surveillance
+.
+The AI industry is in a rapid growth phase as demonstrated by the potential revenues from the sector growing exponentially. As virtually all new markets go through the same industry growth cycle, the increasing value of the AI market will likely continue to draw in new firms in the short-term, including the previously absent large players to whom the degree of actual and potential market capitalization has now drawn their attention and capacity. While an industry consolidation phase of start-up and smaller player acquisitions will likely happen in the future, if the scale of AI market increase continues at a similar rate this winnowing process is likely still several years away. That being said, the government may start to look more towards their established partner firms—particularly in the defense and security sector—who have the track record and industrial capacity to meet the high value contracting vehicles being put in place.
+Despite the commendable intentions outlined in the National Artificial Intelligence Initiative Act of 2020, the current state of federal spending on AI raises concerns about coordination and coherence.
+NAIIO
+is tasked with coordinating interagency AI activities and promoting international cooperation, but the observed chaotic nature of the federal market calls into question the effectiveness of the existing framework. The fragmented market may see resolution as the recent executive order on AI guides agencies towards more a more cohesive and coordinated approach to AI. As the U.S. strives to maintain its technological leadership and address security challenges posed by potential adversaries, the coordination of AI initiatives will be crucial. The findings emphasize the need for continued policy development, strategic planning, and collaborative efforts to ensure the responsible and effective integration of AI technologies across the U.S. federal government.
+Authors
+Jacob Larson
+Researcher
+- W.P. Carey School of Business, Arizona State University
+James S. Denford
+Professor, Management Department
+- Royal Military College of Canada
+Gregory S. Dawson
+Clinical Professor, the W. P. Carey School of Business
+- Arizona State University
+Kevin C. Desouza
+Nonresident Senior Fellow
+-
+Governance Studies
+,
+Center for Technology Innovation (CTI)
+@KevDesouza
+Related Content
+Understanding artificial intelligence spending by the U.S. federal government
+Technology & Information
+Understanding artificial intelligence spending by the U.S. federal government
+Gregory S. Dawson, Kevin C. Desouza, James S. Denford
+September 22, 2022
+Shaping the future of AI through responsible innovation
+Artificial Intelligence
+Shaping the future of AI through responsible innovation
+Nicol Turner Lee
+September 23, 2025
+1 year later, how has the White House AI Executive Order delivered on its promises?
+Artificial Intelligence
+1 year later, how has the White House AI Executive Order delivered on its promises?
+Aaron Klein, Cameron F. Kerry, Courtney C. Radsch, Mark MacCarthy, Sorelle Friedler, Nicol Turner Lee
+November 4, 2024
+Acknowledgements and disclosures
+The National Science Foundation is a donor to the Brookings Institution. The findings, interpretations, and conclusions posted in this piece are solely those of the authors and not influenced by any donation.
+The Brookings Institution is committed to quality, independence, and impact.
+We are supported by a
+diverse array of funders
+. In line with our
+values and policies
+, each Brookings publication represents the sole views of its author(s).
+More On
+Defense & Security
+Sub-Topics
+U.S. Defense Policy
+Technology & Information
+Sub-Topics
+Artificial Intelligence
+Technology Policy & Regulation
+U.S. Government & Politics
+North America
+Sub-Topics
+U.S. States and Territories
+Program
+Governance Studies
+Region
+North America
+U.S. States and Territories
+Center
+Center for Technology Innovation (CTI)
+The American AI stack and the world
+Upcoming Event
+October
+21
+2025
+Artificial Intelligence
+The American AI stack and the world
+The Brookings Institution, Washington DC
+Tuesday, 9:00 am - 4:10 pm EDT
+How tech powers immigration enforcement
+Immigrants & Immigration
+How tech powers immigration enforcement
+Josie Stewart, Michelle Du, Nicol Turner Lee
+October 6, 2025
+We should all be Luddites
+Technology & Information
+We should all be Luddites
+Courtney C. Radsch
+October 6, 2025

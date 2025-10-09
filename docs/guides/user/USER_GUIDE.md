@@ -407,9 +407,9 @@ While no formal keyboard shortcuts exist, standard browser shortcuts work:
 ## Getting Help
 
 **Documentation**:
-- [CLI Guide](CLI_GUIDE.md) - For technical users
-- [API Reference](API_REFERENCE.md) - For developers
-- [Deployment Guide](DEPLOYMENT.md) - For hosting
+- [CLI Commands Reference](../../reference/cli-commands.md) - For technical users
+- [API Reference](../../reference/API_REFERENCE.md) - For developers
+- [Deployment Guide](../../deployment/DEPLOYMENT.md) - For hosting
 
 **Support**:
 - GitHub Issues - Report bugs or request features
@@ -430,3 +430,10 @@ This is an independent project not affiliated with Congress.gov or any governmen
 ---
 
 **Happy exploring!** The Congressional Hearing Database makes government oversight more accessible. Use it to stay informed about what's happening in Congress.
+
+---
+
+**Last Updated**: October 9, 2025
+**Target Audience**: End Users and Casual Browsers
+
+[← Back: Quick Start](../../getting-started/quick-start.md) | [Up: Documentation Hub](../../README.md) | [Next: CLI Commands →](../../reference/cli-commands.md)

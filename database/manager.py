@@ -347,6 +347,7 @@ class DatabaseManager:
                 congress_gov_url = ?,
                 video_url = ?,
                 youtube_video_id = ?,
+                video_type = ?,
                 update_date = ?,
                 updated_at = CURRENT_TIMESTAMP
             WHERE event_id = ?
@@ -367,6 +368,7 @@ class DatabaseManager:
                 hearing_data.get('congress_gov_url'),
                 hearing_data.get('video_url'),
                 hearing_data.get('youtube_video_id'),
+                hearing_data.get('video_type'),
                 hearing_data.get('update_date'),
                 event_id
             )
@@ -379,8 +381,8 @@ class DatabaseManager:
             INSERT INTO hearings
             (event_id, congress, chamber, title, hearing_type, status, hearing_date,
              hearing_date_only, hearing_time, location, jacket_number, url, congress_gov_url,
-             video_url, youtube_video_id, update_date, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+             video_url, youtube_video_id, video_type, update_date, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
             """
 
             params = (
@@ -399,6 +401,7 @@ class DatabaseManager:
                 hearing_data.get('congress_gov_url'),
                 hearing_data.get('video_url'),
                 hearing_data.get('youtube_video_id'),
+                hearing_data.get('video_type'),
                 hearing_data.get('update_date')
             )
 

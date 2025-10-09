@@ -379,3 +379,11 @@ For issues with daily updates:
 ---
 
 **Note**: The daily update system is designed for hands-off operation. Once configured, it maintains database freshness with minimal intervention.
+
+---
+
+**Last Updated**: October 9, 2025
+**Update Schedule**: Daily at 6:00 AM UTC
+**Target Audience**: Operations and DevOps
+
+[← Back: Monitoring](MONITORING.md) | [Up: Documentation Hub](../../README.md) | [Next: Update Protocols →](UPDATE_PROTOCOLS.md)

@@ -16,9 +16,7 @@ Welcome to the comprehensive documentation for the Congressional Hearing Databas
 
 ### Features & Capabilities
 - **[Admin Dashboard](features/admin-dashboard.md)** - Real-time update monitoring and control
-- **[CRS Search](features/crs-search.md)** - Congressional Research Service integration
-- **[Video Integration](features/video-integration.md)** - YouTube video support
-- **[Document Handling](features/document-handling.md)** - Transcripts, witness docs, supporting materials
+- **[Video Integration](features/video-integration.md)** - YouTube and Senate ISVP video support
 - **[Scheduling System](features/scheduling.md)** - Automated task scheduling with Vercel cron
 
 ### Technical Reference
@@ -38,8 +36,7 @@ Welcome to the comprehensive documentation for the Congressional Hearing Databas
 - **[Monitoring Guide](guides/operations/MONITORING.md)** - Health checks and performance metrics
 
 ### Deployment
-- **[Deployment Guide](deployment/DEPLOYMENT.md)** - Deployment for all environments
-- **[Vercel Deployment](deployment/vercel.md)** - Vercel-specific configuration
+- **[Deployment Guide](deployment/DEPLOYMENT.md)** - Deployment for all environments (includes Vercel)
 
 ### Troubleshooting
 - **[Common Issues](troubleshooting/common-issues.md)** - Frequently encountered problems

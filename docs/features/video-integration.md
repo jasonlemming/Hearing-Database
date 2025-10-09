@@ -239,3 +239,11 @@ The video integration was refactored to use the parser pipeline:
 - DailyUpdater uses HearingParser for updates
 
 This ensures video data is extracted consistently across all import and update operations.
+
+---
+
+**Last Updated**: October 9, 2025
+**Feature**: Video Integration
+**Supported Platforms**: YouTube, Senate ISVP, House Video, Committee Video
+
+[← Back: Scheduling](scheduling.md) | [Up: Documentation Hub](../README.md) | [Next: Development Guide →](../guides/developer/DEVELOPMENT.md)

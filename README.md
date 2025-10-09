@@ -37,7 +37,7 @@ python cli.py web serve
 
 Then open http://localhost:5000 in your browser.
 
-👉 **See the [User Guide](docs/USER_GUIDE.md) for web interface tutorials**
+👉 **See the [User Guide](docs/guides/user/USER_GUIDE.md) for web interface tutorials**
 
 ### For Technical Users
 
@@ -58,16 +58,21 @@ Then open http://localhost:5000 in your browser.
    python cli.py import full --congress 119
    ```
 
-👉 **See the [CLI Guide](docs/CLI_GUIDE.md) for detailed command reference**
+👉 **See the [CLI Commands Reference](docs/reference/cli-commands.md) for detailed command documentation**
 
 ### For Developers
 
 **Want to contribute or integrate with the API?**
 
-- **Architecture**: [Web Architecture Guide](docs/WEB_ARCHITECTURE.md)
-- **API Reference**: [API Documentation](docs/API_REFERENCE.md)
-- **Deployment**: [Deployment Guide](docs/DEPLOYMENT.md)
-- **Daily Updates**: [Automated Updates](docs/DAILY_UPDATES.md)
+📚 **[Complete Documentation Hub](docs/README.md)** - Explore all guides organized by audience
+
+**Essential Guides**:
+- **Development**: [Developer Guide](docs/guides/developer/DEVELOPMENT.md) - Architecture, patterns, and how to contribute
+- **Database**: [Database Schema Reference](docs/reference/architecture/database-schema.md) - Complete schema documentation
+- **Testing**: [Testing Guide](docs/guides/developer/testing.md) - Writing and running tests
+- **API**: [API Reference](docs/reference/API_REFERENCE.md) - Programmatic access documentation
+- **Deployment**: [Deployment Guide](docs/deployment/DEPLOYMENT.md) - Vercel and production setup
+- **Monitoring**: [Operations & Monitoring](docs/guides/operations/MONITORING.md) - Health checks and performance tracking
 
 ## Features
 
@@ -184,7 +189,7 @@ Public JSON API for programmatic access:
 - `GET /api/update-status` - Daily update status and history
 - `GET /api/debug` - System diagnostic information
 
-See [API Reference](docs/API_REFERENCE.md) for complete documentation.
+See [API Reference](docs/reference/API_REFERENCE.md) for complete documentation.
 
 ## Configuration
 
@@ -238,7 +243,7 @@ The system is designed for Vercel serverless deployment with automated daily upd
 - SQLite database deployed with the application
 - Read-mostly workload optimized for Vercel's serverless environment
 
-See [Deployment Guide](docs/DEPLOYMENT.md) for detailed instructions.
+See [Deployment Guide](docs/deployment/DEPLOYMENT.md) for detailed instructions.
 
 ## Performance & Limitations
 

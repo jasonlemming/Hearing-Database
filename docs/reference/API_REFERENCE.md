@@ -563,3 +563,11 @@ For API questions or feature requests:
 ---
 
 **Note**: The API is read-only and public. All data comes from Congress.gov and is updated daily.
+
+---
+
+**Last Updated**: October 9, 2025
+**API Version**: 1.0
+**Endpoints**: 3 public endpoints + direct database access
+
+[← Back: CLI Commands](cli-commands.md) | [Up: Documentation Hub](../README.md) | [Next: Database Schema →](architecture/database-schema.md)

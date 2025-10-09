@@ -244,3 +244,11 @@ The modular refactor delivers significant improvements:
 - **Testing**: Isolated unit testing per blueprint
 
 The modular web architecture provides a solid foundation for continued development and scaling of the Congressional Hearing Database web interface.
+
+---
+
+**Last Updated**: October 9, 2025
+**Framework**: Flask with Blueprints
+**Frontend**: Bootstrap 5 + Vanilla JavaScript
+
+[← Back: Database Schema](database-schema.md) | [Up: Documentation Hub](../../README.md) | [Next: API Reference →](../API_REFERENCE.md)

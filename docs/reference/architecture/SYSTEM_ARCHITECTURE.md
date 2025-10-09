@@ -423,3 +423,11 @@ Load (L)
 5. **Enrichment**: Policy areas and metadata
 
 This architecture supports the current research-focused use case while providing a foundation for scaling to production deployment with multiple users and real-time updates.
+
+---
+
+**Last Updated**: October 9, 2025
+**Architecture Version**: 2.0
+**Components**: API Client, Fetchers, Parsers, Database, Web Interface
+
+[← Back: Documentation Hub](../../README.md) | [Up: Reference](../) | [Next: Database Schema →](database-schema.md)

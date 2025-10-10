@@ -3,6 +3,9 @@ CRS Content Manager - Database operations for CRS content versions
 """
 import sqlite3
 import json
+import os
+import boto3
+from botocore.exceptions import ClientError
 from typing import Optional, Dict, Any, List
 from datetime import datetime
 from pathlib import Path
@@ -32,12 +35,84 @@ class CRSContentManager:
         """
         self.db_path = db_path
         self._ensure_database_exists()
+        self._init_r2_client()
 
     def _ensure_database_exists(self):
         """Ensure database file exists"""
         db_file = Path(self.db_path)
         if not db_file.exists():
             logger.warning(f"Database not found: {self.db_path}")
+
+    def _init_r2_client(self):
+        """Initialize Cloudflare R2 client for blob storage"""
+        self.r2_enabled = False
+        self.s3_client = None
+        self.bucket_name = None
+        self.public_url = None
+
+        try:
+            access_key = os.getenv('R2_ACCESS_KEY_ID')
+            secret_key = os.getenv('R2_SECRET_ACCESS_KEY')
+            account_id = os.getenv('R2_ACCOUNT_ID')
+            self.bucket_name = os.getenv('R2_BUCKET_NAME')
+            self.public_url = os.getenv('R2_PUBLIC_URL')
+
+            if all([access_key, secret_key, account_id, self.bucket_name, self.public_url]):
+                endpoint_url = f'https://{account_id}.r2.cloudflarestorage.com'
+                self.s3_client = boto3.client(
+                    's3',
+                    endpoint_url=endpoint_url,
+                    aws_access_key_id=access_key,
+                    aws_secret_access_key=secret_key,
+                    region_name='auto'
+                )
+                self.r2_enabled = True
+                # Remove trailing slash from public_url
+                self.public_url = self.public_url.rstrip('/')
+                logger.info(f"✓ R2 storage enabled (bucket: {self.bucket_name})")
+            else:
+                logger.warning("R2 credentials not found - content will be stored in database")
+        except Exception as e:
+            logger.error(f"Failed to initialize R2 client: {e}")
+            self.r2_enabled = False
+
+    def _upload_to_r2(self, product_id: str, version_number: int, html_content: str) -> Optional[str]:
+        """
+        Upload HTML content to Cloudflare R2
+
+        Args:
+            product_id: CRS product ID
+            version_number: Version number
+            html_content: HTML content to upload
+
+        Returns:
+            Public blob URL or None if upload failed
+        """
+        if not self.r2_enabled:
+            return None
+
+        filename = f"crs-{product_id}-v{version_number}.html"
+
+        try:
+            self.s3_client.put_object(
+                Bucket=self.bucket_name,
+                Key=filename,
+                Body=html_content.encode('utf-8'),
+                ContentType='text/html; charset=utf-8'
+            )
+
+            blob_url = f"{self.public_url}/{filename}"
+            logger.debug(f"✓ Uploaded {product_id} v{version_number} to R2")
+            return blob_url
+
+        except ClientError as e:
+            error_code = e.response.get('Error', {}).get('Code', 'Unknown')
+            error_msg = e.response.get('Error', {}).get('Message', str(e))
+            logger.error(f"R2 upload failed for {product_id}: [{error_code}] {error_msg}")
+            return None
+        except Exception as e:
+            logger.error(f"R2 upload failed for {product_id}: {e}")
+            return None
 
     @contextmanager
     def get_connection(self):
@@ -61,12 +136,13 @@ class CRSContentManager:
         Insert or update a product version
 
         Marks all previous versions as not current
+        Uploads HTML content to R2 if enabled
 
         Args:
             product_id: CRS product ID
             version_number: Version number
-            html_content: Cleaned HTML
-            text_content: Plain text
+            html_content: Cleaned HTML (uploaded to R2, not stored in DB)
+            text_content: Plain text (used for FTS, not stored in DB)
             structure_json: Document structure
             content_hash: SHA256 hash
             word_count: Word count
@@ -75,6 +151,14 @@ class CRSContentManager:
         Returns:
             version_id of inserted/updated version
         """
+        # Upload HTML content to R2 if enabled
+        blob_url = self._upload_to_r2(product_id, version_number, html_content)
+        if not blob_url:
+            logger.warning(f"R2 upload failed for {product_id} v{version_number} - skipping ingestion")
+            # If R2 is enabled but upload failed, don't proceed
+            if self.r2_enabled:
+                raise Exception(f"R2 upload failed for {product_id} v{version_number}")
+
         with self.get_connection() as conn:
             # Check if this version already exists
             existing = conn.execute("""
@@ -92,16 +176,15 @@ class CRSContentManager:
                 # Content changed, update it
                 conn.execute("""
                     UPDATE product_versions
-                    SET html_content = ?,
-                        text_content = ?,
-                        structure_json = ?,
+                    SET structure_json = ?,
                         content_hash = ?,
                         word_count = ?,
                         html_url = ?,
+                        blob_url = ?,
                         ingested_at = CURRENT_TIMESTAMP
                     WHERE version_id = ?
-                """, (html_content, text_content, json.dumps(structure_json),
-                     content_hash, word_count, html_url, existing['version_id']))
+                """, (json.dumps(structure_json), content_hash, word_count,
+                     html_url, blob_url, existing['version_id']))
 
                 version_id = existing['version_id']
                 logger.info(f"✓ Updated version {version_number} of {product_id} (content changed)")
@@ -110,11 +193,11 @@ class CRSContentManager:
                 # Insert new version
                 cursor = conn.execute("""
                     INSERT INTO product_versions
-                    (product_id, version_number, html_content, text_content, structure_json,
-                     content_hash, word_count, html_url, is_current)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)
-                """, (product_id, version_number, html_content, text_content,
-                     json.dumps(structure_json), content_hash, word_count, html_url))
+                    (product_id, version_number, structure_json,
+                     content_hash, word_count, html_url, blob_url, is_current)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, 0)
+                """, (product_id, version_number, json.dumps(structure_json),
+                     content_hash, word_count, html_url, blob_url))
 
                 version_id = cursor.lastrowid
                 logger.info(f"✓ Inserted version {version_number} of {product_id}")
@@ -400,12 +483,13 @@ class CRSContentManager:
                 SELECT COUNT(*) FROM product_versions
             """).fetchone()[0]
 
-            # Total storage
-            storage = conn.execute("""
-                SELECT SUM(LENGTH(html_content) + LENGTH(text_content)) as total_bytes
+            # Total storage (now in R2, show count of blob URLs instead)
+            blob_count = conn.execute("""
+                SELECT COUNT(*) as blob_count
                 FROM product_versions
+                WHERE blob_url IS NOT NULL
             """).fetchone()
-            stats['total_storage_bytes'] = storage['total_bytes'] or 0
+            stats['content_in_r2'] = blob_count['blob_count'] or 0
 
             # Average word count
             avg_words = conn.execute("""

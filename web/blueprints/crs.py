@@ -8,6 +8,7 @@ import io
 import os
 import gzip
 import shutil
+import requests
 from datetime import datetime
 
 crs_bp = Blueprint('crs', __name__, url_prefix='/crs')
@@ -36,6 +37,29 @@ def get_crs_db():
     conn = sqlite3.connect(CRS_DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
+
+
+def fetch_content_from_blob(blob_url, timeout=10):
+    """
+    Fetch HTML content from Vercel Blob storage
+
+    Args:
+        blob_url: URL to the blob
+        timeout: Request timeout in seconds
+
+    Returns:
+        HTML content string, or None if fetch fails
+    """
+    try:
+        response = requests.get(blob_url, timeout=timeout)
+        if response.status_code == 200:
+            return response.text
+        else:
+            print(f"Error fetching blob: {response.status_code}")
+            return None
+    except Exception as e:
+        print(f"Error fetching blob from {blob_url}: {e}")
+        return None
 
 
 @crs_bp.route('/')
@@ -318,14 +342,32 @@ def product_detail(product_id):
         content_version = None
         try:
             cursor.execute('''
-                SELECT version_id, version_number, html_content, text_content,
-                       structure_json, word_count, ingested_at
+                SELECT version_id, version_number,
+                       structure_json, word_count, ingested_at, blob_url
                 FROM product_versions
                 WHERE product_id = ? AND is_current = 1
             ''', (product_id,))
-            content_version = cursor.fetchone()
-        except sqlite3.OperationalError:
-            # product_versions table doesn't exist yet
+            version_row = cursor.fetchone()
+
+            if version_row:
+                # Convert Row to dict for easier manipulation
+                content_version = dict(version_row)
+
+                # If blob_url exists, fetch content from blob storage
+                if content_version.get('blob_url'):
+                    blob_html = fetch_content_from_blob(content_version['blob_url'])
+                    if blob_html:
+                        # Use blob content
+                        content_version['html_content'] = blob_html
+                    else:
+                        # Blob fetch failed - log warning
+                        print(f"Warning: Failed to fetch content from blob URL: {content_version['blob_url']}")
+                else:
+                    print(f"Warning: No blob_url found for product {product_id}")
+
+        except sqlite3.OperationalError as e:
+            # product_versions table doesn't exist yet or column mismatch
+            print(f"Database error: {e}")
             pass
 
         conn.close()

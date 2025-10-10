@@ -22,9 +22,8 @@ class Settings(BaseSettings):
     def __init__(self, **kwargs):
         """Initialize settings with Vercel-specific configuration"""
         super().__init__(**kwargs)
-        # For Vercel deployment, use the included database
-        if os.environ.get('VERCEL'):
-            self.database_path = '/var/task/database.db'
+        # For Vercel deployment, database.db is already in the working directory
+        # No need to override the path
 
     # Import Configuration
     target_congress: int = Field(default=119, env='TARGET_CONGRESS')

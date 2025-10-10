@@ -108,10 +108,12 @@ def index():
             product_types = [row['product_type'] for row in cursor.fetchall()]
 
             # PostgreSQL JSONB: use jsonb_array_elements_text for extracting array values
+            # Guard against scalar values (migration artifact from SQLite)
             cursor.execute('''
                 SELECT DISTINCT jsonb_array_elements_text(topics) as topic
                 FROM products
                 WHERE topics IS NOT NULL
+                  AND jsonb_typeof(topics) = 'array'
                 ORDER BY topic
                 LIMIT 100
             ''')

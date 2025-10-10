@@ -36,9 +36,9 @@ def ensure_brookings_database_decompressed():
                 shutil.copyfileobj(f_in, f_out)
         print("Brookings database decompressed successfully!")
 
-    # Set DATABASE_URL environment variable for SQLAlchemy
-    if os.environ.get('VERCEL'):
-        os.environ['DATABASE_URL'] = f'sqlite:///{BROOKINGS_DB_PATH}'
+    # Set BROOKINGS_DATABASE_URL (separate from CRS PostgreSQL DATABASE_URL)
+    if os.environ.get('VERCEL') or not os.environ.get('BROOKINGS_DATABASE_URL'):
+        os.environ['BROOKINGS_DATABASE_URL'] = f'sqlite:///{BROOKINGS_DB_PATH}'
 
 
 def format_transcript_text(text):

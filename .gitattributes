@@ -1,2 +1,1 @@
-crs_products.db.gz filter=lfs diff=lfs merge=lfs -text
 database/congressional_hearings.db filter=lfs diff=lfs merge=lfs -text

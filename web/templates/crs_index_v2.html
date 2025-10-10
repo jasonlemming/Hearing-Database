@@ -1,0 +1,572 @@
+{% extends "crs_base_v2.html" %}
+
+{% block title %}Browse CRS Products{% endblock %}
+
+{% block head_style %}
+/* Two-column layout - sidebar + content */
+.browse-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+/* Filter sidebar - Minimal, punk style */
+.filter-sidebar {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+}
+
+.filter-sidebar h3 {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+}
+
+.filter-group {
+    margin-bottom: 1.5rem;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+/* Minimal inputs - underline only, like search bar */
+.filter-sidebar select,
+.filter-sidebar input[type="date"] {
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.4rem 0;
+    border: none;
+    border-bottom: 1px solid #d0d0d0;
+    border-radius: 0;
+    width: 100%;
+    background: transparent;
+    color: #1a1a1a;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+/* Custom dropdown arrow using SVG */
+.filter-sidebar select {
+    padding-right: 1.2rem;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%236c757d" d="M1 1l5 5 5-5"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 10px;
+}
+
+.filter-sidebar select:focus,
+.filter-sidebar input[type="date"]:focus {
+    outline: none;
+    border-bottom-color: #1a1a1a;
+}
+
+/* Custom dropdown container */
+.custom-select {
+    position: relative;
+}
+
+.custom-select select {
+    display: none; /* Hide native select */
+}
+
+.custom-select-trigger {
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.4rem 1.2rem 0.4rem 0;
+    border: none;
+    border-bottom: 1px solid #d0d0d0;
+    width: 100%;
+    background: transparent;
+    color: #1a1a1a;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%236c757d" d="M1 1l5 5 5-5"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 10px;
+}
+
+.custom-select-trigger:focus {
+    outline: none;
+    border-bottom-color: #1a1a1a;
+}
+
+.custom-select-trigger:hover {
+    border-bottom-color: #1a1a1a;
+}
+
+/* Custom dropdown list - minimal punk style */
+.custom-select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: none;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+    margin-top: 0.25rem;
+}
+
+.custom-select.open .custom-select-options {
+    display: block;
+}
+
+.custom-select-option {
+    padding: 0.5rem 0;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    transition: all 0.15s ease;
+}
+
+.custom-select-option:hover,
+.custom-select-option.highlighted {
+    background: #f8f9fa;
+    color: #0d6efd;
+}
+
+.custom-select-option.selected {
+    color: #0d6efd;
+}
+
+/* Scrollbar styling for dropdown */
+.custom-select-options::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-select-options::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+
+.custom-select-options::-webkit-scrollbar-thumb {
+    background: #d0d0d0;
+    border-radius: 3px;
+}
+
+.custom-select-options::-webkit-scrollbar-thumb:hover {
+    background: #6c757d;
+}
+
+/* Sort options */
+.sort-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sort-option {
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.4rem 0;
+    background: transparent;
+    color: #6c757d;
+    border: none;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: left;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sort-option:hover {
+    color: #1a1a1a;
+    border-bottom-color: #1a1a1a;
+}
+
+.sort-option.active {
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+.sort-icon {
+    font-size: 0.75rem;
+    margin-left: 0.5rem;
+}
+
+/* Minimal buttons */
+.filter-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.filter-actions button,
+.filter-actions a {
+    font-family: inherit;
+    font-size: 0.85rem;
+    padding: 0.4rem 0;
+    background: transparent;
+    color: #6c757d;
+    border: none;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.filter-actions button:hover,
+.filter-actions button[type="submit"]:hover,
+.filter-actions a:hover {
+    background: transparent !important;
+    color: #1a1a1a;
+    border-bottom-color: #1a1a1a;
+}
+
+/* Document list - Policy Library style (all screen sizes) */
+.document-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.document-link {
+    display: block;
+    text-decoration: none;
+    color: #1a1a1a;
+    padding: 2rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.document-link:hover {
+    transform: translateX(5px);
+    color: #0d6efd;
+}
+
+.document-link:hover .document-title {
+    color: #0d6efd;
+}
+
+.document-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.document-meta {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+/* Badges inline in metadata */
+.badge {
+    display: inline-block;
+    font-weight: 400;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    border-radius: 3px;
+    margin-left: 0.5rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 991px) {
+    .browse-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .filter-sidebar {
+        position: static;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .filter-actions {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .document-link:hover {
+        transform: none;
+    }
+}
+{% endblock %}
+
+{% block head %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all custom selects
+    document.querySelectorAll('.custom-select').forEach(initCustomSelect);
+
+    function initCustomSelect(container) {
+        const select = container.querySelector('select');
+        const trigger = container.querySelector('.custom-select-trigger');
+        const optionsContainer = container.querySelector('.custom-select-options');
+
+        if (!select || !trigger || !optionsContainer) return;
+
+        // Set initial trigger text based on current value
+        let selectedOption = null;
+        if (select.value) {
+            // Find option matching the current value
+            selectedOption = Array.from(select.options).find(opt => opt.value === select.value);
+        }
+        if (!selectedOption) {
+            // Fallback to selectedIndex
+            selectedOption = select.options[select.selectedIndex];
+        }
+        trigger.textContent = selectedOption.text;
+
+        // Toggle dropdown
+        trigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closeAllSelects(container);
+            container.classList.toggle('open');
+        });
+
+        // Select option
+        optionsContainer.querySelectorAll('.custom-select-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const value = this.dataset.value;
+                select.value = value;
+                trigger.textContent = this.textContent;
+
+                // Update selected class
+                optionsContainer.querySelectorAll('.custom-select-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+
+                container.classList.remove('open');
+            });
+        });
+
+        // Keyboard navigation
+        trigger.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                container.classList.toggle('open');
+            }
+        });
+    }
+
+    // Close all selects except the one passed
+    function closeAllSelects(except) {
+        document.querySelectorAll('.custom-select').forEach(select => {
+            if (select !== except) {
+                select.classList.remove('open');
+            }
+        });
+    }
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function() {
+        closeAllSelects();
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 0.5rem;">CRS Products</h1>
+<p class="text-secondary" style="margin-bottom: 0;">{{ total|number_format if total else 0 }} Congressional Research Service reports and publications</p>
+
+<!-- Two-column layout: filters sidebar + results -->
+<div class="browse-layout">
+    <!-- Filter Sidebar -->
+    <aside class="filter-sidebar">
+        <form method="GET" action="{{ url_for('crs.index_v2') }}">
+            <h3>Filter</h3>
+
+            <div class="filter-group">
+                <label>Type</label>
+                <div class="custom-select">
+                    <select name="product_type">
+                        <option value="">All</option>
+                        {% for type in product_types %}
+                        <option value="{{ type }}" {% if type == selected_product_type %}selected{% endif %}>
+                            {{ type }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="custom-select-trigger" tabindex="0">All</div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option {% if not selected_product_type %}selected{% endif %}" data-value="">All</div>
+                        {% for type in product_types %}
+                        <div class="custom-select-option {% if type == selected_product_type %}selected{% endif %}" data-value="{{ type }}">{{ type }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label>Status</label>
+                <div class="custom-select">
+                    <select name="status">
+                        <option value="Active" {% if selected_status == 'Active' %}selected{% endif %}>Active</option>
+                        <option value="Archived" {% if selected_status == 'Archived' %}selected{% endif %}>Archived</option>
+                        <option value="">All</option>
+                    </select>
+                    <div class="custom-select-trigger" tabindex="0">Active</div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option {% if selected_status == 'Active' %}selected{% endif %}" data-value="Active">Active</div>
+                        <div class="custom-select-option {% if selected_status == 'Archived' %}selected{% endif %}" data-value="Archived">Archived</div>
+                        <div class="custom-select-option {% if not selected_status %}selected{% endif %}" data-value="">All</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label>Topic</label>
+                <div class="custom-select">
+                    <select name="topic">
+                        <option value="">All</option>
+                        {% for topic in topics %}
+                        <option value="{{ topic }}" {% if topic == selected_topic %}selected{% endif %}>
+                            {{ topic }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="custom-select-trigger" tabindex="0">All</div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option {% if not selected_topic %}selected{% endif %}" data-value="">All</div>
+                        {% for topic in topics %}
+                        <div class="custom-select-option {% if topic == selected_topic %}selected{% endif %}" data-value="{{ topic }}">{{ topic }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label>Author</label>
+                <div class="custom-select">
+                    <select name="author">
+                        <option value="">All</option>
+                        {% for author_name in authors %}
+                        <option value="{{ author_name }}" {% if author_name == selected_author %}selected{% endif %}>
+                            {{ author_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="custom-select-trigger" tabindex="0">All</div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option {% if not selected_author %}selected{% endif %}" data-value="">All</div>
+                        {% for author_name in authors %}
+                        <div class="custom-select-option {% if author_name == selected_author %}selected{% endif %}" data-value="{{ author_name }}">{{ author_name }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label>From</label>
+                <input type="date" name="date_from" value="{{ date_from }}">
+            </div>
+
+            <div class="filter-group">
+                <label>To</label>
+                <input type="date" name="date_to" value="{{ date_to }}">
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit">Apply</button>
+                <a href="{{ url_for('crs.index_v2') }}">Clear</a>
+            </div>
+        </form>
+
+        <div style="margin-top: 2.5rem;">
+            <h3>Sort By</h3>
+            <div class="sort-options">
+                <a href="{{ url_for('crs.index_v2', product_type=selected_product_type, status=selected_status, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to, sort='title', order='asc' if sort_by == 'title' and sort_order == 'desc' else 'desc') }}"
+                   class="sort-option {% if sort_by == 'title' %}active{% endif %}">
+                    <span>Title</span>
+                    {% if sort_by == 'title' %}
+                        <span class="sort-icon">{% if sort_order == 'asc' %}↑{% else %}↓{% endif %}</span>
+                    {% endif %}
+                </a>
+                <a href="{{ url_for('crs.index_v2', product_type=selected_product_type, status=selected_status, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to, sort='date', order='desc' if sort_by == 'date' and sort_order == 'asc' else 'asc') }}"
+                   class="sort-option {% if sort_by == 'date' %}active{% endif %}">
+                    <span>Date</span>
+                    {% if sort_by == 'date' %}
+                        <span class="sort-icon">{% if sort_order == 'desc' %}↓{% else %}↑{% endif %}</span>
+                    {% endif %}
+                </a>
+                <a href="{{ url_for('crs.index_v2', product_type=selected_product_type, status=selected_status, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to, sort='type', order='asc' if sort_by == 'type' and sort_order == 'desc' else 'desc') }}"
+                   class="sort-option {% if sort_by == 'type' %}active{% endif %}">
+                    <span>Type</span>
+                    {% if sort_by == 'type' %}
+                        <span class="sort-icon">{% if sort_order == 'asc' %}↑{% else %}↓{% endif %}</span>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Results -->
+    <div class="results-column">
+{% if products %}
+<div class="document-list">
+    {% for product in products %}
+    <a href="{{ url_for('crs.product_detail_v2', product_id=product['product_id']) }}" class="document-link">
+        <div class="document-title">{{ product['title'] }}</div>
+        <div class="document-meta">
+            {{ product['product_id'] }}
+            · {{ product['publication_date']|string|truncate(10, true, '') if product['publication_date'] else 'n.d.' }}
+            · <span class="badge bg-primary">{{ product['product_type'] }}</span>
+            {% if product['url_html'] %} · HTML available{% endif %}
+            {% if product['url_pdf'] %} · PDF available{% endif %}
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if total_pages > 1 %}
+<nav>
+    <ul class="pagination">
+        {% if page > 1 %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('crs.index_v2', page=page-1, product_type=selected_product_type, status=selected_status, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">← Previous</a>
+        </li>
+        {% endif %}
+
+        {% for p in range(1, total_pages + 1) %}
+            {% if p == page %}
+            <li class="page-item active"><span class="page-link">{{ p }}</span></li>
+            {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('crs.index_v2', page=p, product_type=selected_product_type, status=selected_status, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">{{ p }}</a>
+            </li>
+            {% elif p == page - 3 or p == page + 3 %}
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page < total_pages %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('crs.index_v2', page=page+1, product_type=selected_product_type, status=selected_status, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">Next →</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+{% else %}
+<p class="text-secondary mt-4">No products found matching your filters.</p>
+{% endif %}
+    </div><!-- End results-column -->
+</div><!-- End browse-layout -->
+{% endblock %}

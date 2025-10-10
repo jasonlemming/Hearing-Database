@@ -603,6 +603,39 @@ class DailyUpdater:
         except Exception as e:
             logger.warning(f"Could not process committees from embedded data for hearing {event_id}: {e}")
 
+    def _map_witness_document_type(self, api_doc_type: str) -> str:
+        """
+        Map Congress.gov API document types to database enum values.
+
+        Database allows: 'Statement', 'Biography', 'Truth Statement', 'Questions for Record', 'Supplemental'
+        """
+        type_mapping = {
+            'Witness Biography': 'Biography',
+            'Biography': 'Biography',
+            'Witness Statement': 'Statement',
+            'Statement': 'Statement',
+            'Witness Truth in Testimony': 'Truth Statement',
+            'Truth in Testimony': 'Truth Statement',
+            'Questions for the Record': 'Questions for Record',
+            'Supplemental Material': 'Supplemental',
+            'Supplemental': 'Supplemental'
+        }
+        return type_mapping.get(api_doc_type, 'Statement')  # Default to Statement
+
+    def _extract_last_name(self, full_name: str) -> str:
+        """Extract last name from a witness's full name, removing titles."""
+        if not full_name:
+            return ''
+
+        # Remove common titles
+        cleaned = full_name
+        for title in ['Mr. ', 'Ms. ', 'Mrs. ', 'Dr. ', 'Hon. ', 'The Honorable ', 'Prof. ']:
+            cleaned = cleaned.replace(title, '')
+
+        # Get last word (typically the last name)
+        parts = cleaned.split()
+        return parts[-1] if parts else ''
+
     def _update_hearing_witnesses_from_details(self, hearing_data: Dict[str, Any]) -> None:
         """
         Extract and update witness information from embedded hearing details.
@@ -632,6 +665,8 @@ class DailyUpdater:
 
         try:
             # Process each witness from embedded data
+            witness_name_to_data = {}  # Map witness names to appearance IDs and last names
+
             for i, witness_raw in enumerate(witnesses, 1):
                 try:
                     # Normalize data structure for parser
@@ -659,13 +694,73 @@ class DailyUpdater:
                         'witness_type': None,  # Could be inferred if needed
                         'appearance_order': i
                     }
-                    self.db.create_witness_appearance(witness_id, hearing_id, appearance_data)
+                    appearance_id = self.db.create_witness_appearance(witness_id, hearing_id, appearance_data)
+
+                    # Store mapping for document linking
+                    witness_name = witness_raw.get('name', '')
+                    if witness_name and appearance_id:
+                        last_name = self._extract_last_name(witness_name)
+                        witness_name_to_data[witness_name] = {
+                            'appearance_id': appearance_id,
+                            'last_name': last_name
+                        }
+
                     self.metrics.witnesses_updated += 1
                     logger.debug(f"Saved witness {parsed.full_name} for hearing {event_id}")
 
                 except Exception as e:
                     logger.warning(f"Failed to process witness for hearing {event_id}: {e}")
                     continue
+
+            # Process witness documents if available
+            if witness_documents and witness_name_to_data:
+                logger.debug(f"Processing {len(witness_documents)} witness documents for hearing {event_id}")
+
+                docs_saved = 0
+                for doc in witness_documents:
+                    try:
+                        api_doc_type = doc.get('documentType', 'Statement')
+                        doc_format = doc.get('format', 'PDF')
+                        doc_url = doc.get('url', '')
+
+                        if not doc_url:
+                            continue
+
+                        # Map API document type to database enum
+                        db_doc_type = self._map_witness_document_type(api_doc_type)
+
+                        # Match document to witness by checking last name in URL
+                        matched_appearance_id = None
+                        matched_witness = None
+
+                        for witness_name, witness_info in witness_name_to_data.items():
+                            last_name = witness_info['last_name']
+                            # Check if last name appears in the URL filename
+                            if last_name and last_name in doc_url:
+                                matched_appearance_id = witness_info['appearance_id']
+                                matched_witness = witness_name
+                                break
+
+                        # If no match found, log warning but don't fail
+                        if not matched_appearance_id:
+                            logger.debug(f"Could not match document {api_doc_type} to witness (URL: ...{doc_url[-50:]})")
+                            continue
+
+                        # Save witness document using database manager's execute method
+                        query = '''
+                            INSERT INTO witness_documents (appearance_id, title, document_url, format_type, document_type)
+                            VALUES (?, ?, ?, ?, ?)
+                        '''
+                        self.db.execute(query, (matched_appearance_id, api_doc_type, doc_url, doc_format, db_doc_type))
+                        docs_saved += 1
+                        logger.debug(f"Saved {api_doc_type} for {matched_witness}")
+
+                    except Exception as e:
+                        logger.warning(f"Failed to save witness document for hearing {event_id}: {e}")
+                        continue
+
+                if docs_saved > 0:
+                    logger.info(f"Saved {docs_saved} witness documents for hearing {event_id}")
 
         except Exception as e:
             logger.warning(f"Could not process witnesses from embedded data for hearing {event_id}: {e}")

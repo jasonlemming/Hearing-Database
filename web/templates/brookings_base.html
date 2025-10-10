@@ -25,18 +25,81 @@
             padding: 2rem 3rem 0;
             max-width: 900px;
             margin: 0 auto;
+            background: #ffffff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .top-nav .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
         }
 
         .top-nav a {
             color: #6c757d;
             text-decoration: none;
             font-size: 0.9rem;
-            margin-right: 1.5rem;
             transition: color 0.3s ease;
+            border: none;
+            background: none;
+            padding: 0;
         }
 
         .top-nav a:hover {
             color: #1a1a1a;
+        }
+
+        .top-nav .search-form {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .top-nav .search-form input {
+            font-family: inherit;
+            font-size: 0.9rem;
+            padding: 0.4rem 0;
+            border: none;
+            border-bottom: 1px solid #d0d0d0;
+            border-radius: 0;
+            width: 200px;
+            background: transparent;
+        }
+
+        .top-nav .search-form input:focus {
+            outline: none;
+            border-bottom-color: #1a1a1a;
+        }
+
+        .top-nav .search-form button {
+            font-family: inherit;
+            font-size: 0.9rem;
+            padding: 0.4rem 0;
+            background: transparent !important;
+            color: #6c757d;
+            border: none;
+            border-bottom: 1px solid transparent;
+            border-radius: 0;
+            cursor: pointer;
+            transition: border-bottom-color 0.2s ease, color 0.2s ease;
+        }
+
+        .top-nav .search-form button:hover {
+            background: transparent !important;
+            color: #1a1a1a;
+            border-bottom-color: #1a1a1a;
+        }
+
+        .top-nav .search-form button:focus {
+            background: transparent !important;
+            box-shadow: none !important;
+            outline: none;
         }
 
         /* Typography */
@@ -133,6 +196,17 @@
 
             .top-nav {
                 padding: 1.5rem 2rem 0;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .top-nav .search-form {
+                width: 100%;
+            }
+
+            .top-nav .search-form input {
+                flex: 1;
+                width: auto;
             }
 
             h1 {
@@ -147,10 +221,13 @@
 <body>
     <!-- Minimal top navigation -->
     <nav class="top-nav">
-        <a href="/">← Home</a>
-        <a href="{{ url_for('brookings.index') }}">Browse</a>
-        <a href="{{ url_for('brookings.search') }}">Search</a>
-        <a href="{{ url_for('brookings.stats') }}">Statistics</a>
+        <div class="nav-links">
+            <a href="/">← Home</a>
+        </div>
+        <form class="search-form" method="GET" action="{{ url_for('brookings.index') }}">
+            <input type="search" name="q" value="{{ request.args.get('q', '') }}">
+            <button type="submit">Search</button>
+        </form>
     </nav>
 
     <!-- Main Content -->

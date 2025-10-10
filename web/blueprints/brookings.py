@@ -17,7 +17,7 @@ from brookings_ingester.models import get_session, Document, Author, Subject, So
 from datetime import datetime
 from markupsafe import Markup, escape
 
-brookings_bp = Blueprint('brookings', __name__, url_prefix='/brookings')
+brookings_bp = Blueprint('brookings', __name__, url_prefix='/library')
 
 # Database paths
 BROOKINGS_DB_GZ_PATH = 'brookings_products.db.gz'
@@ -217,8 +217,7 @@ def index():
     """Browse Brookings documents page"""
     try:
         # Get filter parameters
-        document_type = request.args.get('document_type', '')
-        subject = request.args.get('subject', '')
+        search_query = request.args.get('q', '')
         date_from = request.args.get('date_from', '')
         date_to = request.args.get('date_to', '')
         page = int(request.args.get('page', 1))
@@ -236,8 +235,14 @@ def index():
             .filter(~Document.title.like('%Page not Found%'))\
             .filter(~Document.title.like('%404%'))
 
-        if document_type:
-            query = query.filter(Document.document_type == document_type)
+        # Add search filter if query provided
+        if search_query:
+            search_pattern = f"%{search_query}%"
+            query = query.filter(
+                (Document.title.like(search_pattern)) |
+                (Document.summary.like(search_pattern)) |
+                (Document.full_text.like(search_pattern))
+            )
 
         if date_from:
             query = query.filter(Document.publication_date >= date_from)
@@ -245,32 +250,11 @@ def index():
         if date_to:
             query = query.filter(Document.publication_date <= date_to)
 
-        if subject:
-            query = query.join(DocumentSubject).join(Subject).filter(Subject.name == subject)
-
         # Get total count
         total = query.count()
 
         # Get paginated results
         documents = query.order_by(desc(Document.publication_date)).limit(limit).offset(offset).all()
-
-        # Get filter options - exclude "Page not Found" articles
-        document_types = session.query(Document.document_type).filter_by(source_id=source_id)\
-            .filter(~Document.title.like('%Page not Found%'))\
-            .filter(~Document.title.like('%404%')).distinct().all()
-        document_types = [dt[0] for dt in document_types if dt[0]]
-
-        # Get subjects (limit to top 100 most common) - exclude "Page not Found" articles
-        subjects_query = session.query(Subject.name, func.count(DocumentSubject.document_id).label('count'))\
-            .join(DocumentSubject)\
-            .join(Document)\
-            .filter(Document.source_id == source_id)\
-            .filter(~Document.title.like('%Page not Found%'))\
-            .filter(~Document.title.like('%404%'))\
-            .group_by(Subject.name)\
-            .order_by(desc('count'))\
-            .limit(100)
-        subjects = [s[0] for s in subjects_query.all()]
 
         session.close()
 
@@ -278,10 +262,7 @@ def index():
 
         return render_template('brookings_index.html',
                              documents=documents,
-                             document_types=document_types,
-                             subjects=subjects,
-                             selected_document_type=document_type,
-                             selected_subject=subject,
+                             query=search_query,
                              date_from=date_from,
                              date_to=date_to,
                              page=page,
@@ -367,69 +348,6 @@ def document_detail(document_id):
                              document=document,
                              authors=authors,
                              subjects=subjects)
-    except Exception as e:
-        return f"Error: {e}", 500
-
-
-@brookings_bp.route('/stats')
-def stats():
-    """Statistics page"""
-    try:
-        source_id = get_brookings_source_id()
-        if not source_id:
-            return "Brookings source not found", 500
-
-        session = get_session()
-
-        # Basic stats - exclude "Page not Found" articles
-        total_docs = session.query(Document).filter_by(source_id=source_id)\
-            .filter(~Document.title.like('%Page not Found%'))\
-            .filter(~Document.title.like('%404%')).count()
-        total_words = session.query(func.sum(Document.word_count)).filter_by(source_id=source_id)\
-            .filter(~Document.title.like('%Page not Found%'))\
-            .filter(~Document.title.like('%404%')).scalar() or 0
-        with_pdfs = session.query(Document).filter(
-            Document.source_id == source_id,
-            Document.pdf_url.isnot(None),
-            ~Document.title.like('%Page not Found%'),
-            ~Document.title.like('%404%')
-        ).count()
-
-        # Documents by type
-        by_type = session.query(
-            Document.document_type,
-            func.count(Document.document_id)
-        ).filter_by(source_id=source_id)\
-            .filter(~Document.title.like('%Page not Found%'))\
-            .filter(~Document.title.like('%404%'))\
-            .group_by(Document.document_type).all()
-
-        # Recent documents
-        recent = session.query(Document).filter_by(source_id=source_id)\
-            .filter(~Document.title.like('%Page not Found%'))\
-            .filter(~Document.title.like('%404%'))\
-            .order_by(desc(Document.created_at)).limit(10).all()
-
-        # Top subjects
-        top_subjects = session.query(Subject.name, func.count(DocumentSubject.document_id).label('count'))\
-            .join(DocumentSubject)\
-            .join(Document)\
-            .filter(Document.source_id == source_id)\
-            .filter(~Document.title.like('%Page not Found%'))\
-            .filter(~Document.title.like('%404%'))\
-            .group_by(Subject.name)\
-            .order_by(desc('count'))\
-            .limit(20).all()
-
-        session.close()
-
-        return render_template('brookings_stats.html',
-                             total_docs=total_docs,
-                             total_words=total_words,
-                             with_pdfs=with_pdfs,
-                             by_type=by_type,
-                             recent=recent,
-                             top_subjects=top_subjects)
     except Exception as e:
         return f"Error: {e}", 500
 

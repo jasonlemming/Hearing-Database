@@ -1,0 +1,359 @@
+{% extends "hearing_base.html" %}
+
+{% block title %}{{ member[5] }} - Congressional Hearing Database{% endblock %}
+
+{% block head_style %}
+/* Minimal member detail page */
+.back-link {
+    font-size: 0.9rem;
+    color: #6c757d;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: #1a1a1a;
+}
+
+/* Member header */
+.member-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.member-title {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.member-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.95rem;
+    color: #6c757d;
+}
+
+.member-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Section headers */
+.section {
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Info grid */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.info-card {
+    padding: 1rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-label {
+    font-size: 0.85rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.info-value {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+/* Committee list - minimal document-style */
+.committee-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.committee-link {
+    display: block;
+    text-decoration: none;
+    color: #1a1a1a;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.committee-link:hover {
+    transform: translateX(5px);
+    color: #0d6efd;
+}
+
+.committee-link:hover .committee-name {
+    color: #0d6efd;
+}
+
+.committee-name {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    transition: color 0.3s ease;
+}
+
+.committee-info {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Document list for hearings */
+.document-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.document-link {
+    display: block;
+    text-decoration: none;
+    color: #1a1a1a;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.document-link:hover {
+    transform: translateX(5px);
+    color: #0d6efd;
+}
+
+.document-link:hover .document-title {
+    color: #0d6efd;
+}
+
+.document-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.document-meta {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+/* Centered messages */
+.empty-state {
+    text-align: center;
+    padding: 3rem 0;
+    color: #6c757d;
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+}
+
+/* Badges inline in metadata */
+.badge {
+    display: inline-block;
+    font-weight: 400;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    border-radius: 3px;
+    margin-left: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .member-title {
+        font-size: 1.5rem;
+    }
+
+    .member-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .document-link:hover,
+    .committee-link:hover {
+        transform: none;
+    }
+}
+{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('main_pages.members_v2') }}" class="back-link">← Back to Members</a>
+
+<!-- Member Header -->
+<div class="member-header">
+    <h1 class="member-title">
+        {% if member[11] %}{{ member[11] }} {% endif %}{{ member[5] }}
+    </h1>
+
+    <div class="member-meta">
+        <div class="member-meta-item">
+            <strong>Party:</strong>
+            <span class="badge
+                {% if member[6] == 'Democratic' or member[6] == 'D' %}bg-primary
+                {% elif member[6] == 'Republican' or member[6] == 'R' %}bg-danger
+                {% elif member[6] == 'Independent' or member[6] == 'I' %}bg-warning text-dark
+                {% else %}bg-secondary
+                {% endif %}">{{ member[6] }}</span>
+        </div>
+
+        <div class="member-meta-item">
+            <strong>Chamber:</strong>
+            <span class="badge
+                {% if member[17] == 'House' %}bg-success
+                {% elif member[17] == 'Senate' %}bg-info
+                {% else %}bg-secondary
+                {% endif %}">{{ member[17] }}</span>
+        </div>
+
+        <div class="member-meta-item">
+            <strong>State:</strong>
+            {{ member[7] }}{% if member[8] %} - District {{ member[8] }}{% endif %}
+        </div>
+
+        <div class="member-meta-item">
+            <strong>Committees:</strong>
+            {% set total_count = namespace(value=0) %}
+            {% for parent_id, group in committees.items() %}
+                {% if group['info'] %}{% set total_count.value = total_count.value + 1 %}{% endif %}
+                {% set total_count.value = total_count.value + group['subcommittees']|length %}
+            {% endfor %}
+            {{ total_count.value }}
+        </div>
+    </div>
+</div>
+
+<!-- Committee Memberships -->
+{% if committees %}
+<div class="section">
+    {% set total_count = namespace(value=0) %}
+    {% for parent_id, group in committees.items() %}
+        {% if group['info'] %}{% set total_count.value = total_count.value + 1 %}{% endif %}
+        {% set total_count.value = total_count.value + group['subcommittees']|length %}
+    {% endfor %}
+    <h2 class="section-title">Committee Memberships ({{ total_count.value }})</h2>
+    <div class="committee-list">
+        {% for parent_id, group in committees.items() %}
+            {% if group['info'] %}
+                {% set committee = group['info'] %}
+                <a href="{{ url_for('committees.committee_detail_v2', committee_id=committee[0]) }}" class="committee-link">
+                    <div class="committee-name">{{ committee[1] }}</div>
+                    <div class="committee-info">
+                        {% if committee[4] and committee[4] != 'Member' %}
+                            {{ committee[4] }}
+                            {% if committee[2] != member[17] %} · {% endif %}
+                        {% endif %}
+                        {% if committee[2] != member[17] %}
+                            <span class="badge
+                                {% if committee[2] == 'House' %}bg-success
+                                {% elif committee[2] == 'Senate' %}bg-info
+                                {% elif committee[2] == 'Joint' %}bg-warning text-dark
+                                {% else %}bg-secondary
+                                {% endif %}">{{ committee[2] }}</span>
+                        {% endif %}
+                    </div>
+                </a>
+            {% endif %}
+
+            {% for subcommittee in group['subcommittees'] %}
+                <a href="{{ url_for('committees.committee_detail_v2', committee_id=subcommittee[0]) }}" class="committee-link" style="padding-left: 2rem; border-left: 3px solid #e0e0e0;">
+                    <div class="committee-name" style="font-size: 0.95rem;">{{ subcommittee[1] }}</div>
+                    <div class="committee-info">
+                        {% if subcommittee[4] and subcommittee[4] != 'Member' %}
+                            {{ subcommittee[4] }}
+                            {% if subcommittee[2] != member[17] %} · {% endif %}
+                        {% endif %}
+                        {% if subcommittee[2] != member[17] %}
+                            <span class="badge
+                                {% if subcommittee[2] == 'House' %}bg-success
+                                {% elif subcommittee[2] == 'Senate' %}bg-info
+                                {% elif subcommittee[2] == 'Joint' %}bg-warning text-dark
+                                {% else %}bg-secondary
+                                {% endif %}">{{ subcommittee[2] }}</span>
+                        {% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<div class="section">
+    <h2 class="section-title">Committee Memberships</h2>
+    <div class="empty-state">
+        <div class="empty-state-icon">
+            <i class="fas fa-users-slash"></i>
+        </div>
+        <p>No committee memberships found for this member.</p>
+    </div>
+</div>
+{% endif %}
+
+<!-- Recent Committee Hearings -->
+{% if recent_hearings %}
+<div class="section">
+    <h2 class="section-title">Recent Committee Hearings ({{ recent_hearings|length }})</h2>
+    <div class="document-list">
+        {% for hearing in recent_hearings %}
+        <a href="{{ url_for('hearings.hearing_detail_v2', hearing_id=hearing[0]) }}" class="document-link">
+            <div class="document-title">
+                {% if hearing[1] and hearing[1].strip() %}
+                    {{ hearing[1][:120] }}{% if hearing[1]|length > 120 %}...{% endif %}
+                {% else %}
+                    Untitled Hearing
+                {% endif %}
+            </div>
+            <div class="document-meta">
+                {% if hearing[2] %}
+                    {{ hearing[2] }}
+                {% else %}
+                    Date TBD
+                {% endif %}
+                {% if hearing[4] %}
+                    · {{ hearing[4][:50] }}{% if hearing[4]|length > 50 %}...{% endif %}
+                {% endif %}
+                {% if hearing[3] and hearing[3] != member[17] %}
+                    · <span class="badge
+                        {% if hearing[3] == 'House' %}bg-success
+                        {% elif hearing[3] == 'Senate' %}bg-info
+                        {% elif hearing[3] == 'Joint' %}bg-warning text-dark
+                        {% else %}bg-secondary
+                        {% endif %}">{{ hearing[3] }}</span>
+                {% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

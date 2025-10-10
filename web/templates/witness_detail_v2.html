@@ -1,0 +1,407 @@
+{% extends "hearing_base.html" %}
+
+{% block title %}{{ witness[3] }} - Congressional Hearing Database{% endblock %}
+
+{% block head_style %}
+/* Minimal witness detail page */
+.back-link {
+    font-size: 0.9rem;
+    color: #6c757d;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: #1a1a1a;
+}
+
+/* Witness header */
+.witness-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.witness-title {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.witness-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.95rem;
+    color: #6c757d;
+}
+
+.witness-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Section headers */
+.section {
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Stats grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    padding: 1rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+/* Committee list - minimal document-style */
+.committee-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.committee-link {
+    display: block;
+    text-decoration: none;
+    color: #1a1a1a;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.committee-link:hover {
+    transform: translateX(5px);
+    color: #0d6efd;
+}
+
+.committee-link:hover .committee-name {
+    color: #0d6efd;
+}
+
+.committee-name {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    transition: color 0.3s ease;
+}
+
+.committee-info {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Document list for hearing appearances */
+.document-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.document-link {
+    display: block;
+    text-decoration: none;
+    color: #1a1a1a;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.document-link:hover {
+    transform: translateX(5px);
+    color: #0d6efd;
+}
+
+.document-link:hover .document-title {
+    color: #0d6efd;
+}
+
+.document-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.document-meta {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+/* Witness documents nested list */
+.witness-docs {
+    margin-top: 0.5rem;
+    padding-left: 1rem;
+    border-left: 2px solid #f0f0f0;
+}
+
+.witness-doc-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0 0.25rem 0.75rem;
+    color: #6c757d;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    border-bottom: none;
+}
+
+.witness-doc-link:hover {
+    color: #0d6efd;
+    transform: translateX(3px);
+}
+
+.doc-icon {
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+}
+
+/* Centered messages */
+.empty-state {
+    text-align: center;
+    padding: 3rem 0;
+    color: #6c757d;
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+}
+
+/* Badges inline in metadata */
+.badge {
+    display: inline-block;
+    font-weight: 400;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    border-radius: 3px;
+    margin-left: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .witness-title {
+        font-size: 1.5rem;
+    }
+
+    .witness-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .document-link:hover,
+    .committee-link:hover,
+    .witness-doc-link:hover {
+        transform: none;
+    }
+}
+{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('main_pages.witnesses_v2') }}" class="back-link">← Back to Witnesses</a>
+
+<!-- Witness Header -->
+<div class="witness-header">
+    <h1 class="witness-title">{{ witness[3] }}</h1>
+
+    <div class="witness-meta">
+        {% if witness[4] %}
+        <div class="witness-meta-item">
+            <strong>Title:</strong>
+            {{ witness[4] }}
+        </div>
+        {% endif %}
+
+        {% if witness[5] %}
+        <div class="witness-meta-item">
+            <strong>Organization:</strong>
+            {{ witness[5] }}
+        </div>
+        {% endif %}
+
+        <div class="witness-meta-item">
+            <strong>Hearings:</strong>
+            {{ stats[0] }}
+        </div>
+    </div>
+</div>
+
+<!-- Statistics -->
+<div class="section">
+    <h2 class="section-title">Testimony Summary</h2>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Total Hearings</div>
+            <div class="stat-value">{{ stats[0] }}</div>
+        </div>
+
+        {% if stats[2] %}
+        <div class="stat-card">
+            <div class="stat-label">First Appearance</div>
+            <div class="stat-value" style="font-size: 1.1rem;">{{ stats[2] }}</div>
+        </div>
+        {% endif %}
+
+        {% if stats[3] %}
+        <div class="stat-card">
+            <div class="stat-label">Latest Appearance</div>
+            <div class="stat-value" style="font-size: 1.1rem;">{{ stats[3] }}</div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if stats[4] or stats[5] or stats[6] or stats[7] %}
+    <div style="margin-top: 1rem;">
+        <div class="stat-label" style="margin-bottom: 0.75rem;">Testimony Types</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            {% if stats[4] %}
+            <span class="badge bg-primary">Government: {{ stats[4] }}</span>
+            {% endif %}
+            {% if stats[5] %}
+            <span class="badge bg-success">Private: {{ stats[5] }}</span>
+            {% endif %}
+            {% if stats[6] %}
+            <span class="badge bg-info">Academic: {{ stats[6] }}</span>
+            {% endif %}
+            {% if stats[7] %}
+            <span class="badge bg-warning text-dark">Nonprofit: {{ stats[7] }}</span>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Committees Appeared Before -->
+{% if committees %}
+<div class="section">
+    <h2 class="section-title">Committees Appeared Before ({{ committees|length }})</h2>
+    <div class="committee-list">
+        {% for committee in committees %}
+        <a href="{{ url_for('committees.committee_detail_v2', committee_id=committee[0]) }}" class="committee-link">
+            <div class="committee-name">{{ committee[1] }}</div>
+            <div class="committee-info">
+                {{ committee[4] }} hearing{{ 's' if committee[4] != 1 else '' }}
+                · <span class="badge
+                    {% if committee[2] == 'House' %}bg-success
+                    {% elif committee[2] == 'Senate' %}bg-info
+                    {% elif committee[2] == 'Joint' %}bg-warning text-dark
+                    {% else %}bg-secondary
+                    {% endif %}">{{ committee[2] }}</span>
+                <span class="badge bg-light text-dark">{{ committee[3] }}</span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Hearing Appearances -->
+<div class="section">
+    <h2 class="section-title">Hearing Appearances ({{ appearances|length }})</h2>
+    {% if appearances %}
+    <div class="document-list">
+        {% for appearance in appearances %}
+        <a href="{{ url_for('hearings.hearing_detail_v2', hearing_id=appearance[0]) }}" class="document-link">
+            <div class="document-title">
+                {% if appearance[1] and appearance[1].strip() %}
+                    {{ appearance[1][:120] }}{% if appearance[1]|length > 120 %}...{% endif %}
+                {% else %}
+                    Untitled Hearing
+                {% endif %}
+            </div>
+            <div class="document-meta">
+                {% if appearance[2] %}
+                    {{ appearance[2] }}
+                {% else %}
+                    Date TBD
+                {% endif %}
+                {% if appearance[11] %}
+                    · {{ appearance[11][:50] }}{% if appearance[11]|length > 50 %}...{% endif %}
+                {% endif %}
+                {% if appearance[3] %}
+                    · <span class="badge
+                        {% if appearance[3] == 'House' %}bg-success
+                        {% elif appearance[3] == 'Senate' %}bg-info
+                        {% elif appearance[3] == 'Joint' %}bg-warning text-dark
+                        {% else %}bg-secondary
+                        {% endif %}">{{ appearance[3] }}</span>
+                {% endif %}
+                {% if appearance[9] %}
+                    · <span class="badge
+                        {% if appearance[9] == 'Government' %}bg-primary
+                        {% elif appearance[9] == 'Academic' %}bg-info
+                        {% elif appearance[9] == 'Private' %}bg-success
+                        {% elif appearance[9] == 'Nonprofit' %}bg-warning text-dark
+                        {% else %}bg-secondary
+                        {% endif %}">{{ appearance[9] }}</span>
+                {% endif %}
+            </div>
+
+            <!-- Witness Documents -->
+            {% set hearing_id = appearance[0] %}
+            {% set docs = hearing_documents.get(hearing_id, {}) %}
+            {% if docs.get('witness_documents') %}
+            <div class="witness-docs">
+                {% for doc in docs['witness_documents'] %}
+                {% if doc[3] %}
+                <div class="witness-doc-link" onclick="event.preventDefault(); event.stopPropagation(); window.open('{{ doc[3] }}', '_blank');" style="cursor: pointer;">
+                    <span>{{ doc[2] if doc[2] else doc[1] }}</span>
+                    <span class="doc-icon"><i class="fas fa-external-link-alt"></i></span>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">
+            <i class="fas fa-calendar-times"></i>
+        </div>
+        <p>No hearing appearances found for this witness.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

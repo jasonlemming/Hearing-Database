@@ -1,0 +1,700 @@
+{% extends "hearing_base.html" %}
+
+{% block title %}Hearings - Congressional Hearing Database{% endblock %}
+
+{% block head_style %}
+/* Quick date filter buttons - minimal style */
+.quick-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.quick-filter {
+    font-family: inherit;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+    background: transparent;
+    color: #6c757d;
+    border: none;
+    border-bottom: 1px solid #d0d0d0;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.quick-filter:hover {
+    color: #1a1a1a;
+    border-bottom-color: #1a1a1a;
+}
+
+.quick-filter.active {
+    color: #1a1a1a;
+    border-bottom-color: #1a1a1a;
+    font-weight: 500;
+}
+
+/* Two-column layout - sidebar + content */
+.browse-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+/* Filter sidebar - Minimal, punk style */
+.filter-sidebar {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+}
+
+.filter-sidebar h3 {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+}
+
+.filter-group {
+    margin-bottom: 1.5rem;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+/* Minimal inputs - underline only, like search bar */
+.filter-sidebar select,
+.filter-sidebar input[type="text"],
+.filter-sidebar input[type="date"] {
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.4rem 0;
+    border: none;
+    border-bottom: 1px solid #d0d0d0;
+    border-radius: 0;
+    width: 100%;
+    background: transparent;
+    color: #1a1a1a;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+/* Custom dropdown arrow using SVG */
+.filter-sidebar select {
+    padding-right: 1.2rem;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%236c757d" d="M1 1l5 5 5-5"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 10px;
+}
+
+.filter-sidebar select:focus,
+.filter-sidebar input[type="text"]:focus,
+.filter-sidebar input[type="date"]:focus {
+    outline: none;
+    border-bottom-color: #1a1a1a;
+}
+
+/* Custom dropdown container */
+.custom-select {
+    position: relative;
+}
+
+.custom-select select {
+    display: none; /* Hide native select */
+}
+
+.custom-select-trigger {
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.4rem 1.2rem 0.4rem 0;
+    border: none;
+    border-bottom: 1px solid #d0d0d0;
+    width: 100%;
+    background: transparent;
+    color: #1a1a1a;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%236c757d" d="M1 1l5 5 5-5"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 10px;
+}
+
+.custom-select-trigger:focus {
+    outline: none;
+    border-bottom-color: #1a1a1a;
+}
+
+.custom-select-trigger:hover {
+    border-bottom-color: #1a1a1a;
+}
+
+/* Custom dropdown list - minimal punk style */
+.custom-select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: none;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+    margin-top: 0.25rem;
+}
+
+.custom-select.open .custom-select-options {
+    display: block;
+}
+
+.custom-select-option {
+    padding: 0.5rem 0;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    transition: all 0.15s ease;
+}
+
+.custom-select-option:hover,
+.custom-select-option.highlighted {
+    background: #f8f9fa;
+    color: #0d6efd;
+}
+
+.custom-select-option.selected {
+    color: #0d6efd;
+}
+
+/* Scrollbar styling for dropdown */
+.custom-select-options::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-select-options::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+
+.custom-select-options::-webkit-scrollbar-thumb {
+    background: #d0d0d0;
+    border-radius: 3px;
+}
+
+.custom-select-options::-webkit-scrollbar-thumb:hover {
+    background: #6c757d;
+}
+
+/* Minimal buttons */
+.filter-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.filter-actions button,
+.filter-actions a {
+    font-family: inherit;
+    font-size: 0.85rem;
+    padding: 0.4rem 0;
+    background: transparent;
+    color: #6c757d;
+    border: none;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.filter-actions button:hover,
+.filter-actions button[type="submit"]:hover,
+.filter-actions a:hover {
+    background: transparent !important;
+    color: #1a1a1a;
+    border-bottom-color: #1a1a1a;
+}
+
+/* Document list - Policy Library style (all screen sizes) */
+.document-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.document-link {
+    display: block;
+    text-decoration: none;
+    color: #1a1a1a;
+    padding: 2rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.document-link:hover {
+    transform: translateX(5px);
+    color: #0d6efd;
+}
+
+.document-link:hover .document-title {
+    color: #0d6efd;
+}
+
+.document-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.1rem;
+    transition: color 0.3s ease;
+}
+
+.document-meta {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0;
+    margin-top: 0.75rem;
+}
+
+/* Badges inline in metadata */
+.badge {
+    display: inline-block;
+    font-weight: 400;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    border-radius: 3px;
+    margin-left: 0.5rem;
+}
+
+/* Clickable metadata links inside document cards */
+.document-meta a {
+    color: #6c757d;
+    text-decoration: none;
+    transition: border-bottom-color 0.2s ease, color 0.2s ease;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid transparent;
+}
+
+.document-meta a:hover {
+    color: #1a1a1a;
+    border-bottom-color: #1a1a1a;
+    text-decoration: none;
+}
+
+/* Clickable chamber badges */
+.badge-link {
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+.badge-link:hover {
+    opacity: 0.8;
+    text-decoration: none;
+}
+
+.badge-link .badge {
+    margin-left: 0;
+}
+
+/* Sort options */
+.sort-group {
+    margin-bottom: 1.5rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 991px) {
+    .browse-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .filter-sidebar {
+        position: static;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .filter-actions {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .document-link:hover {
+        transform: none;
+    }
+
+    .quick-filters {
+        justify-content: center;
+    }
+}
+{% endblock %}
+
+{% block head %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all custom selects
+    document.querySelectorAll('.custom-select').forEach(initCustomSelect);
+
+    function initCustomSelect(container) {
+        const select = container.querySelector('select');
+        const trigger = container.querySelector('.custom-select-trigger');
+        const optionsContainer = container.querySelector('.custom-select-options');
+
+        if (!select || !trigger || !optionsContainer) return;
+
+        // Set initial trigger text based on current value
+        let selectedOption = null;
+        if (select.value) {
+            // Find option matching the current value
+            selectedOption = Array.from(select.options).find(opt => opt.value === select.value);
+        }
+        if (!selectedOption) {
+            // Fallback to selectedIndex
+            selectedOption = select.options[select.selectedIndex];
+        }
+        trigger.textContent = selectedOption.text;
+
+        // Toggle dropdown
+        trigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closeAllSelects(container);
+            container.classList.toggle('open');
+        });
+
+        // Select option
+        optionsContainer.querySelectorAll('.custom-select-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const value = this.dataset.value;
+                select.value = value;
+                trigger.textContent = this.textContent;
+
+                // Update selected class
+                optionsContainer.querySelectorAll('.custom-select-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+
+                container.classList.remove('open');
+            });
+        });
+
+        // Keyboard navigation
+        trigger.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                container.classList.toggle('open');
+            }
+        });
+    }
+
+    // Close all selects except the one passed
+    function closeAllSelects(except) {
+        document.querySelectorAll('.custom-select').forEach(select => {
+            if (select !== except) {
+                select.classList.remove('open');
+            }
+        });
+    }
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function() {
+        closeAllSelects();
+    });
+
+    // Quick filter functionality (from original)
+    const quickFilters = document.querySelectorAll('.quick-filter');
+    const form = document.getElementById('hearingsForm');
+    const dateFromInput = document.getElementById('date_from');
+    const dateToInput = document.getElementById('date_to');
+
+    // Date helper functions
+    function formatDate(date) {
+        return date.toISOString().split('T')[0];
+    }
+
+    function getStartOfWeek(date) {
+        const d = new Date(date);
+        const day = d.getDay();
+        const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+        return new Date(d.setDate(diff));
+    }
+
+    function getEndOfWeek(date) {
+        const d = new Date(date);
+        const day = d.getDay();
+        const diff = d.getDate() - day + 7;
+        return new Date(d.setDate(diff));
+    }
+
+    function getStartOfMonth(date) {
+        return new Date(date.getFullYear(), date.getMonth(), 1);
+    }
+
+    function getEndOfMonth(date) {
+        return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    }
+
+    // Set date range and submit form
+    function applyDateFilter(filter) {
+        const today = new Date();
+
+        switch(filter) {
+            case 'all':
+                dateFromInput.value = '';
+                dateToInput.value = '';
+                break;
+            case 'today':
+                dateFromInput.value = formatDate(today);
+                dateToInput.value = formatDate(today);
+                break;
+            case 'this-week':
+                dateFromInput.value = formatDate(getStartOfWeek(today));
+                dateToInput.value = formatDate(getEndOfWeek(today));
+                break;
+            case 'this-month':
+                dateFromInput.value = formatDate(getStartOfMonth(today));
+                dateToInput.value = formatDate(getEndOfMonth(today));
+                break;
+        }
+
+        form.submit();
+    }
+
+    // Add click event listeners to quick filter buttons
+    quickFilters.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const filter = this.dataset.filter;
+            applyDateFilter(filter);
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 1.5rem;">Congressional Hearings</h1>
+
+<!-- Quick Date Filters with count -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+    <div class="quick-filters" style="margin-bottom: 0;">
+        <button type="button" class="quick-filter {% if active_filter == 'all' %}active{% endif %}" data-filter="all">All</button>
+        <button type="button" class="quick-filter {% if active_filter == 'today' %}active{% endif %}" data-filter="today">Today</button>
+        <button type="button" class="quick-filter {% if active_filter == 'this-week' %}active{% endif %}" data-filter="this-week">This Week</button>
+        <button type="button" class="quick-filter {% if active_filter == 'this-month' %}active{% endif %}" data-filter="this-month">This Month</button>
+    </div>
+    <p class="text-secondary" style="margin-bottom: 0;">{{ total }} hearings</p>
+</div>
+
+<!-- Two-column layout: filters sidebar + results -->
+<div class="browse-layout">
+    <!-- Filter Sidebar -->
+    <aside class="filter-sidebar">
+        <form method="GET" action="{{ url_for('hearings.hearings_v2') }}" id="hearingsForm">
+            <h3>Filter</h3>
+
+            <!-- Preserve search parameter if it exists -->
+            {% if search %}
+            <input type="hidden" name="search" value="{{ search }}">
+            {% endif %}
+
+            <div class="filter-group">
+                <label>Chamber</label>
+                <div class="custom-select">
+                    <select name="chamber">
+                        <option value="">All Chambers</option>
+                        {% for chamber in chambers %}
+                        <option value="{{ chamber }}" {% if chamber == selected_chamber %}selected{% endif %}>
+                            {{ chamber }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="custom-select-trigger" tabindex="0">All Chambers</div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option {% if not selected_chamber %}selected{% endif %}" data-value="">All Chambers</div>
+                        {% for chamber in chambers %}
+                        <div class="custom-select-option {% if chamber == selected_chamber %}selected{% endif %}" data-value="{{ chamber }}">{{ chamber }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label>Committee</label>
+                <div class="custom-select">
+                    <select name="committee">
+                        <option value="">All Committees</option>
+                        {% for committee in committees %}
+                        <option value="{{ committee[0] }}" {% if committee[0]|string == selected_committee %}selected{% endif %}>
+                            {{ committee[1][:30] }}{% if committee[1]|length > 30 %}...{% endif %}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="custom-select-trigger" tabindex="0">All Committees</div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option {% if not selected_committee %}selected{% endif %}" data-value="">All Committees</div>
+                        {% for committee in committees %}
+                        <div class="custom-select-option {% if committee[0]|string == selected_committee %}selected{% endif %}" data-value="{{ committee[0] }}">{{ committee[1][:30] }}{% if committee[1]|length > 30 %}...{% endif %}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label>Sort By</label>
+                <div class="custom-select">
+                    <select name="sort">
+                        <option value="date" {% if sort_by == 'date' %}selected{% endif %}>Date</option>
+                        <option value="title" {% if sort_by == 'title' %}selected{% endif %}>Title</option>
+                        <option value="committee" {% if sort_by == 'committee' %}selected{% endif %}>Committee</option>
+                        <option value="chamber" {% if sort_by == 'chamber' %}selected{% endif %}>Chamber</option>
+                        <option value="status" {% if sort_by == 'status' %}selected{% endif %}>Status</option>
+                    </select>
+                    <div class="custom-select-trigger" tabindex="0">Date</div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option {% if sort_by == 'date' %}selected{% endif %}" data-value="date">Date</div>
+                        <div class="custom-select-option {% if sort_by == 'title' %}selected{% endif %}" data-value="title">Title</div>
+                        <div class="custom-select-option {% if sort_by == 'committee' %}selected{% endif %}" data-value="committee">Committee</div>
+                        <div class="custom-select-option {% if sort_by == 'chamber' %}selected{% endif %}" data-value="chamber">Chamber</div>
+                        <div class="custom-select-option {% if sort_by == 'status' %}selected{% endif %}" data-value="status">Status</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label>Order</label>
+                <div class="custom-select">
+                    <select name="order">
+                        <option value="desc" {% if sort_order == 'desc' %}selected{% endif %}>Newest First</option>
+                        <option value="asc" {% if sort_order == 'asc' %}selected{% endif %}>Oldest First</option>
+                    </select>
+                    <div class="custom-select-trigger" tabindex="0">Newest First</div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option {% if sort_order == 'desc' %}selected{% endif %}" data-value="desc">Newest First</div>
+                        <div class="custom-select-option {% if sort_order == 'asc' %}selected{% endif %}" data-value="asc">Oldest First</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden date inputs for quick filters -->
+            <input type="hidden" name="date_from" id="date_from" value="{{ date_from }}">
+            <input type="hidden" name="date_to" id="date_to" value="{{ date_to }}">
+
+            <div class="filter-actions">
+                <button type="submit">Apply</button>
+                <a href="{{ url_for('hearings.hearings_v2') }}">Clear</a>
+            </div>
+        </form>
+    </aside>
+
+    <!-- Results -->
+    <div class="results-column">
+{% if hearings %}
+<div class="document-list">
+    {% for hearing in hearings %}
+    <a href="{{ url_for('hearings.hearing_detail_v2', hearing_id=hearing[0]) }}" class="document-link">
+        <div class="document-title">
+            {% if hearing[1] and hearing[1].strip() %}
+                {{ hearing[1][:100] }}{% if hearing[1]|length > 100 %}...{% endif %}
+            {% else %}
+                {% if hearing[10] %}
+                    Hearing Event #{{ hearing[10] }}
+                {% else %}
+                    Untitled Hearing
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="document-meta">
+            {% if hearing[2] %}
+                <a href="{{ url_for('hearings.hearings_v2', date_from=hearing[2], date_to=hearing[2]) }}" onclick="event.stopPropagation();">{{ hearing[2] | strptime('%Y-%m-%d') | strftime('%b %d, %Y') }}</a>
+            {% else %}
+                Date TBD
+            {% endif %}
+            {% if hearing[7] %}
+                ·
+                {% if hearing[8] %}
+                    <a href="{{ url_for('committees.committee_detail', committee_id=hearing[8]) }}" onclick="event.stopPropagation();">{{ hearing[7][:40] }}{% if hearing[7]|length > 40 %}...{% endif %}</a>
+                {% else %}
+                    {{ hearing[7][:40] }}{% if hearing[7]|length > 40 %}...{% endif %}
+                {% endif %}
+            {% endif %}
+            {% if hearing[4] %}
+                ·
+                {% if hearing[4] == 'House' %}
+                    <a href="{{ url_for('hearings.hearings_v2', chamber='House') }}" class="badge-link" onclick="event.stopPropagation();">
+                        <span class="badge bg-success">{{ hearing[4] }}</span>
+                    </a>
+                {% elif hearing[4] == 'Senate' %}
+                    <a href="{{ url_for('hearings.hearings_v2', chamber='Senate') }}" class="badge-link" onclick="event.stopPropagation();">
+                        <span class="badge bg-info">{{ hearing[4] }}</span>
+                    </a>
+                {% elif hearing[4] == 'Joint' %}
+                    <a href="{{ url_for('hearings.hearings_v2', chamber='Joint') }}" class="badge-link" onclick="event.stopPropagation();">
+                        <span class="badge bg-warning text-dark">{{ hearing[4] }}</span>
+                    </a>
+                {% else %}
+                    <span class="badge bg-secondary">{{ hearing[4] }}</span>
+                {% endif %}
+            {% endif %}
+            {% if hearing[5] %}
+                · <span class="badge bg-light text-dark">{{ hearing[5] }}</span>
+            {% endif %}
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if total_pages > 1 %}
+<nav>
+    <ul class="pagination">
+        {% if page > 1 %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('hearings.hearings_v2', page=page-1, search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">← Previous</a>
+        </li>
+        {% endif %}
+
+        {% for p in range(1, total_pages + 1) %}
+            {% if p == page %}
+            <li class="page-item active"><span class="page-link">{{ p }}</span></li>
+            {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('hearings.hearings_v2', page=p, search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">{{ p }}</a>
+            </li>
+            {% elif p == page - 3 or p == page + 3 %}
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page < total_pages %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('hearings.hearings_v2', page=page+1, search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">Next →</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+{% else %}
+<p class="text-secondary mt-4">No hearings found matching your filters.</p>
+{% endif %}
+    </div><!-- End results-column -->
+</div><!-- End browse-layout -->
+{% endblock %}

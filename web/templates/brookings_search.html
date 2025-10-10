@@ -1,26 +1,210 @@
 {% extends "brookings_base.html" %}
 
-{% block title %}Search Policy Library{% endblock %}
+{% block title %}{% if query %}Search: {{ query }}{% else %}Search Policy Library{% endif %}{% endblock %}
 
 {% block head_style %}
-.search-form {
-    margin-bottom: 3rem;
+/* Two-column layout - sidebar + content */
+.search-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 3rem;
+    margin-top: 2rem;
 }
 
-.search-input {
-    font-size: 1.1rem;
-    padding: 0.75rem 1rem;
+/* Filter sidebar - Minimal, punk style */
+.filter-sidebar {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+}
+
+.filter-sidebar h3 {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+}
+
+.filter-group {
+    margin-bottom: 1.5rem;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+/* Minimal inputs - underline only, like search bar */
+.filter-sidebar select,
+.filter-sidebar input[type="date"] {
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.4rem 0;
+    border: none;
+    border-bottom: 1px solid #d0d0d0;
+    border-radius: 0;
+    width: 100%;
+    background: transparent;
+    color: #1a1a1a;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+/* Custom dropdown arrow using SVG */
+.filter-sidebar select {
+    padding-right: 1.2rem;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%236c757d" d="M1 1l5 5 5-5"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 10px;
+}
+
+.filter-sidebar select:focus,
+.filter-sidebar input[type="date"]:focus {
+    outline: none;
+    border-bottom-color: #1a1a1a;
+}
+
+/* Custom dropdown container */
+.custom-select {
+    position: relative;
+}
+
+.custom-select select {
+    display: none; /* Hide native select */
+}
+
+.custom-select-trigger {
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.4rem 1.2rem 0.4rem 0;
+    border: none;
+    border-bottom: 1px solid #d0d0d0;
+    width: 100%;
+    background: transparent;
+    color: #1a1a1a;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%236c757d" d="M1 1l5 5 5-5"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 10px;
+}
+
+.custom-select-trigger:focus {
+    outline: none;
+    border-bottom-color: #1a1a1a;
+}
+
+.custom-select-trigger:hover {
+    border-bottom-color: #1a1a1a;
+}
+
+/* Custom dropdown list - minimal punk style */
+.custom-select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: none;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+    margin-top: 0.25rem;
+}
+
+.custom-select.open .custom-select-options {
+    display: block;
+}
+
+.custom-select-option {
+    padding: 0.5rem 0;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    transition: all 0.15s ease;
+}
+
+.custom-select-option:hover,
+.custom-select-option.highlighted {
+    background: #f8f9fa;
+    color: #0d6efd;
+}
+
+.custom-select-option.selected {
+    color: #0d6efd;
+}
+
+/* Scrollbar styling for dropdown */
+.custom-select-options::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-select-options::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+
+.custom-select-options::-webkit-scrollbar-thumb {
+    background: #d0d0d0;
+    border-radius: 3px;
+}
+
+.custom-select-options::-webkit-scrollbar-thumb:hover {
+    background: #6c757d;
+}
+
+/* Minimal buttons */
+.filter-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.filter-actions button,
+.filter-actions a {
+    font-family: inherit;
+    font-size: 0.85rem;
+    padding: 0.4rem 0;
+    background: transparent;
+    color: #6c757d;
+    border: none;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.filter-actions button:hover,
+.filter-actions a:hover {
+    color: #1a1a1a;
+    border-bottom-color: #1a1a1a;
+}
+
+/* Results header */
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 1rem;
 }
 
-.search-button {
-    width: 100%;
+.stats-line {
+    font-size: 0.9rem;
+    color: #6c757d;
 }
 
-.results-header {
-    margin-bottom: 2rem;
-}
-
+/* Document list - Policy Library style (all screen sizes) */
 .document-list {
     display: flex;
     flex-direction: column;
@@ -64,110 +248,242 @@
     line-height: 1.6;
 }
 
-.pagination {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-top: 4rem;
-    align-items: center;
-}
-
-.pagination a,
-.pagination span {
-    color: #6c757d;
-    text-decoration: none;
-    font-size: 0.9rem;
-}
-
-.pagination a:hover {
-    color: #0d6efd;
-    text-decoration: none;
-}
-
-.pagination .active {
-    color: #1a1a1a;
-    font-weight: 500;
-}
-
-.export-link {
+/* Badges inline in metadata */
+.badge {
+    display: inline-block;
+    font-weight: 400;
+    padding: 0.25rem 0.5rem;
     font-size: 0.85rem;
-    color: #6c757d;
-    float: right;
+    border-radius: 3px;
+    margin-left: 0.5rem;
 }
 
-@media (max-width: 768px) {
+/* Search prompt when no query */
+.search-prompt {
+    text-align: center;
+    padding: 4rem 0;
+    color: #6c757d;
+}
+
+.search-prompt h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+}
+
+/* Mobile adjustments */
+@media (max-width: 991px) {
+    .search-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .filter-sidebar {
+        position: static;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .filter-actions {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
     .document-link:hover {
         transform: none;
     }
 }
 {% endblock %}
 
+{% block head %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all custom selects
+    document.querySelectorAll('.custom-select').forEach(initCustomSelect);
+
+    function initCustomSelect(container) {
+        const select = container.querySelector('select');
+        const trigger = container.querySelector('.custom-select-trigger');
+        const optionsContainer = container.querySelector('.custom-select-options');
+
+        if (!select || !trigger || !optionsContainer) return;
+
+        // Set initial trigger text based on current value
+        let selectedOption = null;
+        if (select.value) {
+            // Find option matching the current value
+            selectedOption = Array.from(select.options).find(opt => opt.value === select.value);
+        }
+        if (!selectedOption) {
+            // Fallback to selectedIndex
+            selectedOption = select.options[select.selectedIndex];
+        }
+        trigger.textContent = selectedOption.text;
+
+        // Toggle dropdown
+        trigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closeAllSelects(container);
+            container.classList.toggle('open');
+        });
+
+        // Select option
+        optionsContainer.querySelectorAll('.custom-select-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const value = this.dataset.value;
+                select.value = value;
+                trigger.textContent = this.textContent;
+
+                // Update selected class
+                optionsContainer.querySelectorAll('.custom-select-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+
+                container.classList.remove('open');
+            });
+        });
+
+        // Keyboard navigation
+        trigger.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                container.classList.toggle('open');
+            }
+        });
+    }
+
+    // Close all selects except the one passed
+    function closeAllSelects(except) {
+        document.querySelectorAll('.custom-select').forEach(select => {
+            if (select !== except) {
+                select.classList.remove('open');
+            }
+        });
+    }
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function() {
+        closeAllSelects();
+    });
+});
+</script>
+{% endblock %}
+
 {% block content %}
-<h1>Search</h1>
 {% if query %}
-<p class="text-secondary mb-4">{{ total }} results for "{{ query }}"</p>
-{% else %}
-<p class="text-secondary mb-4">Search policy research documents from the Brookings Institution</p>
-{% endif %}
+<a href="{{ url_for('brookings.index') }}" class="back-link" style="font-size: 0.9rem; color: #6c757d; text-decoration: none; display: inline-block; margin-bottom: 1rem;">← Browse</a>
 
-<!-- Search Form -->
-<form method="GET" action="{{ url_for('brookings.search') }}" class="search-form">
-    <input type="search" name="q" class="search-input" placeholder="Search research documents..." value="{{ query }}" autofocus>
-    <button type="submit" class="search-button">Search</button>
-</form>
+<h1 style="margin-bottom: 0.5rem;">Search Results</h1>
+<p class="text-secondary" style="margin-bottom: 0;">{{ total }} results for "{{ query }}"</p>
 
-<!-- Results -->
-{% if query %}
-    {% if results %}
-    <div class="results-header">
-        <span class="text-secondary" style="font-size: 0.9rem;">{{ total }} results</span>
-        <a href="{{ url_for('brookings.export_csv', q=query) }}" class="export-link">Export CSV</a>
-        <div style="clear: both;"></div>
-    </div>
+<!-- Two-column layout: filters sidebar + results -->
+<div class="search-layout">
+    <!-- Filter Sidebar -->
+    <aside class="filter-sidebar">
+        <form method="GET" action="{{ url_for('brookings.search') }}">
+            <!-- Preserve the search query -->
+            <input type="hidden" name="q" value="{{ query }}">
 
-    <div class="document-list">
-        {% for doc in results %}
-        <a href="{{ url_for('brookings.document_detail', document_id=doc.document_id) }}" class="document-link">
-            <div class="document-title">{{ doc.title }}</div>
-            <div class="document-meta">
-                Brookings Institution
-                · {{ doc.publication_date or 'No date' }}
-                {% if doc.document_type %} · {{ doc.document_type }}{% endif %}
-                · {{ doc.word_count|number_format or 0 }} words
-                {% if doc.pdf_url %} · PDF available{% endif %}
+            <h3>Filter</h3>
+
+            <div class="filter-group">
+                <label>Source</label>
+                <div class="custom-select">
+                    <select name="source">
+                        <option value="">All Sources</option>
+                        <option value="brookings" selected>Brookings Institution</option>
+                    </select>
+                    <div class="custom-select-trigger" tabindex="0">Brookings Institution</div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option" data-value="">All Sources</div>
+                        <div class="custom-select-option selected" data-value="brookings">Brookings Institution</div>
+                    </div>
+                </div>
             </div>
-            {% if doc.summary %}
-            <div class="document-summary">{{ doc.summary[:250] }}{% if doc.summary|length > 250 %}...{% endif %}</div>
-            {% endif %}
-        </a>
-        {% endfor %}
-    </div>
 
-    <!-- Pagination -->
-    {% if total_pages > 1 %}
-    <nav class="pagination">
+            <div class="filter-group">
+                <label>From</label>
+                <input type="date" name="date_from" value="{{ date_from }}">
+            </div>
+
+            <div class="filter-group">
+                <label>To</label>
+                <input type="date" name="date_to" value="{{ date_to }}">
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit">Apply</button>
+                <a href="{{ url_for('brookings.search', q=query) }}">Clear</a>
+            </div>
+        </form>
+    </aside>
+
+    <!-- Results -->
+    <div class="results-column">
+{% if results %}
+<div class="document-list">
+    {% for doc in results %}
+    <a href="{{ url_for('brookings.document_detail', document_id=doc.document_id) }}" class="document-link">
+        <div class="document-title">{{ doc.title }}</div>
+        <div class="document-meta">
+            Brookings Institution
+            · {{ doc.publication_date or 'No date' }}
+            {% if doc.document_type %} · <span class="badge bg-primary">{{ doc.document_type }}</span>{% endif %}
+            · {{ doc.word_count|number_format or 0 }} words
+            {% if doc.pdf_url %} · PDF available{% endif %}
+        </div>
+        {% if doc.summary %}
+        <div class="document-summary">{{ doc.summary[:250] }}{% if doc.summary|length > 250 %}...{% endif %}</div>
+        {% endif %}
+    </a>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if total_pages > 1 %}
+<nav>
+    <ul class="pagination">
         {% if page > 1 %}
-        <a href="{{ url_for('brookings.search', q=query, page=page-1) }}">← Previous</a>
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('brookings.search', q=query, page=page-1, source='brookings', date_from=date_from, date_to=date_to) }}">← Previous</a>
+        </li>
         {% endif %}
 
         {% for p in range(1, total_pages + 1) %}
-        {% if p == page %}
-        <span class="active">{{ p }}</span>
-        {% elif p <= 3 or p >= total_pages - 2 or (p >= page - 2 and p <= page + 2) %}
-        <a href="{{ url_for('brookings.search', q=query, page=p) }}">{{ p }}</a>
-        {% elif p == 4 or p == total_pages - 3 %}
-        <span>...</span>
-        {% endif %}
+            {% if p == page %}
+            <li class="page-item active"><span class="page-link">{{ p }}</span></li>
+            {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('brookings.search', q=query, page=p, source='brookings', date_from=date_from, date_to=date_to) }}">{{ p }}</a>
+            </li>
+            {% elif p == page - 3 or p == page + 3 %}
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
         {% endfor %}
 
         {% if page < total_pages %}
-        <a href="{{ url_for('brookings.search', q=query, page=page+1) }}">Next →</a>
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('brookings.search', q=query, page=page+1, source='brookings', date_from=date_from, date_to=date_to) }}">Next →</a>
+        </li>
         {% endif %}
-    </nav>
-    {% endif %}
+    </ul>
+</nav>
+{% endif %}
 
-    {% else %}
-    <p class="text-secondary">No documents found for "{{ query }}". Try different keywords or <a href="{{ url_for('brookings.index') }}">browse all documents</a>.</p>
-    {% endif %}
+{% else %}
+<p class="text-secondary mt-4">No results found for "{{ query }}"</p>
+{% endif %}
+    </div><!-- End results-column -->
+</div><!-- End search-layout -->
+
+{% else %}
+<!-- No search query - show prompt -->
+<div class="search-prompt">
+    <h2>Search Policy Library</h2>
+    <p>Use the search bar above to find research documents from the Brookings Institution.</p>
+</div>
 {% endif %}
 {% endblock %}

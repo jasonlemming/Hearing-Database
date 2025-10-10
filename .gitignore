@@ -46,9 +46,12 @@ congress.db
 data/congress.db
 # Include production database for deployment
 !database.db
-# CRS database - compressed version is committed, uncompressed is generated
+# CRS database - now stored in R2, ignored locally
 crs_products.db
-!crs_products.db.gz
+crs_products.db.gz
+crs_products.db-shm
+crs_products.db-wal
+crs_products_optimized.db*
 # Brookings database - compressed version is committed, uncompressed is generated
 brookings_products.db
 !brookings_products.db.gz

@@ -6,35 +6,21 @@ import sqlite3
 import csv
 import io
 import os
-import gzip
-import shutil
+import sys
 import requests
 from datetime import datetime
 
+# Add parent directory to path for database imports
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+from database.r2_db_manager import get_database_path
+
 crs_bp = Blueprint('crs', __name__, url_prefix='/crs')
-
-# Database paths
-CRS_DB_GZ_PATH = 'crs_products.db.gz'
-# Use /tmp for decompressed database on Vercel (read-only filesystem)
-CRS_DB_PATH = os.path.join('/tmp', 'crs_products.db') if os.environ.get('VERCEL') else 'crs_products.db'
-
-
-def ensure_database_decompressed():
-    """Decompress database if needed (for production deployment)"""
-    # Check if compressed version exists and decompressed doesn't
-    if not os.path.exists(CRS_DB_PATH) and os.path.exists(CRS_DB_GZ_PATH):
-        print(f"Decompressing {CRS_DB_GZ_PATH} to {CRS_DB_PATH}...")
-        os.makedirs(os.path.dirname(CRS_DB_PATH), exist_ok=True)
-        with gzip.open(CRS_DB_GZ_PATH, 'rb') as f_in:
-            with open(CRS_DB_PATH, 'wb') as f_out:
-                shutil.copyfileobj(f_in, f_out)
-        print("Database decompressed successfully!")
 
 
 def get_crs_db():
-    """Get CRS database connection"""
-    ensure_database_decompressed()
-    conn = sqlite3.connect(CRS_DB_PATH)
+    """Get CRS database connection (downloads from R2 if needed)"""
+    db_path = get_database_path()
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
 

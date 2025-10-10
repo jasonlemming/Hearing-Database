@@ -49,6 +49,9 @@ data/congress.db
 # CRS database - compressed version is committed, uncompressed is generated
 crs_products.db
 !crs_products.db.gz
+# Brookings database - compressed version is committed, uncompressed is generated
+brookings_products.db
+!brookings_products.db.gz
 
 # Logs
 logs/

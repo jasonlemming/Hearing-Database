@@ -8,6 +8,9 @@ import csv
 import io
 import re
 import sys
+import os
+import gzip
+import shutil
 sys.path.insert(0, '/Users/jasonlemons/Documents/GitHub/Hearing-Database')
 
 from brookings_ingester.models import get_session, Document, Author, Subject, Source, DocumentAuthor, DocumentSubject
@@ -15,6 +18,27 @@ from datetime import datetime
 from markupsafe import Markup, escape
 
 brookings_bp = Blueprint('brookings', __name__, url_prefix='/brookings')
+
+# Database paths
+BROOKINGS_DB_GZ_PATH = 'brookings_products.db.gz'
+# Use /tmp for decompressed database on Vercel (read-only filesystem)
+BROOKINGS_DB_PATH = os.path.join('/tmp', 'brookings_products.db') if os.environ.get('VERCEL') else 'brookings_products.db'
+
+
+def ensure_brookings_database_decompressed():
+    """Decompress database if needed (for production deployment)"""
+    # Check if compressed version exists and decompressed doesn't
+    if not os.path.exists(BROOKINGS_DB_PATH) and os.path.exists(BROOKINGS_DB_GZ_PATH):
+        print(f"Decompressing {BROOKINGS_DB_GZ_PATH} to {BROOKINGS_DB_PATH}...")
+        os.makedirs(os.path.dirname(BROOKINGS_DB_PATH) or '.', exist_ok=True)
+        with gzip.open(BROOKINGS_DB_GZ_PATH, 'rb') as f_in:
+            with open(BROOKINGS_DB_PATH, 'wb') as f_out:
+                shutil.copyfileobj(f_in, f_out)
+        print("Brookings database decompressed successfully!")
+
+    # Set DATABASE_URL environment variable for SQLAlchemy
+    if os.environ.get('VERCEL'):
+        os.environ['DATABASE_URL'] = f'sqlite:///{BROOKINGS_DB_PATH}'
 
 
 def format_transcript_text(text):
@@ -178,6 +202,9 @@ brookings_bp.add_app_template_filter(format_transcript_text, 'format_transcript'
 
 def get_brookings_source_id():
     """Get Brookings source ID"""
+    # Ensure database is ready (decompress if on Vercel)
+    ensure_brookings_database_decompressed()
+
     session = get_session()
     brookings = session.query(Source).filter_by(source_code='BROOKINGS').first()
     source_id = brookings.source_id if brookings else None

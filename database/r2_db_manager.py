@@ -29,11 +29,9 @@ def get_database_path():
     # Determine paths based on environment
     if os.environ.get('VERCEL'):
         # On Vercel, use /tmp directory (writable)
-        db_gz_path = '/tmp/crs_products.db.gz'
         db_path = '/tmp/crs_products.db'
     else:
         # Local development - use repo root
-        db_gz_path = 'crs_products.db.gz'
         db_path = 'crs_products.db'
 
     # If decompressed database already exists, return it
@@ -41,70 +39,53 @@ def get_database_path():
         print(f"Using existing database at {db_path}")
         return db_path
 
-    # If compressed database exists locally, decompress it
-    if os.path.exists(db_gz_path):
-        print(f"Decompressing local {db_gz_path} to {db_path}...")
-        _decompress_database(db_gz_path, db_path)
-        return db_path
-
-    # Need to download from R2
-    print(f"Downloading database from R2 to {db_gz_path}...")
-    _download_from_r2(db_gz_path)
-
-    # Decompress the downloaded file
-    print(f"Decompressing {db_gz_path} to {db_path}...")
-    _decompress_database(db_gz_path, db_path)
-
-    # Clean up compressed file to save space (especially on Vercel)
-    if os.environ.get('VERCEL'):
-        try:
-            os.remove(db_gz_path)
-            print(f"Cleaned up compressed file {db_gz_path}")
-        except Exception as e:
-            print(f"Warning: Could not remove compressed file: {e}")
+    # Download and decompress directly from R2 (streaming to save space)
+    print(f"Downloading and decompressing database from R2 to {db_path}...")
+    _download_and_decompress_from_r2(db_path)
 
     return db_path
 
 
-def _download_from_r2(target_path):
-    """Download compressed database from R2"""
+def _download_and_decompress_from_r2(output_path):
+    """
+    Download and decompress database from R2 in a streaming fashion.
+    This avoids needing space for both compressed and uncompressed files.
+    """
     try:
         s3_client = get_r2_client()
         bucket_name = os.environ.get('R2_BUCKET_NAME', 'crs-project')
         object_key = 'databases/crs_products.db.gz'
 
-        # Ensure directory exists
-        os.makedirs(os.path.dirname(target_path) or '.', exist_ok=True)
-
-        # Download file
-        s3_client.download_file(bucket_name, object_key, target_path)
-
-        # Verify download
-        file_size_mb = os.path.getsize(target_path) / (1024 * 1024)
-        print(f"✅ Downloaded database: {file_size_mb:.2f} MB")
-
-    except Exception as e:
-        raise Exception(f"Failed to download database from R2: {e}")
-
-
-def _decompress_database(gz_path, output_path):
-    """Decompress gzipped database file"""
-    try:
         # Ensure output directory exists
         os.makedirs(os.path.dirname(output_path) or '.', exist_ok=True)
 
-        with gzip.open(gz_path, 'rb') as f_in:
-            with open(output_path, 'wb') as f_out:
-                shutil.copyfileobj(f_in, f_out)
+        # Stream download and decompress on-the-fly
+        print(f"Streaming download from R2...")
+        response = s3_client.get_object(Bucket=bucket_name, Key=object_key)
 
+        # Decompress streaming data directly to output file
+        with gzip.GzipFile(fileobj=response['Body']) as gz_stream:
+            with open(output_path, 'wb') as f_out:
+                # Copy in chunks to avoid memory issues
+                chunk_size = 1024 * 1024  # 1MB chunks
+                while True:
+                    chunk = gz_stream.read(chunk_size)
+                    if not chunk:
+                        break
+                    f_out.write(chunk)
+
+        # Verify decompression
         file_size_mb = os.path.getsize(output_path) / (1024 * 1024)
-        print(f"✅ Decompressed database: {file_size_mb:.2f} MB")
+        print(f"✅ Database ready: {file_size_mb:.2f} MB")
 
     except Exception as e:
         # Clean up partial file on error
         if os.path.exists(output_path):
-            os.remove(output_path)
-        raise Exception(f"Failed to decompress database: {e}")
+            try:
+                os.remove(output_path)
+            except:
+                pass
+        raise Exception(f"Failed to download and decompress database: {e}")
 
 
 if __name__ == '__main__':

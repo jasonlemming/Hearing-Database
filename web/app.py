@@ -16,7 +16,7 @@ import gzip
 import shutil
 from pathlib import Path
 
-# Decompress databases BEFORE importing any blueprints (so DATABASE_URL is set correctly)
+# Decompress Brookings database BEFORE importing any blueprints
 def ensure_databases_ready():
     """Decompress databases on Vercel before app initialization"""
     if os.environ.get('VERCEL'):
@@ -29,18 +29,8 @@ def ensure_databases_ready():
                 with open(brookings_db, 'wb') as f_out:
                     shutil.copyfileobj(f_in, f_out)
             print("Brookings database ready!")
-            # Set DATABASE_URL for Brookings config
-            os.environ['DATABASE_URL'] = f'sqlite:///{brookings_db}'
-
-        # Decompress CRS database
-        crs_gz = 'crs_products.db.gz'
-        crs_db = '/tmp/crs_products.db'
-        if os.path.exists(crs_gz) and not os.path.exists(crs_db):
-            print(f"Decompressing {crs_gz} to {crs_db}...")
-            with gzip.open(crs_gz, 'rb') as f_in:
-                with open(crs_db, 'wb') as f_out:
-                    shutil.copyfileobj(f_in, f_out)
-            print("CRS database ready!")
+            # Set BROOKINGS_DATABASE_URL for Brookings config
+            os.environ['BROOKINGS_DATABASE_URL'] = f'sqlite:///{brookings_db}'
 
 # Initialize databases FIRST
 ensure_databases_ready()

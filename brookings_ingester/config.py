@@ -11,8 +11,8 @@ load_dotenv()
 class Config:
     """Configuration settings for Brookings ingester"""
 
-    # Database
-    DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///brookings_products.db')
+    # Database (use BROOKINGS_DATABASE_URL to avoid conflict with CRS PostgreSQL)
+    DATABASE_URL = os.getenv('BROOKINGS_DATABASE_URL', os.getenv('DATABASE_URL', 'sqlite:///brookings_products.db'))
 
     # Storage paths
     BASE_DIR = Path(__file__).parent.parent

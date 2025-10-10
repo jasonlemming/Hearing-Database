@@ -154,7 +154,7 @@ def migrate_product_versions(sqlite_db='crs_products.db', batch_size=500):
                 'content_hash': row['content_hash'],
                 'word_count': row['word_count'],
                 'ingested_at': row['ingested_at'],
-                'is_current': row['is_current']
+                'is_current': bool(row['is_current']) if row['is_current'] is not None else False
             }
 
             batch.append(data)

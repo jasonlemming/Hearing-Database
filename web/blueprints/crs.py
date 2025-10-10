@@ -2,27 +2,29 @@
 CRS Products blueprint - browse and search CRS products
 """
 from flask import Blueprint, render_template, request, Response
-import sqlite3
+import psycopg2
+import psycopg2.extras
 import csv
 import io
 import os
 import sys
 import requests
+import json
 from datetime import datetime
 
 # Add parent directory to path for database imports
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-from database.r2_db_manager import get_database_path
+from database.postgres_config import get_connection
 
 crs_bp = Blueprint('crs', __name__, url_prefix='/crs')
 
 
 def get_crs_db():
-    """Get CRS database connection (downloads from R2 if needed)"""
-    db_path = get_database_path()
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = sqlite3.Row
-    return conn
+    """
+    Get CRS database connection (PostgreSQL)
+    Returns context manager for connection
+    """
+    return get_connection()
 
 
 def fetch_content_from_blob(blob_url, timeout=10):
@@ -62,59 +64,58 @@ def index():
         limit = 50
         offset = (page - 1) * limit
 
-        conn = get_crs_db()
-        cursor = conn.cursor()
+        with get_crs_db() as conn:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-        # Build query
-        query = 'SELECT * FROM products WHERE 1=1'
-        params = []
+            # Build query - PostgreSQL uses %s instead of ?
+            query = 'SELECT * FROM products WHERE 1=1'
+            params = []
 
-        if status:
-            query += ' AND status = ?'
-            params.append(status)
+            if status:
+                query += ' AND status = %s'
+                params.append(status)
 
-        if product_type:
-            query += ' AND product_type = ?'
-            params.append(product_type)
+            if product_type:
+                query += ' AND product_type = %s'
+                params.append(product_type)
 
-        if topic:
-            query += ' AND EXISTS (SELECT 1 FROM json_each(topics) WHERE value = ?)'
-            params.append(topic)
+            if topic:
+                # PostgreSQL JSONB: use @> operator for "contains"
+                query += ' AND topics @> %s'
+                params.append(json.dumps([topic]))
 
-        if date_from:
-            query += ' AND publication_date >= ?'
-            params.append(date_from)
+            if date_from:
+                query += ' AND publication_date >= %s'
+                params.append(date_from)
 
-        if date_to:
-            query += ' AND publication_date <= ?'
-            params.append(date_to)
+            if date_to:
+                query += ' AND publication_date <= %s'
+                params.append(date_to)
 
-        # Get total count
-        count_query = f"SELECT COUNT(*) FROM ({query})"
-        total = cursor.execute(count_query, params).fetchone()[0]
+            # Get total count
+            count_query = f"SELECT COUNT(*) FROM ({query}) AS count_subquery"
+            cursor.execute(count_query, params)
+            total = cursor.fetchone()['count']
 
-        # Get paginated results
-        query += ' ORDER BY publication_date DESC LIMIT ? OFFSET ?'
-        params.extend([limit, offset])
+            # Get paginated results
+            query += ' ORDER BY publication_date DESC LIMIT %s OFFSET %s'
+            params.extend([limit, offset])
+            cursor.execute(query, params)
+            products = cursor.fetchall()
 
-        products = cursor.fetchall()
-        cursor.execute(query, params)
-        products = cursor.fetchall()
+            # Get filter options
+            cursor.execute('SELECT DISTINCT product_type FROM products WHERE product_type IS NOT NULL ORDER BY product_type')
+            product_types = [row['product_type'] for row in cursor.fetchall()]
 
-        # Get filter options
-        cursor.execute('SELECT DISTINCT product_type FROM products WHERE product_type IS NOT NULL ORDER BY product_type')
-        product_types = [row[0] for row in cursor.fetchall()]
-
-        cursor.execute('''
-            SELECT DISTINCT value as topic
-            FROM products, json_each(topics)
-            WHERE topics IS NOT NULL AND value IS NOT NULL
-            ORDER BY value
-            LIMIT 100
-        ''')
-        topics = [row[0] for row in cursor.fetchall()]
-
-        conn.close()
+            # PostgreSQL JSONB: use jsonb_array_elements_text for extracting array values
+            cursor.execute('''
+                SELECT DISTINCT jsonb_array_elements_text(topics) as topic
+                FROM products
+                WHERE topics IS NOT NULL
+                ORDER BY topic
+                LIMIT 100
+            ''')
+            topics = [row['topic'] for row in cursor.fetchall()]
 
         total_pages = (total + limit - 1) // limit
 
@@ -173,128 +174,93 @@ def search():
         # Expand query for better results
         query = expand_search_query(original_query)
 
-        conn = get_crs_db()
-        cursor = conn.cursor()
+        with get_crs_db() as conn:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-        # Check if product_content_fts exists (full HTML content search)
-        has_content_fts = False
-        try:
-            cursor.execute("SELECT COUNT(*) FROM product_content_fts LIMIT 1")
-            has_content_fts = True
-        except sqlite3.OperationalError:
-            pass
-
-        if has_content_fts:
-            # Search both metadata AND full content with proper weighting
-            # title:5, headings:3, text_content:1, summary:1, topics:2
-            search_query = '''
-                WITH content_matches AS (
-                    SELECT
-                        cfts.product_id,
-                        bm25(product_content_fts, 5.0, 3.0, 1.0) as content_score
-                    FROM product_content_fts cfts
-                    WHERE product_content_fts MATCH ?
-                ),
-                metadata_matches AS (
-                    SELECT
-                        pfts.product_id,
-                        bm25(products_fts, 3.0, 1.0, 2.0) as metadata_score
-                    FROM products_fts pfts
-                    WHERE products_fts MATCH ?
-                )
-                SELECT DISTINCT
-                    p.*,
-                    COALESCE(cm.content_score, 0) + COALESCE(mm.metadata_score, 0) as combined_score,
-                    CASE WHEN cm.product_id IS NOT NULL THEN 1 ELSE 0 END as has_content_match
-                FROM products p
-                LEFT JOIN content_matches cm ON p.product_id = cm.product_id
-                LEFT JOIN metadata_matches mm ON p.product_id = mm.product_id
-                WHERE cm.product_id IS NOT NULL OR mm.product_id IS NOT NULL
-                ORDER BY combined_score
-                LIMIT ? OFFSET ?
-            '''
-            results = cursor.execute(search_query, (query, query, limit, offset)).fetchall()
-
-            # Get total count
-            count_query = '''
-                WITH content_matches AS (
-                    SELECT DISTINCT product_id
-                    FROM product_content_fts
-                    WHERE product_content_fts MATCH ?
-                ),
-                metadata_matches AS (
-                    SELECT DISTINCT product_id
-                    FROM products_fts
-                    WHERE products_fts MATCH ?
-                )
-                SELECT COUNT(DISTINCT product_id)
-                FROM (
-                    SELECT product_id FROM content_matches
-                    UNION
-                    SELECT product_id FROM metadata_matches
-                )
-            '''
-            total = cursor.execute(count_query, (query, query)).fetchone()[0]
-        else:
-            # Fallback to metadata-only search
-            # Check if FTS table exists and has correct schema
+            # Check if product_content_fts exists (full HTML content search)
+            has_content_fts = False
             try:
-                cursor.execute("SELECT summary FROM products_fts LIMIT 1")
-                fts_has_summary = True
-            except sqlite3.OperationalError:
-                # FTS doesn't exist or doesn't have summary column
-                fts_has_summary = False
+                cursor.execute("SELECT COUNT(*) FROM product_content_fts LIMIT 1")
+                has_content_fts = True
+            except psycopg2.errors.UndefinedTable:
+                conn.rollback()
+                pass
 
-            # Rebuild FTS if it doesn't have summary field
-            if not fts_has_summary:
-                print("Rebuilding FTS index to include summary field...")
-                cursor.execute('DROP TABLE IF EXISTS products_fts')
-                # Use column weights: title=3, summary=1, topics=2 for better ranking
-                cursor.execute('''
-                    CREATE VIRTUAL TABLE products_fts USING fts5(
-                        product_id UNINDEXED,
-                        title,
-                        summary,
-                        topics,
-                        tokenize='porter'
+            if has_content_fts:
+                # PostgreSQL full-text search with ts_rank
+                # Search both metadata AND full content with proper weighting
+                search_query = '''
+                    WITH content_matches AS (
+                        SELECT
+                            cfts.product_id,
+                            ts_rank(cfts.search_vector, websearch_to_tsquery('english', %s)) as content_score
+                        FROM product_content_fts cfts
+                        WHERE cfts.search_vector @@ websearch_to_tsquery('english', %s)
+                    ),
+                    metadata_matches AS (
+                        SELECT
+                            p.product_id,
+                            ts_rank(p.search_vector, websearch_to_tsquery('english', %s)) as metadata_score
+                        FROM products p
+                        WHERE p.search_vector @@ websearch_to_tsquery('english', %s)
                     )
-                ''')
-                cursor.execute('''
-                    INSERT INTO products_fts(product_id, title, summary, topics)
-                    SELECT
-                        p.product_id,
-                        p.title,
-                        COALESCE(p.summary, ''),
-                        COALESCE(json_group_array(j.value), '')
+                    SELECT DISTINCT
+                        p.*,
+                        COALESCE(cm.content_score, 0) + COALESCE(mm.metadata_score, 0) as combined_score,
+                        CASE WHEN cm.product_id IS NOT NULL THEN TRUE ELSE FALSE END as has_content_match
                     FROM products p
-                    LEFT JOIN json_each(p.topics) j
-                    GROUP BY p.product_id
-                ''')
-                conn.commit()
-                print("FTS index rebuilt with summary field!")
+                    LEFT JOIN content_matches cm ON p.product_id = cm.product_id
+                    LEFT JOIN metadata_matches mm ON p.product_id = mm.product_id
+                    WHERE cm.product_id IS NOT NULL OR mm.product_id IS NOT NULL
+                    ORDER BY combined_score DESC
+                    LIMIT %s OFFSET %s
+                '''
+                cursor.execute(search_query, (query, query, query, query, limit, offset))
+                results = cursor.fetchall()
 
-            # Search query with column weights (title:3, summary:1, topics:2)
-            # Use BM25 ranking for better relevance
-            search_query = '''
-                SELECT p.*, bm25(products_fts, 3.0, 1.0, 2.0) as score
-                FROM products_fts fts
-                JOIN products p ON fts.product_id = p.product_id
-                WHERE products_fts MATCH ?
-                ORDER BY score
-                LIMIT ? OFFSET ?
-            '''
+                # Get total count
+                count_query = '''
+                    WITH content_matches AS (
+                        SELECT DISTINCT product_id
+                        FROM product_content_fts
+                        WHERE search_vector @@ websearch_to_tsquery('english', %s)
+                    ),
+                    metadata_matches AS (
+                        SELECT DISTINCT product_id
+                        FROM products
+                        WHERE search_vector @@ websearch_to_tsquery('english', %s)
+                    )
+                    SELECT COUNT(DISTINCT product_id)
+                    FROM (
+                        SELECT product_id FROM content_matches
+                        UNION
+                        SELECT product_id FROM metadata_matches
+                    ) AS all_matches
+                '''
+                cursor.execute(count_query, (query, query))
+                total = cursor.fetchone()['count']
+            else:
+                # Fallback to metadata-only search using products.search_vector
+                # PostgreSQL: search_vector is auto-updated by trigger
+                search_query = '''
+                    SELECT p.*,
+                           ts_rank(p.search_vector, websearch_to_tsquery('english', %s)) as score
+                    FROM products p
+                    WHERE p.search_vector @@ websearch_to_tsquery('english', %s)
+                    ORDER BY score DESC
+                    LIMIT %s OFFSET %s
+                '''
+                cursor.execute(search_query, (query, query, limit, offset))
+                results = cursor.fetchall()
 
-            results = cursor.execute(search_query, (query, limit, offset)).fetchall()
-
-            # Get total count
-            count_query = '''
-                SELECT COUNT(*)
-                FROM products_fts
-                WHERE products_fts MATCH ?
-            '''
-            total = cursor.execute(count_query, (query,)).fetchone()[0]
-
-        conn.close()
+                # Get total count
+                count_query = '''
+                    SELECT COUNT(*)
+                    FROM products
+                    WHERE search_vector @@ websearch_to_tsquery('english', %s)
+                '''
+                cursor.execute(count_query, (query,))
+                total = cursor.fetchone()['count']
 
         total_pages = (total + limit - 1) // limit
 
@@ -314,49 +280,47 @@ def search():
 def product_detail(product_id):
     """Product detail page"""
     try:
-        conn = get_crs_db()
-        cursor = conn.cursor()
+        with get_crs_db() as conn:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-        cursor.execute('SELECT * FROM products WHERE product_id = ?', (product_id,))
-        product = cursor.fetchone()
+            cursor.execute('SELECT * FROM products WHERE product_id = %s', (product_id,))
+            product = cursor.fetchone()
 
-        if not product:
-            conn.close()
-            return "Product not found", 404
+            if not product:
+                return "Product not found", 404
 
-        # Try to fetch current version content
-        content_version = None
-        try:
-            cursor.execute('''
-                SELECT version_id, version_number,
-                       structure_json, word_count, ingested_at, blob_url
-                FROM product_versions
-                WHERE product_id = ? AND is_current = 1
-            ''', (product_id,))
-            version_row = cursor.fetchone()
+            # Try to fetch current version content
+            content_version = None
+            try:
+                cursor.execute('''
+                    SELECT version_id, version_number,
+                           structure_json, word_count, ingested_at, blob_url
+                    FROM product_versions
+                    WHERE product_id = %s AND is_current = TRUE
+                ''', (product_id,))
+                version_row = cursor.fetchone()
 
-            if version_row:
-                # Convert Row to dict for easier manipulation
-                content_version = dict(version_row)
+                if version_row:
+                    # Already a dict due to RealDictCursor
+                    content_version = dict(version_row)
 
-                # If blob_url exists, fetch content from blob storage
-                if content_version.get('blob_url'):
-                    blob_html = fetch_content_from_blob(content_version['blob_url'])
-                    if blob_html:
-                        # Use blob content
-                        content_version['html_content'] = blob_html
+                    # If blob_url exists, fetch content from blob storage
+                    if content_version.get('blob_url'):
+                        blob_html = fetch_content_from_blob(content_version['blob_url'])
+                        if blob_html:
+                            # Use blob content
+                            content_version['html_content'] = blob_html
+                        else:
+                            # Blob fetch failed - log warning
+                            print(f"Warning: Failed to fetch content from blob URL: {content_version['blob_url']}")
                     else:
-                        # Blob fetch failed - log warning
-                        print(f"Warning: Failed to fetch content from blob URL: {content_version['blob_url']}")
-                else:
-                    print(f"Warning: No blob_url found for product {product_id}")
+                        print(f"Warning: No blob_url found for product {product_id}")
 
-        except sqlite3.OperationalError as e:
-            # product_versions table doesn't exist yet or column mismatch
-            print(f"Database error: {e}")
-            pass
-
-        conn.close()
+            except psycopg2.errors.UndefinedTable as e:
+                # product_versions table doesn't exist yet or column mismatch
+                print(f"Database error: {e}")
+                conn.rollback()
+                pass
 
         return render_template('crs_detail.html', product=product, content_version=content_version)
     except Exception as e:
@@ -374,46 +338,47 @@ def export_csv():
         status = request.args.get('status', 'Active')
         topic = request.args.get('topic', '')
 
-        conn = get_crs_db()
-        cursor = conn.cursor()
+        with get_crs_db() as conn:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-        # Build query based on parameters
-        if product_ids:
-            # Export specific products
-            ids = product_ids.split(',')
-            placeholders = ','.join('?' * len(ids))
-            sql_query = f'SELECT * FROM products WHERE product_id IN ({placeholders})'
-            products = cursor.execute(sql_query, ids).fetchall()
-        elif original_query:
-            # Export search results - expand query for better results
-            query = expand_search_query(original_query)
-            search_query = '''
-                SELECT p.*
-                FROM products_fts fts
-                JOIN products p ON fts.product_id = p.product_id
-                WHERE products_fts MATCH ?
-                ORDER BY bm25(products_fts, 3.0, 1.0, 2.0)
-            '''
-            products = cursor.execute(search_query, (query,)).fetchall()
-        else:
-            # Export filtered browse results
-            sql_query = 'SELECT * FROM products WHERE 1=1'
-            params = []
+            # Build query based on parameters
+            if product_ids:
+                # Export specific products
+                ids = product_ids.split(',')
+                placeholders = ','.join(['%s'] * len(ids))
+                sql_query = f'SELECT * FROM products WHERE product_id IN ({placeholders})'
+                cursor.execute(sql_query, ids)
+                products = cursor.fetchall()
+            elif original_query:
+                # Export search results - expand query for better results
+                query = expand_search_query(original_query)
+                search_query = '''
+                    SELECT p.*
+                    FROM products p
+                    WHERE p.search_vector @@ websearch_to_tsquery('english', %s)
+                    ORDER BY ts_rank(p.search_vector, websearch_to_tsquery('english', %s)) DESC
+                '''
+                cursor.execute(search_query, (query, query))
+                products = cursor.fetchall()
+            else:
+                # Export filtered browse results
+                sql_query = 'SELECT * FROM products WHERE 1=1'
+                params = []
 
-            if status:
-                sql_query += ' AND status = ?'
-                params.append(status)
-            if product_type:
-                sql_query += ' AND product_type = ?'
-                params.append(product_type)
-            if topic:
-                sql_query += ' AND EXISTS (SELECT 1 FROM json_each(topics) WHERE value = ?)'
-                params.append(topic)
+                if status:
+                    sql_query += ' AND status = %s'
+                    params.append(status)
+                if product_type:
+                    sql_query += ' AND product_type = %s'
+                    params.append(product_type)
+                if topic:
+                    # PostgreSQL JSONB: use @> operator
+                    sql_query += ' AND topics @> %s'
+                    params.append(json.dumps([topic]))
 
-            sql_query += ' ORDER BY publication_date DESC LIMIT 1000'
-            products = cursor.execute(sql_query, params).fetchall()
-
-        conn.close()
+                sql_query += ' ORDER BY publication_date DESC LIMIT 1000'
+                cursor.execute(sql_query, params)
+                products = cursor.fetchall()
 
         # Create CSV
         output = io.StringIO()
@@ -425,9 +390,9 @@ def export_csv():
 
         # Write rows
         for product in products:
-            import json
-            authors = json.loads(product['authors']) if product['authors'] else []
-            topics = json.loads(product['topics']) if product['topics'] else []
+            # JSONB fields are already Python objects (lists), no need to json.loads
+            authors = product['authors'] if product['authors'] else []
+            topics = product['topics'] if product['topics'] else []
 
             writer.writerow([
                 product['product_id'],

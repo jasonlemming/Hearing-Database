@@ -9,6 +9,9 @@ flask>=3.0.0
 pydantic-settings>=2.0.0
 sqlalchemy>=2.0.0
 
+# PostgreSQL database support
+psycopg2-binary>=2.9.9
+
 # Lightweight HTML parsing for display only (no Playwright/browser automation)
 beautifulsoup4>=4.12.0
 lxml>=5.0.0

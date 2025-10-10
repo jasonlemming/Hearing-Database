@@ -89,7 +89,7 @@
                                 </td>
                                 <td>
                                     {% if product['publication_date'] %}
-                                        {{ product['publication_date'][:10] }}
+                                        {{ product['publication_date']|string|truncate(10, true, '') }}
                                     {% else %}
                                         <span class="text-muted">n.d.</span>
                                     {% endif %}

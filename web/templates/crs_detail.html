@@ -395,7 +395,7 @@
                     <div class="col-md-3">
                         <strong>Published:</strong><br>
                         {% if product['publication_date'] %}
-                            {{ product['publication_date'][:10] }}
+                            {{ product['publication_date']|string|truncate(10, true, '') }}
                         {% else %}
                             <span class="text-muted">n.d.</span>
                         {% endif %}
@@ -522,7 +522,7 @@
                         <div class="card-body">
                             <p class="mb-0" style="font-family: monospace;">
                                 {{ product['title'] }} — {{ product['product_id'] }} —
-                                {% if product['publication_date'] %}{{ product['publication_date'][:10] }}{% else %}n.d.{% endif %} —
+                                {% if product['publication_date'] %}{{ product['publication_date']|string|truncate(10, true, '') }}{% else %}n.d.{% endif %} —
                                 {% if product['url_html'] %}
                                 {{ product['url_html'] }}
                                 {% elif product['url_pdf'] %}

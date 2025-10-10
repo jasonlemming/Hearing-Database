@@ -1,509 +1,703 @@
-{% extends "base.html" %}
+{% extends "hearing_base.html" %}
 
 {% block title %}{% if hearing[4] %}{{ hearing[4][:50] }}{% if hearing[4]|length > 50 %}...{% endif %}{% else %}Hearing Details{% endif %} - Congressional Hearing Database{% endblock %}
 
+{% block head_style %}
+/* Minimal hearing detail page */
+.back-link {
+    font-size: 0.9rem;
+    color: #6c757d;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: #1a1a1a;
+}
+
+/* Hearing header */
+.hearing-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.hearing-title {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+}
+
+.hearing-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.95rem;
+    color: #6c757d;
+}
+
+.hearing-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Section headers */
+.section {
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Video container */
+.video-wrapper {
+    max-width: 800px;
+}
+
+.video-container {
+    margin-bottom: 1rem;
+}
+
+.video-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6c757d;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.video-link:hover {
+    color: #1a1a1a;
+}
+
+/* Centered messages */
+.empty-state {
+    text-align: center;
+    padding: 3rem 0;
+    color: #6c757d;
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+}
+
+/* Witness list - minimal document-style list */
+.witness-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.witness-item {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.witness-item:hover {
+    transform: translateX(5px);
+}
+
+.witness-name {
+    font-weight: 500;
+    color: #6c757d;
+    margin-bottom: 0.35rem;
+    font-size: 1rem;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-bottom-color 0.2s ease;
+    display: inline-block;
+}
+
+.witness-name:hover {
+    color: #1a1a1a;
+    border-bottom-color: #1a1a1a;
+    text-decoration: none;
+}
+
+.witness-title {
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.witness-org {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 0.35rem;
+}
+
+.witness-badges {
+    display: inline-flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* Document list */
+.document-section {
+    margin-bottom: 2.5rem;
+}
+
+.document-section-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+}
+
+.doc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.doc-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    color: #1a1a1a;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.doc-link:hover {
+    transform: translateX(5px);
+    color: #0d6efd;
+}
+
+.doc-link:hover .doc-title {
+    color: #0d6efd;
+}
+
+.doc-title {
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.doc-description {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+}
+
+.doc-icon {
+    color: #d0d0d0;
+    font-size: 1.2rem;
+}
+
+/* Witness document grouping - nested under witness */
+.witness-docs {
+    margin-top: 0.5rem;
+    padding-left: 1rem;
+    border-left: 2px solid #f0f0f0;
+}
+
+.witness-doc-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0 0.25rem 0.75rem;
+    color: #6c757d;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    border-bottom: none;
+}
+
+.witness-doc-link:hover {
+    color: #0d6efd;
+    transform: translateX(3px);
+}
+
+.witness-doc-link .doc-icon {
+    color: #d0d0d0;
+    font-size: 1rem;
+}
+
+/* Video type buttons */
+.video-external {
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.video-external-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #6c757d;
+}
+
+.video-external-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+}
+
+.video-external-desc {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+}
+
+.video-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #1a1a1a;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    transition: background 0.3s ease;
+}
+
+.video-btn:hover {
+    background: #0d6efd;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hearing-title {
+        font-size: 1.5rem;
+    }
+
+    .hearing-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .doc-link:hover {
+        transform: none;
+    }
+}
+{% endblock %}
+
 {% block content %}
-<!-- Breadcrumb -->
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ url_for('hearings.hearings') }}">Hearings</a></li>
-        <li class="breadcrumb-item active" aria-current="page">
-            {% if hearing[4] %}
-                {{ hearing[4][:30] }}{% if hearing[4]|length > 30 %}...{% endif %}
-            {% else %}
-                Hearing Details
-            {% endif %}
-        </li>
-    </ol>
-</nav>
+<a href="{{ url_for('hearings.hearings_v2') }}" class="back-link">← Back to Hearings</a>
 
 <!-- Hearing Header -->
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-9">
-                        <h1 class="mb-3">
-                            <i class="fas fa-calendar-alt me-3"></i>
-                            {% if hearing[4] %}
-                                {% if hearing[4]|length > 150 %}
-                                    <span id="hearing-title-short">{{ hearing[4][:150] }}... <a href="#" onclick="document.getElementById('hearing-title-short').style.display='none'; document.getElementById('hearing-title-full').style.display='inline'; return false;" class="text-primary" style="font-size: 0.6em; text-decoration: none;">Show more</a></span>
-                                    <span id="hearing-title-full" style="display: none;">{{ hearing[4] }} <a href="#" onclick="document.getElementById('hearing-title-short').style.display='inline'; document.getElementById('hearing-title-full').style.display='none'; return false;" class="text-primary" style="font-size: 0.6em; text-decoration: none;">Show less</a></span>
-                                {% else %}
-                                    {{ hearing[4] }}
-                                {% endif %}
-                            {% else %}
-                                <span class="text-muted">Hearing (No Title Available)</span>
-                            {% endif %}
-                        </h1>
+<div class="hearing-header">
+    <h1 class="hearing-title">
+        {% if hearing[4] %}
+            {% if hearing[4]|length > 150 %}
+                <span id="hearing-title-short">
+                    {{ hearing[4][:150] }}...
+                    <a href="#" onclick="document.getElementById('hearing-title-short').style.display='none'; document.getElementById('hearing-title-full').style.display='inline'; return false;"
+                       style="font-size: 0.6em; color: #6c757d; text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s ease, border-bottom-color 0.2s ease;"
+                       onmouseover="this.style.color='#1a1a1a'; this.style.borderBottomColor='#1a1a1a';"
+                       onmouseout="this.style.color='#6c757d'; this.style.borderBottomColor='transparent';">
+                        Show more
+                    </a>
+                </span>
+                <span id="hearing-title-full" style="display: none;">
+                    {{ hearing[4] }}
+                    <a href="#" onclick="document.getElementById('hearing-title-short').style.display='inline'; document.getElementById('hearing-title-full').style.display='none'; return false;"
+                       style="font-size: 0.6em; color: #6c757d; text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s ease, border-bottom-color 0.2s ease;"
+                       onmouseover="this.style.color='#1a1a1a'; this.style.borderBottomColor='#1a1a1a';"
+                       onmouseout="this.style.color='#6c757d'; this.style.borderBottomColor='transparent';">
+                        Show less
+                    </a>
+                </span>
+            {% else %}
+                {{ hearing[4] }}
+            {% endif %}
+        {% else %}
+            {% if hearing[10] %}
+                Hearing Event #{{ hearing[10] }}
+            {% else %}
+                Untitled Hearing
+            {% endif %}
+        {% endif %}
+    </h1>
 
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <h6><i class="fas fa-info-circle me-2"></i>Hearing Details</h6>
-                                <ul class="list-unstyled">
-                                    <li><strong>Date:</strong>
-                                        {% if hearing[7] %}
-                                            {{ hearing[7] }}
-                                        {% else %}
-                                            <span class="text-muted">No date specified</span>
-                                        {% endif %}
-                                    </li>
-                                    <li><strong>Chamber:</strong>
-                                        {% if hearing[3] == 'House' %}
-                                            <span class="badge bg-success">{{ hearing[3] }}</span>
-                                        {% elif hearing[3] == 'Senate' %}
-                                            <span class="badge bg-info">{{ hearing[3] }}</span>
-                                        {% elif hearing[3] == 'Joint' %}
-                                            <span class="badge bg-warning">{{ hearing[3] }}</span>
-                                        {% else %}
-                                            <span class="badge bg-secondary">{{ hearing[3] or 'Unknown' }}</span>
-                                        {% endif %}
-                                    </li>
-                                    <li><strong>Status:</strong>
-                                        {% if hearing[6] %}
-                                            <span class="badge bg-light text-dark">{{ hearing[6] }}</span>
-                                        {% else %}
-                                            <span class="text-muted">—</span>
-                                        {% endif %}
-                                    </li>
-                                    <li><strong>Type:</strong>
-                                        {% if hearing[5] %}
-                                            <span class="badge bg-secondary">{{ hearing[5] }}</span>
-                                        {% else %}
-                                            <span class="text-muted">—</span>
-                                        {% endif %}
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-md-6">
-                                <h6><i class="fas fa-link me-2"></i>System Information</h6>
-                                <ul class="list-unstyled">
-                                    {% if hearing[2] %}
-                                    <li><strong>Congress:</strong> {{ hearing[2] }}</li>
-                                    {% endif %}
-                                    {% if hearing[8] %}
-                                    <li><strong>Location:</strong> {{ hearing[8]|format_location }}</li>
-                                    {% endif %}
-                                    {% if hearing[9] %}
-                                    <li><strong>Jacket Number:</strong> {{ hearing[9] }}</li>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card bg-light">
-                            <div class="card-body text-center">
-                                <i class="fas fa-users fa-3x text-primary mb-3"></i>
-                                <h3>{{ committees|length }}</h3>
-                                <p class="mb-0">Associated Committees</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Video of Proceedings -->
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">
-                    <i class="fas fa-video me-2"></i>
-                    Video of Proceedings
-                </h5>
-            </div>
-            <div class="card-body">
-                {% if hearing[17] or hearing[18] %}
-                    {% if hearing[19] == 'youtube' %}
-                        <!-- YouTube video embed - medium-sized player, 2/3 width -->
-                        <div class="row">
-                            <div class="col-lg-8 col-md-10">
-                                <div class="video-container">
-                                    <div class="ratio ratio-16x9">
-                                        <iframe
-                                            src="https://www.youtube.com/embed/{{ hearing[18] }}"
-                                            title="Hearing Video"
-                                            frameborder="0"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                            allowfullscreen>
-                                        </iframe>
-                                    </div>
-                                </div>
-                                {% if hearing[17] %}
-                                <div class="mt-2">
-                                    <small class="text-muted">
-                                        <i class="fas fa-external-link-alt me-1"></i>
-                                        <a href="{{ hearing[17] }}" target="_blank">View on Congress.gov</a>
-                                    </small>
-                                </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    {% elif hearing[19] == 'senate_isvp' %}
-                        {% if hearing[7] and hearing[7] >= today %}
-                            <!-- Future Senate ISVP hearing - show external link with countdown message -->
-                            <div class="text-center py-4">
-                                <i class="fas fa-clock fa-3x text-info mb-3"></i>
-                                <h5>Senate Video with Countdown</h5>
-                                <p class="text-muted mb-3">This hearing is scheduled for the future. The Senate.gov page shows a countdown timer until the video is available.</p>
-                                <a href="{{ hearing[17] }}" target="_blank" class="btn btn-info">
-                                    <i class="fas fa-external-link-alt me-2"></i>View Countdown on Senate.gov
-                                </a>
-                            </div>
+    <div class="hearing-meta">
+        <div class="hearing-meta-item">
+            <strong>Date & Time:</strong>
+            {% if hearing[7] %}
+                {{ hearing[7] | strptime('%Y-%m-%d') | strftime('%B %d, %Y') }}
+                {% if hearing[16] %}
+                    {% set time_parts = hearing[16].split(':') %}
+                    {% if time_parts|length >= 2 %}
+                        {% set hour = time_parts[0]|int %}
+                        {% set minute = time_parts[1] %}
+                        {% if hour == 0 %}
+                            at 12:{{ minute }} AM
+                        {% elif hour < 12 %}
+                            at {{ hour }}:{{ minute }} AM
+                        {% elif hour == 12 %}
+                            at 12:{{ minute }} PM
                         {% else %}
-                            <!-- Past Senate ISVP hearing - embed video player -->
-                            <div class="row">
-                                <div class="col-lg-8 col-md-10">
-                                    <div class="video-container">
-                                        <div class="ratio ratio-16x9">
-                                            <iframe
-                                                src="{{ hearing[17] }}"
-                                                title="Senate Hearing Video"
-                                                frameborder="0"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                allowfullscreen>
-                                            </iframe>
-                                        </div>
-                                    </div>
-                                    <div class="mt-2">
-                                        <small class="text-muted">
-                                            <i class="fas fa-external-link-alt me-1"></i>
-                                            <a href="{{ hearing[17] }}" target="_blank">View on Senate.gov</a>
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
+                            at {{ hour - 12 }}:{{ minute }} PM
                         {% endif %}
-                    {% elif hearing[19] == 'house_video' %}
-                        <!-- House video link -->
-                        <div class="text-center py-4">
-                            <i class="fas fa-video fa-3x text-success mb-3"></i>
-                            <h5>House Video Available</h5>
-                            <p class="text-muted mb-3">This hearing has video available on the House website.</p>
-                            <a href="{{ hearing[17] }}" target="_blank" class="btn btn-success">
-                                <i class="fas fa-external-link-alt me-2"></i>Watch on House.gov
-                            </a>
-                        </div>
-                    {% elif hearing[19] == 'committee_video' %}
-                        <!-- Committee video page link -->
-                        <div class="text-center py-4">
-                            <i class="fas fa-video fa-3x text-info mb-3"></i>
-                            <h5>Committee Video Available</h5>
-                            <p class="text-muted mb-3">This hearing has video available on Congress.gov.</p>
-                            <a href="{{ hearing[17] }}" target="_blank" class="btn btn-info">
-                                <i class="fas fa-external-link-alt me-2"></i>Watch on Congress.gov
-                            </a>
-                        </div>
-                    {% elif hearing[19] == 'event_page' %}
-                        <!-- Event page link (fallback) -->
-                        <div class="text-center py-4">
-                            <i class="fas fa-calendar-alt fa-3x text-secondary mb-3"></i>
-                            <h5>Event Page Available</h5>
-                            <p class="text-muted mb-3">View this hearing on Congress.gov for video information.</p>
-                            <a href="{{ hearing[17] }}" target="_blank" class="btn btn-secondary">
-                                <i class="fas fa-external-link-alt me-2"></i>View on Congress.gov
-                            </a>
-                        </div>
                     {% else %}
-                        <!-- Generic video link -->
-                        <div class="text-center py-4">
-                            <i class="fas fa-video fa-3x text-primary mb-3"></i>
-                            <h5>Video Available</h5>
-                            <p class="text-muted mb-3">This hearing has video available.</p>
-                            <a href="{{ hearing[17] }}" target="_blank" class="btn btn-primary">
-                                <i class="fas fa-external-link-alt me-2"></i>Watch Video
-                            </a>
-                        </div>
+                        at {{ hearing[16] }}
                     {% endif %}
-                {% else %}
-                    <div class="text-center py-4">
-                        <i class="fas fa-video-slash fa-3x text-muted mb-3"></i>
-                        <p class="text-muted mb-0">Data will display when it becomes available.</p>
-                    </div>
                 {% endif %}
-            </div>
+            {% else %}
+                <span class="text-muted">TBD</span>
+            {% endif %}
         </div>
+
+        {% if hearing[8] %}
+        <div class="hearing-meta-item">
+            <strong>Location:</strong>
+            {{ hearing[8] | format_location }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="hearing-meta" style="margin-top: 0.75rem;">
+        {% if hearing[3] %}
+        <div class="hearing-meta-item">
+            <strong>Chamber:</strong>
+            {% if hearing[3] == 'House' %}
+                <span class="badge bg-success">{{ hearing[3] }}</span>
+            {% elif hearing[3] == 'Senate' %}
+                <span class="badge bg-info">{{ hearing[3] }}</span>
+            {% elif hearing[3] == 'Joint' %}
+                <span class="badge bg-warning text-dark">{{ hearing[3] }}</span>
+            {% else %}
+                <span class="badge bg-secondary">{{ hearing[3] }}</span>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if committees %}
+        <div class="hearing-meta-item">
+            {% for committee in committees %}
+                {% if committee[5] %}
+                    {# Has parent committee - show hierarchy #}
+                    <span style="display: inline-flex; align-items: center; gap: 0.35rem;">
+                        <a href="{{ url_for('committees.committee_detail', committee_id=committee[4]) }}"
+                           style="color: #6c757d; text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s ease, border-bottom-color 0.2s ease; font-size: 0.9em; opacity: 0.85;"
+                           onmouseover="this.style.color='#1a1a1a'; this.style.borderBottomColor='#1a1a1a'; this.style.opacity='1';"
+                           onmouseout="this.style.color='#6c757d'; this.style.borderBottomColor='transparent'; this.style.opacity='0.85';">
+                            {{ committee[5] }}
+                        </a>
+                        <span style="color: #d0d0d0; font-size: 0.85em;">/</span>
+                        <a href="{{ url_for('committees.committee_detail', committee_id=committee[0]) }}"
+                           style="color: #6c757d; text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s ease, border-bottom-color 0.2s ease;"
+                           onmouseover="this.style.color='#1a1a1a'; this.style.borderBottomColor='#1a1a1a';"
+                           onmouseout="this.style.color='#6c757d'; this.style.borderBottomColor='transparent';">
+                            {{ committee[1] }}
+                        </a>
+                    </span>
+                {% else %}
+                    {# No parent committee #}
+                    <a href="{{ url_for('committees.committee_detail', committee_id=committee[0]) }}"
+                       style="color: #6c757d; text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s ease, border-bottom-color 0.2s ease;"
+                       onmouseover="this.style.color='#1a1a1a'; this.style.borderBottomColor='#1a1a1a';"
+                       onmouseout="this.style.color='#6c757d'; this.style.borderBottomColor='transparent';">
+                        {{ committee[1] }}
+                    </a>
+                {% endif %}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if hearing[6] %}
+        <div class="hearing-meta-item">
+            <strong>Status:</strong>
+            <span class="badge bg-light text-dark">{{ hearing[6] }}</span>
+        </div>
+        {% endif %}
+
+        {% if hearing[2] %}
+        <div class="hearing-meta-item">
+            <strong>Congress:</strong>
+            {{ hearing[2] }}
+        </div>
+        {% endif %}
     </div>
 </div>
 
-<!-- Associated Committees -->
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">
-                    <i class="fas fa-users me-2"></i>
-                    Associated Committees ({{ committees|length }})
-                </h5>
+<!-- Video Section -->
+<div class="section">
+    <h2 class="section-title">Video</h2>
+    {% if hearing[17] or hearing[18] %}
+        {% if hearing[19] == 'youtube' %}
+            <!-- YouTube video embed -->
+            <div class="video-wrapper">
+                <div class="video-container">
+                    <div class="ratio ratio-16x9">
+                        <iframe
+                            src="https://www.youtube.com/embed/{{ hearing[18] }}"
+                            title="Hearing Video"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                {% if committees %}
-                <div class="row">
-                    {% for committee in committees %}
-                    <div class="col-md-6 mb-3">
-                        <div class="card {% if committee[3] %}border-primary{% else %}border-secondary{% endif %}">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <h6 class="card-title">
-                                            <a href="{{ url_for('committees.committee_detail', committee_id=committee[0]) }}"
-                                               class="committee-link">
-                                                {{ committee[1] }}
-                                            </a>
-                                        </h6>
-                                        <p class="card-text">
-                                            <small class="text-muted">{{ committee[2] }}</small>
-                                        </p>
-                                    </div>
-                                    <div>
-                                        {% if committee[3] %}
-                                            <span class="badge bg-primary">Primary</span>
-                                        {% else %}
-                                            <span class="badge bg-secondary">Related</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
+        {% elif hearing[19] == 'senate_isvp' %}
+            {% if hearing[7] and hearing[7] >= today %}
+                <!-- Future Senate ISVP hearing -->
+                <div class="video-external">
+                    <div class="video-external-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="video-external-title">Senate Video with Countdown</h3>
+                    <p class="video-external-desc">This hearing is scheduled for the future. The Senate.gov page shows a countdown timer.</p>
+                    <a href="{{ hearing[17] }}" target="_blank" class="video-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        View Countdown on Senate.gov
+                    </a>
+                </div>
+            {% else %}
+                <!-- Past Senate ISVP hearing -->
+                <div class="video-wrapper">
+                    <div class="video-container">
+                        <div class="ratio ratio-16x9">
+                            <iframe
+                                src="{{ hearing[17] }}"
+                                title="Senate Hearing Video"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                            </iframe>
                         </div>
                     </div>
-                    {% endfor %}
                 </div>
-                {% else %}
-                <div class="text-center py-4">
-                    <i class="fas fa-users-slash fa-3x text-muted mb-3"></i>
-                    <h5 class="text-muted">No associated committees</h5>
-                    <p class="text-muted">This hearing has no recorded committee associations.</p>
+            {% endif %}
+        {% elif hearing[19] == 'house_video' %}
+            <!-- House video link -->
+            <div class="video-external">
+                <div class="video-external-icon">
+                    <i class="fas fa-video"></i>
                 </div>
-                {% endif %}
+                <h3 class="video-external-title">House Video Available</h3>
+                <p class="video-external-desc">This hearing has video available on the House website.</p>
+                <a href="{{ hearing[17] }}" target="_blank" class="video-btn">
+                    <i class="fas fa-external-link-alt"></i>
+                    Watch on House.gov
+                </a>
             </div>
+        {% elif hearing[19] == 'committee_video' %}
+            <!-- Committee video page link -->
+            <div class="video-external">
+                <div class="video-external-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h3 class="video-external-title">Committee Video Available</h3>
+                <p class="video-external-desc">This hearing has video available on Congress.gov.</p>
+                <a href="{{ hearing[17] }}" target="_blank" class="video-btn">
+                    <i class="fas fa-external-link-alt"></i>
+                    Watch on Congress.gov
+                </a>
+            </div>
+        {% elif hearing[19] == 'event_page' %}
+            <!-- Event page link -->
+            <div class="video-external">
+                <div class="video-external-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3 class="video-external-title">Event Page Available</h3>
+                <p class="video-external-desc">View this hearing on Congress.gov for video information.</p>
+                <a href="{{ hearing[17] }}" target="_blank" class="video-btn">
+                    <i class="fas fa-external-link-alt"></i>
+                    View on Congress.gov
+                </a>
+            </div>
+        {% else %}
+            <!-- Generic video link -->
+            <div class="video-external">
+                <div class="video-external-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h3 class="video-external-title">Video Available</h3>
+                <p class="video-external-desc">This hearing has video available.</p>
+                <a href="{{ hearing[17] }}" target="_blank" class="video-btn">
+                    <i class="fas fa-external-link-alt"></i>
+                    Watch Video
+                </a>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="fas fa-video-slash"></i>
+            </div>
+            <p>Data will display when it becomes available.</p>
         </div>
-    </div>
+    {% endif %}
 </div>
 
 <!-- Witnesses Section -->
 {% if witnesses %}
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">
-                    <i class="fas fa-users me-2"></i>
-                    Witnesses ({{ witnesses|length }})
-                </h5>
+<div class="section">
+    <h2 class="section-title">Witnesses ({{ witnesses|length }})</h2>
+    <div class="witness-list">
+        {% for witness in witnesses %}
+        <div class="witness-item">
+            <a href="{{ url_for('main_pages.witness_detail', witness_id=witness[0]) }}" class="witness-name">
+                {{ witness[1] }}
+            </a>
+            {% if witness[4] or witness[5] %}
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
+                {% if witness[4] %}
+                <div class="witness-title">{{ witness[4] }}</div>
+                {% endif %}
+                {% if witness[4] and witness[5] %}
+                <span style="color: #d0d0d0;">·</span>
+                {% endif %}
+                {% if witness[5] %}
+                <div class="witness-org" style="margin-bottom: 0;">{{ witness[5] }}</div>
+                {% endif %}
+                {% if witness[6] %}
+                <span class="badge
+                    {% if witness[6] == 'Government' %}bg-primary
+                    {% elif witness[6] == 'Academic' %}bg-info
+                    {% elif witness[6] == 'Private' %}bg-success
+                    {% elif witness[6] == 'Nonprofit' %}bg-warning text-dark
+                    {% else %}bg-secondary
+                    {% endif %}"
+                    style="margin-left: 0.25rem;">
+                    {{ witness[6] }}
+                </span>
+                {% endif %}
             </div>
-            <div class="card-body">
-                <div class="row">
-                    {% for witness in witnesses %}
-                    <div class="col-md-6 mb-3">
-                        <div class="card border-light">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div class="flex-grow-1">
-                                        <h6 class="card-title mb-1">{{ witness[1] }}</h6>
-                                        {% if witness[4] %}
-                                        <p class="text-muted mb-1">
-                                            <strong>{{ witness[4] }}</strong>
-                                        </p>
-                                        {% endif %}
-                                        {% if witness[5] %}
-                                        <p class="text-muted mb-2">{{ witness[5] }}</p>
-                                        {% endif %}
-                                        <div class="d-flex gap-2 flex-wrap">
-                                            {% if witness[6] %}
-                                            <span class="badge
-                                                {% if witness[6] == 'Government' %}bg-primary
-                                                {% elif witness[6] == 'Academic' %}bg-info
-                                                {% elif witness[6] == 'Private' %}bg-success
-                                                {% elif witness[6] == 'Nonprofit' %}bg-warning text-dark
-                                                {% else %}bg-secondary
-                                                {% endif %}">
-                                                {{ witness[6] }}
-                                            </span>
-                                            {% endif %}
-                                            {% if witness[7] %}
-                                            <span class="badge bg-light text-dark">Order: {{ witness[7] }}</span>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            {% endif %}
+
+            {# Show witness documents nested under this witness #}
+            {% set witness_docs = witness_documents|selectattr('1', 'equalto', witness[0])|list %}
+            {% if witness_docs %}
+            <div class="witness-docs">
+                {% for doc in witness_docs|sort(attribute='6') %}
+                {% if doc[4] %}
+                <a href="{{ doc[4] }}" target="_blank" class="witness-doc-link">
+                    <div>
+                        {{ doc[6] if doc[6] else doc[3] }}
                     </div>
-                    {% endfor %}
-                </div>
+                    <div class="doc-icon">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+                {% endif %}
+                {% endfor %}
             </div>
+            {% endif %}
         </div>
+        {% endfor %}
     </div>
 </div>
 {% endif %}
 
 <!-- Documents Section -->
-{% if transcripts or witness_documents or supporting_documents %}
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">
-                    <i class="fas fa-file-alt me-2"></i>
-                    Documents
-                </h5>
-            </div>
-            <div class="card-body">
-                <!-- Hearing Transcripts -->
-                {% if transcripts %}
-                <div class="mb-4">
-                    <h6 class="mb-3"><i class="fas fa-file-alt me-2"></i>Official Transcripts</h6>
-                    <div class="list-group">
-                        {% for transcript in transcripts %}
-                        {% set doc_url = transcript[4] or transcript[5] or transcript[3] %}
-                        <a href="{{ doc_url }}" target="_blank" class="list-group-item list-group-item-action" style="cursor: pointer;">
-                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-0">
-                                        {% if transcript[2] %}
-                                            {{ transcript[2] }}
-                                        {% elif transcript[1] %}
-                                            Hearing Transcript ({{ transcript[1] }})
-                                        {% else %}
-                                            Hearing Transcript
-                                        {% endif %}
-                                    </h6>
-                                </div>
-                                <div>
-                                    <i class="fas fa-external-link-alt text-muted"></i>
-                                </div>
-                            </div>
-                        </a>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
+{% if transcripts or supporting_documents %}
+<div class="section">
+    <h2 class="section-title">Documents</h2>
 
-                <!-- Witness Documents -->
-                {% if witness_documents %}
-                <div class="mb-4">
-                    <h6 class="mb-3"><i class="fas fa-user-tie me-2"></i>Witness Statements</h6>
-                    {% set witness_docs_by_name = {} %}
-                    {% for doc in witness_documents %}
-                        {% set witness_name = doc[2] %}
-                        {% if witness_name not in witness_docs_by_name %}
-                            {% set _ = witness_docs_by_name.update({witness_name: []}) %}
-                        {% endif %}
-                        {% set _ = witness_docs_by_name[witness_name].append(doc) %}
-                    {% endfor %}
-
-                    {% for witness_name in witness_docs_by_name.keys()|sort %}
-                        <div class="mb-3">
-                            <h6 class="text-primary mb-2">{{ witness_name }}</h6>
-                            <div class="list-group">
-                                {% for doc in witness_docs_by_name[witness_name]|sort(attribute='6') %}
-                                {% if doc[4] %}
-                                <a href="{{ doc[4] }}" target="_blank" class="list-group-item list-group-item-action" style="cursor: pointer;">
-                                    <div class="d-flex w-100 justify-content-between align-items-center">
-                                        <div>
-                                            <h6 class="mb-0">
-                                                {% if doc[3] %}
-                                                    {{ doc[3] }}
-                                                {% else %}
-                                                    {{ doc[6] if doc[6] else 'Document' }}
-                                                {% endif %}
-                                            </h6>
-                                        </div>
-                                        <div>
-                                            <i class="fas fa-external-link-alt text-muted"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                                {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-
-                <!-- Supporting Documents -->
-                {% if supporting_documents %}
+    <!-- Hearing Transcripts -->
+    {% if transcripts %}
+    <div class="document-section">
+        <h3 class="document-section-title">Official Transcripts</h3>
+        <div class="doc-list">
+            {% for transcript in transcripts %}
+            {% set doc_url = transcript[4] or transcript[5] or transcript[3] %}
+            <a href="{{ doc_url }}" target="_blank" class="doc-link">
                 <div>
-                    <h6 class="mb-3"><i class="fas fa-paperclip me-2"></i>Supporting Materials</h6>
-                    <div class="list-group">
-                        {% for doc in supporting_documents %}
-                        {% if doc[2] %}
-                        <a href="{{ doc[2] }}" target="_blank" class="list-group-item list-group-item-action" style="cursor: pointer;">
-                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">
-                                        {% if doc[1] %}
-                                            {{ doc[1] }}
-                                        {% else %}
-                                            Supporting Document
-                                        {% endif %}
-                                    </h6>
-                                    {% if doc[5] %}
-                                    <p class="mb-0 text-muted small">{{ doc[5] }}</p>
-                                    {% endif %}
-                                </div>
-                                <div>
-                                    <i class="fas fa-external-link-alt text-muted"></i>
-                                </div>
-                            </div>
-                        </a>
+                    <div class="doc-title">
+                        {% if transcript[2] %}
+                            {{ transcript[2] }}
+                        {% elif transcript[1] %}
+                            Hearing Transcript ({{ transcript[1] }})
+                        {% else %}
+                            Hearing Transcript
                         {% endif %}
-                        {% endfor %}
                     </div>
                 </div>
-                {% endif %}
-            </div>
+                <div class="doc-icon">
+                    <i class="fas fa-external-link-alt"></i>
+                </div>
+            </a>
+            {% endfor %}
         </div>
     </div>
+    {% endif %}
+
+    <!-- Supporting Documents -->
+    {% if supporting_documents %}
+    <div class="document-section">
+        <h3 class="document-section-title">Supporting Materials</h3>
+        <div class="doc-list">
+            {% for doc in supporting_documents %}
+            {% if doc[2] %}
+            <a href="{{ doc[2] }}" target="_blank" class="doc-link">
+                <div style="flex: 1;">
+                    <div class="doc-title">
+                        {% if doc[1] %}
+                            {{ doc[1] }}
+                        {% else %}
+                            Supporting Document
+                        {% endif %}
+                    </div>
+                    {% if doc[5] %}
+                    <div class="doc-description">{{ doc[5] }}</div>
+                    {% endif %}
+                </div>
+                <div class="doc-icon">
+                    <i class="fas fa-external-link-alt"></i>
+                </div>
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endif %}
 
 <!-- Additional Information -->
 {% if hearing[13] or hearing[14] %}
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">
-                    <i class="fas fa-info-circle me-2"></i>
-                    Additional Information
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        {% if hearing[13] %}
-                        <h6>Created</h6>
-                        <p class="text-muted">{{ hearing[13] }}</p>
-                        {% endif %}
-                    </div>
-                    <div class="col-md-6">
-                        {% if hearing[14] %}
-                        <h6>Last Updated</h6>
-                        <p class="text-muted">{{ hearing[14] }}</p>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        {% set congress_url = hearing | congress_gov_url %}
-                        {% if congress_url %}
-                        <h6>Congress.gov URL</h6>
-                        <p><a href="{{ congress_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-external-link-alt me-1"></i>View on Congress.gov
-                        </a></p>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
+<div class="section">
+    <h2 class="section-title">Additional Information</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; color: #6c757d; font-size: 0.95rem;">
+        {% if hearing[13] %}
+        <div>
+            <strong style="color: #1a1a1a; font-weight: 500;">Created:</strong>
+            {{ hearing[13] }}
         </div>
+        {% endif %}
+
+        {% if hearing[14] %}
+        <div>
+            <strong style="color: #1a1a1a; font-weight: 500;">Last Updated:</strong>
+            {{ hearing[14] }}
+        </div>
+        {% endif %}
+
+        {% set congress_url = hearing | congress_gov_url %}
+        {% if congress_url %}
+        <div>
+            <a href="{{ congress_url }}" target="_blank"
+               style="color: #6c757d; text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s ease, border-bottom-color 0.2s ease; font-size: 0.9rem;"
+               onmouseover="this.style.color='#1a1a1a'; this.style.borderBottomColor='#1a1a1a';"
+               onmouseout="this.style.color='#6c757d'; this.style.borderBottomColor='transparent';">
+                <i class="fas fa-external-link-alt" style="font-size: 0.75rem; opacity: 0.6;"></i>
+                View on Congress.gov
+            </a>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endif %}

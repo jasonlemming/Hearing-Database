@@ -14,11 +14,14 @@ db = DatabaseManager()
 def members():
     """Browse members"""
     try:
-        search = request.args.get('search', '')
         party = request.args.get('party', '')
         state = request.args.get('state', '')
         chamber = request.args.get('chamber', '')
-        committee = request.args.get('committee', '')
+        sort_by = request.args.get('sort', 'name')
+        sort_order = request.args.get('order', 'asc')
+        page = int(request.args.get('page', 1))
+        per_page = 20
+        offset = (page - 1) * per_page
 
         query = '''
             SELECT DISTINCT m.member_id, m.full_name, m.party, m.state, m.district,
@@ -29,14 +32,9 @@ def members():
                    END as chamber
             FROM members m
             LEFT JOIN committee_memberships cm ON m.member_id = cm.member_id AND cm.is_active = 1
-            LEFT JOIN committees c ON cm.committee_id = c.committee_id
             WHERE 1=1
         '''
         params = []
-
-        if search:
-            query += ' AND m.full_name LIKE ?'
-            params.append(f'%{search}%')
 
         if party:
             query += ' AND m.party = ?'
@@ -52,50 +50,65 @@ def members():
             elif chamber == 'Senate':
                 query += ' AND m.district IS NULL'
 
-        if committee:
-            query += ' AND cm.committee_id = ?'
-            params.append(committee)
+        query += ' GROUP BY m.member_id, m.full_name, m.party, m.state, m.district'
 
-        query += '''
-            GROUP BY m.member_id, m.full_name, m.party, m.state, m.district
-            ORDER BY m.last_name, m.first_name
-        '''
+        # Count total for pagination
+        count_query = f"SELECT COUNT(*) FROM ({query}) as count_query"
 
         with db.transaction() as conn:
+            cursor = conn.execute(count_query, params)
+            total = cursor.fetchone()[0]
+
+            # Add sorting
+            sort_columns = {
+                'name': 'm.full_name',
+                'party': 'm.party',
+                'state': 'm.state',
+                'chamber': 'chamber',
+                'committees': 'committee_count'
+            }
+
+            sort_column = sort_columns.get(sort_by, 'm.full_name')
+            sort_direction = 'ASC' if sort_order == 'asc' else 'DESC'
+
+            query += f' ORDER BY {sort_column} {sort_direction}'
+
+            # Get page of results
+            query += ' LIMIT ? OFFSET ?'
+            params.extend([per_page, offset])
+
             cursor = conn.execute(query, params)
             members_data = cursor.fetchall()
 
             # Get filter options
-            cursor = conn.execute('SELECT DISTINCT party FROM members ORDER BY party')
+            cursor = conn.execute('SELECT DISTINCT party FROM members WHERE party IS NOT NULL ORDER BY party')
             parties = [row[0] for row in cursor.fetchall()]
 
-            cursor = conn.execute('SELECT DISTINCT state FROM members ORDER BY state')
+            cursor = conn.execute('SELECT DISTINCT state FROM members WHERE state IS NOT NULL ORDER BY state')
             states = [row[0] for row in cursor.fetchall()]
 
-            # Get chambers from member data
             chambers = ['House', 'Senate']
 
-            # Get committees that have members
-            cursor = conn.execute('''
-                SELECT DISTINCT c.committee_id, c.name
-                FROM committees c
-                JOIN committee_memberships cm ON c.committee_id = cm.committee_id
-                WHERE cm.is_active = 1 AND c.parent_committee_id IS NULL
-                ORDER BY c.name
-            ''')
-            committees = cursor.fetchall()
+        # Pagination info
+        total_pages = (total + per_page - 1) // per_page
+        has_prev = page > 1
+        has_next = page < total_pages
 
         return render_template('members.html',
                              members=members_data,
                              parties=parties,
                              states=states,
                              chambers=chambers,
-                             committees=committees,
-                             search=search,
                              selected_party=party,
                              selected_state=state,
                              selected_chamber=chamber,
-                             selected_committee=committee)
+                             sort_by=sort_by,
+                             sort_order=sort_order,
+                             page=page,
+                             total_pages=total_pages,
+                             has_prev=has_prev,
+                             has_next=has_next,
+                             total=total)
     except Exception as e:
         return f"Error: {e}", 500
 
@@ -106,8 +119,8 @@ def witnesses():
     try:
         search = request.args.get('search', '')
         witness_type = request.args.get('type', '')
-        sort_by = request.args.get('sort', 'name')
-        sort_order = request.args.get('order', 'asc')
+        sort_by = request.args.get('sort', 'recent')
+        sort_order = request.args.get('order', 'desc')
         page = int(request.args.get('page', 1))
         per_page = 20
         offset = (page - 1) * per_page
@@ -117,8 +130,7 @@ def witnesses():
             SELECT w.witness_id, w.full_name, w.first_name, w.last_name, w.title, w.organization,
                    wa.witness_type,
                    COUNT(DISTINCT wa.hearing_id) as hearing_count,
-                   GROUP_CONCAT(h.title, '|||') as hearing_titles,
-                   GROUP_CONCAT(wa.hearing_id, '|||') as hearing_ids
+                   MAX(h.hearing_date) as latest_appearance
             FROM witnesses w
             LEFT JOIN witness_appearances wa ON w.witness_id = wa.witness_id
             LEFT JOIN hearings h ON wa.hearing_id = h.hearing_id
@@ -135,7 +147,6 @@ def witnesses():
             query += ' AND wa.witness_type = ?'
             params.append(witness_type)
 
-
         query += ' GROUP BY w.witness_id'
 
         # Count total for pagination
@@ -149,13 +160,20 @@ def witnesses():
             sort_columns = {
                 'name': 'w.full_name',
                 'organization': 'w.organization',
-                'type': 'wa.witness_type',
-                'hearings': 'hearing_count'
+                'hearings': 'hearing_count',
+                'recent': 'latest_appearance'
             }
 
             sort_column = sort_columns.get(sort_by, 'w.full_name')
             sort_direction = 'ASC' if sort_order == 'asc' else 'DESC'
-            query += f' ORDER BY {sort_column} {sort_direction}'
+
+            # Handle NULL values for organization and latest_appearance
+            if sort_by == 'organization':
+                query += f' ORDER BY {sort_column} IS NULL, {sort_column} {sort_direction}'
+            elif sort_by == 'recent':
+                query += f' ORDER BY {sort_column} DESC NULLS LAST'
+            else:
+                query += f' ORDER BY {sort_column} {sort_direction}'
 
             # Get page of results
             query += ' LIMIT ? OFFSET ?'
@@ -319,9 +337,30 @@ def member_detail(member_id):
                 JOIN committees c ON cm.committee_id = c.committee_id
                 LEFT JOIN committees pc ON c.parent_committee_id = pc.committee_id
                 WHERE cm.member_id = ? AND cm.is_active = 1
-                ORDER BY c.parent_committee_id IS NULL DESC, c.name
+                ORDER BY c.chamber, COALESCE(pc.name, c.name), c.parent_committee_id IS NOT NULL, c.name
             ''', (member_id,))
-            committees = cursor.fetchall()
+            committees_raw = cursor.fetchall()
+
+            # Organize committees into parent/subcommittee groups
+            committees = {}
+            for committee in committees_raw:
+                committee_id, name, chamber, type_, role, is_active, parent_id, parent_name = committee
+
+                if parent_id is None:
+                    # Parent committee
+                    if committee_id not in committees:
+                        committees[committee_id] = {
+                            'info': committee,
+                            'subcommittees': []
+                        }
+                else:
+                    # Subcommittee - find or create parent entry
+                    if parent_id not in committees:
+                        committees[parent_id] = {
+                            'info': None,  # Member might not be on parent
+                            'subcommittees': []
+                        }
+                    committees[parent_id]['subcommittees'].append(committee)
 
             # Get recent hearings this member's committees have participated in
             cursor = conn.execute('''
@@ -408,10 +447,9 @@ def witness_detail(witness_id):
             committees = cursor.fetchall()
 
             # Get documents for each hearing this witness appeared at
-            # Build a dictionary mapping hearing_id to documents
             hearing_documents = {}
             for appearance in appearances:
-                hearing_id = appearance[0]  # h.hearing_id is first column
+                hearing_id = appearance[0]
 
                 # Get witness documents for this hearing
                 cursor = conn.execute('''
@@ -423,27 +461,8 @@ def witness_detail(witness_id):
                 ''', (hearing_id, witness_id))
                 witness_docs = cursor.fetchall()
 
-                # Get transcripts for this hearing
-                cursor = conn.execute('''
-                    SELECT transcript_id, jacket_number, title, document_url, pdf_url, html_url, format_type
-                    FROM hearing_transcripts
-                    WHERE hearing_id = ?
-                ''', (hearing_id,))
-                transcripts = cursor.fetchall()
-
-                # Get supporting documents for this hearing
-                cursor = conn.execute('''
-                    SELECT document_id, title, document_url, format_type, document_type, description
-                    FROM supporting_documents
-                    WHERE hearing_id = ?
-                    ORDER BY document_type, title
-                ''', (hearing_id,))
-                supporting_docs = cursor.fetchall()
-
                 hearing_documents[hearing_id] = {
-                    'witness_documents': witness_docs,
-                    'transcripts': transcripts,
-                    'supporting_documents': supporting_docs
+                    'witness_documents': witness_docs
                 }
 
         return render_template('witness_detail.html',

@@ -1,0 +1,153 @@
+{% extends "crs_base.html" %}
+
+{% block title %}Search - CRS Products{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="mb-3">
+            <i class="fas fa-search me-3"></i>
+            Search CRS Products
+        </h1>
+    </div>
+</div>
+
+<!-- Search Bar -->
+<div class="row mb-4">
+    <div class="col-12">
+        <form method="GET" action="{{ url_for('crs.search') }}" class="mb-0">
+            <div class="input-group input-group-lg">
+                <input type="text" class="form-control" name="q" placeholder="Search CRS products by title or topic..." value="{{ query }}" required>
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-search me-2"></i>Search
+                </button>
+                {% if query %}
+                <a href="{{ url_for('crs.index') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-times"></i> Clear
+                </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if query %}
+<!-- Search Banner -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="alert alert-info d-flex justify-content-between align-items-center">
+            <span>
+                <strong>Search results for:</strong> "{{ query }}" — {{ total }} results found
+            </span>
+            <a href="{{ url_for('crs.export_csv', q=query) }}" class="btn btn-sm btn-success">
+                <i class="fas fa-download me-2"></i>Export CSV
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Results -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-list me-2"></i>
+                    Search Results
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if results %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%">Title</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Links</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in results %}
+                            <tr>
+                                <td>
+                                    <a href="{{ url_for('crs.product_detail', product_id=product['product_id']) }}" class="text-decoration-none">
+                                        {{ product['title'] }}
+                                    </a>
+                                    <br>
+                                    <small class="text-muted">{{ product['product_id'] }}</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">{{ product['product_type'] }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge {% if product['status'] == 'Active' %}bg-success{% else %}bg-secondary{% endif %}">
+                                        {{ product['status'] }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if product['publication_date'] %}
+                                        {{ product['publication_date']|string|truncate(10, true, '') }}
+                                    {% else %}
+                                        <span class="text-muted">n.d.</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if product['url_html'] %}
+                                    <a href="{{ product['url_html'] }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary me-1">
+                                        <i class="fas fa-file-alt"></i> HTML
+                                    </a>
+                                    {% endif %}
+                                    {% if product['url_pdf'] %}
+                                    <a href="{{ product['url_pdf'] }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-file-pdf"></i> PDF
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                {% if total_pages > 1 %}
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        {% if page > 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('crs.search', q=query, page=page-1) }}">Previous</a>
+                        </li>
+                        {% endif %}
+
+                        {% for p in range(1, total_pages + 1) %}
+                            {% if p == page %}
+                            <li class="page-item active"><span class="page-link">{{ p }}</span></li>
+                            {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('crs.search', q=query, page=p) }}">{{ p }}</a>
+                            </li>
+                            {% elif p == page - 3 or p == page + 3 %}
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page < total_pages %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('crs.search', q=query, page=page+1) }}">Next</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+                {% else %}
+                <p class="text-center text-muted mt-4">No results found for "{{ query }}"</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

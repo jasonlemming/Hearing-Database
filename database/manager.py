@@ -414,9 +414,81 @@ class DatabaseManager:
         return self.fetch_one(query, (event_id,))
 
     # Witness operations
+    @staticmethod
+    def _normalize_witness_name(full_name: str) -> str:
+        """
+        Normalize witness name by removing titles and honorifics.
+
+        This ensures witnesses are deduplicated even when names have different prefixes
+        (e.g., "The Honorable John Smith" == "John Smith" == "Mr. John Smith")
+
+        Args:
+            full_name: Original full name from API
+
+        Returns:
+            Normalized name without titles
+        """
+        if not full_name:
+            return ''
+
+        # Remove common titles and honorifics
+        normalized = full_name
+        titles = [
+            'The Honorable ',
+            'The Hon. ',
+            'Honorable ',
+            'Hon. ',
+            'Mr. ',
+            'Ms. ',
+            'Mrs. ',
+            'Miss ',
+            'Dr. ',
+            'Prof. ',
+            'Professor ',
+            'Sen. ',
+            'Senator ',
+            'Rep. ',
+            'Representative ',
+            'Gov. ',
+            'Governor ',
+            'Lt. Gov. ',
+            'Lieutenant Governor ',
+            'Atty. Gen. ',
+            'Attorney General ',
+            'Sec. ',
+            'Secretary ',
+            'Director ',
+            'Administrator ',
+            'Commissioner ',
+            'Chief ',
+            'Gen. ',
+            'General ',
+            'Admiral ',
+            'Colonel ',
+            'Major ',
+            'Captain ',
+            'Lieutenant ',
+            'Sergeant '
+        ]
+
+        for title in titles:
+            if normalized.startswith(title):
+                normalized = normalized[len(title):]
+                break  # Only remove first matching title
+
+        return normalized.strip()
+
     def get_or_create_witness(self, witness_data: Dict[str, Any]) -> int:
         """
-        Get existing witness or create new one
+        Get existing witness or create new one, with name normalization to prevent duplicates.
+
+        Matches witnesses by:
+        1. Normalized name + organization (primary method - handles title variations)
+        2. Exact last name + first name + organization (fallback)
+
+        This prevents duplicates like:
+        - "John Smith" vs "The Honorable John Smith"
+        - "Jane Doe" vs "Dr. Jane Doe"
 
         Args:
             witness_data: Witness data dictionary
@@ -424,35 +496,61 @@ class DatabaseManager:
         Returns:
             Witness ID
         """
-        # Try to find existing witness by full name and organization
+        full_name = witness_data.get('full_name', '')
+        last_name = witness_data.get('last_name', '')
+        first_name = witness_data.get('first_name', '')
+        organization = witness_data.get('organization', '')
+
+        # Normalize the name for matching
+        normalized_name = self._normalize_witness_name(full_name)
+
+        # Try to find existing witness by normalized name and organization
+        # This query checks if any existing witness has the same normalized name
         query = """
-        SELECT witness_id FROM witnesses
-        WHERE full_name = ? AND COALESCE(organization, '') = COALESCE(?, '')
+        SELECT witness_id, full_name FROM witnesses
+        WHERE COALESCE(organization, '') = COALESCE(?, '')
         """
 
-        existing = self.fetch_one(query, (
-            witness_data.get('full_name'),
-            witness_data.get('organization', '')
-        ))
+        params = [organization]
+        candidates = self.fetch_all(query, tuple(params))
 
-        if existing:
-            return existing['witness_id']
+        # Check each candidate for normalized name match
+        for candidate in candidates:
+            candidate_normalized = self._normalize_witness_name(candidate['full_name'])
+            if candidate_normalized == normalized_name:
+                logger.debug(f"Found existing witness {candidate['witness_id']}: '{candidate['full_name']}' matches '{full_name}'")
+                return candidate['witness_id']
 
-        # Create new witness
+        # Fallback: Try matching by exact last_name + first_name + organization
+        # This catches cases where the names are structured differently
+        if last_name and first_name:
+            fallback_query = """
+            SELECT witness_id FROM witnesses
+            WHERE last_name = ? AND first_name = ?
+            AND COALESCE(organization, '') = COALESCE(?, '')
+            """
+
+            existing = self.fetch_one(fallback_query, (last_name, first_name, organization))
+            if existing:
+                logger.debug(f"Found existing witness {existing['witness_id']} by last/first name match")
+                return existing['witness_id']
+
+        # No match found - create new witness
         insert_query = """
         INSERT INTO witnesses (first_name, last_name, full_name, title, organization)
         VALUES (?, ?, ?, ?, ?)
         """
 
         params = (
-            witness_data.get('first_name'),
-            witness_data.get('last_name'),
-            witness_data.get('full_name'),
+            first_name,
+            last_name,
+            full_name,  # Store original full name with titles
             witness_data.get('title'),
-            witness_data.get('organization')
+            organization
         )
 
         cursor = self.execute(insert_query, params)
+        logger.debug(f"Created new witness {cursor.lastrowid}: '{full_name}'")
         return cursor.lastrowid
 
     # Bill operations

@@ -1,0 +1,376 @@
+{% extends "crs_base_v2.html" %}
+
+{% block title %}{{ product['title'] }}{% endblock %}
+
+{% block head_style %}
+/* Back link */
+.back-link {
+    font-size: 0.9rem;
+    color: #6c757d;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 3rem;
+}
+
+.back-link:hover {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+/* Document title */
+.doc-title {
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+}
+
+/* Metadata section - minimal, all in one block */
+.metadata {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-bottom: 3rem;
+    line-height: 1.8;
+}
+
+.metadata-line {
+    margin-bottom: 0.5rem;
+}
+
+.metadata a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.metadata a:hover {
+    color: #1a1a1a;
+    text-decoration: underline;
+}
+
+/* Content - Georgia serif like Policy Library */
+.content-section {
+    margin-bottom: 4rem;
+}
+
+.content-preview {
+    font-family: Georgia, serif;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #1a1a1a;
+}
+
+.content-preview p {
+    margin-bottom: 1.2rem;
+}
+
+/* Content headings - sans-serif to contrast with body */
+.content-preview h1,
+.content-preview h2,
+.content-preview h3,
+.content-preview .Heading1,
+.content-preview .Heading2,
+.content-preview .Heading3,
+.content-preview .SummaryHeading {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.content-preview h1,
+.content-preview .Heading1,
+.content-preview .SummaryHeading {
+    font-size: 1.5rem;
+    margin-top: 3rem;
+}
+
+.content-preview h2,
+.content-preview .Heading2 {
+    font-size: 1.25rem;
+    margin-top: 2rem;
+}
+
+.content-preview h3,
+.content-preview .Heading3 {
+    font-size: 1.1rem;
+}
+
+/* Hide duplicate elements from content */
+.content-preview .ReportHeader,
+.content-preview .TOC,
+.content-preview .Title,
+.content-preview .CoverDate,
+.content-preview > div[style*="border-bottom"] {
+    display: none;
+}
+
+/* Tables */
+.content-preview table {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.content-preview table th,
+.content-preview table td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+    text-align: left;
+    vertical-align: top;
+}
+
+.content-preview table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.content-preview table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Lists */
+.content-preview ul,
+.content-preview ol {
+    margin-bottom: 1.2rem;
+    padding-left: 2rem;
+}
+
+.content-preview li {
+    margin-bottom: 0.5rem;
+}
+
+/* Sticky TOC Sidebar - minimal styling */
+.sticky-toc-sidebar {
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sticky-toc {
+    background: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    padding: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.sticky-toc h2 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sticky-toc ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.sticky-toc li {
+    margin-bottom: 0.25rem;
+}
+
+.sticky-toc a {
+    color: #6c757d;
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+    display: block;
+    border-radius: 4px;
+    transition: all 0.2s;
+    font-size: 0.85rem;
+}
+
+.sticky-toc a:hover {
+    color: #0d6efd;
+    background: #f8f9fa;
+}
+
+.sticky-toc a.active {
+    color: #0d6efd;
+    background: #f8f9fa;
+    font-weight: 500;
+}
+
+.sticky-toc .TOC2 {
+    padding-left: 1rem;
+}
+
+.sticky-toc .TOC3 {
+    padding-left: 2rem;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+.content-preview h1,
+.content-preview h2,
+.content-preview h3 {
+    scroll-margin-top: 80px;
+}
+
+/* Hide sticky TOC on mobile */
+@media (max-width: 991px) {
+    .sticky-toc-sidebar {
+        display: none;
+    }
+
+    .doc-title {
+        font-size: 1.5rem;
+    }
+}
+{% endblock %}
+
+{% block head %}
+<script>
+// Setup floating TOC
+document.addEventListener('DOMContentLoaded', function() {
+    // Clone TOC to sidebar
+    const originalToc = document.querySelector('.content-preview .TOC');
+    const sidebar = document.getElementById('sticky-toc-sidebar');
+
+    if (originalToc && sidebar) {
+        // Create sticky TOC
+        const stickyTocDiv = document.createElement('div');
+        stickyTocDiv.className = 'sticky-toc';
+
+        // Add header
+        const header = document.createElement('h2');
+        header.textContent = 'Contents';
+        stickyTocDiv.appendChild(header);
+
+        // Clone TOC content
+        const tocContent = originalToc.cloneNode(true);
+        // Remove the h1 "Contents" heading from cloned version
+        const h1 = tocContent.querySelector('h1');
+        if (h1) h1.remove();
+
+        stickyTocDiv.appendChild(tocContent);
+        sidebar.appendChild(stickyTocDiv);
+
+        // Scroll spy - highlight current section
+        const tocLinks = stickyTocDiv.querySelectorAll('a');
+        const sections = [];
+
+        tocLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                const targetId = href.substring(1);
+                const target = document.querySelector(`[name="${targetId}"], #${targetId}`);
+                if (target) {
+                    sections.push({ link: link, element: target });
+                }
+            }
+        });
+
+        function updateActiveSection() {
+            const scrollPosition = window.scrollY + 100;
+
+            let currentSection = null;
+            sections.forEach(section => {
+                const rect = section.element.getBoundingClientRect();
+                const elementTop = rect.top + window.scrollY;
+
+                if (scrollPosition >= elementTop) {
+                    currentSection = section;
+                }
+            });
+
+            tocLinks.forEach(link => link.classList.remove('active'));
+            if (currentSection) {
+                currentSection.link.classList.add('active');
+            }
+        }
+
+        window.addEventListener('scroll', updateActiveSection);
+        updateActiveSection();
+    }
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('crs.index_v2') }}" class="back-link">← Browse</a>
+
+<h1 class="doc-title">{{ product['title'] }}</h1>
+
+<!-- Minimal metadata block - everything combined -->
+<div class="metadata">
+    <div class="metadata-line">
+        Published {{ product['publication_date']|string|truncate(10, true, '') if product['publication_date'] else 'n.d.' }}
+        · {{ product['product_type'] }}
+        · {{ product['product_id'] }}
+        {% if content_version %}
+        · {{ "{:,}".format(content_version['word_count']|int) }} words
+        · ~{{ (content_version['word_count']|int / 200)|round|int }} min read
+        {% endif %}
+    </div>
+
+    {% set authors = product['authors'] if product['authors'] else [] %}
+    {% if authors %}
+    <div class="metadata-line">
+        {% for author in authors %}<a href="{{ url_for('crs.index_v2', author=author) }}">{{ author }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+    </div>
+    {% endif %}
+
+    {% set topics = product['topics'] if product['topics'] else [] %}
+    {% if topics %}
+    <div class="metadata-line">
+        {% for topic in topics %}<a href="{{ url_for('crs.index_v2', topic=topic) }}">{{ topic }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="metadata-line">
+        {% if product['url_html'] %}<a href="{{ product['url_html'] }}" target="_blank" rel="noopener noreferrer">View on Congress.gov</a>{% endif %}
+        {% if product['url_html'] and product['url_pdf'] %} · {% endif %}
+        {% if product['url_pdf'] %}<a href="{{ product['url_pdf'] }}" target="_blank" rel="noopener noreferrer">PDF</a>{% endif %}
+    </div>
+</div>
+
+<!-- Content -->
+<div class="row">
+    {% set structure_obj = content_version['structure_json'] if content_version else {} %}
+    {% set has_toc = structure_obj and structure_obj is mapping and structure_obj.get('toc', [])|length > 0 %}
+
+    <div class="{% if has_toc %}col-lg-9{% else %}col-12{% endif %}">
+        {% if content_version %}
+        <div class="content-section">
+            <div class="content-preview">
+                {{ content_version['html_content']|safe }}
+            </div>
+        </div>
+        {% else %}
+        <!-- Fallback when no full content -->
+        {% if product['summary'] %}
+        <div class="content-section">
+            <p class="text-secondary">{{ product['summary'] }}</p>
+            <p class="text-secondary" style="font-size: 0.9rem; margin-top: 2rem;">Full content not yet available.</p>
+        </div>
+        {% else %}
+        <p class="text-secondary">Content not yet available.</p>
+        {% endif %}
+        {% endif %}
+    </div>
+
+    <!-- Sticky TOC Sidebar (only shown when TOC is available) -->
+    {% if has_toc %}
+    <div class="col-lg-3">
+        <div class="sticky-toc-sidebar" id="sticky-toc-sidebar">
+            <!-- TOC will be cloned here by JavaScript -->
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

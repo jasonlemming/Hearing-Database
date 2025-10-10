@@ -1,0 +1,193 @@
+{% extends "crs_base.html" %}
+
+{% block title %}CRS Products{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="mb-3">
+            <i class="fas fa-file-alt me-3"></i>
+            CRS Products
+        </h1>
+        <p class="lead text-muted">
+            Browse Congressional Research Service reports and publications
+        </p>
+    </div>
+</div>
+
+<!-- Search Bar -->
+<div class="row mb-4">
+    <div class="col-12">
+        <form method="GET" action="{{ url_for('crs.search') }}" class="mb-0">
+            <div class="input-group input-group-lg">
+                <input type="text" class="form-control" name="q" placeholder="Search CRS products by title or topic..." required>
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-search me-2"></i>Search
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-filter me-2"></i>
+                    Filters
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="GET" action="{{ url_for('crs.index') }}">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Product Type</label>
+                            <select name="product_type" class="form-select">
+                                <option value="">All Types</option>
+                                {% for type in product_types %}
+                                <option value="{{ type }}" {% if type == selected_product_type %}selected{% endif %}>
+                                    {{ type }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Status</label>
+                            <select name="status" class="form-select">
+                                <option value="Active" {% if selected_status == 'Active' %}selected{% endif %}>Active</option>
+                                <option value="Archived" {% if selected_status == 'Archived' %}selected{% endif %}>Archived</option>
+                                <option value="">All</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Date From</label>
+                            <input type="date" name="date_from" class="form-control" value="{{ date_from }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Date To</label>
+                            <input type="date" name="date_to" class="form-control" value="{{ date_to }}">
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter me-2"></i>Apply Filters
+                            </button>
+                            <a href="{{ url_for('crs.index') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Clear
+                            </a>
+                            <a href="{{ url_for('crs.export_csv', product_type=selected_product_type, status=selected_status, topic=selected_topic, date_from=date_from, date_to=date_to) }}" class="btn btn-outline-success ms-2">
+                                <i class="fas fa-download me-2"></i>Export CSV
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Results -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-list me-2"></i>
+                    Products ({{ total }} total)
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if products %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%">Title</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Links</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in products %}
+                            <tr>
+                                <td>
+                                    <a href="{{ url_for('crs.product_detail', product_id=product['product_id']) }}" class="text-decoration-none">
+                                        {{ product['title'] }}
+                                    </a>
+                                    <br>
+                                    <small class="text-muted">{{ product['product_id'] }}</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">{{ product['product_type'] }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge {% if product['status'] == 'Active' %}bg-success{% else %}bg-secondary{% endif %}">
+                                        {{ product['status'] }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if product['publication_date'] %}
+                                        {{ product['publication_date']|string|truncate(10, true, '') }}
+                                    {% else %}
+                                        <span class="text-muted">n.d.</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if product['url_html'] %}
+                                    <a href="{{ product['url_html'] }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary me-1">
+                                        <i class="fas fa-file-alt"></i> HTML
+                                    </a>
+                                    {% endif %}
+                                    {% if product['url_pdf'] %}
+                                    <a href="{{ product['url_pdf'] }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-file-pdf"></i> PDF
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                {% if total_pages > 1 %}
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        {% if page > 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('crs.index', page=page-1, product_type=selected_product_type, status=selected_status, topic=selected_topic, date_from=date_from, date_to=date_to) }}">Previous</a>
+                        </li>
+                        {% endif %}
+
+                        {% for p in range(1, total_pages + 1) %}
+                            {% if p == page %}
+                            <li class="page-item active"><span class="page-link">{{ p }}</span></li>
+                            {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('crs.index', page=p, product_type=selected_product_type, status=selected_status, topic=selected_topic, date_from=date_from, date_to=date_to) }}">{{ p }}</a>
+                            </li>
+                            {% elif p == page - 3 or p == page + 3 %}
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page < total_pages %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('crs.index', page=page+1, product_type=selected_product_type, status=selected_status, topic=selected_topic, date_from=date_from, date_to=date_to) }}">Next</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+                {% else %}
+                <p class="text-center text-muted mt-4">No products found. Try adjusting your filters.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

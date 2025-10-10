@@ -1,0 +1,293 @@
+{% extends "hearing_base.html" %}
+
+{% block title %}{{ committee[2] }} - Congressional Hearing Database{% endblock %}
+
+{% block head_style %}
+/* Minimal committee detail page */
+.back-link {
+    font-size: 0.9rem;
+    color: #6c757d;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: #1a1a1a;
+}
+
+/* Committee header */
+.committee-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.committee-title {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.committee-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.95rem;
+    color: #6c757d;
+}
+
+.committee-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Section headers */
+.section {
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Subcommittee list - minimal document-style */
+.subcommittee-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.subcommittee-link {
+    display: block;
+    text-decoration: none;
+    color: #1a1a1a;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.subcommittee-link:hover {
+    transform: translateX(5px);
+    color: #0d6efd;
+}
+
+.subcommittee-link:hover .subcommittee-name {
+    color: #0d6efd;
+}
+
+.subcommittee-name {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    transition: color 0.3s ease;
+}
+
+.subcommittee-info {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Document list for hearings */
+.document-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.document-link {
+    display: block;
+    text-decoration: none;
+    color: #1a1a1a;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.document-link:hover {
+    transform: translateX(5px);
+    color: #0d6efd;
+}
+
+.document-link:hover .document-title {
+    color: #0d6efd;
+}
+
+.document-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.document-meta {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+/* Centered messages */
+.empty-state {
+    text-align: center;
+    padding: 3rem 0;
+    color: #6c757d;
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+}
+
+/* Badges inline in metadata */
+.badge {
+    display: inline-block;
+    font-weight: 400;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    border-radius: 3px;
+    margin-left: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .committee-title {
+        font-size: 1.5rem;
+    }
+
+    .committee-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .document-link:hover,
+    .subcommittee-link:hover {
+        transform: none;
+    }
+}
+{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('committees.committees_v2') }}" class="back-link">← Back to Committees</a>
+
+<!-- Committee Header -->
+<div class="committee-header">
+    <h1 class="committee-title">{{ committee[2] }}</h1>
+
+    <div class="committee-meta">
+        {% if committee[3] %}
+        <div class="committee-meta-item">
+            <strong>Chamber:</strong>
+            {% if committee[3] == 'House' %}
+                <span class="badge bg-success">{{ committee[3] }}</span>
+            {% elif committee[3] == 'Senate' %}
+                <span class="badge bg-info">{{ committee[3] }}</span>
+            {% elif committee[3] == 'Joint' %}
+                <span class="badge bg-warning text-dark">{{ committee[3] }}</span>
+            {% else %}
+                <span class="badge bg-secondary">{{ committee[3] }}</span>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if committee[4] %}
+        <div class="committee-meta-item">
+            <strong>Type:</strong>
+            <span class="badge bg-light text-dark">{{ committee[4] }}</span>
+        </div>
+        {% endif %}
+
+        <div class="committee-meta-item">
+            <strong>Hearings:</strong>
+            {{ hearings|length }}
+        </div>
+
+        {% if subcommittees %}
+        <div class="committee-meta-item">
+            <strong>Subcommittees:</strong>
+            {{ subcommittees|length }}
+        </div>
+        {% endif %}
+    </div>
+
+    {% if committee.parent_name %}
+    <div style="margin-top: 1rem;">
+        <span style="font-size: 0.9rem; color: #6c757d;">
+            <strong>Parent Committee:</strong>
+            {{ committee.parent_name }}
+        </span>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Subcommittees Section -->
+{% if subcommittees %}
+<div class="section">
+    <h2 class="section-title">Subcommittees ({{ subcommittees|length }})</h2>
+    <div class="subcommittee-list">
+        {% for subcommittee in subcommittees %}
+        <a href="{{ url_for('committees.committee_detail_v2', committee_id=subcommittee[0]) }}" class="subcommittee-link">
+            <div class="subcommittee-name">{{ subcommittee[2] }}</div>
+            {% if subcommittee[3] %}
+            <div class="subcommittee-info">
+                <span class="badge bg-light text-dark">{{ subcommittee[3] }}</span>
+            </div>
+            {% endif %}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Hearings Section -->
+<div class="section">
+    <h2 class="section-title">Committee Hearings ({{ hearings|length }})</h2>
+    {% if hearings %}
+    <div class="document-list">
+        {% for hearing in hearings %}
+        <a href="{{ url_for('hearings.hearing_detail_v2', hearing_id=hearing[0]) }}" class="document-link">
+            <div class="document-title">
+                {% if hearing[1] and hearing[1].strip() %}
+                    {{ hearing[1][:120] }}{% if hearing[1]|length > 120 %}...{% endif %}
+                {% else %}
+                    Untitled Hearing
+                {% endif %}
+            </div>
+            <div class="document-meta">
+                {% if hearing[2] %}
+                    {{ hearing[2] }}
+                {% else %}
+                    Date TBD
+                {% endif %}
+                {% if hearing[3] %}
+                    · <span class="badge bg-light text-dark">{{ hearing[3] }}</span>
+                {% endif %}
+                {% if hearing[4] %}
+                    · <span class="badge bg-secondary">{{ hearing[4] }}</span>
+                {% endif %}
+                {% if hearing[5] %}
+                    · <span class="badge bg-primary">Primary</span>
+                {% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">
+            <i class="fas fa-calendar-times"></i>
+        </div>
+        <p>No hearings found for this committee.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

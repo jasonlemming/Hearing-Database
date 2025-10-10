@@ -1,0 +1,583 @@
+{% extends "hearing_base.html" %}
+
+{% block title %}Members - Congressional Hearing Database{% endblock %}
+
+{% block head_style %}
+/* Two-column layout - sidebar + content */
+.browse-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+/* Filter sidebar - Minimal, punk style */
+.filter-sidebar {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+}
+
+.filter-sidebar h3 {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+}
+
+.filter-group {
+    margin-bottom: 1.5rem;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+/* Custom dropdown container */
+.custom-select {
+    position: relative;
+}
+
+.custom-select select {
+    display: none; /* Hide native select */
+}
+
+.custom-select-trigger {
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.4rem 1.2rem 0.4rem 0;
+    border: none;
+    border-bottom: 1px solid #d0d0d0;
+    width: 100%;
+    background: transparent;
+    color: #1a1a1a;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%236c757d" d="M1 1l5 5 5-5"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 10px;
+}
+
+.custom-select-trigger:focus {
+    outline: none;
+    border-bottom-color: #1a1a1a;
+}
+
+.custom-select-trigger:hover {
+    border-bottom-color: #1a1a1a;
+}
+
+/* Custom dropdown list */
+.custom-select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: none;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+    margin-top: 0.25rem;
+}
+
+.custom-select.open .custom-select-options {
+    display: block;
+}
+
+.custom-select-option {
+    padding: 0.5rem 0;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    transition: all 0.15s ease;
+}
+
+.custom-select-option:hover,
+.custom-select-option.highlighted {
+    background: #f8f9fa;
+    color: #0d6efd;
+}
+
+.custom-select-option.selected {
+    color: #0d6efd;
+}
+
+/* Scrollbar styling for dropdown */
+.custom-select-options::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-select-options::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+
+.custom-select-options::-webkit-scrollbar-thumb {
+    background: #d0d0d0;
+    border-radius: 3px;
+}
+
+.custom-select-options::-webkit-scrollbar-thumb:hover {
+    background: #6c757d;
+}
+
+/* Minimal buttons */
+.filter-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.filter-actions button,
+.filter-actions a {
+    font-family: inherit;
+    font-size: 0.85rem;
+    padding: 0.4rem 0;
+    background: transparent;
+    color: #6c757d;
+    border: none;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.filter-actions button:hover,
+.filter-actions button[type="submit"]:hover,
+.filter-actions a:hover {
+    background: transparent !important;
+    color: #1a1a1a;
+    border-bottom-color: #1a1a1a;
+}
+
+/* Document list style for members */
+.member-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.member-link {
+    display: block;
+    text-decoration: none;
+    color: #1a1a1a;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.member-link:hover {
+    transform: translateX(5px);
+    color: #0d6efd;
+}
+
+.member-link:hover .member-name {
+    color: #0d6efd;
+}
+
+.member-name {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.member-meta {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+/* Badges inline in metadata */
+.badge {
+    display: inline-block;
+    font-weight: 400;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    border-radius: 3px;
+    margin-left: 0.5rem;
+}
+
+/* Centered messages */
+.empty-state {
+    text-align: center;
+    padding: 3rem 0;
+    color: #6c757d;
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+}
+
+/* Pagination */
+.pagination-container {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.page-link {
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    background: transparent;
+    color: #6c757d;
+    border: none;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.page-link:hover {
+    color: #1a1a1a;
+    border-bottom-color: #1a1a1a;
+}
+
+.page-link.active {
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+.page-link.disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.page-link.disabled:hover {
+    color: #6c757d;
+    border-bottom-color: transparent;
+}
+
+/* Mobile adjustments */
+@media (max-width: 991px) {
+    .browse-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .filter-sidebar {
+        position: static;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .filter-actions {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .member-link:hover {
+        transform: none;
+    }
+}
+{% endblock %}
+
+{% block head %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all custom selects
+    document.querySelectorAll('.custom-select').forEach(initCustomSelect);
+
+    function initCustomSelect(container) {
+        const select = container.querySelector('select');
+        const trigger = container.querySelector('.custom-select-trigger');
+        const optionsContainer = container.querySelector('.custom-select-options');
+
+        if (!select || !trigger || !optionsContainer) return;
+
+        // Set initial trigger text based on current value
+        let selectedOption = null;
+        if (select.value) {
+            selectedOption = Array.from(select.options).find(opt => opt.value === select.value);
+        }
+        if (!selectedOption) {
+            selectedOption = select.options[select.selectedIndex];
+        }
+        trigger.textContent = selectedOption.text;
+
+        // Toggle dropdown
+        trigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closeAllSelects(container);
+            container.classList.toggle('open');
+        });
+
+        // Select option
+        optionsContainer.querySelectorAll('.custom-select-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const value = this.dataset.value;
+                select.value = value;
+                trigger.textContent = this.textContent;
+
+                // Update selected class
+                optionsContainer.querySelectorAll('.custom-select-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+
+                container.classList.remove('open');
+
+                // If this is the sort dropdown, update order and submit
+                if (select.id === 'sortSelect') {
+                    const orderValue = this.dataset.order;
+                    const orderInput = document.getElementById('sortOrder');
+                    if (orderInput && orderValue) {
+                        orderInput.value = orderValue;
+                    }
+                    // Submit the form
+                    const form = select.closest('form');
+                    if (form) {
+                        form.submit();
+                    }
+                }
+            });
+        });
+
+        // Keyboard navigation
+        trigger.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                container.classList.toggle('open');
+            }
+        });
+    }
+
+    // Close all selects except the one passed
+    function closeAllSelects(except) {
+        document.querySelectorAll('.custom-select').forEach(select => {
+            if (select !== except) {
+                select.classList.remove('open');
+            }
+        });
+    }
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function() {
+        closeAllSelects();
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 0.5rem;">Congressional Members</h1>
+<p class="text-secondary" style="margin-bottom: 0;">{{ total }} members</p>
+
+<!-- Two-column layout: filters sidebar + results -->
+<div class="browse-layout">
+    <!-- Filter Sidebar -->
+    <aside class="filter-sidebar">
+        <form method="GET" action="{{ url_for('main_pages.members_v2') }}">
+            <h3>Filter</h3>
+
+            <div class="filter-group">
+                <label>Party</label>
+                <div class="custom-select">
+                    <select name="party">
+                        <option value="">All Parties</option>
+                        {% for party in parties %}
+                        <option value="{{ party }}" {% if party == selected_party %}selected{% endif %}>
+                            {{ party }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="custom-select-trigger" tabindex="0">All Parties</div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option {% if not selected_party %}selected{% endif %}" data-value="">All Parties</div>
+                        {% for party in parties %}
+                        <div class="custom-select-option {% if party == selected_party %}selected{% endif %}" data-value="{{ party }}">{{ party }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label>State</label>
+                <div class="custom-select">
+                    <select name="state">
+                        <option value="">All States</option>
+                        {% for state in states %}
+                        <option value="{{ state }}" {% if state == selected_state %}selected{% endif %}>
+                            {{ state }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="custom-select-trigger" tabindex="0">All States</div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option {% if not selected_state %}selected{% endif %}" data-value="">All States</div>
+                        {% for state in states %}
+                        <div class="custom-select-option {% if state == selected_state %}selected{% endif %}" data-value="{{ state }}">{{ state }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label>Chamber</label>
+                <div class="custom-select">
+                    <select name="chamber">
+                        <option value="">All Chambers</option>
+                        {% for chamber in chambers %}
+                        <option value="{{ chamber }}" {% if chamber == selected_chamber %}selected{% endif %}>
+                            {{ chamber }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="custom-select-trigger" tabindex="0">All Chambers</div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option {% if not selected_chamber %}selected{% endif %}" data-value="">All Chambers</div>
+                        {% for chamber in chambers %}
+                        <div class="custom-select-option {% if chamber == selected_chamber %}selected{% endif %}" data-value="{{ chamber }}">{{ chamber }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit">Apply</button>
+                <a href="{{ url_for('main_pages.members_v2') }}">Clear</a>
+            </div>
+        </form>
+
+        <div style="margin-top: 2.5rem;">
+            <form method="GET" action="{{ url_for('main_pages.members_v2') }}" id="sortForm">
+                <input type="hidden" name="party" value="{{ selected_party }}">
+                <input type="hidden" name="state" value="{{ selected_state }}">
+                <input type="hidden" name="chamber" value="{{ selected_chamber }}">
+
+                <h3>Sort By</h3>
+                <div class="filter-group">
+                    <div class="custom-select">
+                        <select name="sort" id="sortSelect" onchange="document.getElementById('sortForm').submit();">
+                            <option value="name" data-order="asc" {% if sort_by == 'name' %}selected{% endif %}>Name (A-Z)</option>
+                            <option value="name" data-order="desc" {% if sort_by == 'name' and sort_order == 'desc' %}selected{% endif %}>Name (Z-A)</option>
+                            <option value="party" data-order="asc" {% if sort_by == 'party' %}selected{% endif %}>Party (A-Z)</option>
+                            <option value="party" data-order="desc" {% if sort_by == 'party' and sort_order == 'desc' %}selected{% endif %}>Party (Z-A)</option>
+                            <option value="state" data-order="asc" {% if sort_by == 'state' %}selected{% endif %}>State (A-Z)</option>
+                            <option value="state" data-order="desc" {% if sort_by == 'state' and sort_order == 'desc' %}selected{% endif %}>State (Z-A)</option>
+                            <option value="chamber" data-order="asc" {% if sort_by == 'chamber' %}selected{% endif %}>Chamber (A-Z)</option>
+                            <option value="chamber" data-order="desc" {% if sort_by == 'chamber' and sort_order == 'desc' %}selected{% endif %}>Chamber (Z-A)</option>
+                            <option value="committees" data-order="desc" {% if sort_by == 'committees' %}selected{% endif %}>Committees (Most)</option>
+                            <option value="committees" data-order="asc" {% if sort_by == 'committees' and sort_order == 'asc' %}selected{% endif %}>Committees (Least)</option>
+                        </select>
+                        <input type="hidden" name="order" id="sortOrder" value="{{ sort_order }}">
+                        <div class="custom-select-trigger" tabindex="0">
+                            {% if sort_by == 'name' %}Name ({% if sort_order == 'asc' %}A-Z{% else %}Z-A{% endif %})
+                            {% elif sort_by == 'party' %}Party ({% if sort_order == 'asc' %}A-Z{% else %}Z-A{% endif %})
+                            {% elif sort_by == 'state' %}State ({% if sort_order == 'asc' %}A-Z{% else %}Z-A{% endif %})
+                            {% elif sort_by == 'chamber' %}Chamber ({% if sort_order == 'asc' %}A-Z{% else %}Z-A{% endif %})
+                            {% elif sort_by == 'committees' %}Committees ({% if sort_order == 'desc' %}Most{% else %}Least{% endif %})
+                            {% endif %}
+                        </div>
+                        <div class="custom-select-options">
+                            <div class="custom-select-option {% if sort_by == 'name' and sort_order == 'asc' %}selected{% endif %}" data-value="name" data-order="asc">Name (A-Z)</div>
+                            <div class="custom-select-option {% if sort_by == 'name' and sort_order == 'desc' %}selected{% endif %}" data-value="name" data-order="desc">Name (Z-A)</div>
+                            <div class="custom-select-option {% if sort_by == 'party' and sort_order == 'asc' %}selected{% endif %}" data-value="party" data-order="asc">Party (A-Z)</div>
+                            <div class="custom-select-option {% if sort_by == 'party' and sort_order == 'desc' %}selected{% endif %}" data-value="party" data-order="desc">Party (Z-A)</div>
+                            <div class="custom-select-option {% if sort_by == 'state' and sort_order == 'asc' %}selected{% endif %}" data-value="state" data-order="asc">State (A-Z)</div>
+                            <div class="custom-select-option {% if sort_by == 'state' and sort_order == 'desc' %}selected{% endif %}" data-value="state" data-order="desc">State (Z-A)</div>
+                            <div class="custom-select-option {% if sort_by == 'chamber' and sort_order == 'asc' %}selected{% endif %}" data-value="chamber" data-order="asc">Chamber (A-Z)</div>
+                            <div class="custom-select-option {% if sort_by == 'chamber' and sort_order == 'desc' %}selected{% endif %}" data-value="chamber" data-order="desc">Chamber (Z-A)</div>
+                            <div class="custom-select-option {% if sort_by == 'committees' and sort_order == 'desc' %}selected{% endif %}" data-value="committees" data-order="desc">Committees (Most)</div>
+                            <div class="custom-select-option {% if sort_by == 'committees' and sort_order == 'asc' %}selected{% endif %}" data-value="committees" data-order="asc">Committees (Least)</div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Results -->
+    <div class="results-column">
+        {% if members %}
+        <div class="member-list">
+            {% for member in members %}
+            <a href="{{ url_for('main_pages.member_detail_v2', member_id=member[0]) }}" class="member-link">
+                <div class="member-name">{{ member[1] }}</div>
+                <div class="member-meta">
+                    {{ member[3] }}
+                    {% if member[4] %} · District {{ member[4] }}{% else %} · At-Large{% endif %}
+                    {% if member[5] > 0 %}
+                        · {{ member[5] }} committee{{ 's' if member[5] != 1 else '' }}
+                    {% endif %}
+                    {% if member[2] %}
+                        · <span class="badge
+                            {% if member[2] == 'Democratic' or member[2] == 'D' %}bg-primary
+                            {% elif member[2] == 'Republican' or member[2] == 'R' %}bg-danger
+                            {% elif member[2] == 'Independent' or member[2] == 'I' %}bg-warning text-dark
+                            {% else %}bg-secondary
+                            {% endif %}">{{ member[2] }}</span>
+                    {% endif %}
+                    {% if member[6] %}
+                        <span class="badge
+                            {% if member[6] == 'House' %}bg-success
+                            {% elif member[6] == 'Senate' %}bg-info
+                            {% else %}bg-secondary
+                            {% endif %}">{{ member[6] }}</span>
+                    {% endif %}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if total_pages > 1 %}
+        <div class="pagination-container">
+            <div class="pagination">
+                {% if has_prev %}
+                <a href="{{ url_for('main_pages.members_v2', page=page-1, party=selected_party, state=selected_state, chamber=selected_chamber, sort=sort_by, order=sort_order) }}" class="page-link">← Previous</a>
+                {% else %}
+                <span class="page-link disabled">← Previous</span>
+                {% endif %}
+
+                {% for p in range(1, total_pages + 1) %}
+                {% if p <= 3 or p >= total_pages - 2 or (p >= page - 1 and p <= page + 1) %}
+                <a href="{{ url_for('main_pages.members_v2', page=p, party=selected_party, state=selected_state, chamber=selected_chamber, sort=sort_by, order=sort_order) }}"
+                   class="page-link {% if p == page %}active{% endif %}">
+                    {{ p }}
+                </a>
+                {% elif p == 4 or p == total_pages - 3 %}
+                <span class="page-link disabled">...</span>
+                {% endif %}
+                {% endfor %}
+
+                {% if has_next %}
+                <a href="{{ url_for('main_pages.members_v2', page=page+1, party=selected_party, state=selected_state, chamber=selected_chamber, sort=sort_by, order=sort_order) }}" class="page-link">Next →</a>
+                {% else %}
+                <span class="page-link disabled">Next →</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="fas fa-user-slash"></i>
+            </div>
+            <p>No members found matching your filters.</p>
+        </div>
+        {% endif %}
+    </div><!-- End results-column -->
+</div><!-- End browse-layout -->
+{% endblock %}

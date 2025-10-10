@@ -369,7 +369,8 @@
 
 <div class="row">
     <!-- Main Content Column -->
-    {% set has_toc = content_version and (content_version['structure_json']|from_json).get('toc', [])|length > 0 %}
+    {% set structure_obj = content_version['structure_json'] if content_version else {} %}
+    {% set has_toc = structure_obj and structure_obj is mapping and structure_obj.get('toc', [])|length > 0 %}
     <div class="{% if has_toc %}col-lg-9{% else %}col-12{% endif %}">
         <div class="card">
             <div class="card-header">
@@ -406,7 +407,7 @@
 
                 <!-- Full Content (if available) -->
                 {% if content_version %}
-                {% set structure = content_version['structure_json']|from_json %}
+                {% set structure = content_version['structure_json'] %}
 
                 <!-- Content Statistics -->
                 <div class="content-stats">
@@ -426,7 +427,7 @@
                     {% endif %}
                     <div class="stat-badge">
                         <i class="fas fa-calendar"></i>
-                        <span>Ingested {{ content_version['ingested_at'][:10] }}</span>
+                        <span>Ingested {{ content_version['ingested_at']|string|truncate(10, true, '') }}</span>
                     </div>
                     <div class="stat-badge">
                         <i class="fas fa-clock"></i>
@@ -465,7 +466,7 @@
                 {% endif %}
 
                 <!-- Authors -->
-                {% set authors = product['authors']|from_json if product['authors'] else [] %}
+                {% set authors = product['authors'] if product['authors'] else [] %}
                 {% if authors %}
                 <div class="mb-4">
                     <h4><i class="fas fa-user me-2"></i>Authors</h4>
@@ -478,7 +479,7 @@
                 {% endif %}
 
                 <!-- Topics -->
-                {% set topics = product['topics']|from_json if product['topics'] else [] %}
+                {% set topics = product['topics'] if product['topics'] else [] %}
                 {% if topics %}
                 <div class="mb-4">
                     <h4><i class="fas fa-tags me-2"></i>Topics</h4>

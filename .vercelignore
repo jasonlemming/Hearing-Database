@@ -1,5 +1,6 @@
-# Exclude database files
+# Exclude database files (except the main hearing database)
 *.db
+!database.db
 *.db-shm
 *.db-wal
 data/

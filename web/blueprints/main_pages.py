@@ -375,7 +375,7 @@ def member_detail(member_id):
             ''', (member_id,))
             recent_hearings = cursor.fetchall()
 
-        return render_template('member_detail.html',
+        return render_template('member_detail_v2.html',
                              member=member,
                              committees=committees,
                              recent_hearings=recent_hearings)
@@ -465,7 +465,7 @@ def witness_detail(witness_id):
                     'witness_documents': witness_docs
                 }
 
-        return render_template('witness_detail.html',
+        return render_template('witness_detail_v2.html',
                              witness=witness,
                              appearances=appearances,
                              stats=stats,

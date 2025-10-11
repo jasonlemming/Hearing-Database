@@ -411,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="browse-layout">
     <!-- Filter Sidebar -->
     <aside class="filter-sidebar">
-        <form method="GET" action="{{ url_for('main_pages.witnesses_v2') }}">
+        <form method="GET" action="{{ url_for('main_pages.witnesses') }}">
             <h3>Filter</h3>
 
             <div class="filter-group">
@@ -437,12 +437,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
             <div class="filter-actions">
                 <button type="submit">Apply</button>
-                <a href="{{ url_for('main_pages.witnesses_v2') }}">Clear</a>
+                <a href="{{ url_for('main_pages.witnesses') }}">Clear</a>
             </div>
         </form>
 
         <div style="margin-top: 2.5rem;">
-            <form method="GET" action="{{ url_for('main_pages.witnesses_v2') }}" id="sortForm">
+            <form method="GET" action="{{ url_for('main_pages.witnesses') }}" id="sortForm">
                 <input type="hidden" name="search" value="{{ search }}">
                 <input type="hidden" name="type" value="{{ selected_type }}">
 
@@ -517,14 +517,14 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="pagination-container">
             <div class="pagination">
                 {% if has_prev %}
-                <a href="{{ url_for('main_pages.witnesses_v2', page=page-1, search=search, type=selected_type, sort=sort_by, order=sort_order) }}" class="page-link">← Previous</a>
+                <a href="{{ url_for('main_pages.witnesses', page=page-1, search=search, type=selected_type, sort=sort_by, order=sort_order) }}" class="page-link">← Previous</a>
                 {% else %}
                 <span class="page-link disabled">← Previous</span>
                 {% endif %}
 
                 {% for p in range(1, total_pages + 1) %}
                 {% if p <= 3 or p >= total_pages - 2 or (p >= page - 1 and p <= page + 1) %}
-                <a href="{{ url_for('main_pages.witnesses_v2', page=p, search=search, type=selected_type, sort=sort_by, order=sort_order) }}"
+                <a href="{{ url_for('main_pages.witnesses', page=p, search=search, type=selected_type, sort=sort_by, order=sort_order) }}"
                    class="page-link {% if p == page %}active{% endif %}">
                     {{ p }}
                 </a>
@@ -534,7 +534,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {% endfor %}
 
                 {% if has_next %}
-                <a href="{{ url_for('main_pages.witnesses_v2', page=page+1, search=search, type=selected_type, sort=sort_by, order=sort_order) }}" class="page-link">Next →</a>
+                <a href="{{ url_for('main_pages.witnesses', page=page+1, search=search, type=selected_type, sort=sort_by, order=sort_order) }}" class="page-link">Next →</a>
                 {% else %}
                 <span class="page-link disabled">Next →</span>
                 {% endif %}

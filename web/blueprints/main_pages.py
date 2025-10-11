@@ -207,6 +207,171 @@ def witnesses():
         return f"Error: {e}", 500
 
 
+@main_pages_bp.route('/member/<int:member_id>')
+def member_detail(member_id):
+    """Member detail page"""
+    try:
+        with db.transaction() as conn:
+            # Get member details
+            cursor = conn.execute('''
+                SELECT member_id, bioguide_id, first_name, middle_name, last_name, full_name,
+                       party, state, district, birth_year, current_member, honorific_prefix,
+                       official_url, office_address, phone, terms_served, congress,
+                       CASE WHEN district IS NULL THEN 'Senate' ELSE 'House' END as chamber
+                FROM members
+                WHERE member_id = ?
+            ''', (member_id,))
+            member = cursor.fetchone()
+
+            if not member:
+                return "Member not found", 404
+
+            # Get committee memberships
+            cursor = conn.execute('''
+                SELECT c.committee_id, c.name, c.chamber, c.type, cm.role, cm.is_active,
+                       c.parent_committee_id, pc.name as parent_committee_name
+                FROM committee_memberships cm
+                JOIN committees c ON cm.committee_id = c.committee_id
+                LEFT JOIN committees pc ON c.parent_committee_id = pc.committee_id
+                WHERE cm.member_id = ? AND cm.is_active = 1
+                ORDER BY c.chamber, COALESCE(pc.name, c.name), c.parent_committee_id IS NOT NULL, c.name
+            ''', (member_id,))
+            committees_raw = cursor.fetchall()
+
+            # Organize committees into parent/subcommittee groups
+            committees = {}
+            for committee in committees_raw:
+                committee_id, name, chamber, type_, role, is_active, parent_id, parent_name = committee
+
+                if parent_id is None:
+                    # Parent committee
+                    if committee_id not in committees:
+                        committees[committee_id] = {
+                            'info': committee,
+                            'subcommittees': []
+                        }
+                else:
+                    # Subcommittee - find or create parent entry
+                    if parent_id not in committees:
+                        committees[parent_id] = {
+                            'info': None,  # Member might not be on parent
+                            'subcommittees': []
+                        }
+                    committees[parent_id]['subcommittees'].append(committee)
+
+            # Get recent hearings this member's committees have participated in
+            cursor = conn.execute('''
+                SELECT DISTINCT h.hearing_id, h.title, h.hearing_date, h.chamber, c.name as committee_name
+                FROM hearings h
+                JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id
+                JOIN committees c ON hc.committee_id = c.committee_id
+                JOIN committee_memberships cm ON c.committee_id = cm.committee_id
+                WHERE cm.member_id = ? AND cm.is_active = 1
+                ORDER BY h.hearing_date DESC NULLS LAST
+                LIMIT 10
+            ''', (member_id,))
+            recent_hearings = cursor.fetchall()
+
+        return render_template('member_detail_v2.html',
+                             member=member,
+                             committees=committees,
+                             recent_hearings=recent_hearings)
+    except Exception as e:
+        return f"Error: {e}", 500
+
+
+@main_pages_bp.route('/witness/<int:witness_id>')
+def witness_detail(witness_id):
+    """Witness detail page"""
+    try:
+        with db.transaction() as conn:
+            # Get witness details
+            cursor = conn.execute('''
+                SELECT witness_id, first_name, last_name, full_name, title, organization,
+                       created_at, updated_at
+                FROM witnesses
+                WHERE witness_id = ?
+            ''', (witness_id,))
+            witness = cursor.fetchone()
+
+            if not witness:
+                return "Witness not found", 404
+
+            # Get all hearings this witness appeared at with detailed information
+            cursor = conn.execute('''
+                SELECT h.hearing_id, h.title, h.hearing_date, h.chamber, h.congress,
+                       h.location, h.status, h.hearing_type,
+                       wa.position, wa.witness_type, wa.appearance_order,
+                       c.name as primary_committee_name, c.committee_id as primary_committee_id
+                FROM witness_appearances wa
+                JOIN hearings h ON wa.hearing_id = h.hearing_id
+                LEFT JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id AND hc.is_primary = 1
+                LEFT JOIN committees c ON hc.committee_id = c.committee_id
+                WHERE wa.witness_id = ?
+                ORDER BY h.hearing_date DESC NULLS LAST, wa.appearance_order ASC
+            ''', (witness_id,))
+            appearances = cursor.fetchall()
+
+            # Get summary statistics
+            cursor = conn.execute('''
+                SELECT
+                    COUNT(DISTINCT wa.hearing_id) as total_hearings,
+                    COUNT(DISTINCT h.chamber) as chambers_count,
+                    MIN(h.hearing_date) as first_appearance,
+                    MAX(h.hearing_date) as latest_appearance,
+                    SUM(CASE WHEN wa.witness_type = 'Government' THEN 1 ELSE 0 END) as govt_appearances,
+                    SUM(CASE WHEN wa.witness_type = 'Private' THEN 1 ELSE 0 END) as private_appearances,
+                    SUM(CASE WHEN wa.witness_type = 'Academic' THEN 1 ELSE 0 END) as academic_appearances,
+                    SUM(CASE WHEN wa.witness_type = 'Nonprofit' THEN 1 ELSE 0 END) as nonprofit_appearances
+                FROM witness_appearances wa
+                JOIN hearings h ON wa.hearing_id = h.hearing_id
+                WHERE wa.witness_id = ?
+            ''', (witness_id,))
+            stats = cursor.fetchone()
+
+            # Get committees this witness has appeared before
+            cursor = conn.execute('''
+                SELECT DISTINCT c.committee_id, c.name, c.chamber, c.type,
+                       COUNT(DISTINCT wa.hearing_id) as hearing_count
+                FROM witness_appearances wa
+                JOIN hearings h ON wa.hearing_id = h.hearing_id
+                JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id
+                JOIN committees c ON hc.committee_id = c.committee_id
+                WHERE wa.witness_id = ?
+                GROUP BY c.committee_id
+                ORDER BY hearing_count DESC, c.name
+            ''', (witness_id,))
+            committees = cursor.fetchall()
+
+            # Get documents for each hearing this witness appeared at
+            hearing_documents = {}
+            for appearance in appearances:
+                hearing_id = appearance[0]
+
+                # Get witness documents for this hearing
+                cursor = conn.execute('''
+                    SELECT wd.document_id, wd.document_type, wd.title, wd.document_url, wd.format_type
+                    FROM witness_documents wd
+                    JOIN witness_appearances wa ON wd.appearance_id = wa.appearance_id
+                    WHERE wa.hearing_id = ? AND wa.witness_id = ?
+                    ORDER BY wd.document_type, wd.title
+                ''', (hearing_id, witness_id))
+                witness_docs = cursor.fetchall()
+
+                hearing_documents[hearing_id] = {
+                    'witness_documents': witness_docs
+                }
+
+        return render_template('witness_detail_v2.html',
+                             witness=witness,
+                             appearances=appearances,
+                             stats=stats,
+                             committees=committees,
+                             hearing_documents=hearing_documents)
+    except Exception as e:
+        return f"Error: {e}", 500
+
+
 @main_pages_bp.route('/about')
 def about():
     """About page"""

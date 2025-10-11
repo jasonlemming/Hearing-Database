@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block head %}
+<style>
+/* Full-screen centered image container */
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Hide navigation and footer */
+.navbar, nav, footer {
+    display: none !important;
+}
+
+/* Override container styles */
+.container.mt-4 {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.about-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    z-index: 9999;
+}
+
+.about-image {
+    max-width: 90vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="about-container">
+    <img src="{{ url_for('static', filename='images/made-by-capitol-labs.png') }}"
+         alt="Made by Capitol Labs"
+         class="about-image">
+</div>
+{% endblock %}

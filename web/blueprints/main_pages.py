@@ -734,6 +734,12 @@ def witness_detail_v2(witness_id):
         return f"Error: {e}", 500
 
 
+@main_pages_bp.route('/about')
+def about():
+    """About page"""
+    return render_template('about.html')
+
+
 @main_pages_bp.route('/search')
 def search():
     """Global search page"""

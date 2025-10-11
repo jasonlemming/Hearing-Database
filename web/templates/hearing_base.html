@@ -418,9 +418,9 @@
     <nav class="top-nav">
         <div class="nav-links">
             <a href="/">← Home</a>
-            <a href="{{ url_for('hearings.hearings_v2') }}">Hearings</a>
-            <a href="{{ url_for('committees.committees_v2') }}">Committees</a>
-            <a href="{{ url_for('main_pages.witnesses_v2') }}">Witnesses</a>
+            <a href="{{ url_for('hearings.hearings') }}">Hearings</a>
+            <a href="{{ url_for('committees.committees') }}">Committees</a>
+            <a href="{{ url_for('main_pages.witnesses') }}">Witnesses</a>
             <a href="{{ url_for('main_pages.members') }}">Members</a>
         </div>
         <form class="search-form" method="GET" action="{{ url_for('hearings.hearings') }}">

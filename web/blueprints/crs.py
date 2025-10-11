@@ -159,7 +159,7 @@ def index():
 
         total_pages = (total + limit - 1) // limit
 
-        return render_template('crs_index_v2.html',
+        return render_template('crs_index.html',
                              products=products,
                              product_types=product_types,
                              topics=topics,
@@ -245,7 +245,7 @@ def search():
                 ''')
                 authors = [row['author'] for row in cursor.fetchall()]
 
-                return render_template('crs_search_v2.html',
+                return render_template('crs_search.html',
                                      query='',
                                      results=[],
                                      total=0,
@@ -523,7 +523,7 @@ def search():
 
         total_pages = (total + limit - 1) // limit
 
-        return render_template('crs_search_v2.html',
+        return render_template('crs_search.html',
                              query=original_query,  # Show original query to user
                              results=results,
                              total=total,
@@ -589,7 +589,7 @@ def product_detail(product_id):
                 conn.rollback()
                 pass
 
-        return render_template('crs_detail_v2.html', product=product, content_version=content_version)
+        return render_template('crs_detail.html', product=product, content_version=content_version)
     except Exception as e:
         return f"Error: {e}", 500
 

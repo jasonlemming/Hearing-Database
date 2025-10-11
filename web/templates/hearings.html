@@ -238,24 +238,24 @@
     display: block;
     text-decoration: none;
     color: #1a1a1a;
-    padding: 2rem 0;
+    padding: 2rem 0 0.5rem 0;
     border-bottom: 1px solid #f0f0f0;
     transition: all 0.3s ease;
 }
 
 .document-link:hover {
     transform: translateX(5px);
-    color: #0d6efd;
+    border-bottom-color: #f0f0f0;
 }
 
 .document-link:hover .document-title {
-    color: #0d6efd;
+    color: #1a1a1a;
 }
 
 .document-title {
     font-size: 1.1rem;
     font-weight: 500;
-    margin-bottom: 0.1rem;
+    margin-bottom: 0;
     transition: color 0.3s ease;
 }
 
@@ -263,7 +263,7 @@
     font-size: 0.9rem;
     color: #6c757d;
     margin-bottom: 0;
-    margin-top: 0.75rem;
+    margin-top: 0.2rem;
 }
 
 /* Badges inline in metadata */
@@ -622,13 +622,7 @@ document.addEventListener('DOMContentLoaded', function() {
             {% endif %}
         </div>
         <div class="document-meta">
-            {% if hearing[2] %}
-                <a href="{{ url_for('hearings.hearings', date_from=hearing[2], date_to=hearing[2]) }}" onclick="event.stopPropagation();">{{ hearing[2] | strptime('%Y-%m-%d') | strftime('%b %d, %Y') }}</a>
-            {% else %}
-                Date TBD
-            {% endif %}
             {% if hearing[7] %}
-                ·
                 {% if hearing[8] %}
                     <a href="{{ url_for('committees.committee_detail', committee_id=hearing[8]) }}" onclick="event.stopPropagation();">{{ hearing[7][:40] }}{% if hearing[7]|length > 40 %}...{% endif %}</a>
                 {% else %}
@@ -652,6 +646,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 {% else %}
                     <span class="badge bg-secondary">{{ hearing[4] }}</span>
                 {% endif %}
+            {% endif %}
+            ·
+            {% if hearing[2] %}
+                <a href="{{ url_for('hearings.hearings', date_from=hearing[2], date_to=hearing[2]) }}" onclick="event.stopPropagation();">{{ hearing[2] | strptime('%Y-%m-%d') | strftime('%b %d, %Y') }}</a>
+            {% else %}
+                Date TBD
             {% endif %}
             {% if hearing[5] %}
                 · <span class="badge bg-light text-dark">{{ hearing[5] }}</span>

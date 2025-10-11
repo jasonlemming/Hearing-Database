@@ -250,11 +250,11 @@
 
 .document-link:hover {
     transform: translateX(5px);
-    color: #0d6efd;
+    border-bottom-color: #f0f0f0;
 }
 
 .document-link:hover .document-title {
-    color: #0d6efd;
+    color: #1a1a1a;
 }
 
 .document-title {
@@ -523,9 +523,9 @@ document.addEventListener('DOMContentLoaded', function() {
     <a href="{{ url_for('crs.product_detail', product_id=product['product_id']) }}" class="document-link">
         <div class="document-title">{{ product['title'] }}</div>
         <div class="document-meta">
-            {{ product['product_id'] }}
-            · {{ product['publication_date']|string|truncate(10, true, '') if product['publication_date'] else 'n.d.' }}
+            {{ product['publication_date']|string|truncate(10, true, '') if product['publication_date'] else 'n.d.' }}
             · <span class="badge bg-primary">{{ product['product_type'] }}</span>
+            · {{ product['product_id'] }}
             {% if product['url_html'] %} · HTML available{% endif %}
             {% if product['url_pdf'] %} · PDF available{% endif %}
         </div>

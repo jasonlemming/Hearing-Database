@@ -167,35 +167,36 @@
     gap: 0;
 }
 
-.member-link {
+.document-link {
     display: block;
     text-decoration: none;
     color: #1a1a1a;
-    padding: 1.5rem 0;
+    padding: 2rem 0 0.5rem 0;
     border-bottom: 1px solid #f0f0f0;
     transition: all 0.3s ease;
 }
 
-.member-link:hover {
+.document-link:hover {
     transform: translateX(5px);
-    color: #0d6efd;
+    border-bottom-color: #f0f0f0;
 }
 
-.member-link:hover .member-name {
-    color: #0d6efd;
+.document-link:hover .document-title {
+    color: #1a1a1a;
 }
 
-.member-name {
+.document-title {
     font-size: 1.1rem;
     font-weight: 500;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
     transition: color 0.3s ease;
 }
 
-.member-meta {
+.document-meta {
     font-size: 0.9rem;
     color: #6c757d;
     margin-bottom: 0;
+    margin-top: 0.2rem;
 }
 
 /* Badges inline in metadata */
@@ -287,7 +288,7 @@
         gap: 1rem;
     }
 
-    .member-link:hover {
+    .document-link:hover {
         transform: none;
     }
 }
@@ -513,9 +514,9 @@ document.addEventListener('DOMContentLoaded', function() {
         {% if members %}
         <div class="member-list">
             {% for member in members %}
-            <a href="{{ url_for('main_pages.member_detail_v2', member_id=member[0]) }}" class="member-link">
-                <div class="member-name">{{ member[1] }}</div>
-                <div class="member-meta">
+            <a href="{{ url_for('main_pages.member_detail_v2', member_id=member[0]) }}" class="document-link">
+                <div class="document-title">{{ member[1] }}</div>
+                <div class="document-meta">
                     {{ member[3] }}
                     {% if member[4] %} · District {{ member[4] }}{% else %} · At-Large{% endif %}
                     {% if member[5] > 0 %}

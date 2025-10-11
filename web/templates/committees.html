@@ -400,7 +400,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="browse-layout">
     <!-- Filter Sidebar -->
     <aside class="filter-sidebar">
-        <form method="GET" action="{{ url_for('committees.committees_v2') }}">
+        <form method="GET" action="{{ url_for('committees.committees') }}">
             <h3>Filter</h3>
 
             <div class="filter-group">
@@ -447,28 +447,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
             <div class="filter-actions">
                 <button type="submit">Apply</button>
-                <a href="{{ url_for('committees.committees_v2') }}">Clear</a>
+                <a href="{{ url_for('committees.committees') }}">Clear</a>
             </div>
         </form>
 
         <div style="margin-top: 2.5rem;">
             <h3>Sort By</h3>
             <div class="sort-options">
-                <a href="{{ url_for('committees.committees_v2', chamber=selected_chamber, type=selected_type, sort='name', order='asc' if sort_by == 'name' and sort_order == 'desc' else 'desc') }}"
+                <a href="{{ url_for('committees.committees', chamber=selected_chamber, type=selected_type, sort='name', order='asc' if sort_by == 'name' and sort_order == 'desc' else 'desc') }}"
                    class="sort-option {% if sort_by == 'name' %}active{% endif %}">
                     <span>Name</span>
                     {% if sort_by == 'name' %}
                         <span class="sort-icon">{% if sort_order == 'asc' %}↑{% else %}↓{% endif %}</span>
                     {% endif %}
                 </a>
-                <a href="{{ url_for('committees.committees_v2', chamber=selected_chamber, type=selected_type, sort='chamber', order='asc' if sort_by == 'chamber' and sort_order == 'desc' else 'desc') }}"
+                <a href="{{ url_for('committees.committees', chamber=selected_chamber, type=selected_type, sort='chamber', order='asc' if sort_by == 'chamber' and sort_order == 'desc' else 'desc') }}"
                    class="sort-option {% if sort_by == 'chamber' %}active{% endif %}">
                     <span>Chamber</span>
                     {% if sort_by == 'chamber' %}
                         <span class="sort-icon">{% if sort_order == 'asc' %}↑{% else %}↓{% endif %}</span>
                     {% endif %}
                 </a>
-                <a href="{{ url_for('committees.committees_v2', chamber=selected_chamber, type=selected_type, sort='hearings', order='desc' if sort_by == 'hearings' and sort_order == 'asc' else 'asc') }}"
+                <a href="{{ url_for('committees.committees', chamber=selected_chamber, type=selected_type, sort='hearings', order='desc' if sort_by == 'hearings' and sort_order == 'asc' else 'asc') }}"
                    class="sort-option {% if sort_by == 'hearings' %}active{% endif %}">
                     <span>Hearings</span>
                     {% if sort_by == 'hearings' %}
@@ -501,7 +501,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <h2 class="chamber-header">House ({{ house_committees|length }})</h2>
         <div class="committee-list">
             {% for group in house_committees %}
-            <a href="{{ url_for('committees.committee_detail_v2', committee_id=group.parent[0]) }}" class="committee-link">
+            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}" class="committee-link">
                 <div class="committee-title">{{ group.parent[2] }}</div>
                 <div class="committee-meta">
                     {% if group.parent[5] > 0 %}
@@ -525,7 +525,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <h2 class="chamber-header">Senate ({{ senate_committees|length }})</h2>
         <div class="committee-list">
             {% for group in senate_committees %}
-            <a href="{{ url_for('committees.committee_detail_v2', committee_id=group.parent[0]) }}" class="committee-link">
+            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}" class="committee-link">
                 <div class="committee-title">{{ group.parent[2] }}</div>
                 <div class="committee-meta">
                     {% if group.parent[5] > 0 %}
@@ -549,7 +549,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <h2 class="chamber-header">Joint ({{ joint_committees|length }})</h2>
         <div class="committee-list">
             {% for group in joint_committees %}
-            <a href="{{ url_for('committees.committee_detail_v2', committee_id=group.parent[0]) }}" class="committee-link">
+            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}" class="committee-link">
                 <div class="committee-title">{{ group.parent[2] }}</div>
                 <div class="committee-meta">
                     {% if group.parent[5] > 0 %}

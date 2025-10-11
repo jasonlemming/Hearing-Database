@@ -317,7 +317,7 @@
     <h2 class="section-title">Committees Appeared Before ({{ committees|length }})</h2>
     <div class="committee-list">
         {% for committee in committees %}
-        <a href="{{ url_for('committees.committee_detail_v2', committee_id=committee[0]) }}" class="committee-link">
+        <a href="{{ url_for('committees.committee_detail', committee_id=committee[0]) }}" class="committee-link">
             <div class="committee-name">{{ committee[1] }}</div>
             <div class="committee-info">
                 {{ committee[4] }} hearing{{ 's' if committee[4] != 1 else '' }}
@@ -341,7 +341,7 @@
     {% if appearances %}
     <div class="document-list">
         {% for appearance in appearances %}
-        <a href="{{ url_for('hearings.hearing_detail_v2', hearing_id=appearance[0]) }}" class="document-link">
+        <a href="{{ url_for('hearings.hearing_detail', hearing_id=appearance[0]) }}" class="document-link">
             <div class="document-title">
                 {% if appearance[1] and appearance[1].strip() %}
                     {{ appearance[1][:120] }}{% if appearance[1]|length > 120 %}...{% endif %}

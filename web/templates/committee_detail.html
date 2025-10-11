@@ -177,7 +177,7 @@
 {% endblock %}
 
 {% block content %}
-<a href="{{ url_for('committees.committees_v2') }}" class="back-link">← Back to Committees</a>
+<a href="{{ url_for('committees.committees') }}" class="back-link">← Back to Committees</a>
 
 <!-- Committee Header -->
 <div class="committee-header">
@@ -235,7 +235,7 @@
     <h2 class="section-title">Subcommittees ({{ subcommittees|length }})</h2>
     <div class="subcommittee-list">
         {% for subcommittee in subcommittees %}
-        <a href="{{ url_for('committees.committee_detail_v2', committee_id=subcommittee[0]) }}" class="subcommittee-link">
+        <a href="{{ url_for('committees.committee_detail', committee_id=subcommittee[0]) }}" class="subcommittee-link">
             <div class="subcommittee-name">{{ subcommittee[2] }}</div>
             {% if subcommittee[3] %}
             <div class="subcommittee-info">
@@ -254,7 +254,7 @@
     {% if hearings %}
     <div class="document-list">
         {% for hearing in hearings %}
-        <a href="{{ url_for('hearings.hearing_detail_v2', hearing_id=hearing[0]) }}" class="document-link">
+        <a href="{{ url_for('hearings.hearing_detail', hearing_id=hearing[0]) }}" class="document-link">
             <div class="document-title">
                 {% if hearing[1] and hearing[1].strip() %}
                     {{ hearing[1][:120] }}{% if hearing[1]|length > 120 %}...{% endif %}

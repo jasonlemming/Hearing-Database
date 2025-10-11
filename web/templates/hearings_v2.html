@@ -507,7 +507,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="browse-layout">
     <!-- Filter Sidebar -->
     <aside class="filter-sidebar">
-        <form method="GET" action="{{ url_for('hearings.hearings_v2') }}" id="hearingsForm">
+        <form method="GET" action="{{ url_for('hearings.hearings') }}" id="hearingsForm">
             <h3>Filter</h3>
 
             <!-- Preserve search parameter if it exists -->
@@ -599,7 +599,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             <div class="filter-actions">
                 <button type="submit">Apply</button>
-                <a href="{{ url_for('hearings.hearings_v2') }}">Clear</a>
+                <a href="{{ url_for('hearings.hearings') }}">Clear</a>
             </div>
         </form>
     </aside>
@@ -609,7 +609,7 @@ document.addEventListener('DOMContentLoaded', function() {
 {% if hearings %}
 <div class="document-list">
     {% for hearing in hearings %}
-    <a href="{{ url_for('hearings.hearing_detail_v2', hearing_id=hearing[0]) }}" class="document-link">
+    <a href="{{ url_for('hearings.hearing_detail', hearing_id=hearing[0]) }}" class="document-link">
         <div class="document-title">
             {% if hearing[1] and hearing[1].strip() %}
                 {{ hearing[1][:100] }}{% if hearing[1]|length > 100 %}...{% endif %}
@@ -623,7 +623,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         <div class="document-meta">
             {% if hearing[2] %}
-                <a href="{{ url_for('hearings.hearings_v2', date_from=hearing[2], date_to=hearing[2]) }}" onclick="event.stopPropagation();">{{ hearing[2] | strptime('%Y-%m-%d') | strftime('%b %d, %Y') }}</a>
+                <a href="{{ url_for('hearings.hearings', date_from=hearing[2], date_to=hearing[2]) }}" onclick="event.stopPropagation();">{{ hearing[2] | strptime('%Y-%m-%d') | strftime('%b %d, %Y') }}</a>
             {% else %}
                 Date TBD
             {% endif %}
@@ -638,15 +638,15 @@ document.addEventListener('DOMContentLoaded', function() {
             {% if hearing[4] %}
                 ·
                 {% if hearing[4] == 'House' %}
-                    <a href="{{ url_for('hearings.hearings_v2', chamber='House') }}" class="badge-link" onclick="event.stopPropagation();">
+                    <a href="{{ url_for('hearings.hearings', chamber='House') }}" class="badge-link" onclick="event.stopPropagation();">
                         <span class="badge bg-success">{{ hearing[4] }}</span>
                     </a>
                 {% elif hearing[4] == 'Senate' %}
-                    <a href="{{ url_for('hearings.hearings_v2', chamber='Senate') }}" class="badge-link" onclick="event.stopPropagation();">
+                    <a href="{{ url_for('hearings.hearings', chamber='Senate') }}" class="badge-link" onclick="event.stopPropagation();">
                         <span class="badge bg-info">{{ hearing[4] }}</span>
                     </a>
                 {% elif hearing[4] == 'Joint' %}
-                    <a href="{{ url_for('hearings.hearings_v2', chamber='Joint') }}" class="badge-link" onclick="event.stopPropagation();">
+                    <a href="{{ url_for('hearings.hearings', chamber='Joint') }}" class="badge-link" onclick="event.stopPropagation();">
                         <span class="badge bg-warning text-dark">{{ hearing[4] }}</span>
                     </a>
                 {% else %}
@@ -667,7 +667,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <ul class="pagination">
         {% if page > 1 %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('hearings.hearings_v2', page=page-1, search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">← Previous</a>
+            <a class="page-link" href="{{ url_for('hearings.hearings', page=page-1, search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">← Previous</a>
         </li>
         {% endif %}
 
@@ -676,7 +676,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <li class="page-item active"><span class="page-link">{{ p }}</span></li>
             {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('hearings.hearings_v2', page=p, search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">{{ p }}</a>
+                <a class="page-link" href="{{ url_for('hearings.hearings', page=p, search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">{{ p }}</a>
             </li>
             {% elif p == page - 3 or p == page + 3 %}
             <li class="page-item disabled"><span class="page-link">...</span></li>
@@ -685,7 +685,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         {% if page < total_pages %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('hearings.hearings_v2', page=page+1, search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">Next →</a>
+            <a class="page-link" href="{{ url_for('hearings.hearings', page=page+1, search=search, chamber=selected_chamber, committee=selected_committee, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">Next →</a>
         </li>
         {% endif %}
     </ul>

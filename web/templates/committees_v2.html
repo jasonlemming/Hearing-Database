@@ -237,35 +237,36 @@
     gap: 0;
 }
 
-.committee-link {
+.document-link {
     display: block;
     text-decoration: none;
     color: #1a1a1a;
-    padding: 1.5rem 0;
+    padding: 2rem 0 0.5rem 0;
     border-bottom: 1px solid #f0f0f0;
     transition: all 0.3s ease;
 }
 
-.committee-link:hover {
+.document-link:hover {
     transform: translateX(5px);
-    color: #0d6efd;
+    border-bottom-color: #f0f0f0;
 }
 
-.committee-link:hover .committee-title {
-    color: #0d6efd;
+.document-link:hover .document-title {
+    color: #1a1a1a;
 }
 
-.committee-title {
+.document-title {
     font-size: 1.1rem;
     font-weight: 500;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
     transition: color 0.3s ease;
 }
 
-.committee-meta {
+.document-meta {
     font-size: 0.9rem;
     color: #6c757d;
     margin-bottom: 0;
+    margin-top: 0.2rem;
 }
 
 /* Chamber section headers */
@@ -313,7 +314,7 @@
         gap: 1rem;
     }
 
-    .committee-link:hover {
+    .document-link:hover {
         transform: none;
     }
 }
@@ -501,9 +502,9 @@ document.addEventListener('DOMContentLoaded', function() {
         <h2 class="chamber-header">House ({{ house_committees|length }})</h2>
         <div class="committee-list">
             {% for group in house_committees %}
-            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}" class="committee-link">
-                <div class="committee-title">{{ group.parent[2] }}</div>
-                <div class="committee-meta">
+            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}" class="document-link">
+                <div class="document-title">{{ group.parent[2] }}</div>
+                <div class="document-meta">
                     {% if group.parent[5] > 0 %}
                         {{ group.parent[5] }} hearings
                     {% endif %}
@@ -525,9 +526,9 @@ document.addEventListener('DOMContentLoaded', function() {
         <h2 class="chamber-header">Senate ({{ senate_committees|length }})</h2>
         <div class="committee-list">
             {% for group in senate_committees %}
-            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}" class="committee-link">
-                <div class="committee-title">{{ group.parent[2] }}</div>
-                <div class="committee-meta">
+            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}" class="document-link">
+                <div class="document-title">{{ group.parent[2] }}</div>
+                <div class="document-meta">
                     {% if group.parent[5] > 0 %}
                         {{ group.parent[5] }} hearings
                     {% endif %}
@@ -549,9 +550,9 @@ document.addEventListener('DOMContentLoaded', function() {
         <h2 class="chamber-header">Joint ({{ joint_committees|length }})</h2>
         <div class="committee-list">
             {% for group in joint_committees %}
-            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}" class="committee-link">
-                <div class="committee-title">{{ group.parent[2] }}</div>
-                <div class="committee-meta">
+            <a href="{{ url_for('committees.committee_detail', committee_id=group.parent[0]) }}" class="document-link">
+                <div class="document-title">{{ group.parent[2] }}</div>
+                <div class="document-meta">
                     {% if group.parent[5] > 0 %}
                         {{ group.parent[5] }} hearings
                     {% endif %}

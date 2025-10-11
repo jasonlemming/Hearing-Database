@@ -486,7 +486,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {% if witnesses %}
         <div class="witness-list">
             {% for witness in witnesses %}
-            <a href="{{ url_for('main_pages.witness_detail_v2', witness_id=witness[0]) }}" class="document-link">
+            <a href="{{ url_for('main_pages.witness_detail', witness_id=witness[0]) }}" class="document-link">
                 <div class="document-title">{{ witness[1] }}</div>
                 <div class="document-meta">
                     {% if witness[4] %}

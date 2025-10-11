@@ -514,7 +514,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {% if members %}
         <div class="member-list">
             {% for member in members %}
-            <a href="{{ url_for('main_pages.member_detail_v2', member_id=member[0]) }}" class="document-link">
+            <a href="{{ url_for('main_pages.member_detail', member_id=member[0]) }}" class="document-link">
                 <div class="document-title">{{ member[1] }}</div>
                 <div class="document-meta">
                     {{ member[3] }}

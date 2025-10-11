@@ -164,6 +164,45 @@
     background: #6c757d;
 }
 
+/* Sort options */
+.sort-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sort-option {
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.4rem 0;
+    background: transparent;
+    color: #6c757d;
+    border: none;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: left;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sort-option:hover {
+    color: #1a1a1a;
+    border-bottom-color: #1a1a1a;
+}
+
+.sort-option.active {
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+.sort-icon {
+    font-size: 0.75rem;
+    margin-left: 0.5rem;
+}
+
 /* Minimal buttons */
 .filter-actions {
     display: flex;
@@ -349,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="browse-layout">
     <!-- Filter Sidebar -->
     <aside class="filter-sidebar">
-        <form method="GET" action="{{ url_for('crs.index_v2') }}">
+        <form method="GET" action="{{ url_for('crs.index') }}">
             <h3>Filter</h3>
 
             <div class="filter-group">
@@ -444,9 +483,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
             <div class="filter-actions">
                 <button type="submit">Apply</button>
-                <a href="{{ url_for('crs.index_v2') }}">Clear</a>
+                <a href="{{ url_for('crs.index') }}">Clear</a>
             </div>
         </form>
+
+        <div style="margin-top: 2.5rem;">
+            <h3>Sort By</h3>
+            <div class="sort-options">
+                <a href="{{ url_for('crs.index', product_type=selected_product_type, status=selected_status, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to, sort='title', order='asc' if sort_by == 'title' and sort_order == 'desc' else 'desc') }}"
+                   class="sort-option {% if sort_by == 'title' %}active{% endif %}">
+                    <span>Title</span>
+                    {% if sort_by == 'title' %}
+                        <span class="sort-icon">{% if sort_order == 'asc' %}↑{% else %}↓{% endif %}</span>
+                    {% endif %}
+                </a>
+                <a href="{{ url_for('crs.index', product_type=selected_product_type, status=selected_status, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to, sort='date', order='desc' if sort_by == 'date' and sort_order == 'asc' else 'asc') }}"
+                   class="sort-option {% if sort_by == 'date' %}active{% endif %}">
+                    <span>Date</span>
+                    {% if sort_by == 'date' %}
+                        <span class="sort-icon">{% if sort_order == 'desc' %}↓{% else %}↑{% endif %}</span>
+                    {% endif %}
+                </a>
+                <a href="{{ url_for('crs.index', product_type=selected_product_type, status=selected_status, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to, sort='type', order='asc' if sort_by == 'type' and sort_order == 'desc' else 'desc') }}"
+                   class="sort-option {% if sort_by == 'type' %}active{% endif %}">
+                    <span>Type</span>
+                    {% if sort_by == 'type' %}
+                        <span class="sort-icon">{% if sort_order == 'asc' %}↑{% else %}↓{% endif %}</span>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
     </aside>
 
     <!-- Results -->
@@ -454,7 +520,7 @@ document.addEventListener('DOMContentLoaded', function() {
 {% if products %}
 <div class="document-list">
     {% for product in products %}
-    <a href="{{ url_for('crs.product_detail_v2', product_id=product['product_id']) }}" class="document-link">
+    <a href="{{ url_for('crs.product_detail', product_id=product['product_id']) }}" class="document-link">
         <div class="document-title">{{ product['title'] }}</div>
         <div class="document-meta">
             {{ product['product_id'] }}
@@ -473,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <ul class="pagination">
         {% if page > 1 %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('crs.index_v2', page=page-1, product_type=selected_product_type, status=selected_status, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to) }}">← Previous</a>
+            <a class="page-link" href="{{ url_for('crs.index', page=page-1, product_type=selected_product_type, status=selected_status, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">← Previous</a>
         </li>
         {% endif %}
 
@@ -482,7 +548,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <li class="page-item active"><span class="page-link">{{ p }}</span></li>
             {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('crs.index_v2', page=p, product_type=selected_product_type, status=selected_status, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to) }}">{{ p }}</a>
+                <a class="page-link" href="{{ url_for('crs.index', page=p, product_type=selected_product_type, status=selected_status, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">{{ p }}</a>
             </li>
             {% elif p == page - 3 or p == page + 3 %}
             <li class="page-item disabled"><span class="page-link">...</span></li>
@@ -491,7 +557,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         {% if page < total_pages %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('crs.index_v2', page=page+1, product_type=selected_product_type, status=selected_status, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to) }}">Next →</a>
+            <a class="page-link" href="{{ url_for('crs.index', page=page+1, product_type=selected_product_type, status=selected_status, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to, sort=sort_by, order=sort_order) }}">Next →</a>
         </li>
         {% endif %}
     </ul>

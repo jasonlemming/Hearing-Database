@@ -321,14 +321,14 @@ document.addEventListener('DOMContentLoaded', function() {
     {% set authors = product['authors'] if product['authors'] else [] %}
     {% if authors %}
     <div class="metadata-line">
-        {% for author in authors %}<a href="{{ url_for('crs.index_v2', author=author) }}">{{ author }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+        {% for author in authors %}<a href="{{ url_for('crs.index', author=author) }}">{{ author }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
     </div>
     {% endif %}
 
     {% set topics = product['topics'] if product['topics'] else [] %}
     {% if topics %}
     <div class="metadata-line">
-        {% for topic in topics %}<a href="{{ url_for('crs.index_v2', topic=topic) }}">{{ topic }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+        {% for topic in topics %}<a href="{{ url_for('crs.index', topic=topic) }}">{{ topic }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
     </div>
     {% endif %}
 

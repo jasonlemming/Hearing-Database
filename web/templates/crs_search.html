@@ -376,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 {% block content %}
 {% if query %}
-<a href="{{ url_for('crs.index_v2') }}" class="back-link" style="font-size: 0.9rem; color: #6c757d; text-decoration: none; display: inline-block; margin-bottom: 1rem;">← Browse</a>
+<a href="{{ url_for('crs.index') }}" class="back-link" style="font-size: 0.9rem; color: #6c757d; text-decoration: none; display: inline-block; margin-bottom: 1rem;">← Browse</a>
 
 <h1 style="margin-bottom: 0.5rem;">Search Results</h1>
 <p class="text-secondary" style="margin-bottom: 0;">{{ total }} results for "{{ query }}"</p>
@@ -385,7 +385,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="search-layout">
     <!-- Filter Sidebar -->
     <aside class="filter-sidebar">
-        <form method="GET" action="{{ url_for('crs.search_v2') }}">
+        <form method="GET" action="{{ url_for('crs.search') }}">
             <!-- Preserve the search query -->
             <input type="hidden" name="q" value="{{ query }}">
 
@@ -466,7 +466,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             <div class="filter-actions">
                 <button type="submit">Apply</button>
-                <a href="{{ url_for('crs.search_v2', q=query) }}">Clear</a>
+                <a href="{{ url_for('crs.search', q=query) }}">Clear</a>
             </div>
         </form>
     </aside>
@@ -476,7 +476,7 @@ document.addEventListener('DOMContentLoaded', function() {
 {% if results %}
 <div class="document-list">
     {% for product in results %}
-    <a href="{{ url_for('crs.product_detail_v2', product_id=product['product_id']) }}" class="document-link">
+    <a href="{{ url_for('crs.product_detail', product_id=product['product_id']) }}" class="document-link">
         <div class="document-title">{{ product['title'] }}</div>
         <div class="document-meta">
             {{ product['product_id'] }}
@@ -495,7 +495,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <ul class="pagination">
         {% if page > 1 %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('crs.search_v2', q=query, page=page-1, product_type=selected_product_type, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to) }}">← Previous</a>
+            <a class="page-link" href="{{ url_for('crs.search', q=query, page=page-1, product_type=selected_product_type, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to) }}">← Previous</a>
         </li>
         {% endif %}
 
@@ -504,7 +504,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <li class="page-item active"><span class="page-link">{{ p }}</span></li>
             {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('crs.search_v2', q=query, page=p, product_type=selected_product_type, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to) }}">{{ p }}</a>
+                <a class="page-link" href="{{ url_for('crs.search', q=query, page=p, product_type=selected_product_type, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to) }}">{{ p }}</a>
             </li>
             {% elif p == page - 3 or p == page + 3 %}
             <li class="page-item disabled"><span class="page-link">...</span></li>
@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         {% if page < total_pages %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('crs.search_v2', q=query, page=page+1, product_type=selected_product_type, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to) }}">Next →</a>
+            <a class="page-link" href="{{ url_for('crs.search', q=query, page=page+1, product_type=selected_product_type, topic=selected_topic, author=selected_author, date_from=date_from, date_to=date_to) }}">Next →</a>
         </li>
         {% endif %}
     </ul>

@@ -61,307 +61,6 @@ def index():
         author = request.args.get('author', '')
         date_from = request.args.get('date_from', '')
         date_to = request.args.get('date_to', '')
-        page = int(request.args.get('page', 1))
-        limit = 50
-        offset = (page - 1) * limit
-
-        with get_crs_db() as conn:
-            cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
-            # Build query - PostgreSQL uses %s instead of ?
-            query = 'SELECT * FROM products WHERE 1=1'
-            params = []
-
-            if status:
-                query += ' AND status = %s'
-                params.append(status)
-
-            if product_type:
-                query += ' AND product_type = %s'
-                params.append(product_type)
-
-            if topic:
-                # PostgreSQL JSONB: use @> operator for "contains"
-                query += ' AND topics @> %s'
-                params.append(json.dumps([topic]))
-
-            if author:
-                # PostgreSQL JSONB: use @> operator for "contains"
-                query += ' AND authors @> %s'
-                params.append(json.dumps([author]))
-
-            if date_from:
-                query += ' AND publication_date >= %s'
-                params.append(date_from)
-
-            if date_to:
-                query += ' AND publication_date <= %s'
-                params.append(date_to)
-
-            # Get total count
-            count_query = f"SELECT COUNT(*) FROM ({query}) AS count_subquery"
-            cursor.execute(count_query, params)
-            total = cursor.fetchone()['count']
-
-            # Get paginated results
-            query += ' ORDER BY publication_date DESC LIMIT %s OFFSET %s'
-            params.extend([limit, offset])
-            cursor.execute(query, params)
-            products = cursor.fetchall()
-
-            # Get filter options
-            cursor.execute('SELECT DISTINCT product_type FROM products WHERE product_type IS NOT NULL ORDER BY product_type')
-            product_types = [row['product_type'] for row in cursor.fetchall()]
-
-            # PostgreSQL JSONB: use jsonb_array_elements_text for extracting array values
-            # Guard against scalar values (migration artifact from SQLite)
-            cursor.execute('''
-                SELECT DISTINCT jsonb_array_elements_text(topics) as topic
-                FROM products
-                WHERE topics IS NOT NULL
-                  AND jsonb_typeof(topics) = 'array'
-                ORDER BY topic
-                LIMIT 100
-            ''')
-            topics = [row['topic'] for row in cursor.fetchall()]
-
-            cursor.execute('''
-                SELECT DISTINCT jsonb_array_elements_text(authors) as author
-                FROM products
-                WHERE authors IS NOT NULL
-                  AND jsonb_typeof(authors) = 'array'
-                ORDER BY author
-                LIMIT 100
-            ''')
-            authors = [row['author'] for row in cursor.fetchall()]
-
-            # Ensure selected author is in the list (even if not in top 100)
-            if author and author not in authors:
-                authors.insert(0, author)
-
-        total_pages = (total + limit - 1) // limit
-
-        return render_template('crs_index.html',
-                             products=products,
-                             product_types=product_types,
-                             topics=topics,
-                             authors=authors,
-                             selected_product_type=product_type,
-                             selected_status=status,
-                             selected_topic=topic,
-                             selected_author=author,
-                             date_from=date_from,
-                             date_to=date_to,
-                             page=page,
-                             total=total,
-                             total_pages=total_pages,
-                             limit=limit)
-    except Exception as e:
-        return f"Error: {e}", 500
-
-
-def expand_search_query(query):
-    """Expand common compound words to improve search results"""
-    # Common compound words that should also search for their separated forms
-    expansions = {
-        'healthcare': 'healthcare OR health',
-        'cybersecurity': 'cybersecurity OR cyber OR security',
-        'cryptocurrency': 'cryptocurrency OR crypto',
-        'blockchain': 'blockchain OR block',
-    }
-
-    # Simple word-by-word expansion
-    words = query.lower().split()
-    expanded_words = []
-
-    for word in words:
-        if word in expansions:
-            expanded_words.append(f'({expansions[word]})')
-        else:
-            expanded_words.append(word)
-
-    return ' '.join(expanded_words)
-
-
-@crs_bp.route('/search')
-def search():
-    """Search CRS products"""
-    try:
-        original_query = request.args.get('q', '')
-        page = int(request.args.get('page', 1))
-        limit = 50
-        offset = (page - 1) * limit
-
-        if not original_query:
-            return render_template('crs_search.html', query='', results=[], total=0)
-
-        # Expand query for better results
-        query = expand_search_query(original_query)
-
-        with get_crs_db() as conn:
-            cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
-            # Check if product_content_fts exists (full HTML content search)
-            has_content_fts = False
-            try:
-                cursor.execute("SELECT COUNT(*) FROM product_content_fts LIMIT 1")
-                has_content_fts = True
-            except psycopg2.errors.UndefinedTable:
-                conn.rollback()
-                pass
-
-            if has_content_fts:
-                # PostgreSQL full-text search with ts_rank
-                # Search both metadata AND full content with proper weighting
-                search_query = '''
-                    WITH content_matches AS (
-                        SELECT
-                            cfts.product_id,
-                            ts_rank(cfts.search_vector, websearch_to_tsquery('english', %s)) as content_score
-                        FROM product_content_fts cfts
-                        WHERE cfts.search_vector @@ websearch_to_tsquery('english', %s)
-                    ),
-                    metadata_matches AS (
-                        SELECT
-                            p.product_id,
-                            ts_rank(p.search_vector, websearch_to_tsquery('english', %s)) as metadata_score
-                        FROM products p
-                        WHERE p.search_vector @@ websearch_to_tsquery('english', %s)
-                    )
-                    SELECT DISTINCT
-                        p.*,
-                        COALESCE(cm.content_score, 0) + COALESCE(mm.metadata_score, 0) as combined_score,
-                        CASE WHEN cm.product_id IS NOT NULL THEN TRUE ELSE FALSE END as has_content_match
-                    FROM products p
-                    LEFT JOIN content_matches cm ON p.product_id = cm.product_id
-                    LEFT JOIN metadata_matches mm ON p.product_id = mm.product_id
-                    WHERE cm.product_id IS NOT NULL OR mm.product_id IS NOT NULL
-                    ORDER BY combined_score DESC
-                    LIMIT %s OFFSET %s
-                '''
-                cursor.execute(search_query, (query, query, query, query, limit, offset))
-                results = cursor.fetchall()
-
-                # Get total count
-                count_query = '''
-                    WITH content_matches AS (
-                        SELECT DISTINCT product_id
-                        FROM product_content_fts
-                        WHERE search_vector @@ websearch_to_tsquery('english', %s)
-                    ),
-                    metadata_matches AS (
-                        SELECT DISTINCT product_id
-                        FROM products
-                        WHERE search_vector @@ websearch_to_tsquery('english', %s)
-                    )
-                    SELECT COUNT(DISTINCT product_id)
-                    FROM (
-                        SELECT product_id FROM content_matches
-                        UNION
-                        SELECT product_id FROM metadata_matches
-                    ) AS all_matches
-                '''
-                cursor.execute(count_query, (query, query))
-                total = cursor.fetchone()['count']
-            else:
-                # Fallback to metadata-only search using products.search_vector
-                # PostgreSQL: search_vector is auto-updated by trigger
-                search_query = '''
-                    SELECT p.*,
-                           ts_rank(p.search_vector, websearch_to_tsquery('english', %s)) as score
-                    FROM products p
-                    WHERE p.search_vector @@ websearch_to_tsquery('english', %s)
-                    ORDER BY score DESC
-                    LIMIT %s OFFSET %s
-                '''
-                cursor.execute(search_query, (query, query, limit, offset))
-                results = cursor.fetchall()
-
-                # Get total count
-                count_query = '''
-                    SELECT COUNT(*)
-                    FROM products
-                    WHERE search_vector @@ websearch_to_tsquery('english', %s)
-                '''
-                cursor.execute(count_query, (query,))
-                total = cursor.fetchone()['count']
-
-        total_pages = (total + limit - 1) // limit
-
-        return render_template('crs_search.html',
-                             query=original_query,  # Show original query to user
-                             results=results,
-                             total=total,
-                             page=page,
-                             total_pages=total_pages,
-                             limit=limit,
-                             has_content_search=has_content_fts)
-    except Exception as e:
-        return f"Error: {e}", 500
-
-
-@crs_bp.route('/product/<product_id>')
-def product_detail(product_id):
-    """Product detail page"""
-    try:
-        with get_crs_db() as conn:
-            cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
-            cursor.execute('SELECT * FROM products WHERE product_id = %s', (product_id,))
-            product = cursor.fetchone()
-
-            if not product:
-                return "Product not found", 404
-
-            # Try to fetch current version content
-            content_version = None
-            try:
-                cursor.execute('''
-                    SELECT version_id, version_number,
-                           structure_json, word_count, ingested_at, blob_url
-                    FROM product_versions
-                    WHERE product_id = %s AND is_current = TRUE
-                ''', (product_id,))
-                version_row = cursor.fetchone()
-
-                if version_row:
-                    # Already a dict due to RealDictCursor
-                    content_version = dict(version_row)
-
-                    # If blob_url exists, fetch content from blob storage
-                    if content_version.get('blob_url'):
-                        blob_html = fetch_content_from_blob(content_version['blob_url'])
-                        if blob_html:
-                            # Use blob content
-                            content_version['html_content'] = blob_html
-                        else:
-                            # Blob fetch failed - log warning
-                            print(f"Warning: Failed to fetch content from blob URL: {content_version['blob_url']}")
-                    else:
-                        print(f"Warning: No blob_url found for product {product_id}")
-
-            except psycopg2.errors.UndefinedTable as e:
-                # product_versions table doesn't exist yet or column mismatch
-                print(f"Database error: {e}")
-                conn.rollback()
-                pass
-
-        return render_template('crs_detail.html', product=product, content_version=content_version)
-    except Exception as e:
-        return f"Error: {e}", 500
-
-
-@crs_bp.route('/v2/')
-def index_v2():
-    """Browse CRS products page - V2 UI Preview"""
-    try:
-        # Get filter parameters
-        product_type = request.args.get('product_type', '')
-        status = request.args.get('status', 'Active')
-        topic = request.args.get('topic', '')
-        author = request.args.get('author', '')
-        date_from = request.args.get('date_from', '')
-        date_to = request.args.get('date_to', '')
         sort_by = request.args.get('sort', 'date')
         sort_order = request.args.get('order', 'desc')
         page = int(request.args.get('page', 1))
@@ -481,60 +180,32 @@ def index_v2():
         return f"Error: {e}", 500
 
 
-@crs_bp.route('/v2/product/<product_id>')
-def product_detail_v2(product_id):
-    """Product detail page - V2 UI Preview"""
-    try:
-        with get_crs_db() as conn:
-            cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+def expand_search_query(query):
+    """Expand common compound words to improve search results"""
+    # Common compound words that should also search for their separated forms
+    expansions = {
+        'healthcare': 'healthcare OR health',
+        'cybersecurity': 'cybersecurity OR cyber OR security',
+        'cryptocurrency': 'cryptocurrency OR crypto',
+        'blockchain': 'blockchain OR block',
+    }
 
-            cursor.execute('SELECT * FROM products WHERE product_id = %s', (product_id,))
-            product = cursor.fetchone()
+    # Simple word-by-word expansion
+    words = query.lower().split()
+    expanded_words = []
 
-            if not product:
-                return "Product not found", 404
+    for word in words:
+        if word in expansions:
+            expanded_words.append(f'({expansions[word]})')
+        else:
+            expanded_words.append(word)
 
-            # Try to fetch current version content
-            content_version = None
-            try:
-                cursor.execute('''
-                    SELECT version_id, version_number,
-                           structure_json, word_count, ingested_at, blob_url
-                    FROM product_versions
-                    WHERE product_id = %s AND is_current = TRUE
-                ''', (product_id,))
-                version_row = cursor.fetchone()
-
-                if version_row:
-                    # Already a dict due to RealDictCursor
-                    content_version = dict(version_row)
-
-                    # If blob_url exists, fetch content from blob storage
-                    if content_version.get('blob_url'):
-                        blob_html = fetch_content_from_blob(content_version['blob_url'])
-                        if blob_html:
-                            # Use blob content
-                            content_version['html_content'] = blob_html
-                        else:
-                            # Blob fetch failed - log warning
-                            print(f"Warning: Failed to fetch content from blob URL: {content_version['blob_url']}")
-                    else:
-                        print(f"Warning: No blob_url found for product {product_id}")
-
-            except psycopg2.errors.UndefinedTable as e:
-                # product_versions table doesn't exist yet or column mismatch
-                print(f"Database error: {e}")
-                conn.rollback()
-                pass
-
-        return render_template('crs_detail_v2.html', product=product, content_version=content_version)
-    except Exception as e:
-        return f"Error: {e}", 500
+    return ' '.join(expanded_words)
 
 
-@crs_bp.route('/v2/search')
-def search_v2():
-    """Search CRS products - V2 UI Preview"""
+@crs_bp.route('/search')
+def search():
+    """Search CRS products"""
     try:
         original_query = request.args.get('q', '')
         product_type = request.args.get('product_type', '')
@@ -868,6 +539,57 @@ def search_v2():
                              date_from=date_from,
                              date_to=date_to,
                              has_content_search=has_content_fts)
+    except Exception as e:
+        return f"Error: {e}", 500
+
+
+@crs_bp.route('/product/<product_id>')
+def product_detail(product_id):
+    """Product detail page"""
+    try:
+        with get_crs_db() as conn:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+
+            cursor.execute('SELECT * FROM products WHERE product_id = %s', (product_id,))
+            product = cursor.fetchone()
+
+            if not product:
+                return "Product not found", 404
+
+            # Try to fetch current version content
+            content_version = None
+            try:
+                cursor.execute('''
+                    SELECT version_id, version_number,
+                           structure_json, word_count, ingested_at, blob_url
+                    FROM product_versions
+                    WHERE product_id = %s AND is_current = TRUE
+                ''', (product_id,))
+                version_row = cursor.fetchone()
+
+                if version_row:
+                    # Already a dict due to RealDictCursor
+                    content_version = dict(version_row)
+
+                    # If blob_url exists, fetch content from blob storage
+                    if content_version.get('blob_url'):
+                        blob_html = fetch_content_from_blob(content_version['blob_url'])
+                        if blob_html:
+                            # Use blob content
+                            content_version['html_content'] = blob_html
+                        else:
+                            # Blob fetch failed - log warning
+                            print(f"Warning: Failed to fetch content from blob URL: {content_version['blob_url']}")
+                    else:
+                        print(f"Warning: No blob_url found for product {product_id}")
+
+            except psycopg2.errors.UndefinedTable as e:
+                # product_versions table doesn't exist yet or column mismatch
+                print(f"Database error: {e}")
+                conn.rollback()
+                pass
+
+        return render_template('crs_detail_v2.html', product=product, content_version=content_version)
     except Exception as e:
         return f"Error: {e}", 500
 

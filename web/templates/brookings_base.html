@@ -178,6 +178,48 @@
             color: #ffffff;
         }
 
+        /* Pagination - Minimal style matching hearing database */
+        .pagination {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 3rem;
+            list-style: none;
+            padding: 0;
+        }
+
+        .pagination .page-item {
+            list-style: none;
+        }
+
+        .pagination .page-link {
+            color: #6c757d;
+            border: none;
+            background: none;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .pagination .page-link:hover {
+            color: #0d6efd;
+            background: none;
+            text-decoration: none;
+        }
+
+        .pagination .page-item.active .page-link {
+            color: #1a1a1a;
+            font-weight: 500;
+            background: none;
+            border: none;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #d0d0d0;
+            background: none;
+        }
+
         /* Spacing utilities */
         .mb-6 { margin-bottom: 6rem; }
         .mb-4 { margin-bottom: 4rem; }

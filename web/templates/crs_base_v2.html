@@ -311,9 +311,16 @@
 
         /* Pagination - Minimal style */
         .pagination {
+            display: flex;
             gap: 0.5rem;
             justify-content: center;
             margin-top: 3rem;
+            list-style: none;
+            padding: 0;
+        }
+
+        .pagination .page-item {
+            list-style: none;
         }
 
         .pagination .page-link {
@@ -322,6 +329,8 @@
             background: none;
             padding: 0.5rem 0.75rem;
             font-size: 0.9rem;
+            text-decoration: none;
+            transition: color 0.2s ease;
         }
 
         .pagination .page-link:hover {

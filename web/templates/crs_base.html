@@ -408,7 +408,7 @@
         <div class="nav-links">
             <a href="/">← Home</a>
         </div>
-        <form class="search-form" method="GET" action="{{ url_for('crs.search_v2') }}">
+        <form class="search-form" method="GET" action="{{ url_for('crs.search') }}">
             <input type="search" name="q" value="{{ request.args.get('q', '') }}">
             <button type="submit">Search</button>
         </form>

@@ -105,7 +105,7 @@ def committees():
             ''')
             all_committees = cursor.fetchall()
 
-        return render_template('committees_v2.html',
+        return render_template('committees.html',
                              committees_hierarchy=committees_with_subs,
                              chambers=chambers,
                              types=types,
@@ -154,7 +154,7 @@ def committee_detail(committee_id):
             ''', (committee_id,))
             subcommittees = cursor.fetchall()
 
-        return render_template('committee_detail_v2.html',
+        return render_template('committee_detail.html',
                              committee=committee,
                              hearings=hearings,
                              subcommittees=subcommittees)

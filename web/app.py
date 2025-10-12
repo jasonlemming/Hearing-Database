@@ -8,6 +8,7 @@ This modular version uses Flask blueprints to organize routes into logical compo
 - main_pages: Members, witnesses, and search functionality
 - api: JSON API endpoints
 - admin: Administrative interfaces
+- policy_library: Multi-source policy research library (CRS, Brookings, GAO, Substack)
 
 This replaces the previous monolithic 841-line app.py with organized, maintainable modules.
 """

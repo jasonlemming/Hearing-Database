@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 def seed_sources(session):
-    """Seed sources table with CRS, Brookings, GAO"""
+    """Seed sources table with CRS, Brookings, GAO, Substack"""
     sources_data = [
         {
             'source_code': 'CRS',
@@ -42,6 +42,14 @@ def seed_sources(session):
             'short_name': 'GAO',
             'description': 'The U.S. Government Accountability Office (GAO) is an independent, nonpartisan agency that works for Congress.',
             'url': 'https://www.gao.gov',
+            'is_active': True
+        },
+        {
+            'source_code': 'SUBSTACK',
+            'name': 'Substack Newsletters',
+            'short_name': 'Substack',
+            'description': 'Substack is a newsletter platform for independent writers and policy analysts.',
+            'url': 'https://substack.com',
             'is_active': True
         }
     ]

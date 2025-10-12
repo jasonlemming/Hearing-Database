@@ -45,7 +45,7 @@ from web.blueprints.main_pages import main_pages_bp
 from web.blueprints.api import api_bp
 from web.blueprints.admin import admin_bp
 from web.blueprints.crs import crs_bp
-from web.blueprints.brookings import brookings_bp
+from web.blueprints.policy_library import policy_library_bp
 
 # Create Flask app
 app = Flask(__name__)
@@ -58,7 +58,7 @@ app.register_blueprint(main_pages_bp)
 app.register_blueprint(api_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(crs_bp)
-app.register_blueprint(brookings_bp)
+app.register_blueprint(policy_library_bp)
 
 
 # Template filters (shared across all blueprints)

@@ -1,4 +1,4 @@
-{% extends "brookings_base.html" %}
+{% extends "policy_library_base.html" %}
 
 {% block title %}Statistics - Policy Library{% endblock %}
 
@@ -123,7 +123,7 @@
 
 {% block content %}
 <h1>Statistics</h1>
-<p class="text-secondary mb-6">Overview of policy research from the Brookings Institution</p>
+<p class="text-secondary mb-6">Overview of policy research across all sources</p>
 
 <!-- Summary Stats -->
 <div class="stats-grid">
@@ -184,7 +184,7 @@
         <tbody>
             {% for subject, count in top_subjects %}
             <tr>
-                <td><a href="{{ url_for('brookings.index', subject=subject) }}">{{ subject }}</a></td>
+                <td><a href="{{ url_for('policy_library.index', subject=subject) }}">{{ subject }}</a></td>
                 <td>{{ count }}</td>
             </tr>
             {% endfor %}
@@ -199,10 +199,10 @@
     <h2 class="section-title">Recently Added Documents</h2>
     <div class="recent-list">
         {% for doc in recent %}
-        <a href="{{ url_for('brookings.document_detail', document_id=doc.document_id) }}" class="recent-link">
+        <a href="{{ url_for('policy_library.document_detail', document_id=doc.document_id) }}" class="recent-link">
             <div class="recent-title">{{ doc.title[:100] }}{% if doc.title|length > 100 %}...{% endif %}</div>
             <div class="recent-meta">
-                Brookings Institution
+                {{ doc.source.name if doc.source else 'Unknown' }}
                 · {{ doc.publication_date }}
                 {% if doc.document_type %} · {{ doc.document_type }}{% endif %}
                 · {{ doc.word_count|number_format }} words

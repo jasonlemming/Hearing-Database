@@ -140,6 +140,22 @@ class BaseIngester(ABC):
         """
         pass
 
+    def _parse_date_string(self, date_str: Optional[str]):
+        """Convert date string (YYYY-MM-DD) to Python date object"""
+        if not date_str:
+            return None
+        try:
+            from datetime import date as date_type
+            if isinstance(date_str, date_type):
+                return date_str
+            # Parse YYYY-MM-DD format
+            parts = date_str.split('-')
+            if len(parts) == 3:
+                return date_type(int(parts[0]), int(parts[1]), int(parts[2]))
+        except:
+            return None
+        return None
+
     def store(self, parsed_data: Dict[str, Any]) -> Optional[int]:
         """
         Store document in database and save files
@@ -162,6 +178,9 @@ class BaseIngester(ABC):
             # Calculate checksum for deduplication
             checksum = self._calculate_checksum(parsed_data.get('full_text', ''))
 
+            # Convert publication date string to date object
+            pub_date = self._parse_date_string(parsed_data.get('publication_date'))
+
             if existing_doc:
                 # Check if content has changed
                 if existing_doc.checksum == checksum:
@@ -173,7 +192,7 @@ class BaseIngester(ABC):
                 # Update existing document
                 existing_doc.title = parsed_data.get('title')
                 existing_doc.document_type = parsed_data.get('document_type')
-                existing_doc.publication_date = parsed_data.get('publication_date')
+                existing_doc.publication_date = pub_date
                 existing_doc.summary = parsed_data.get('summary')
                 existing_doc.full_text = parsed_data.get('full_text')
                 existing_doc.url = parsed_data.get('url')
@@ -196,7 +215,7 @@ class BaseIngester(ABC):
                     document_identifier=parsed_data['document_identifier'],
                     title=parsed_data.get('title'),
                     document_type=parsed_data.get('document_type'),
-                    publication_date=parsed_data.get('publication_date'),
+                    publication_date=pub_date,
                     summary=parsed_data.get('summary'),
                     full_text=parsed_data.get('full_text'),
                     url=parsed_data.get('url'),

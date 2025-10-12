@@ -1,8 +1,9 @@
 """
-Brookings Institution blueprint - browse and search Brookings research
+Policy Library blueprint - browse and search multi-source policy research
 """
 from flask import Blueprint, render_template, request, Response, jsonify
 from sqlalchemy import func, desc
+from sqlalchemy.orm import joinedload
 import json
 import csv
 import io
@@ -17,7 +18,7 @@ from brookings_ingester.models import get_session, Document, Author, Subject, So
 from datetime import datetime
 from markupsafe import Markup, escape
 
-brookings_bp = Blueprint('brookings', __name__, url_prefix='/library')
+policy_library_bp = Blueprint('policy_library', __name__, url_prefix='/library')
 
 # Database paths
 BROOKINGS_DB_GZ_PATH = 'brookings_products.db.gz'
@@ -197,7 +198,7 @@ def format_transcript_text(text):
 
 
 # Register the custom filter
-brookings_bp.add_app_template_filter(format_transcript_text, 'format_transcript')
+policy_library_bp.add_app_template_filter(format_transcript_text, 'format_transcript')
 
 
 def get_brookings_source_id():
@@ -212,28 +213,31 @@ def get_brookings_source_id():
     return source_id
 
 
-@brookings_bp.route('/')
+@policy_library_bp.route('/')
 def index():
-    """Browse Brookings documents page"""
+    """Browse policy library documents"""
     try:
         # Get filter parameters
         search_query = request.args.get('q', '')
         date_from = request.args.get('date_from', '')
         date_to = request.args.get('date_to', '')
+        source_filter = request.args.get('source', '')  # New: source filter
         page = int(request.args.get('page', 1))
         limit = 50
         offset = (page - 1) * limit
 
-        source_id = get_brookings_source_id()
-        if not source_id:
-            return "Brookings source not found. Please run: python cli.py brookings init", 500
-
         session = get_session()
 
         # Build query - exclude "Page not Found" articles
-        query = session.query(Document).filter_by(source_id=source_id)\
+        query = session.query(Document)\
             .filter(~Document.title.like('%Page not Found%'))\
             .filter(~Document.title.like('%404%'))
+
+        # Apply source filter if specified
+        if source_filter:
+            source = session.query(Source).filter_by(source_code=source_filter).first()
+            if source:
+                query = query.filter_by(source_id=source.source_id)
 
         # Add search filter if query provided
         if search_query:
@@ -253,18 +257,48 @@ def index():
         # Get total count
         total = query.count()
 
-        # Get paginated results
-        documents = query.order_by(desc(Document.publication_date)).limit(limit).offset(offset).all()
+        # Get paginated results with eagerly loaded source relationship
+        documents = query.options(joinedload(Document.source))\
+            .order_by(desc(Document.publication_date)).limit(limit).offset(offset).all()
+
+        # Get only sources that have documents in the current filtered view (excluding source filter itself)
+        # Build a base query without the source filter
+        sources_query = session.query(Document)\
+            .filter(~Document.title.like('%Page not Found%'))\
+            .filter(~Document.title.like('%404%'))
+
+        # Apply the same filters as documents (except source)
+        if search_query:
+            search_pattern = f"%{search_query}%"
+            sources_query = sources_query.filter(
+                (Document.title.like(search_pattern)) |
+                (Document.summary.like(search_pattern)) |
+                (Document.full_text.like(search_pattern))
+            )
+        if date_from:
+            sources_query = sources_query.filter(Document.publication_date >= date_from)
+        if date_to:
+            sources_query = sources_query.filter(Document.publication_date <= date_to)
+
+        # Get distinct source IDs from the filtered documents
+        available_source_ids = [s[0] for s in sources_query.with_entities(Document.source_id).distinct().all()]
+
+        # Get only those sources
+        all_sources = session.query(Source)\
+            .filter(Source.source_id.in_(available_source_ids))\
+            .order_by(Source.name).all() if available_source_ids else []
 
         session.close()
 
         total_pages = (total + limit - 1) // limit
 
-        return render_template('brookings_index.html',
+        return render_template('policy_library_index.html',
                              documents=documents,
                              query=search_query,
                              date_from=date_from,
                              date_to=date_to,
+                             source_filter=source_filter,
+                             all_sources=all_sources,
                              page=page,
                              total=total,
                              total_pages=total_pages,
@@ -273,27 +307,27 @@ def index():
         return f"Error: {e}", 500
 
 
-@brookings_bp.route('/search')
+@policy_library_bp.route('/search')
 def search():
-    """Search Brookings documents"""
+    """Search policy library documents"""
     try:
         query_text = request.args.get('q', '')
+        source_filter = request.args.get('source', '')
         page = int(request.args.get('page', 1))
         limit = 50
         offset = (page - 1) * limit
 
         if not query_text:
-            return render_template('brookings_search.html', query='', results=[], total=0)
-
-        source_id = get_brookings_source_id()
-        if not source_id:
-            return "Brookings source not found", 500
+            session = get_session()
+            all_sources = session.query(Source).order_by(Source.name).all()
+            session.close()
+            return render_template('policy_library_search.html', query='', results=[], total=0, all_sources=all_sources, source_filter='')
 
         session = get_session()
 
         # Simple text search (can be enhanced with FTS later)
         search_pattern = f"%{query_text}%"
-        query = session.query(Document).filter_by(source_id=source_id)\
+        query = session.query(Document)\
             .filter(~Document.title.like('%Page not Found%'))\
             .filter(~Document.title.like('%404%'))\
             .filter(
@@ -302,31 +336,85 @@ def search():
                 (Document.full_text.like(search_pattern))
             )
 
+        # Apply source filter if specified
+        if source_filter:
+            source = session.query(Source).filter_by(source_code=source_filter).first()
+            if source:
+                query = query.filter_by(source_id=source.source_id)
+
         total = query.count()
-        results = query.order_by(desc(Document.publication_date)).limit(limit).offset(offset).all()
+        results = query.options(joinedload(Document.source))\
+            .order_by(desc(Document.publication_date)).limit(limit).offset(offset).all()
+
+        # Get only sources that have documents matching the search (excluding source filter)
+        # Build a base query without the source filter
+        sources_query = session.query(Document)\
+            .filter(~Document.title.like('%Page not Found%'))\
+            .filter(~Document.title.like('%404%'))\
+            .filter(
+                (Document.title.like(search_pattern)) |
+                (Document.summary.like(search_pattern)) |
+                (Document.full_text.like(search_pattern))
+            )
+
+        # Get distinct source IDs from the search results
+        available_source_ids = [s[0] for s in sources_query.with_entities(Document.source_id).distinct().all()]
+
+        # Get only those sources
+        all_sources = session.query(Source)\
+            .filter(Source.source_id.in_(available_source_ids))\
+            .order_by(Source.name).all() if available_source_ids else []
 
         session.close()
 
         total_pages = (total + limit - 1) // limit
 
-        return render_template('brookings_search.html',
+        return render_template('policy_library_search.html',
                              query=query_text,
                              results=results,
                              total=total,
                              page=page,
                              total_pages=total_pages,
-                             limit=limit)
+                             limit=limit,
+                             all_sources=all_sources,
+                             source_filter=source_filter)
     except Exception as e:
         return f"Error: {e}", 500
 
 
-@brookings_bp.route('/document/<int:document_id>')
+def get_source_display_config(source_code):
+    """Get display configuration for a source"""
+    configs = {
+        'BROOKINGS': {
+            'link_text': 'View on Brookings.edu',
+            'domain': 'brookings.edu'
+        },
+        'SUBSTACK': {
+            'link_text': 'Read on Substack',
+            'domain': 'substack.com'
+        },
+        'CRS': {
+            'link_text': 'View on Congress.gov',
+            'domain': 'congress.gov'
+        },
+        'GAO': {
+            'link_text': 'View on GAO.gov',
+            'domain': 'gao.gov'
+        }
+    }
+    return configs.get(source_code, {
+        'link_text': 'View Original',
+        'domain': 'source'
+    })
+
+
+@policy_library_bp.route('/document/<int:document_id>')
 def document_detail(document_id):
     """Document detail page"""
     try:
         session = get_session()
 
-        document = session.query(Document).get(document_id)
+        document = session.query(Document).options(joinedload(Document.source)).get(document_id)
 
         if not document:
             session.close()
@@ -342,17 +430,23 @@ def document_detail(document_id):
             DocumentSubject.document_id == document_id
         ).all()
 
+        # Get source display config
+        source_config = get_source_display_config(
+            document.source.source_code if document.source else None
+        )
+
         session.close()
 
-        return render_template('brookings_detail.html',
+        return render_template('policy_library_detail.html',
                              document=document,
                              authors=authors,
-                             subjects=subjects)
+                             subjects=subjects,
+                             source_config=source_config)
     except Exception as e:
         return f"Error: {e}", 500
 
 
-@brookings_bp.route('/api/export')
+@policy_library_bp.route('/api/export')
 def export_csv():
     """Export documents as CSV"""
     try:

@@ -1255,6 +1255,169 @@ def ingest_url(url):
         sys.exit(1)
 
 
+@cli.group(name='substack')
+def substack():
+    """Substack newsletter content management operations"""
+    pass
+
+
+@substack.command()
+@click.option('--limit', default=None, type=int, help='Limit number of posts to ingest')
+@click.option('--skip-existing', is_flag=True, default=True, help='Skip posts that already exist')
+@click.option('--publications', '-p', multiple=True, help='Substack publications to ingest (e.g., author.substack.com)')
+@click.option('--since-date', default='2025-01-01', help='Only ingest posts published on/after this date (YYYY-MM-DD)')
+def backfill(limit, skip_existing, publications, since_date):
+    """Initial backfill of Substack newsletter content"""
+    logger = get_logger(__name__)
+
+    try:
+        from brookings_ingester.ingesters import SubstackIngester
+
+        # Convert publications tuple to list
+        pubs_list = list(publications) if publications else None
+
+        logger.info(f"Starting Substack backfill (since={since_date})")
+        if pubs_list:
+            logger.info(f"Publications: {', '.join(pubs_list)}")
+
+        ingester = SubstackIngester()
+
+        result = ingester.run_ingestion(
+            limit=limit,
+            skip_existing=skip_existing,
+            run_type='backfill',
+            publications=pubs_list,
+            since_date=since_date
+        )
+
+        if result['success']:
+            logger.info("Backfill completed successfully")
+            stats = result['stats']
+            logger.info(f"Checked: {stats['documents_checked']}, "
+                       f"Fetched: {stats['documents_fetched']}, "
+                       f"Updated: {stats['documents_updated']}, "
+                       f"Skipped: {stats['documents_skipped']}, "
+                       f"Errors: {stats['errors_count']}")
+        else:
+            logger.error(f"Backfill failed: {result.get('error', 'Unknown error')}")
+            sys.exit(1)
+
+    except Exception as e:
+        logger.error(f"Backfill failed: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
+
+
+@substack.command()
+@click.option('--days', default=30, help='Update posts published in last N days')
+@click.option('--publications', '-p', multiple=True, help='Substack publications to update')
+def update(days, publications):
+    """Update Substack content for recently published posts"""
+    logger = get_logger(__name__)
+
+    try:
+        from brookings_ingester.ingesters import SubstackIngester
+        from datetime import datetime, timedelta
+
+        # Convert publications tuple to list
+        pubs_list = list(publications) if publications else None
+
+        since_date = (datetime.now() - timedelta(days=days)).strftime('%Y-%m-%d')
+        logger.info(f"Updating Substack content published since {since_date}")
+
+        ingester = SubstackIngester()
+        result = ingester.run_ingestion(
+            limit=None,
+            skip_existing=False,
+            run_type='update',
+            publications=pubs_list,
+            since_date=since_date
+        )
+
+        if result['success']:
+            logger.info("Update completed successfully")
+            stats = result['stats']
+            logger.info(f"Checked: {stats['documents_checked']}, "
+                       f"Updated: {stats['documents_updated']}, "
+                       f"Errors: {stats['errors_count']}")
+        else:
+            logger.error(f"Update failed: {result.get('error')}")
+            sys.exit(1)
+
+    except Exception as e:
+        logger.error(f"Update failed: {e}")
+        sys.exit(1)
+
+
+@substack.command()
+@click.option('--detailed', is_flag=True, help='Show detailed statistics')
+def stats(detailed):
+    """Show Substack content statistics"""
+    logger = get_logger(__name__)
+
+    try:
+        from brookings_ingester.models import get_session, Document, Source, IngestionLog
+        from sqlalchemy import func
+
+        session = get_session()
+        substack = session.query(Source).filter_by(source_code='SUBSTACK').first()
+
+        if not substack:
+            logger.error("Substack source not found. Run: python cli.py substack backfill")
+            sys.exit(1)
+
+        total_docs = session.query(Document).filter_by(source_id=substack.source_id).count()
+        total_words = session.query(func.sum(Document.word_count)).filter_by(source_id=substack.source_id).scalar() or 0
+
+        click.echo("\n" + "=" * 70)
+        click.echo("Substack Content Statistics")
+        click.echo("=" * 70)
+        click.echo(f"Total posts:           {total_docs:>10,}")
+        click.echo(f"Total words:           {total_words:>10,}")
+        click.echo("=" * 70 + "\n")
+
+        session.close()
+
+    except Exception as e:
+        logger.error(f"Stats failed: {e}")
+        sys.exit(1)
+
+
+@substack.command()
+@click.option('--url', required=True, help='Substack post URL to ingest')
+def ingest_url(url):
+    """Ingest a single Substack post by URL"""
+    logger = get_logger(__name__)
+
+    try:
+        from brookings_ingester.ingesters import SubstackIngester
+
+        ingester = SubstackIngester()
+        doc_meta = {'document_identifier': ingester._extract_slug(url), 'url': url}
+
+        fetched = ingester.fetch(doc_meta)
+        if not fetched:
+            logger.error("Failed to fetch content")
+            sys.exit(1)
+
+        parsed = ingester.parse(doc_meta, fetched)
+        if not parsed:
+            logger.error("Failed to parse content")
+            sys.exit(1)
+
+        document_id = ingester.store(parsed)
+        if not document_id:
+            logger.error("Failed to store document")
+            sys.exit(1)
+
+        logger.info(f"✓ Successfully ingested post (ID: {document_id})")
+
+    except Exception as e:
+        logger.error(f"Ingestion failed: {e}")
+        sys.exit(1)
+
+
 # Helper functions
 def check_configuration():
     """Check configuration and API connectivity"""

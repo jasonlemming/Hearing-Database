@@ -64,6 +64,11 @@ class Config:
         'Commentary'
     ]
 
+    # Substack settings
+    SUBSTACK_PUBLICATIONS = os.getenv('SUBSTACK_PUBLICATIONS', '').split(',') if os.getenv('SUBSTACK_PUBLICATIONS') else [
+        'jamiedupree.substack.com'  # Default example publication
+    ]
+
     @classmethod
     def ensure_directories(cls):
         """Ensure all storage directories exist"""
@@ -71,6 +76,14 @@ class Config:
         cls.TEXT_STORAGE.mkdir(parents=True, exist_ok=True)
         cls.HTML_STORAGE.mkdir(parents=True, exist_ok=True)
         cls.LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+        # Substack directories
+        substack_pdf = cls.STORAGE_PATH / 'pdfs' / 'substack'
+        substack_text = cls.STORAGE_PATH / 'text' / 'substack'
+        substack_html = cls.STORAGE_PATH / 'html' / 'substack'
+        substack_pdf.mkdir(parents=True, exist_ok=True)
+        substack_text.mkdir(parents=True, exist_ok=True)
+        substack_html.mkdir(parents=True, exist_ok=True)
 
 
 config = Config()

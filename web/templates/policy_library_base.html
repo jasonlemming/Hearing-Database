@@ -14,7 +14,7 @@
             line-height: 1.6;
         }
 
-        .brookings-container {
+        .policy-library-container {
             max-width: 900px;
             margin: 0 auto;
             padding: 4rem 3rem 6rem;
@@ -232,7 +232,7 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            .brookings-container {
+            .policy-library-container {
                 padding: 3rem 2rem 4rem;
             }
 
@@ -266,14 +266,14 @@
         <div class="nav-links">
             <a href="/">← Home</a>
         </div>
-        <form class="search-form" method="GET" action="{{ url_for('brookings.index') }}">
+        <form class="search-form" method="GET" action="{{ url_for('policy_library.index') }}">
             <input type="search" name="q" value="{{ request.args.get('q', '') }}">
             <button type="submit">Search</button>
         </form>
     </nav>
 
     <!-- Main Content -->
-    <div class="brookings-container">
+    <div class="policy-library-container">
         {% block content %}{% endblock %}
     </div>
 

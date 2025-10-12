@@ -1,10 +1,10 @@
-{% extends "brookings_base.html" %}
+{% extends "policy_library_base.html" %}
 
-{% block title %}Browse Policy Library{% endblock %}
+{% block title %}{% if query %}Search: {{ query }}{% else %}Search Policy Library{% endif %}{% endblock %}
 
 {% block head_style %}
 /* Two-column layout - sidebar + content */
-.browse-layout {
+.search-layout {
     display: grid;
     grid-template-columns: 200px 1fr;
     gap: 3rem;
@@ -186,11 +186,22 @@
 }
 
 .filter-actions button:hover,
-.filter-actions button[type="submit"]:hover,
 .filter-actions a:hover {
-    background: transparent !important;
     color: #1a1a1a;
     border-bottom-color: #1a1a1a;
+}
+
+/* Results header */
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.stats-line {
+    font-size: 0.9rem;
+    color: #6c757d;
 }
 
 /* Document list - Policy Library style (all screen sizes) */
@@ -221,14 +232,15 @@
 .document-title {
     font-size: 1.1rem;
     font-weight: 500;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
     transition: color 0.3s ease;
 }
 
 .document-meta {
     font-size: 0.9rem;
     color: #6c757d;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
+    margin-top: 0.2rem;
 }
 
 .document-summary {
@@ -247,9 +259,59 @@
     margin-left: 0.5rem;
 }
 
+/* Clickable metadata links inside document cards */
+.document-meta a {
+    color: #6c757d;
+    text-decoration: none;
+    transition: border-bottom-color 0.2s ease, color 0.2s ease;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid transparent;
+}
+
+.document-meta a:hover {
+    color: #1a1a1a;
+    border-bottom-color: #1a1a1a;
+    text-decoration: none;
+}
+
+/* Clickable source badges */
+.badge-link {
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+.badge-link:hover {
+    opacity: 0.8;
+    text-decoration: none;
+}
+
+.badge-link .badge {
+    margin-left: 0;
+}
+
+/* Search prompt when no query */
+.search-prompt {
+    text-align: center;
+    padding: 4rem 0;
+    color: #6c757d;
+}
+
+.search-prompt h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+}
+
 /* Mobile adjustments */
 @media (max-width: 991px) {
-    .browse-layout {
+    .search-layout {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
@@ -349,35 +411,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
 {% block content %}
 {% if query %}
+<a href="{{ url_for('policy_library.index') }}" class="back-link" style="font-size: 0.9rem; color: #6c757d; text-decoration: none; display: inline-block; margin-bottom: 1rem;">← Browse</a>
+
 <h1 style="margin-bottom: 0.5rem;">Search Results</h1>
-<p class="text-secondary" style="margin-bottom: 0;">{{ total|number_format if total else 0 }} results for "{{ query }}"</p>
-{% else %}
-<h1 style="margin-bottom: 0.5rem;">Policy Library</h1>
-<p class="text-secondary" style="margin-bottom: 0;">{{ total|number_format if total else 0 }} documents</p>
-{% endif %}
+<p class="text-secondary" style="margin-bottom: 0;">{{ total }} results for "{{ query }}"</p>
 
 <!-- Two-column layout: filters sidebar + results -->
-<div class="browse-layout">
+<div class="search-layout">
     <!-- Filter Sidebar -->
     <aside class="filter-sidebar">
-        <form method="GET" action="{{ url_for('brookings.index') }}">
-            <h3>Filter</h3>
-
-            {% if query %}
+        <form method="GET" action="{{ url_for('policy_library.search') }}">
+            <!-- Preserve the search query -->
             <input type="hidden" name="q" value="{{ query }}">
-            {% endif %}
+
+            <h3>Filter</h3>
 
             <div class="filter-group">
                 <label>Source</label>
                 <div class="custom-select">
                     <select name="source">
-                        <option value="" selected>All</option>
-                        <option value="brookings">Brookings Institution</option>
+                        <option value="">All Sources</option>
+                        <option value="brookings" selected>Brookings Institution</option>
                     </select>
-                    <div class="custom-select-trigger" tabindex="0">All</div>
+                    <div class="custom-select-trigger" tabindex="0">Brookings Institution</div>
                     <div class="custom-select-options">
-                        <div class="custom-select-option selected" data-value="">All</div>
-                        <div class="custom-select-option" data-value="brookings">Brookings Institution</div>
+                        <div class="custom-select-option" data-value="">All Sources</div>
+                        <div class="custom-select-option selected" data-value="brookings">Brookings Institution</div>
                     </div>
                 </div>
             </div>
@@ -394,27 +453,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
             <div class="filter-actions">
                 <button type="submit">Apply</button>
-                <a href="{{ url_for('brookings.index') }}">Clear</a>
+                <a href="{{ url_for('policy_library.search', q=query) }}">Clear</a>
             </div>
         </form>
     </aside>
 
     <!-- Results -->
     <div class="results-column">
-{% if documents %}
+{% if results %}
 <div class="document-list">
-    {% for doc in documents %}
-    <a href="{{ url_for('brookings.document_detail', document_id=doc.document_id) }}" class="document-link">
+    {% for doc in results %}
+    <a href="{{ url_for('policy_library.document_detail', document_id=doc.document_id) }}" class="document-link">
         <div class="document-title">{{ doc.title }}</div>
         <div class="document-meta">
-            Brookings Institution
-            · {{ doc.publication_date or 'No date' }}
+            {% if doc.source %}
+                <a href="{{ url_for('policy_library.search', q=query, source=doc.source.source_code) }}" onclick="event.stopPropagation();">{{ doc.source.name }}</a>
+            {% else %}
+                Unknown
+            {% endif %}
+            ·
+            {% if doc.publication_date %}
+                <a href="{{ url_for('policy_library.search', q=query, date_from=doc.publication_date, date_to=doc.publication_date) }}" onclick="event.stopPropagation();">{{ doc.publication_date }}</a>
+            {% else %}
+                No date
+            {% endif %}
             {% if doc.document_type %} · <span class="badge bg-primary">{{ doc.document_type }}</span>{% endif %}
             · {{ doc.word_count|number_format or 0 }} words
             {% if doc.pdf_url %} · PDF available{% endif %}
         </div>
         {% if doc.summary %}
-        <div class="document-summary">{{ doc.summary[:200] }}{% if doc.summary|length > 200 %}...{% endif %}</div>
+        <div class="document-summary">{{ doc.summary[:250] }}{% if doc.summary|length > 250 %}...{% endif %}</div>
         {% endif %}
     </a>
     {% endfor %}
@@ -426,7 +494,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <ul class="pagination">
         {% if page > 1 %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('brookings.index', page=page-1, q=query, date_from=date_from, date_to=date_to) }}">← Previous</a>
+            <a class="page-link" href="{{ url_for('policy_library.search', q=query, page=page-1, source='brookings', date_from=date_from, date_to=date_to) }}">← Previous</a>
         </li>
         {% endif %}
 
@@ -435,7 +503,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <li class="page-item active"><span class="page-link">{{ p }}</span></li>
             {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('brookings.index', page=p, q=query, date_from=date_from, date_to=date_to) }}">{{ p }}</a>
+                <a class="page-link" href="{{ url_for('policy_library.search', q=query, page=p, source='brookings', date_from=date_from, date_to=date_to) }}">{{ p }}</a>
             </li>
             {% elif p == page - 3 or p == page + 3 %}
             <li class="page-item disabled"><span class="page-link">...</span></li>
@@ -444,7 +512,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         {% if page < total_pages %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('brookings.index', page=page+1, q=query, date_from=date_from, date_to=date_to) }}">Next →</a>
+            <a class="page-link" href="{{ url_for('policy_library.search', q=query, page=page+1, source='brookings', date_from=date_from, date_to=date_to) }}">Next →</a>
         </li>
         {% endif %}
     </ul>
@@ -452,8 +520,16 @@ document.addEventListener('DOMContentLoaded', function() {
 {% endif %}
 
 {% else %}
-<p class="text-secondary mt-4">No documents found matching your filters.</p>
+<p class="text-secondary mt-4">No results found for "{{ query }}"</p>
 {% endif %}
     </div><!-- End results-column -->
-</div><!-- End browse-layout -->
+</div><!-- End search-layout -->
+
+{% else %}
+<!-- No search query - show prompt -->
+<div class="search-prompt">
+    <h2>Search Policy Library</h2>
+    <p>Use the search bar above to find research documents across all sources.</p>
+</div>
+{% endif %}
 {% endblock %}

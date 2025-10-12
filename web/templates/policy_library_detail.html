@@ -1,4 +1,4 @@
-{% extends "brookings_base.html" %}
+{% extends "policy_library_base.html" %}
 
 {% block title %}{{ document.title }}{% endblock %}
 
@@ -226,6 +226,42 @@
     overflow: hidden;
 }
 
+/* Source badges */
+.source-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.source-badge[data-source="BROOKINGS"] {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.source-badge[data-source="SUBSTACK"] {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.source-badge[data-source="CRS"] {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.source-badge[data-source="GAO"] {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.source-badge[data-source="UNKNOWN"] {
+    background: #f5f5f5;
+    color: #757575;
+}
+
 @media (max-width: 768px) {
     .doc-title {
         font-size: 1.5rem;
@@ -234,14 +270,16 @@
 {% endblock %}
 
 {% block content %}
-<a href="{{ url_for('brookings.index') }}" class="back-link">← Browse</a>
+<a href="{{ url_for('policy_library.index') }}" class="back-link">← Browse</a>
 
 <h1 class="doc-title">{{ document.title }}</h1>
 
 <!-- Minimal metadata block - everything combined -->
 <div class="metadata">
     <div class="metadata-line">
-        Brookings Institution
+        <span class="source-badge" data-source="{{ document.source.source_code if document.source else 'UNKNOWN' }}">
+            {{ document.source.name if document.source else 'Unknown Source' }}
+        </span>
         · Published {{ document.publication_date or 'n.d.' }}
         {% if document.document_type %} · {{ document.document_type }}{% endif %}
         · {{ document.word_count|number_format or 0 }} words
@@ -255,7 +293,11 @@
     {% endif %}
 
     <div class="metadata-line">
-        {% if document.url %}<a href="{{ document.url }}" target="_blank" rel="noopener noreferrer">View on Brookings.edu</a>{% endif %}
+        {% if document.url %}
+            <a href="{{ document.url }}" target="_blank" rel="noopener noreferrer">
+                {{ source_config.link_text if source_config else 'View Original' }}
+            </a>
+        {% endif %}
         {% if document.url and document.pdf_url %} · {% endif %}
         {% if document.pdf_url %}<a href="{{ document.pdf_url }}" target="_blank" rel="noopener noreferrer">PDF</a>{% endif %}
     </div>

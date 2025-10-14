@@ -890,8 +890,9 @@ async function pollTaskStatus() {
         const response = await fetch(`/admin/api/task-status/${currentTaskId}`);
         const data = await response.json();
 
-        const progress = data.progress.hearings_checked || 0;
-        const total = data.progress.total_hearings || 100;
+        const progressData = data.progress.data || data.progress;
+        const progress = progressData.hearings_checked || 0;
+        const total = progressData.total_hearings || 100;
         const percent = Math.round((progress / total) * 100);
 
         document.getElementById('progressBar').style.width = percent + '%';

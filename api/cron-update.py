@@ -16,6 +16,7 @@ try:
     from flask import Flask, jsonify, request
     from database.manager import DatabaseManager
     from updaters.daily_updater import DailyUpdater
+    from updaters.policy_library_updater import PolicyLibraryUpdater
     from config.logging_config import get_logger
 except ImportError as e:
     print(f"Import error: {e}")
@@ -594,6 +595,72 @@ def health_check():
             'status': 'unhealthy',
             'error': str(e)
         }), 503
+
+
+@app.route('/api/cron/policy-library-update', methods=['GET', 'POST'])
+def policy_library_update():
+    """
+    Vercel cron job endpoint for Policy Library (Jamie Dupree Substack) updates
+
+    Runs daily to fetch new posts from RSS feed and add them to the database.
+
+    Returns:
+        JSON response with update results
+    """
+    try:
+        # Verify authentication
+        if not verify_cron_auth():
+            logger.warning("Authentication failed for policy library update")
+            return jsonify({'error': 'Unauthorized'}), 401
+
+        logger.info("Starting policy library scheduled update")
+
+        # Check if BROOKINGS_DATABASE_URL is set
+        if not os.environ.get('BROOKINGS_DATABASE_URL'):
+            error_msg = "BROOKINGS_DATABASE_URL environment variable not set"
+            logger.error(error_msg)
+            return jsonify({
+                'timestamp': datetime.now().isoformat(),
+                'status': 'error',
+                'error': error_msg
+            }), 500
+
+        # Create PolicyLibraryUpdater with default settings
+        updater = PolicyLibraryUpdater(
+            lookback_days=7,  # Check last 7 days for new posts
+            publication='jamiedupree.substack.com',
+            author='Jamie Dupree'
+        )
+
+        # Run the update
+        result = updater.run_daily_update()
+
+        if result['success']:
+            logger.info("Policy library update completed successfully")
+            return jsonify({
+                'timestamp': datetime.now().isoformat(),
+                'status': 'success',
+                'service': 'policy_library',
+                'metrics': result['metrics']
+            }), 200
+        else:
+            logger.error(f"Policy library update failed: {result.get('error')}")
+            return jsonify({
+                'timestamp': datetime.now().isoformat(),
+                'status': 'error',
+                'service': 'policy_library',
+                'error': result.get('error'),
+                'metrics': result['metrics']
+            }), 500
+
+    except Exception as e:
+        logger.error(f"Policy library cron job failed: {e}", exc_info=True)
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'status': 'error',
+            'service': 'policy_library',
+            'error': str(e)
+        }), 500
 
 
 # Legacy endpoint for backwards compatibility (will be deprecated)

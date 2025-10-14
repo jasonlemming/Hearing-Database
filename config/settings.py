@@ -14,10 +14,16 @@ class Settings(BaseSettings):
     api_key: Optional[str] = Field(default=None, env='API_KEY')
     api_base_url: str = Field(default='https://api.congress.gov/v3', env='API_BASE_URL')
     rate_limit: int = Field(default=5000, env='RATE_LIMIT')
-    request_timeout: int = Field(default=30, env='REQUEST_TIMEOUT')
+
+    # Timeout Configuration (separate connect and read timeouts)
+    # Connect timeout: How long to wait for TCP connection establishment
+    # Read timeout: How long to wait for server response after connection
+    connect_timeout: int = Field(default=5, env='CONNECT_TIMEOUT')
+    read_timeout: int = Field(default=15, env='READ_TIMEOUT')
+    request_timeout: int = Field(default=30, env='REQUEST_TIMEOUT')  # Legacy fallback
 
     # Error Handling & Retry Configuration
-    retry_attempts: int = Field(default=5, env='RETRY_ATTEMPTS')
+    retry_attempts: int = Field(default=3, env='RETRY_ATTEMPTS')  # Reduced from 5 to prevent long hangs
     retry_backoff_factor: float = Field(default=2.0, env='RETRY_BACKOFF_FACTOR')
     circuit_breaker_enabled: bool = Field(default=True, env='CIRCUIT_BREAKER_ENABLED')
     circuit_breaker_threshold: int = Field(default=5, env='CIRCUIT_BREAKER_THRESHOLD')

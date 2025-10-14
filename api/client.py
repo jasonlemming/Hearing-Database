@@ -2,6 +2,7 @@
 Congress.gov API client with rate limiting and error handling
 """
 import time
+import socket
 from typing import Dict, Any, Optional, Generator, Union
 import requests
 from requests.adapters import HTTPAdapter
@@ -13,6 +14,12 @@ from config.settings import settings
 from config.logging_config import get_logger
 
 logger = get_logger(__name__)
+
+# Set global socket timeout at module import time
+# This ensures ALL threads (including ThreadPoolExecutor workers) have timeout
+_SOCKET_TIMEOUT = settings.read_timeout + 5  # 20 seconds (15s read + 5s buffer)
+socket.setdefaulttimeout(_SOCKET_TIMEOUT)
+logger.info(f"Set global socket timeout to {_SOCKET_TIMEOUT} seconds")
 
 
 class CongressAPIClient:
@@ -41,8 +48,9 @@ class CongressAPIClient:
             )
 
         # Configure session with enhanced retry strategy
-        # Uses exponential backoff: 2s → 4s → 8s → 16s → 32s
+        # Uses exponential backoff: 2s → 4s → 8s
         self.session = requests.Session()
+
         retry_strategy = Retry(
             total=settings.retry_attempts,
             status_forcelist=[429, 500, 502, 503, 504],
@@ -92,25 +100,50 @@ class CongressAPIClient:
 
             logger.debug(f"GET {url} with params: {request_params}")
 
-            response = self.session.get(
-                url,
-                params=request_params,
-                timeout=settings.request_timeout
-            )
+            # DIAGNOSTIC: Log request start with timestamp
+            start_time = time.time()
+            logger.debug(f"[TIMEOUT DEBUG] Starting request to {endpoint} at {start_time:.3f}")
 
-            # Track retry statistics if request was retried
-            if hasattr(response.raw, 'retries') and response.raw.retries:
-                retry_count = response.raw.retries.total
-                if retry_count > 0:
-                    self.retry_count += retry_count
-                    self.last_retry_time = time.time()
-                    logger.warning(f"Request to {endpoint} required {retry_count} retries")
+            try:
+                # Use tuple timeout: (connect_timeout, read_timeout)
+                # This prevents hanging on unresponsive servers
+                timeout = (settings.connect_timeout, settings.read_timeout)
+                response = self.session.get(
+                    url,
+                    params=request_params,
+                    timeout=timeout
+                )
 
-            response.raise_for_status()
+                # DIAGNOSTIC: Log request completion
+                elapsed = time.time() - start_time
+                logger.debug(f"[TIMEOUT DEBUG] Completed request to {endpoint} in {elapsed:.3f}s")
 
-            data = response.json()
-            logger.debug(f"Response: {len(data)} bytes")
-            return data
+                # Track retry statistics if request was retried
+                if hasattr(response.raw, 'retries') and response.raw.retries:
+                    retry_count = response.raw.retries.total
+                    if retry_count > 0:
+                        self.retry_count += retry_count
+                        self.last_retry_time = time.time()
+                        logger.warning(f"Request to {endpoint} required {retry_count} retries")
+
+                response.raise_for_status()
+
+                data = response.json()
+                logger.debug(f"Response: {len(data)} bytes")
+                return data
+
+            except socket.timeout as e:
+                elapsed = time.time() - start_time
+                logger.error(f"[TIMEOUT DEBUG] Socket timeout after {elapsed:.3f}s on {endpoint}: {e}")
+                raise
+            except requests.exceptions.Timeout as e:
+                elapsed = time.time() - start_time
+                logger.error(f"[TIMEOUT DEBUG] Requests timeout after {elapsed:.3f}s on {endpoint}: {e}")
+                raise
+            except Exception as e:
+                elapsed = time.time() - start_time
+                logger.error(f"[TIMEOUT DEBUG] Request failed after {elapsed:.3f}s on {endpoint}: {type(e).__name__}: {e}")
+                raise
 
         # Execute with circuit breaker if enabled
         try:

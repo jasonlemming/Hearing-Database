@@ -30,15 +30,25 @@ def init_database(db_url: str = None, echo: bool = False):
     if db_url is None:
         db_url = config.DATABASE_URL
 
-    # SQLite-specific connection args
+    # Connection arguments (PostgreSQL-optimized)
     connect_args = {}
     if db_url.startswith('sqlite'):
+        # SQLite fallback for local development
         connect_args = {"check_same_thread": False}
+    elif db_url.startswith('postgresql'):
+        # PostgreSQL connection pooling
+        connect_args = {
+            "connect_timeout": 10,
+            "application_name": "policy_library"
+        }
 
-    # Create engine
+    # Create engine with connection pooling for PostgreSQL
     engine = create_engine(
         db_url,
         connect_args=connect_args,
+        pool_size=5,
+        max_overflow=10,
+        pool_pre_ping=True,  # Verify connections before using
         echo=echo
     )
 
@@ -49,7 +59,7 @@ def init_database(db_url: str = None, echo: bool = False):
         bind=engine
     )
 
-    # Create all tables
+    # Create all tables (idempotent - won't recreate existing tables)
     Base.metadata.create_all(bind=engine)
 
 

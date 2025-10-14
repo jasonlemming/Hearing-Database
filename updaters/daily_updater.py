@@ -1463,10 +1463,125 @@ class DailyUpdater:
         Returns:
             True if rollback successful, False otherwise
         """
-        # TODO: Implement rollback logic (Day 5)
-        # For now, log and return success
         logger.info(f"Rolling back checkpoint for batch {checkpoint.batch_number}")
-        return True
+
+        try:
+            with self.db.transaction() as conn:
+                rollback_count = 0
+
+                # Step 1: Rollback hearings that were added (DELETE)
+                for hearing_id in checkpoint.hearings_to_add:
+                    try:
+                        cursor = conn.execute(
+                            'DELETE FROM hearings WHERE event_id = ? AND congress = ?',
+                            (hearing_id, self.congress)
+                        )
+                        if cursor.rowcount > 0:
+                            rollback_count += 1
+                            logger.debug(f"Deleted added hearing: {hearing_id}")
+                        else:
+                            logger.warning(f"Hearing {hearing_id} not found for deletion")
+                    except Exception as e:
+                        logger.error(f"Failed to delete hearing {hearing_id}: {e}")
+                        raise
+
+                # Step 2: Rollback hearings that were updated (RESTORE original data)
+                for hearing_id, original_data in checkpoint.original_hearing_data.items():
+                    try:
+                        # Get the hearing_id from database using event_id
+                        cursor = conn.execute(
+                            'SELECT hearing_id FROM hearings WHERE event_id = ? AND congress = ?',
+                            (hearing_id, self.congress)
+                        )
+                        row = cursor.fetchone()
+
+                        if not row:
+                            logger.warning(f"Hearing {hearing_id} not found for restore")
+                            continue
+
+                        db_hearing_id = row[0]
+
+                        # Build UPDATE query dynamically from original_data
+                        # We need to restore the fields that were tracked
+                        if original_data:
+                            set_clauses = []
+                            values = []
+
+                            for field, value in original_data.items():
+                                set_clauses.append(f"{field} = ?")
+                                values.append(value)
+
+                            if set_clauses:
+                                values.append(db_hearing_id)
+                                update_query = f"UPDATE hearings SET {', '.join(set_clauses)} WHERE hearing_id = ?"
+                                cursor = conn.execute(update_query, tuple(values))
+
+                                if cursor.rowcount > 0:
+                                    rollback_count += 1
+                                    logger.debug(f"Restored hearing {hearing_id} to original state")
+                                else:
+                                    logger.warning(f"No rows updated for hearing {hearing_id}")
+                    except Exception as e:
+                        logger.error(f"Failed to restore hearing {hearing_id}: {e}")
+                        raise
+
+                # Step 3: Rollback witnesses that were added (DELETE)
+                # Note: This will cascade delete from witness_appearances and witness_documents
+                # if foreign keys are properly configured with ON DELETE CASCADE
+                for witness_id in checkpoint.witnesses_to_add:
+                    try:
+                        cursor = conn.execute(
+                            'DELETE FROM witnesses WHERE witness_id = ?',
+                            (witness_id,)
+                        )
+                        if cursor.rowcount > 0:
+                            rollback_count += 1
+                            logger.debug(f"Deleted added witness: {witness_id}")
+                        else:
+                            logger.warning(f"Witness {witness_id} not found for deletion")
+                    except Exception as e:
+                        logger.error(f"Failed to delete witness {witness_id}: {e}")
+                        raise
+
+                # Step 4: Rollback documents that were added (DELETE)
+                for document_id in checkpoint.documents_to_add:
+                    try:
+                        cursor = conn.execute(
+                            'DELETE FROM witness_documents WHERE document_id = ?',
+                            (document_id,)
+                        )
+                        if cursor.rowcount > 0:
+                            rollback_count += 1
+                            logger.debug(f"Deleted added document: {document_id}")
+                        else:
+                            logger.warning(f"Document {document_id} not found for deletion")
+                    except Exception as e:
+                        logger.error(f"Failed to delete document {document_id}: {e}")
+                        raise
+
+            # Success - log summary
+            logger.info(
+                f"✓ Checkpoint rollback complete for batch {checkpoint.batch_number}: "
+                f"{rollback_count} operations reversed"
+            )
+            logger.info(
+                f"  - Deleted {len(checkpoint.hearings_to_add)} added hearings"
+            )
+            logger.info(
+                f"  - Restored {len(checkpoint.original_hearing_data)} updated hearings"
+            )
+            logger.info(
+                f"  - Deleted {len(checkpoint.witnesses_to_add)} added witnesses"
+            )
+            logger.info(
+                f"  - Deleted {len(checkpoint.documents_to_add)} added documents"
+            )
+
+            return True
+
+        except Exception as e:
+            logger.error(f"Checkpoint rollback failed for batch {checkpoint.batch_number}: {e}")
+            return False
 
 
 def main():

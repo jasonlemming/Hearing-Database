@@ -8,6 +8,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 from api.rate_limiter import RateLimiter
+from utils.circuit_breaker import CircuitBreaker, CircuitBreakerError
 from config.settings import settings
 from config.logging_config import get_logger
 
@@ -29,13 +30,25 @@ class CongressAPIClient:
         self.base_url = settings.api_base_url
         self.rate_limiter = RateLimiter(max_requests=rate_limit)
 
-        # Configure session with retries
+        # Initialize circuit breaker if enabled
+        self.circuit_breaker = None
+        if settings.circuit_breaker_enabled:
+            self.circuit_breaker = CircuitBreaker(
+                failure_threshold=settings.circuit_breaker_threshold,
+                recovery_timeout=settings.circuit_breaker_timeout,
+                success_threshold=2,
+                name="congress_api"
+            )
+
+        # Configure session with enhanced retry strategy
+        # Uses exponential backoff: 2s → 4s → 8s → 16s → 32s
         self.session = requests.Session()
         retry_strategy = Retry(
-            total=3,
+            total=settings.retry_attempts,
             status_forcelist=[429, 500, 502, 503, 504],
             allowed_methods=["HEAD", "GET", "OPTIONS"],
-            backoff_factor=1
+            backoff_factor=settings.retry_backoff_factor,
+            raise_on_status=False  # Don't raise exception on retry exhaustion
         )
         adapter = HTTPAdapter(max_retries=retry_strategy)
         self.session.mount("http://", adapter)
@@ -47,9 +60,13 @@ class CongressAPIClient:
             'Accept': 'application/json'
         })
 
+        # Track retry statistics
+        self.retry_count = 0
+        self.last_retry_time = None
+
     def get(self, endpoint: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
-        Make GET request to API endpoint
+        Make GET request to API endpoint with circuit breaker protection
 
         Args:
             endpoint: API endpoint (without base URL)
@@ -59,33 +76,55 @@ class CongressAPIClient:
             JSON response as dictionary
 
         Raises:
+            CircuitBreakerError: If circuit breaker is open
             requests.RequestException: On API error
         """
-        # Apply rate limiting
-        self.rate_limiter.wait_if_needed()
+        # Define the actual request logic
+        def _make_request():
+            # Apply rate limiting
+            self.rate_limiter.wait_if_needed()
 
-        # Prepare request
-        url = f"{self.base_url.rstrip('/')}/{endpoint.lstrip('/')}"
-        params = params or {}
-        params['api_key'] = self.api_key
-        params['format'] = 'json'
+            # Prepare request
+            url = f"{self.base_url.rstrip('/')}/{endpoint.lstrip('/')}"
+            request_params = params or {}
+            request_params['api_key'] = self.api_key
+            request_params['format'] = 'json'
 
-        logger.debug(f"GET {url} with params: {params}")
+            logger.debug(f"GET {url} with params: {request_params}")
 
-        try:
             response = self.session.get(
                 url,
-                params=params,
+                params=request_params,
                 timeout=settings.request_timeout
             )
+
+            # Track retry statistics if request was retried
+            if hasattr(response.raw, 'retries') and response.raw.retries:
+                retry_count = response.raw.retries.total
+                if retry_count > 0:
+                    self.retry_count += retry_count
+                    self.last_retry_time = time.time()
+                    logger.warning(f"Request to {endpoint} required {retry_count} retries")
+
             response.raise_for_status()
 
             data = response.json()
             logger.debug(f"Response: {len(data)} bytes")
             return data
 
+        # Execute with circuit breaker if enabled
+        try:
+            if self.circuit_breaker:
+                return self.circuit_breaker.call(_make_request)
+            else:
+                return _make_request()
+
+        except CircuitBreakerError:
+            # Re-raise circuit breaker errors for visibility
+            raise
+
         except requests.exceptions.RequestException as e:
-            logger.error(f"API request failed: {e}")
+            logger.error(f"API request failed after retries: {e}")
             raise
 
     def paginate(self, endpoint: str, params: Optional[Dict[str, Any]] = None) -> Generator[Dict[str, Any], None, None]:
@@ -150,6 +189,29 @@ class CongressAPIClient:
         remaining = self.rate_limiter.get_remaining_requests()
         reset_time = self.rate_limiter.get_reset_time()
         return remaining, reset_time
+
+    def get_retry_stats(self) -> Dict[str, Any]:
+        """
+        Get retry statistics
+
+        Returns:
+            Dictionary with retry_count and last_retry_time
+        """
+        return {
+            'total_retries': self.retry_count,
+            'last_retry_time': self.last_retry_time
+        }
+
+    def get_circuit_breaker_stats(self) -> Optional[Dict[str, Any]]:
+        """
+        Get circuit breaker statistics
+
+        Returns:
+            Circuit breaker stats dict or None if disabled
+        """
+        if self.circuit_breaker:
+            return self.circuit_breaker.get_stats()
+        return None
 
     def get_committee_details(self, chamber: str, committee_code: str) -> Dict[str, Any]:
         """Get detailed committee information including roster"""

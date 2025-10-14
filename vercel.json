@@ -24,6 +24,10 @@
       "dest": "api/cron-update.py"
     },
     {
+      "src": "/api/cron/health",
+      "dest": "api/cron-update.py"
+    },
+    {
       "src": "/(.*)",
       "dest": "api/index.py"
     }

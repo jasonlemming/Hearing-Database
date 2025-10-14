@@ -16,6 +16,13 @@ class Settings(BaseSettings):
     rate_limit: int = Field(default=5000, env='RATE_LIMIT')
     request_timeout: int = Field(default=30, env='REQUEST_TIMEOUT')
 
+    # Error Handling & Retry Configuration
+    retry_attempts: int = Field(default=5, env='RETRY_ATTEMPTS')
+    retry_backoff_factor: float = Field(default=2.0, env='RETRY_BACKOFF_FACTOR')
+    circuit_breaker_enabled: bool = Field(default=True, env='CIRCUIT_BREAKER_ENABLED')
+    circuit_breaker_threshold: int = Field(default=5, env='CIRCUIT_BREAKER_THRESHOLD')
+    circuit_breaker_timeout: int = Field(default=60, env='CIRCUIT_BREAKER_TIMEOUT')
+
     # Database Configuration
     database_path: str = Field(default='database.db', env='DATABASE_PATH')
 
@@ -37,6 +44,13 @@ class Settings(BaseSettings):
     # Logging Configuration
     log_level: str = Field(default='INFO', env='LOG_LEVEL')
     log_file: str = Field(default='logs/import.log', env='LOG_FILE')
+
+    # Notification Configuration
+    notification_enabled: bool = Field(default=False, env='NOTIFICATION_ENABLED')
+    notification_type: str = Field(default='log', env='NOTIFICATION_TYPE')  # log, email, webhook
+    notification_webhook_url: Optional[str] = Field(default=None, env='NOTIFICATION_WEBHOOK_URL')
+    notification_email: Optional[str] = Field(default=None, env='NOTIFICATION_EMAIL')
+    sendgrid_api_key: Optional[str] = Field(default=None, env='SENDGRID_API_KEY')
 
     class Config:
         env_file = '.env'

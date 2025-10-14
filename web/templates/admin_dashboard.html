@@ -62,6 +62,76 @@
     </div>
 </div>
 
+<!-- System Health Status -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div id="system-health-card" class="card border-success">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-heartbeat me-2"></i>
+                    System Health
+                </h5>
+                <button id="refresh-health-btn" class="btn btn-outline-light btn-sm">
+                    <i class="fas fa-sync me-1"></i> Refresh
+                </button>
+            </div>
+            <div class="card-body">
+                <div id="health-loading" class="text-center py-3">
+                    <i class="fas fa-spinner fa-spin fa-2x text-muted"></i>
+                    <p class="text-muted mt-2">Checking system health...</p>
+                </div>
+                <div id="health-content" style="display: none;">
+                    <div class="row">
+                        <!-- Health Status Badge -->
+                        <div class="col-md-3 text-center mb-3">
+                            <div id="health-status-badge">
+                                <i id="health-icon" class="fas fa-check-circle fa-3x text-success"></i>
+                                <h4 id="health-status-text" class="mt-2 text-success">Healthy</h4>
+                                <small id="health-timestamp" class="text-muted d-block"></small>
+                            </div>
+                        </div>
+
+                        <!-- Database Stats -->
+                        <div class="col-md-3">
+                            <h6 class="text-muted mb-2"><i class="fas fa-database me-1"></i> Database</h6>
+                            <ul class="list-unstyled mb-0">
+                                <li><small class="text-muted">Hearings:</small> <strong id="db-hearings">-</strong></li>
+                                <li><small class="text-muted">Committees:</small> <strong id="db-committees">-</strong></li>
+                                <li><small class="text-muted">Witnesses:</strong> <strong id="db-witnesses">-</strong></li>
+                            </ul>
+                        </div>
+
+                        <!-- Last Update Info -->
+                        <div class="col-md-3">
+                            <h6 class="text-muted mb-2"><i class="fas fa-clock me-1"></i> Last Update</h6>
+                            <ul class="list-unstyled mb-0">
+                                <li><small class="text-muted">When:</small> <strong id="last-update-time">-</strong></li>
+                                <li><small class="text-muted">Updated:</small> <span id="last-update-stats" class="badge bg-info">-</span></li>
+                                <li><small class="text-muted">Added:</small> <span id="last-update-added" class="badge bg-success">-</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- Issues & Warnings -->
+                        <div class="col-md-3">
+                            <h6 class="text-muted mb-2"><i class="fas fa-exclamation-triangle me-1"></i> Status</h6>
+                            <div id="health-issues">
+                                <span class="badge bg-success"><i class="fas fa-check me-1"></i> No Issues</span>
+                            </div>
+                            <div id="health-warnings" class="mt-2">
+                                <!-- Warnings appear here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="health-error" style="display: none;" class="alert alert-danger mb-0">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <strong>Error checking system health.</strong> <span id="health-error-message"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Advanced Update Control Panel -->
 <div class="row mb-4">
     <div class="col-12">
@@ -748,8 +818,103 @@
 <script src="/static/admin/admin.js"></script>
 
 <script>
+// System Health Functions
+function loadSystemHealth() {
+    fetch('/admin/api/system-health')
+        .then(response => response.json())
+        .then(data => {
+            // Hide loading, show content
+            document.getElementById('health-loading').style.display = 'none';
+            document.getElementById('health-content').style.display = 'block';
+            document.getElementById('health-error').style.display = 'none';
+
+            // Update health status badge
+            const statusText = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+            document.getElementById('health-status-text').textContent = statusText;
+
+            const healthCard = document.getElementById('system-health-card');
+            const healthIcon = document.getElementById('health-icon');
+
+            // Set colors and icons based on status
+            if (data.status === 'healthy') {
+                healthCard.className = 'card border-success';
+                healthIcon.className = 'fas fa-check-circle fa-3x text-success';
+                document.getElementById('health-status-text').className = 'mt-2 text-success';
+            } else if (data.status === 'degraded') {
+                healthCard.className = 'card border-warning';
+                healthIcon.className = 'fas fa-exclamation-triangle fa-3x text-warning';
+                document.getElementById('health-status-text').className = 'mt-2 text-warning';
+            } else {
+                healthCard.className = 'card border-danger';
+                healthIcon.className = 'fas fa-times-circle fa-3x text-danger';
+                document.getElementById('health-status-text').className = 'mt-2 text-danger';
+            }
+
+            // Update timestamp
+            const timestamp = new Date(data.timestamp);
+            document.getElementById('health-timestamp').textContent =
+                'Checked ' + timestamp.toLocaleTimeString();
+
+            // Update database stats
+            document.getElementById('db-hearings').textContent = data.database.hearings.toLocaleString();
+            document.getElementById('db-committees').textContent = data.database.committees.toLocaleString();
+            document.getElementById('db-witnesses').textContent = data.database.witnesses.toLocaleString();
+
+            // Update last update info
+            if (data.last_update.hours_ago !== null) {
+                document.getElementById('last-update-time').textContent =
+                    data.last_update.hours_ago + 'h ago';
+            } else {
+                document.getElementById('last-update-time').textContent = 'Never';
+            }
+            document.getElementById('last-update-stats').textContent =
+                data.last_update.hearings_updated + ' updated';
+            document.getElementById('last-update-added').textContent =
+                data.last_update.hearings_added + ' added';
+
+            // Update issues and warnings
+            const issuesDiv = document.getElementById('health-issues');
+            const warningsDiv = document.getElementById('health-warnings');
+
+            if (data.issues.length === 0) {
+                issuesDiv.innerHTML = '<span class="badge bg-success"><i class="fas fa-check me-1"></i> No Issues</span>';
+            } else {
+                issuesDiv.innerHTML = data.issues.map(issue =>
+                    `<div class="alert alert-danger alert-sm mb-1 py-1 px-2"><small>${issue}</small></div>`
+                ).join('');
+            }
+
+            if (data.warnings.length > 0) {
+                warningsDiv.innerHTML = data.warnings.map(warning =>
+                    `<div class="alert alert-warning alert-sm mb-1 py-1 px-2"><small>${warning}</small></div>`
+                ).join('');
+            } else {
+                warningsDiv.innerHTML = '';
+            }
+        })
+        .catch(error => {
+            document.getElementById('health-loading').style.display = 'none';
+            document.getElementById('health-content').style.display = 'none';
+            document.getElementById('health-error').style.display = 'block';
+            document.getElementById('health-error-message').textContent = error.message;
+        });
+}
+
 // Initialize dashboard on page load
 document.addEventListener('DOMContentLoaded', function() {
+    // Load system health
+    loadSystemHealth();
+
+    // Refresh button handler
+    document.getElementById('refresh-health-btn').addEventListener('click', function() {
+        document.getElementById('health-loading').style.display = 'block';
+        document.getElementById('health-content').style.display = 'none';
+        loadSystemHealth();
+    });
+
+    // Auto-refresh health every 60 seconds
+    setInterval(loadSystemHealth, 60000);
+
     // Load initial changes
     loadRecentChanges(document.getElementById('baseline-date').value);
 

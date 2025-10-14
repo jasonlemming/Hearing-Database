@@ -26,6 +26,108 @@ admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 db = DatabaseManager()
 
 
+@admin_bp.route('/api/system-health')
+def system_health():
+    """
+    Get comprehensive system health status including validation results
+
+    Returns:
+        JSON with database health, validation status, and recent update metrics
+    """
+    try:
+        with db.transaction() as conn:
+            # Get last update with validation results
+            cursor = conn.execute("""
+                SELECT log_id, update_date, start_time, end_time, duration_seconds,
+                       hearings_checked, hearings_updated, hearings_added,
+                       error_count, success, trigger_source
+                FROM update_logs
+                ORDER BY start_time DESC
+                LIMIT 1
+            """)
+            last_update = cursor.fetchone()
+
+            # Get database counts
+            cursor = conn.execute("SELECT COUNT(*) FROM hearings")
+            hearing_count = cursor.fetchone()[0]
+
+            cursor = conn.execute("SELECT COUNT(*) FROM committees")
+            committee_count = cursor.fetchone()[0]
+
+            cursor = conn.execute("SELECT COUNT(*) FROM witnesses")
+            witness_count = cursor.fetchone()[0]
+
+            # Check for recent validation issues (from last 7 days)
+            cursor = conn.execute("""
+                SELECT COUNT(*) FROM update_logs
+                WHERE start_time >= datetime('now', '-7 days')
+                AND success = 0
+            """)
+            failed_updates_7d = cursor.fetchone()[0]
+
+            # Calculate hours since last update
+            hours_since_update = None
+            if last_update and last_update[2]:
+                from datetime import datetime
+                last_update_time = datetime.fromisoformat(last_update[2])
+                hours_since_update = (datetime.now() - last_update_time).total_seconds() / 3600
+
+            # Determine health status
+            health_status = 'healthy'
+            warnings = []
+            issues = []
+
+            if hours_since_update and hours_since_update > 30:
+                health_status = 'degraded'
+                warnings.append(f"Last update was {hours_since_update:.1f} hours ago (> 30h)")
+
+            if hours_since_update and hours_since_update > 48:
+                health_status = 'unhealthy'
+                issues.append(f"Last update was {hours_since_update:.1f} hours ago (> 48h)")
+
+            if failed_updates_7d > 3:
+                health_status = 'degraded' if health_status == 'healthy' else health_status
+                warnings.append(f"{failed_updates_7d} failed updates in last 7 days")
+
+            if hearing_count < 1000:
+                health_status = 'unhealthy'
+                issues.append(f"Low hearing count: {hearing_count} (expected >= 1000)")
+
+            return jsonify({
+                'status': health_status,
+                'timestamp': datetime.now().isoformat(),
+                'database': {
+                    'hearings': hearing_count,
+                    'committees': committee_count,
+                    'witnesses': witness_count
+                },
+                'last_update': {
+                    'log_id': last_update[0] if last_update else None,
+                    'date': last_update[1] if last_update else None,
+                    'start_time': last_update[2] if last_update else None,
+                    'duration_seconds': last_update[4] if last_update else None,
+                    'hearings_checked': last_update[5] if last_update else 0,
+                    'hearings_updated': last_update[6] if last_update else 0,
+                    'hearings_added': last_update[7] if last_update else 0,
+                    'error_count': last_update[8] if last_update else 0,
+                    'success': bool(last_update[9]) if last_update else None,
+                    'trigger_source': last_update[10] if last_update else None,
+                    'hours_ago': round(hours_since_update, 1) if hours_since_update else None
+                },
+                'warnings': warnings,
+                'issues': issues,
+                'failed_updates_7d': failed_updates_7d
+            })
+
+    except Exception as e:
+        logger.error(f"Error getting system health: {e}")
+        return jsonify({
+            'status': 'error',
+            'error': str(e),
+            'timestamp': datetime.now().isoformat()
+        }), 500
+
+
 @admin_bp.route('/updates')
 def updates():
     """Admin page to view update history and status"""

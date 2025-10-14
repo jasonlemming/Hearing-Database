@@ -13,6 +13,8 @@ from typing import Dict, List, Any, Optional, Tuple
 import logging
 import json
 import time
+import shutil
+from pathlib import Path
 
 # Add project root to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -26,8 +28,17 @@ from parsers.hearing_parser import HearingParser
 from parsers.witness_parser import WitnessParser
 from config.settings import Settings
 from config.logging_config import get_logger
+from notifications import get_notifier
+from utils.circuit_breaker import CircuitBreakerError
 
 logger = get_logger(__name__)
+
+# Import validation module
+try:
+    from scripts.verify_updates import UpdateValidator
+except ImportError:
+    logger.warning("UpdateValidator not available - post-update validation disabled")
+    UpdateValidator = None
 
 
 class UpdateMetrics:
@@ -43,6 +54,9 @@ class UpdateMetrics:
         self.witnesses_updated = 0
         self.errors = []
         self.api_requests = 0
+        self.validation_passed = None
+        self.validation_warnings = []
+        self.validation_issues = []
 
     def duration(self) -> Optional[timedelta]:
         if self.end_time:
@@ -61,7 +75,92 @@ class UpdateMetrics:
             'witnesses_updated': self.witnesses_updated,
             'api_requests': self.api_requests,
             'error_count': len(self.errors),
-            'errors': self.errors
+            'errors': self.errors,
+            'validation_passed': self.validation_passed,
+            'validation_warnings': self.validation_warnings,
+            'validation_issues': self.validation_issues
+        }
+
+
+class Checkpoint:
+    """
+    Tracks database changes for potential rollback.
+
+    Used in batch processing to track what each batch modifies,
+    enabling independent rollback without affecting other batches.
+    """
+
+    def __init__(self, batch_number: int):
+        self.batch_number = batch_number
+        self.timestamp = datetime.now()
+
+        # Track IDs of records to be modified
+        self.hearings_to_update = []
+        self.hearings_to_add = []
+        self.witnesses_to_add = []
+        self.documents_to_add = []
+
+        # Track pre-modification state for updates
+        self.original_hearing_data = {}
+
+    def track_update(self, hearing_id: str, original_data: dict):
+        """
+        Track a hearing that will be updated.
+
+        Args:
+            hearing_id: ID of hearing being updated
+            original_data: Original hearing data for rollback
+        """
+        self.hearings_to_update.append(hearing_id)
+        self.original_hearing_data[hearing_id] = original_data
+
+    def track_addition(self, hearing_id: str):
+        """
+        Track a hearing that will be added.
+
+        Args:
+            hearing_id: ID of new hearing
+        """
+        self.hearings_to_add.append(hearing_id)
+
+    def track_witness_addition(self, witness_id: str):
+        """
+        Track a witness that will be added.
+
+        Args:
+            witness_id: ID of new witness
+        """
+        self.witnesses_to_add.append(witness_id)
+
+    def track_document_addition(self, document_id: str):
+        """
+        Track a document that will be added.
+
+        Args:
+            document_id: ID of new document
+        """
+        self.documents_to_add.append(document_id)
+
+
+class BatchResult:
+    """
+    Result of processing a single batch.
+
+    Tracks success/failure and provides details for logging and metrics.
+    """
+
+    def __init__(self, success: bool, records: int = 0, error: str = None, issues: List[str] = None):
+        self.success = success
+        self.records = records  # Number of records processed
+        self.error = error  # Error message if failed
+        self.issues = issues or []  # Validation issues if any
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'success': self.success,
+            'records': self.records,
+            'error': self.error,
+            'issues': self.issues
         }
 
 
@@ -106,6 +205,12 @@ class DailyUpdater:
 
         self.metrics = UpdateMetrics()
 
+        # Initialize notification manager
+        self.notifier = get_notifier()
+
+        # Track backup path for rollback capability
+        self.backup_path = None
+
         logger.info(f"DailyUpdater initialized for Congress {congress}, {lookback_days} day lookback, mode={update_mode}")
         logger.info(f"Enabled components: {', '.join(self.enabled_components)}")
 
@@ -127,6 +232,15 @@ class DailyUpdater:
             logger.info("Starting daily update process")
 
         try:
+            # Step 0: Pre-update sanity checks
+            if not dry_run:
+                sanity_check_passed = self._run_pre_update_sanity_checks()
+                if not sanity_check_passed:
+                    error_msg = "Pre-update sanity checks failed - aborting update"
+                    logger.error(error_msg)
+                    self.metrics.errors.append(error_msg)
+                    raise Exception(error_msg)
+
             # Step 1: Get recently modified hearings from API
             recent_hearings = self._fetch_recent_hearings(progress_callback=progress_callback)
             logger.info(f"Found {len(recent_hearings)} recently modified hearings")
@@ -145,17 +259,59 @@ class DailyUpdater:
                 self.metrics.hearings_updated = len(changes['updates'])
                 self.metrics.hearings_added = len(changes['additions'])
             else:
-                # Step 3: Apply updates to database
-                self._apply_updates(changes)
+                # Step 2.5: Create database backup before modifications
+                self.backup_path = self._create_database_backup()
+                if not self.backup_path:
+                    logger.warning("Failed to create database backup - proceeding without backup")
 
-                # Step 4: Update related data (committees, witnesses)
-                self._update_related_data(changes)
+                try:
+                    # Step 3: Apply updates to database
+                    self._apply_updates(changes)
 
-                # Step 5: Record update metrics
-                self._record_update_metrics()
+                    # Step 4: Update related data (committees, witnesses)
+                    self._update_related_data(changes)
+
+                    # Step 5: Run post-update validation
+                    if not dry_run:
+                        self._run_post_update_validation()
+
+                        # If validation failed with critical issues, trigger rollback
+                        if self.metrics.validation_passed == False and len(self.metrics.validation_issues) > 0:
+                            logger.error("Post-update validation failed with critical issues - initiating rollback")
+                            self._rollback_database()
+                            raise Exception(f"Update rolled back due to validation failures: {', '.join(self.metrics.validation_issues[:3])}")
+
+                    # Step 6: Record update metrics
+                    self._record_update_metrics()
+
+                    # Step 7: Cleanup old backups (keep last 7 days)
+                    self._cleanup_old_backups(days=7)
+
+                except Exception as e:
+                    # On any error during update, attempt rollback if backup exists
+                    if self.backup_path:
+                        logger.error(f"Update failed, attempting rollback: {e}")
+                        self._rollback_database()
+                    raise
 
             self.metrics.end_time = datetime.now()
             logger.info(f"Daily update completed successfully in {self.metrics.duration()}")
+
+            # Check for high error rate and notify
+            if not dry_run and len(self.metrics.errors) > 10:
+                self.notifier.notify_high_error_rate(
+                    error_count=len(self.metrics.errors),
+                    total_count=self.metrics.hearings_checked
+                )
+
+            # Check circuit breaker status and notify if open
+            if self.api_client.circuit_breaker:
+                cb_stats = self.api_client.get_circuit_breaker_stats()
+                if cb_stats and cb_stats['state'] == 'open':
+                    self.notifier.notify_circuit_breaker_open(
+                        circuit_name=cb_stats['name'],
+                        stats=cb_stats
+                    )
 
             return {
                 'success': True,
@@ -163,10 +319,37 @@ class DailyUpdater:
                 'metrics': self.metrics.to_dict()
             }
 
+        except CircuitBreakerError as e:
+            # Circuit breaker is open - notify and fail gracefully
+            self.metrics.errors.append(str(e))
+            self.metrics.end_time = datetime.now()
+            logger.error(f"Daily update blocked by circuit breaker: {e}")
+
+            # Send notification
+            if self.api_client.circuit_breaker:
+                cb_stats = self.api_client.get_circuit_breaker_stats()
+                self.notifier.notify_circuit_breaker_open(
+                    circuit_name=cb_stats['name'] if cb_stats else 'congress_api',
+                    stats=cb_stats or {}
+                )
+
+            return {
+                'success': False,
+                'error': str(e),
+                'circuit_breaker_open': True,
+                'metrics': self.metrics.to_dict()
+            }
+
         except Exception as e:
             self.metrics.errors.append(str(e))
             self.metrics.end_time = datetime.now()
             logger.error(f"Daily update failed: {e}", exc_info=True)
+
+            # Send failure notification
+            self.notifier.notify_update_failure(
+                error=str(e),
+                metrics=self.metrics.to_dict()
+            )
 
             return {
                 'success': False,
@@ -825,6 +1008,262 @@ class DailyUpdater:
             ))
 
         logger.info(f"Recorded update metrics: {self.metrics.to_dict()}")
+
+    def _run_pre_update_sanity_checks(self) -> bool:
+        """
+        Run pre-update sanity checks to ensure database is in good state.
+
+        Checks for:
+        - Database file exists and is accessible
+        - Database is not corrupted
+        - Critical tables exist
+        - Minimum record counts are met
+        - No foreign key violations exist
+
+        Returns:
+            True if all checks pass, False otherwise
+        """
+        logger.info("Running pre-update sanity checks...")
+
+        try:
+            with self.db.transaction() as conn:
+                # Check 1: Verify critical tables exist
+                cursor = conn.execute('''
+                    SELECT name FROM sqlite_master
+                    WHERE type='table' AND name IN ('hearings', 'committees', 'witnesses', 'update_logs')
+                    ORDER BY name
+                ''')
+                tables = [row[0] for row in cursor.fetchall()]
+                required_tables = ['committees', 'hearings', 'witnesses']
+
+                for required in required_tables:
+                    if required not in tables:
+                        logger.error(f"Critical table '{required}' missing from database")
+                        return False
+
+                logger.info(f"✓ All critical tables present: {', '.join(tables)}")
+
+                # Check 2: Verify minimum record counts (prevent operating on empty/broken database)
+                cursor = conn.execute('SELECT COUNT(*) FROM hearings')
+                hearing_count = cursor.fetchone()[0]
+
+                if hearing_count < 100:
+                    logger.error(f"Database has only {hearing_count} hearings (minimum 100 required)")
+                    return False
+
+                logger.info(f"✓ Database has {hearing_count} hearings")
+
+                # Check 3: Check for foreign key violations
+                conn.execute('PRAGMA foreign_keys = ON')
+                cursor = conn.execute('PRAGMA foreign_key_check')
+                violations = cursor.fetchall()
+
+                if violations:
+                    logger.error(f"Found {len(violations)} foreign key violations")
+                    for violation in violations[:5]:  # Show first 5
+                        logger.error(f"  - {violation}")
+                    return False
+
+                logger.info("✓ No foreign key violations")
+
+                # Check 4: Verify database integrity
+                cursor = conn.execute('PRAGMA integrity_check')
+                integrity = cursor.fetchone()[0]
+
+                if integrity != 'ok':
+                    logger.error(f"Database integrity check failed: {integrity}")
+                    return False
+
+                logger.info("✓ Database integrity check passed")
+
+                # Check 5: Verify last update wasn't too recent (prevent duplicate runs)
+                cursor = conn.execute('''
+                    SELECT start_time FROM update_logs
+                    ORDER BY start_time DESC LIMIT 1
+                ''')
+                last_update_row = cursor.fetchone()
+
+                if last_update_row:
+                    last_update = datetime.fromisoformat(last_update_row[0])
+                    hours_since_update = (datetime.now() - last_update).total_seconds() / 3600
+
+                    if hours_since_update < 1:
+                        logger.warning(f"Last update was only {hours_since_update:.1f} hours ago - potential duplicate run")
+                        # Don't fail, just warn
+                    else:
+                        logger.info(f"✓ Last update was {hours_since_update:.1f} hours ago")
+
+                logger.info("All pre-update sanity checks passed ✓")
+                return True
+
+        except Exception as e:
+            logger.error(f"Pre-update sanity checks failed with exception: {e}")
+            return False
+
+    def _run_post_update_validation(self) -> None:
+        """
+        Run post-update validation checks using UpdateValidator.
+        Stores validation results in metrics for tracking and alerting.
+        """
+        if not UpdateValidator:
+            logger.warning("UpdateValidator not available - skipping validation")
+            self.metrics.validation_passed = None
+            return
+
+        logger.info("Running post-update validation...")
+
+        try:
+            validator = UpdateValidator(db_path=self.settings.database_path)
+            results = validator.run_all_checks(fix_issues=False)
+
+            # Store validation results in metrics
+            self.metrics.validation_passed = results.get('passed', False)
+            self.metrics.validation_warnings = results.get('warnings', [])
+            self.metrics.validation_issues = results.get('issues', [])
+
+            # Log validation outcome
+            if self.metrics.validation_passed:
+                logger.info(f"✓ Validation passed with {len(self.metrics.validation_warnings)} warnings")
+            else:
+                logger.error(f"✗ Validation failed with {len(self.metrics.validation_issues)} issues")
+
+                # Notify on critical validation failures
+                if len(self.metrics.validation_issues) > 0:
+                    self.notifier.send(
+                        title="Post-Update Validation Failed",
+                        message=f"Data validation found {len(self.metrics.validation_issues)} critical issues after update",
+                        severity="error",
+                        metadata={
+                            'issues': self.metrics.validation_issues[:5],  # First 5 issues
+                            'warning_count': len(self.metrics.validation_warnings)
+                        }
+                    )
+
+        except Exception as e:
+            logger.error(f"Validation check failed with exception: {e}")
+            self.metrics.validation_passed = False
+            self.metrics.validation_issues.append(f"Validation error: {str(e)}")
+
+    def _create_database_backup(self) -> Optional[str]:
+        """
+        Create a backup of the database before modifications.
+
+        Returns:
+            Path to backup file, or None if backup failed
+        """
+        try:
+            # Create backups directory if it doesn't exist
+            backups_dir = Path(self.settings.database_path).parent / 'backups'
+            backups_dir.mkdir(parents=True, exist_ok=True)
+
+            # Generate backup filename with timestamp
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            backup_filename = f"database_backup_{timestamp}.db"
+            backup_path = backups_dir / backup_filename
+
+            # Copy database file
+            logger.info(f"Creating database backup at {backup_path}")
+            shutil.copy2(self.settings.database_path, backup_path)
+
+            # Verify backup was created and has reasonable size
+            if backup_path.exists():
+                backup_size = backup_path.stat().st_size
+                original_size = Path(self.settings.database_path).stat().st_size
+
+                if backup_size == original_size:
+                    logger.info(f"✓ Database backup created successfully ({backup_size / 1024 / 1024:.2f} MB)")
+                    return str(backup_path)
+                else:
+                    logger.error(f"Backup size mismatch: original={original_size}, backup={backup_size}")
+                    return None
+            else:
+                logger.error("Backup file not found after copy")
+                return None
+
+        except Exception as e:
+            logger.error(f"Failed to create database backup: {e}")
+            return None
+
+    def _rollback_database(self) -> bool:
+        """
+        Restore database from backup.
+
+        Returns:
+            True if rollback successful, False otherwise
+        """
+        if not self.backup_path or not Path(self.backup_path).exists():
+            logger.error("Cannot rollback: backup file not found")
+            return False
+
+        try:
+            logger.warning(f"Rolling back database from backup: {self.backup_path}")
+
+            # Close any open database connections
+            self.db.close()
+
+            # Restore backup
+            shutil.copy2(self.backup_path, self.settings.database_path)
+
+            # Verify restore
+            restored_size = Path(self.settings.database_path).stat().st_size
+            backup_size = Path(self.backup_path).stat().st_size
+
+            if restored_size == backup_size:
+                logger.info(f"✓ Database rolled back successfully")
+
+                # Reinitialize database connection
+                self.db = DatabaseManager()
+
+                # Send notification about rollback
+                self.notifier.send(
+                    title="Database Rollback Performed",
+                    message=f"Database was rolled back due to update validation failures",
+                    severity="warning",
+                    metadata={
+                        'backup_path': self.backup_path,
+                        'validation_issues': self.metrics.validation_issues[:3]
+                    }
+                )
+
+                return True
+            else:
+                logger.error(f"Rollback verification failed: sizes don't match")
+                return False
+
+        except Exception as e:
+            logger.error(f"Failed to rollback database: {e}")
+            return False
+
+    def _cleanup_old_backups(self, days: int = 7) -> None:
+        """
+        Remove database backups older than specified days.
+
+        Args:
+            days: Number of days to keep backups (default: 7)
+        """
+        try:
+            backups_dir = Path(self.settings.database_path).parent / 'backups'
+
+            if not backups_dir.exists():
+                return
+
+            cutoff_time = datetime.now() - timedelta(days=days)
+            removed_count = 0
+
+            for backup_file in backups_dir.glob('database_backup_*.db'):
+                # Check file modification time
+                file_mtime = datetime.fromtimestamp(backup_file.stat().st_mtime)
+
+                if file_mtime < cutoff_time:
+                    logger.debug(f"Removing old backup: {backup_file.name}")
+                    backup_file.unlink()
+                    removed_count += 1
+
+            if removed_count > 0:
+                logger.info(f"Cleaned up {removed_count} old backup(s) older than {days} days")
+
+        except Exception as e:
+            logger.warning(f"Failed to cleanup old backups: {e}")
 
 
 def main():

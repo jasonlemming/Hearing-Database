@@ -1265,6 +1265,94 @@ class DailyUpdater:
         except Exception as e:
             logger.warning(f"Failed to cleanup old backups: {e}")
 
+    # =========================================================================
+    # Batch Processing Methods (Phase 2.3.1)
+    # =========================================================================
+
+    def _divide_into_batches(self, hearings: List, batch_size: int = None) -> List[List]:
+        """
+        Divide hearings into batches for processing.
+
+        Used in batch processing to split a large list of hearings into
+        manageable chunks that can be validated and committed independently.
+
+        Args:
+            hearings: List of hearing data
+            batch_size: Size of each batch (default: from settings or 50)
+
+        Returns:
+            List of batches, each containing up to batch_size hearings
+        """
+        if batch_size is None:
+            batch_size = getattr(self.settings, 'batch_size', 50)
+
+        batches = []
+        for i in range(0, len(hearings), batch_size):
+            batch = hearings[i:i + batch_size]
+            batches.append(batch)
+
+        return batches
+
+    def _process_batch(self, batch: List[Dict[str, Any]], batch_number: int, checkpoint: Checkpoint) -> BatchResult:
+        """
+        Process a single batch of hearings.
+
+        This is the core batch processing method that applies updates for a batch
+        while tracking changes in the checkpoint for potential rollback.
+
+        Args:
+            batch: List of hearing changes to process
+            batch_number: Batch number (for logging)
+            checkpoint: Checkpoint to track changes
+
+        Returns:
+            BatchResult indicating success or failure
+        """
+        # TODO: Implement batch processing logic (Day 3-4)
+        # For now, return a success result
+        logger.info(f"Processing batch {batch_number} with {len(batch)} hearings")
+        return BatchResult(success=True, records=len(batch))
+
+    def _validate_batch(self, batch: List[Dict[str, Any]]) -> Tuple[bool, List[str]]:
+        """
+        Validate a batch of hearings before processing.
+
+        Fast validation checks:
+        - Foreign key references are valid
+        - No duplicate hearing IDs within batch
+        - Data format is correct
+
+        Args:
+            batch: List of hearing changes to validate
+
+        Returns:
+            Tuple of (is_valid, list_of_issues)
+        """
+        # TODO: Implement batch validation logic (Day 4)
+        # For now, return success
+        return (True, [])
+
+    def _rollback_checkpoint(self, checkpoint: Checkpoint) -> bool:
+        """
+        Rollback changes tracked in a checkpoint.
+
+        This allows independent batch rollback without affecting other batches:
+        - DELETE hearings that were added
+        - RESTORE hearings that were updated (using original data)
+        - DELETE witnesses that were added
+        - DELETE documents that were added
+
+        Args:
+            checkpoint: Checkpoint containing changes to rollback
+
+        Returns:
+            True if rollback successful, False otherwise
+        """
+        # TODO: Implement rollback logic (Day 5)
+        # For now, log and return success
+        logger.info(f"Rolling back checkpoint for batch {checkpoint.batch_number}")
+        return True
+
 
 def main():
     """Main entry point for daily update script."""

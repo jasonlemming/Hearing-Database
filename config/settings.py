@@ -37,6 +37,10 @@ class Settings(BaseSettings):
     batch_size: int = Field(default=50, env='BATCH_SIZE')
     validation_mode: bool = Field(default=False, env='VALIDATION_MODE')
 
+    # Batch Processing Configuration (Phase 2.3.1)
+    enable_batch_processing: bool = Field(default=False, env='ENABLE_BATCH_PROCESSING')
+    batch_processing_size: int = Field(default=50, env='BATCH_PROCESSING_SIZE')
+
     # Update Configuration
     update_window_days: int = Field(default=30, env='UPDATE_WINDOW_DAYS')
     update_schedule_hour: int = Field(default=2, env='UPDATE_SCHEDULE_HOUR')

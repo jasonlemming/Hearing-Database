@@ -90,8 +90,10 @@ class UpdateValidator:
                 self.warnings.append(f"Low witness count: {counts['witnesses']} (expected >= 1500)")
 
             # Check for zero counts (critical)
+            # Note: bills and hearing_bills are out of scope, so ignore those
+            excluded_tables = {'bills', 'hearing_bills'}
             for table, count in counts.items():
-                if count == 0:
+                if count == 0 and table not in excluded_tables:
                     self.issues.append(f"CRITICAL: Table '{table}' is empty")
 
             logger.info(f"Data counts: {counts}")

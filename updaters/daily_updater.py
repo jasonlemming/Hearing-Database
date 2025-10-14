@@ -58,13 +58,20 @@ class UpdateMetrics:
         self.validation_warnings = []
         self.validation_issues = []
 
+        # Batch processing metrics (Phase 2.3.1)
+        self.batch_processing_enabled = False
+        self.batch_count = 0
+        self.batches_succeeded = 0
+        self.batches_failed = 0
+        self.batch_errors = []
+
     def duration(self) -> Optional[timedelta]:
         if self.end_time:
             return self.end_time - self.start_time
         return None
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        result = {
             'start_time': self.start_time.isoformat(),
             'end_time': self.end_time.isoformat() if self.end_time else None,
             'duration_seconds': self.duration().total_seconds() if self.duration() else None,
@@ -80,6 +87,18 @@ class UpdateMetrics:
             'validation_warnings': self.validation_warnings,
             'validation_issues': self.validation_issues
         }
+
+        # Add batch processing metrics if enabled
+        if self.batch_processing_enabled:
+            result['batch_processing'] = {
+                'enabled': True,
+                'batch_count': self.batch_count,
+                'batches_succeeded': self.batches_succeeded,
+                'batches_failed': self.batches_failed,
+                'batch_errors': self.batch_errors
+            }
+
+        return result
 
 
 class Checkpoint:
@@ -266,7 +285,13 @@ class DailyUpdater:
 
                 try:
                     # Step 3: Apply updates to database
-                    self._apply_updates(changes)
+                    # Check feature flag to determine which processing method to use
+                    if self.settings.enable_batch_processing:
+                        logger.info("✓ Batch processing ENABLED - using Phase 2.3.1 batch processing")
+                        self._apply_updates_with_batches(changes)
+                    else:
+                        logger.info("Batch processing DISABLED - using Phase 2.2 standard processing")
+                        self._apply_updates(changes)
 
                     # Step 4: Update related data (committees, witnesses)
                     self._update_related_data(changes)
@@ -579,7 +604,10 @@ class DailyUpdater:
 
     def _apply_updates(self, changes: Dict[str, List]) -> None:
         """
-        Apply identified changes to the database.
+        Apply identified changes to the database (Phase 2.2 - Non-batched approach).
+
+        This is the original implementation that processes all changes in a single
+        transaction. Used when batch processing is disabled.
 
         Args:
             changes: Dictionary with updates and additions
@@ -604,6 +632,126 @@ class DailyUpdater:
                     error_msg = f"Error adding hearing {addition.get('eventId')}: {e}"
                     logger.error(error_msg)
                     self.metrics.errors.append(error_msg)
+
+    def _apply_updates_with_batches(self, changes: Dict[str, List]) -> None:
+        """
+        Apply identified changes to the database using batch processing (Phase 2.3.1).
+
+        Processes changes in batches with validation checkpoints for independent rollback.
+        Each batch is validated before processing, and failed batches are rolled back
+        without affecting successful batches.
+
+        Args:
+            changes: Dictionary with updates and additions
+        """
+        logger.info("Starting batch processing of changes")
+
+        # Enable batch metrics
+        self.metrics.batch_processing_enabled = True
+
+        # Combine updates and additions into single list for batching
+        all_changes = changes['updates'] + changes['additions']
+        total_changes = len(all_changes)
+
+        if total_changes == 0:
+            logger.info("No changes to process")
+            return
+
+        logger.info(f"Processing {total_changes} total changes ({len(changes['updates'])} updates, {len(changes['additions'])} additions)")
+
+        # Divide into batches
+        batch_size = getattr(self.settings, 'batch_processing_size', 50)
+        batches = self._divide_into_batches(all_changes, batch_size=batch_size)
+        self.metrics.batch_count = len(batches)
+
+        logger.info(f"Divided into {len(batches)} batches of up to {batch_size} changes each")
+
+        # Process each batch
+        for batch_num, batch in enumerate(batches, 1):
+            checkpoint = Checkpoint(batch_num)
+
+            try:
+                # Step 1: Validate batch
+                is_valid, issues = self._validate_batch(batch)
+
+                if not is_valid:
+                    error_msg = f"Batch {batch_num} failed validation: {', '.join(issues[:3])}"
+                    logger.warning(error_msg)
+                    self.metrics.batches_failed += 1
+                    self.metrics.batch_errors.append({
+                        'batch': batch_num,
+                        'error': 'Validation failed',
+                        'issues': issues
+                    })
+                    # Skip this batch, continue with others
+                    continue
+
+                # Step 2: Process batch with checkpoint tracking
+                result = self._process_batch(batch, batch_num, checkpoint)
+
+                # Step 3: Handle result
+                if result.success:
+                    self.metrics.batches_succeeded += 1
+
+                    # Update totals based on what was in this batch
+                    for item in batch:
+                        if 'new_data' in item:
+                            self.metrics.hearings_updated += 1
+                        else:
+                            self.metrics.hearings_added += 1
+
+                    logger.info(f"✓ Batch {batch_num}/{len(batches)} succeeded: {result.records} records")
+
+                else:
+                    # Step 4: Rollback failed batch
+                    logger.warning(f"✗ Batch {batch_num}/{len(batches)} failed: {result.error}")
+                    self.metrics.batches_failed += 1
+                    self.metrics.batch_errors.append({
+                        'batch': batch_num,
+                        'error': result.error,
+                        'issues': result.issues
+                    })
+
+                    # Attempt rollback
+                    logger.info(f"Attempting rollback of batch {batch_num}")
+                    rollback_success = self._rollback_checkpoint(checkpoint)
+
+                    if rollback_success:
+                        logger.info(f"✓ Batch {batch_num} rolled back successfully")
+                    else:
+                        error_msg = f"✗ CRITICAL: Batch {batch_num} rollback failed"
+                        logger.error(error_msg)
+                        self.metrics.errors.append(error_msg)
+
+            except Exception as e:
+                # Unexpected error processing batch
+                error_msg = f"Unexpected error in batch {batch_num}: {e}"
+                logger.error(error_msg, exc_info=True)
+                self.metrics.batches_failed += 1
+                self.metrics.batch_errors.append({
+                    'batch': batch_num,
+                    'error': str(e)
+                })
+
+                # Attempt rollback
+                try:
+                    rollback_success = self._rollback_checkpoint(checkpoint)
+                    if rollback_success:
+                        logger.info(f"✓ Batch {batch_num} rolled back after exception")
+                    else:
+                        logger.error(f"✗ CRITICAL: Batch {batch_num} rollback failed after exception")
+                except Exception as rollback_error:
+                    logger.error(f"✗ CRITICAL: Rollback exception for batch {batch_num}: {rollback_error}")
+
+        # Log final summary
+        logger.info("=" * 60)
+        logger.info("Batch Processing Summary:")
+        logger.info(f"  Total batches: {self.metrics.batch_count}")
+        logger.info(f"  Succeeded: {self.metrics.batches_succeeded}")
+        logger.info(f"  Failed: {self.metrics.batches_failed}")
+        logger.info(f"  Hearings updated: {self.metrics.hearings_updated}")
+        logger.info(f"  Hearings added: {self.metrics.hearings_added}")
+        logger.info("=" * 60)
 
     def _update_hearing_record(self, conn, existing_record: tuple, new_data: Dict[str, Any]) -> None:
         """Update an existing hearing record with new data using parser pipeline."""
@@ -1269,6 +1417,40 @@ class DailyUpdater:
     # Batch Processing Methods (Phase 2.3.1)
     # =========================================================================
 
+    def _extract_original_data(self, db_record: tuple) -> dict:
+        """
+        Extract fields from database record for rollback tracking.
+
+        This method extracts key hearing fields that may be modified during
+        an update, allowing us to restore them if the batch needs to be rolled back.
+
+        Args:
+            db_record: Database row tuple from hearings table
+
+        Returns:
+            Dictionary containing original field values for rollback
+        """
+        # Map database columns to indices
+        db_cols = [
+            'hearing_id', 'event_id', 'congress', 'chamber', 'title',
+            'hearing_date_only', 'hearing_time', 'location', 'jacket_number',
+            'hearing_type', 'status', 'created_at', 'updated_at'
+        ]
+
+        # Convert tuple to dict
+        db_data = dict(zip(db_cols, db_record)) if db_record else {}
+
+        # Extract fields we want to track for rollback
+        # These are fields that are most likely to change during an update
+        original_data = {
+            'title': db_data.get('title'),
+            'hearing_date_only': db_data.get('hearing_date_only'),
+            'status': db_data.get('status'),
+            'location': db_data.get('location')
+        }
+
+        return original_data
+
     def _divide_into_batches(self, hearings: List, batch_size: int = None) -> List[List]:
         """
         Divide hearings into batches for processing.
@@ -1308,10 +1490,62 @@ class DailyUpdater:
         Returns:
             BatchResult indicating success or failure
         """
-        # TODO: Implement batch processing logic (Day 3-4)
-        # For now, return a success result
         logger.info(f"Processing batch {batch_number} with {len(batch)} hearings")
-        return BatchResult(success=True, records=len(batch))
+
+        try:
+            with self.db.transaction() as conn:
+                processed_count = 0
+
+                for item in batch:
+                    try:
+                        # Determine if this is an update or addition
+                        if 'new_data' in item:
+                            # Update format: {'existing': ..., 'new_data': ...}
+                            event_id = item['new_data'].get('eventId')
+                            existing = item['existing']
+                            new_data = item['new_data']
+
+                            # Extract original data BEFORE applying update
+                            original_data = self._extract_original_data(existing)
+
+                            # Track this update in checkpoint
+                            checkpoint.track_update(event_id, original_data)
+
+                            # Apply the update using existing method
+                            self._update_hearing_record(conn, existing, new_data)
+
+                            logger.debug(f"Batch {batch_number}: Updated hearing {event_id}")
+
+                        else:
+                            # Addition format: just the hearing data
+                            event_id = item.get('eventId')
+
+                            # Track this addition in checkpoint
+                            checkpoint.track_addition(event_id)
+
+                            # Add the new hearing using existing method
+                            self._add_new_hearing(conn, item)
+
+                            logger.debug(f"Batch {batch_number}: Added hearing {event_id}")
+
+                        processed_count += 1
+
+                    except Exception as e:
+                        # Error processing individual item in batch
+                        error_msg = f"Error processing item in batch {batch_number}: {e}"
+                        logger.error(error_msg)
+                        # Fail the entire batch on any error
+                        return BatchResult(success=False, error=error_msg)
+
+                # All items processed successfully
+                logger.info(f"✓ Batch {batch_number} completed: {processed_count} hearings processed")
+                return BatchResult(success=True, records=processed_count)
+
+        except Exception as e:
+            # Transaction-level error
+            error_msg = f"Transaction failed for batch {batch_number}: {e}"
+            logger.error(error_msg)
+            return BatchResult(success=False, error=error_msg)
 
     def _validate_batch(self, batch: List[Dict[str, Any]]) -> Tuple[bool, List[str]]:
         """

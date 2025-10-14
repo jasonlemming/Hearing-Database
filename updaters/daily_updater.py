@@ -487,18 +487,50 @@ class DailyUpdater:
                     })
 
                 # Step 2: Fetch details and filter by updateDate
+                # Import ThreadPoolExecutor once at the beginning
+                from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
+
+                # Create executor outside loop to avoid blocking on context manager
+                # This allows us to abandon hung threads without blocking the entire update
+                executor = ThreadPoolExecutor(max_workers=1)
+
                 recent_hearings = []
+                retry_queue = []  # Track hearings that timed out for retry
+
                 for i, hearing in enumerate(all_recent):
                     event_id = hearing.get('eventId')
                     chamber = hearing.get('chamber', '').lower()
 
                     if event_id and chamber:
                         try:
-                            detailed = self.hearing_fetcher.fetch_hearing_details(
-                                congress=self.congress,
-                                chamber=chamber,
-                                event_id=event_id
-                            )
+                            # Fetch hearing details with explicit timeout handling using ThreadPoolExecutor
+                            # This is more reliable than signal.alarm() which doesn't work well on macOS
+                            def fetch_with_timeout():
+                                # CRITICAL: Enforce socket timeout in worker thread
+                                # This ensures the thread created by ThreadPoolExecutor has the timeout
+                                import socket
+                                socket.setdefaulttimeout(20)  # Match global timeout from api/client.py
+
+                                logger.debug(f"[TIMEOUT DEBUG] Fetching {event_id} in thread (timeout=20s)")
+                                return self.hearing_fetcher.fetch_hearing_details(
+                                    congress=self.congress,
+                                    chamber=chamber,
+                                    event_id=event_id
+                                )
+
+                            # Execute with 25-second timeout (5s connect + 15s read + 5s buffer)
+                            # Reduced from 45s to match new HTTP timeout settings
+                            # Note: Not using 'with' context manager to avoid blocking on hung threads
+                            future = executor.submit(fetch_with_timeout)
+                            try:
+                                logger.debug(f"[TIMEOUT DEBUG] Waiting for result from {event_id} (max 25s)")
+                                detailed = future.result(timeout=25)
+                                logger.debug(f"[TIMEOUT DEBUG] Successfully received result from {event_id}")
+                            except FuturesTimeoutError:
+                                logger.warning(f"[TIMEOUT DEBUG] ThreadPoolExecutor timeout after 25 seconds for {event_id} - adding to retry queue")
+                                # Add to retry queue instead of just continuing
+                                retry_queue.append({'hearing': hearing, 'index': i})
+                                continue  # Skip to next hearing
 
                             if detailed and 'committeeMeeting' in detailed:
                                 detailed_hearing = detailed['committeeMeeting']
@@ -545,6 +577,88 @@ class DailyUpdater:
 
                         except Exception as e:
                             logger.warning(f"Could not fetch details for {event_id}: {e}")
+
+                # Step 3: Process retry queue (Option 2: Retry Later in Same Run)
+                if retry_queue:
+                    logger.info(f"Processing retry queue: {len(retry_queue)} hearings timed out in initial pass")
+
+                    for retry_item in retry_queue:
+                        hearing = retry_item['hearing']
+                        original_index = retry_item['index']
+                        event_id = hearing.get('eventId')
+                        chamber = hearing.get('chamber', '').lower()
+
+                        if not event_id or not chamber:
+                            continue
+
+                        logger.info(f"Retrying hearing {event_id} (originally #{original_index + 1})")
+
+                        try:
+                            def fetch_with_timeout_retry():
+                                # CRITICAL: Enforce socket timeout in worker thread
+                                import socket
+                                socket.setdefaulttimeout(20)  # Match global timeout
+
+                                logger.debug(f"[TIMEOUT DEBUG] RETRY fetching {event_id} in thread (timeout=20s)")
+                                return self.hearing_fetcher.fetch_hearing_details(
+                                    congress=self.congress,
+                                    chamber=chamber,
+                                    event_id=event_id
+                                )
+
+                            # Retry with same 25-second timeout
+                            future = executor.submit(fetch_with_timeout_retry)
+                            try:
+                                logger.debug(f"[TIMEOUT DEBUG] RETRY waiting for result from {event_id} (max 25s)")
+                                detailed = future.result(timeout=25)
+                                logger.debug(f"[TIMEOUT DEBUG] RETRY successfully received result from {event_id}")
+
+                                # Process successful retry same as main loop
+                                if detailed and 'committeeMeeting' in detailed:
+                                    detailed_hearing = detailed['committeeMeeting']
+                                    detailed_hearing['chamber'] = chamber.title()
+
+                                    # Filter by updateDate
+                                    updated_at = detailed_hearing.get('updateDate')
+                                    if updated_at:
+                                        try:
+                                            update_date = datetime.fromisoformat(updated_at.replace('Z', '+00:00'))
+                                            if update_date >= cutoff_date.replace(tzinfo=timezone.utc):
+                                                recent_hearings.append(detailed_hearing)
+                                                logger.info(f"✓ Retry successful for {event_id}")
+                                        except (ValueError, TypeError):
+                                            recent_hearings.append(detailed_hearing)
+                                            logger.info(f"✓ Retry successful for {event_id} (no valid updateDate)")
+                                    else:
+                                        # Check hearing date as fallback
+                                        hearing_date = detailed_hearing.get('date')
+                                        if hearing_date:
+                                            try:
+                                                h_date = datetime.fromisoformat(hearing_date.replace('Z', '+00:00'))
+                                                if h_date >= cutoff_date.replace(tzinfo=timezone.utc):
+                                                    recent_hearings.append(detailed_hearing)
+                                                    logger.info(f"✓ Retry successful for {event_id}")
+                                            except (ValueError, TypeError):
+                                                recent_hearings.append(detailed_hearing)
+                                                logger.info(f"✓ Retry successful for {event_id} (no valid date)")
+                                else:
+                                    # Fall back to basic info
+                                    recent_hearings.append(hearing)
+                                    logger.info(f"✓ Retry successful for {event_id} (basic info only)")
+
+                                self.metrics.api_requests += 1
+
+                            except FuturesTimeoutError:
+                                logger.warning(f"[TIMEOUT DEBUG] ✗ RETRY ThreadPoolExecutor timeout after 25 seconds for {event_id} - skipping permanently")
+                                # Permanently skip this hearing - it's failed twice
+
+                        except Exception as e:
+                            logger.warning(f"✗ Retry failed for {event_id}: {e}")
+
+                    logger.info(f"Retry queue processing complete")
+
+                # Shutdown executor (don't wait for hung threads)
+                executor.shutdown(wait=False)
 
                 self.metrics.hearings_checked = len(all_recent)
                 logger.info(f"Found {len(recent_hearings)} hearings updated in last {self.lookback_days} days")

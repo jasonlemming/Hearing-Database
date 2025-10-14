@@ -535,6 +535,7 @@
 // Same JavaScript as before
 let currentTaskId = null;
 let updateInterval = null;
+let lastProgressTimestamp = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('[DEBUG] DOMContentLoaded fired');
@@ -895,8 +896,22 @@ async function pollTaskStatus() {
         const total = progressData.total_hearings || 100;
         const percent = Math.round((progress / total) * 100);
 
+        // Check if progress is stalled (no update for >60 seconds)
+        const currentTimestamp = data.progress.timestamp || progressData.timestamp;
+        let stallWarning = '';
+        if (currentTimestamp) {
+            const progressTime = new Date(currentTimestamp);
+            const now = new Date();
+            const secondsSinceUpdate = (now - progressTime) / 1000;
+
+            if (secondsSinceUpdate > 60) {
+                const minutes = Math.floor(secondsSinceUpdate / 60);
+                stallWarning = ` (⚠️  stalled for ${minutes}m - may be waiting on slow API)`;
+            }
+        }
+
         document.getElementById('progressBar').style.width = percent + '%';
-        document.getElementById('progressStats').textContent = `${progress}/${total} hearings checked`;
+        document.getElementById('progressStats').textContent = `${progress}/${total} hearings checked${stallWarning}`;
 
         if (data.status === 'completed' || data.status === 'failed') {
             clearInterval(updateInterval);

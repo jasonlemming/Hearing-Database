@@ -128,6 +128,14 @@ class DatabaseManager:
         # Replace ? placeholders with %s for PostgreSQL
         converted = query.replace('?', '%s')
 
+        # Replace boolean integer comparisons with PostgreSQL boolean syntax
+        # Pattern: column_name = 1  =>  column_name = TRUE
+        # Pattern: column_name = 0  =>  column_name = FALSE
+        import re
+        # Match patterns like "is_primary = 1" or "is_active = 0"
+        converted = re.sub(r'\b(is_\w+)\s*=\s*1\b', r'\1 = TRUE', converted)
+        converted = re.sub(r'\b(is_\w+)\s*=\s*0\b', r'\1 = FALSE', converted)
+
         # Replace CURRENT_TIMESTAMP with NOW() for PostgreSQL (both work, but NOW() is more common)
         # Actually, CURRENT_TIMESTAMP works in both, so we'll leave it
 

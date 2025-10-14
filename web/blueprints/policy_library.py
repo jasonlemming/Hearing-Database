@@ -434,6 +434,35 @@ def document_detail(document_id):
         return f"Error: {e}", 500
 
 
+@policy_library_bp.route('/api/trigger-update', methods=['POST'])
+def trigger_update():
+    """Manually trigger policy library update (for testing/emergency use)"""
+    try:
+        from updaters.policy_library_updater import PolicyLibraryUpdater
+
+        updater = PolicyLibraryUpdater(
+            lookback_days=30,  # Check last 30 days
+            publication='jamiedupree.substack.com',
+            author='Jamie Dupree'
+        )
+
+        result = updater.run_daily_update()
+
+        return jsonify(result)
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@policy_library_bp.route('/test-update')
+def test_update_page():
+    """Test page for manual updates"""
+    return render_template('test_update.html')
+
+
 @policy_library_bp.route('/api/export')
 def export_csv():
     """Export documents as CSV"""

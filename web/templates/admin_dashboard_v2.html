@@ -537,6 +537,8 @@ let currentTaskId = null;
 let updateInterval = null;
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('[DEBUG] DOMContentLoaded fired');
+
     loadSystemHealth();
     loadTimeline();
     loadPhase23Metrics();
@@ -551,7 +553,15 @@ document.addEventListener('DOMContentLoaded', function() {
         loadPhase23Metrics();
     }, 30000);
 
-    document.getElementById('manualUpdateForm').addEventListener('submit', startManualUpdate);
+    const form = document.getElementById('manualUpdateForm');
+    console.log('[DEBUG] Manual update form element:', form);
+
+    if (form) {
+        form.addEventListener('submit', startManualUpdate);
+        console.log('[DEBUG] Event listener attached to form');
+    } else {
+        console.error('[DEBUG] ERROR: manualUpdateForm not found!');
+    }
 });
 
 async function loadSystemHealth() {
@@ -822,38 +832,54 @@ async function loadScheduledTasks() {
 }
 
 async function startManualUpdate(e) {
+    console.log('[DEBUG] startManualUpdate() called');
+    console.log('[DEBUG] Event object:', e);
+
     e.preventDefault();
+    console.log('[DEBUG] preventDefault() called');
 
     const lookbackDays = parseInt(document.getElementById('lookbackDays').value);
     const dryRun = document.getElementById('dryRun').checked;
+    console.log('[DEBUG] lookbackDays:', lookbackDays, 'dryRun:', dryRun);
+
+    const payload = {
+        lookback_days: lookbackDays,
+        dry_run: dryRun,
+        components: ['hearings', 'witnesses', 'committees'],
+        chamber: 'both',
+        mode: 'incremental'
+    };
+    console.log('[DEBUG] Payload to send:', payload);
 
     try {
+        console.log('[DEBUG] Sending POST request to /admin/api/start-update');
         const response = await fetch('/admin/api/start-update', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                lookback_days: lookbackDays,
-                dry_run: dryRun,
-                components: ['hearings', 'witnesses', 'committees'],
-                chamber: 'both',
-                mode: 'incremental'
-            })
+            body: JSON.stringify(payload)
         });
 
+        console.log('[DEBUG] Response received:', response);
+        console.log('[DEBUG] Response status:', response.status, response.statusText);
+
         const data = await response.json();
+        console.log('[DEBUG] Response data:', data);
 
         if (response.ok) {
+            console.log('[DEBUG] Update started successfully. Task ID:', data.task_id);
             currentTaskId = data.task_id;
             document.getElementById('liveProgress').style.display = 'block';
             document.getElementById('startUpdateBtn').disabled = true;
             updateInterval = setInterval(pollTaskStatus, 2000);
         } else {
+            console.error('[DEBUG] Server returned error:', data.error);
             alert('Error starting update: ' + data.error);
         }
 
     } catch (error) {
-        console.error('Error starting update:', error);
-        alert('Error starting update');
+        console.error('[DEBUG] Fetch error:', error);
+        console.error('[DEBUG] Error stack:', error.stack);
+        alert('Error starting update: ' + error.message);
     }
 }
 

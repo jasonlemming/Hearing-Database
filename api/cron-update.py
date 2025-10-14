@@ -260,10 +260,30 @@ def scheduled_update(task_id):
         JSON response with update results
     """
     try:
+        # Log ALL incoming requests for debugging
+        logger.info(f"[CRON DIAGNOSTIC] Received request for task_id={task_id}")
+        logger.info(f"[CRON DIAGNOSTIC] Method: {request.method}")
+        logger.info(f"[CRON DIAGNOSTIC] Headers: {dict(request.headers)}")
+        logger.info(f"[CRON DIAGNOSTIC] Remote addr: {request.remote_addr}")
+        logger.info(f"[CRON DIAGNOSTIC] User agent: {request.user_agent}")
+
+        # Check if CRON_SECRET is configured
+        expected_secret = os.environ.get('CRON_SECRET')
+        logger.info(f"[CRON DIAGNOSTIC] CRON_SECRET configured: {bool(expected_secret)}")
+        if expected_secret:
+            logger.info(f"[CRON DIAGNOSTIC] CRON_SECRET value (first 5 chars): {expected_secret[:5]}...")
+
         # Verify authentication
+        cron_secret = request.headers.get('Authorization')
+        logger.info(f"[CRON DIAGNOSTIC] Authorization header present: {bool(cron_secret)}")
+        if cron_secret:
+            logger.info(f"[CRON DIAGNOSTIC] Authorization header (first 10 chars): {cron_secret[:10]}...")
+
         if not verify_cron_auth():
-            logger.warning(f"Unauthorized cron request for task {task_id}")
+            logger.warning(f"[CRON DIAGNOSTIC] Authentication FAILED for task {task_id}")
             return jsonify({'error': 'Unauthorized'}), 401
+
+        logger.info(f"[CRON DIAGNOSTIC] Authentication SUCCESS for task {task_id}")
 
         # Get schedule configuration
         schedule_config = get_schedule_config(task_id)

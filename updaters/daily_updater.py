@@ -442,11 +442,31 @@ class DailyUpdater:
                 # This catches hearings that were recently MODIFIED but scheduled far in future
                 logger.info(f"Running INCREMENTAL sync - {self.lookback_days} day lookback from {cutoff_date.strftime('%Y-%m-%d')}")
 
+                # Report initial progress
+                if progress_callback:
+                    progress_callback({
+                        'phase': 'initializing',
+                        'message': f'Starting {self.lookback_days}-day lookback update...',
+                        'hearings_checked': 0,
+                        'total_hearings': 0,
+                        'percent': 0
+                    })
+
                 # Step 1: Fetch a wider window of hearings (90 days covers most recent activity)
                 # We need to fetch more than the lookback window because hearings scheduled
                 # months in advance can be updated today
                 fetch_window = max(90, self.lookback_days * 3)  # At least 90 days or 3x lookback
                 logger.info(f"Fetching {fetch_window}-day window to check for updates")
+
+                # Report that we're fetching
+                if progress_callback:
+                    progress_callback({
+                        'phase': 'fetching',
+                        'message': f'Fetching {fetch_window}-day window from API...',
+                        'hearings_checked': 0,
+                        'total_hearings': 0,
+                        'percent': 0
+                    })
 
                 all_recent = self.hearing_fetcher.fetch_recent_hearings(
                     congress=self.congress,
@@ -455,6 +475,16 @@ class DailyUpdater:
 
                 self.metrics.api_requests += 1
                 logger.info(f"Retrieved {len(all_recent)} hearings from {fetch_window}-day window")
+
+                # Report that we're now checking each hearing
+                if progress_callback:
+                    progress_callback({
+                        'phase': 'checking',
+                        'message': f'Checking {len(all_recent)} hearings for updates...',
+                        'hearings_checked': 0,
+                        'total_hearings': len(all_recent),
+                        'percent': 0
+                    })
 
                 # Step 2: Fetch details and filter by updateDate
                 recent_hearings = []
@@ -500,8 +530,8 @@ class DailyUpdater:
 
                             self.metrics.api_requests += 1
 
-                            # Progress reporting every 50 hearings
-                            if (i + 1) % 50 == 0:
+                            # Progress reporting every 10 hearings (increased frequency for better UX)
+                            if (i + 1) % 10 == 0 or (i + 1) == len(all_recent):
                                 logger.info(f"Checked {i + 1}/{len(all_recent)} hearings, found {len(recent_hearings)} updates")
 
                                 # Call progress callback if provided

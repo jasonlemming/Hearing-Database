@@ -33,12 +33,18 @@ from utils.circuit_breaker import CircuitBreakerError
 
 logger = get_logger(__name__)
 
-# Import validation module
+# Import validation modules
 try:
     from scripts.verify_updates import UpdateValidator
 except ImportError:
     logger.warning("UpdateValidator not available - post-update validation disabled")
     UpdateValidator = None
+
+try:
+    from scripts.verify_updates import HistoricalValidator
+except ImportError:
+    logger.warning("HistoricalValidator not available - historical validation disabled")
+    HistoricalValidator = None
 
 
 class UpdateMetrics:
@@ -64,6 +70,11 @@ class UpdateMetrics:
         self.batches_succeeded = 0
         self.batches_failed = 0
         self.batch_errors = []
+
+        # Historical validation metrics (Phase 2.3.2)
+        self.historical_validation_enabled = False
+        self.historical_anomalies = []
+        self.historical_alert_triggered = False
 
     def duration(self) -> Optional[timedelta]:
         if self.end_time:
@@ -96,6 +107,15 @@ class UpdateMetrics:
                 'batches_succeeded': self.batches_succeeded,
                 'batches_failed': self.batches_failed,
                 'batch_errors': self.batch_errors
+            }
+
+        # Add historical validation metrics if enabled
+        if self.historical_validation_enabled:
+            result['historical_validation'] = {
+                'enabled': True,
+                'anomaly_count': len(self.historical_anomalies),
+                'anomalies': self.historical_anomalies,
+                'alert_triggered': self.historical_alert_triggered
             }
 
         return result
@@ -305,6 +325,10 @@ class DailyUpdater:
                             logger.error("Post-update validation failed with critical issues - initiating rollback")
                             self._rollback_database()
                             raise Exception(f"Update rolled back due to validation failures: {', '.join(self.metrics.validation_issues[:3])}")
+
+                    # Step 5.5: Run historical pattern validation (Phase 2.3.2)
+                    if not dry_run:
+                        self._run_historical_validation()
 
                     # Step 6: Record update metrics
                     self._record_update_metrics()
@@ -1291,6 +1315,106 @@ class DailyUpdater:
             logger.error(f"Validation check failed with exception: {e}")
             self.metrics.validation_passed = False
             self.metrics.validation_issues.append(f"Validation error: {str(e)}")
+
+    def _run_historical_validation(self) -> None:
+        """
+        Run historical pattern validation (Phase 2.3.2).
+        Compares current update metrics against historical patterns to detect anomalies.
+        """
+        # Check feature flag
+        if not self.settings.enable_historical_validation:
+            logger.debug("Historical validation disabled (ENABLE_HISTORICAL_VALIDATION=false)")
+            return
+
+        if not HistoricalValidator:
+            logger.warning("HistoricalValidator not available - skipping historical validation")
+            return
+
+        logger.info("Running historical pattern validation...")
+
+        try:
+            # Enable historical validation metrics
+            self.metrics.historical_validation_enabled = True
+
+            # Initialize validator
+            validator = HistoricalValidator(
+                db=self.db,
+                min_history_days=self.settings.historical_min_days
+            )
+
+            # Build current metrics dict
+            current_metrics = {
+                'hearings_checked': float(self.metrics.hearings_checked),
+                'hearings_updated': float(self.metrics.hearings_updated),
+                'hearings_added': float(self.metrics.hearings_added),
+                'committees_updated': float(self.metrics.committees_updated),
+                'witnesses_updated': float(self.metrics.witnesses_updated),
+                'error_count': float(len(self.metrics.errors))
+            }
+
+            # Detect anomalies
+            anomalies = validator.detect_anomalies(
+                current_metrics=current_metrics,
+                z_threshold=self.settings.historical_z_threshold
+            )
+
+            # Store anomalies in metrics
+            self.metrics.historical_anomalies = [
+                {
+                    'metric': a.metric_name,
+                    'current_value': a.current_value,
+                    'expected_value': a.expected_value,
+                    'z_score': a.z_score,
+                    'severity': a.severity,
+                    'explanation': a.explanation,
+                    'confidence': a.confidence
+                }
+                for a in anomalies
+            ]
+
+            # Check if alert should be triggered
+            should_alert = validator.should_alert(anomalies)
+            self.metrics.historical_alert_triggered = should_alert
+
+            # Log results
+            if len(anomalies) == 0:
+                logger.info("✓ No historical anomalies detected - metrics within normal range")
+            else:
+                logger.warning(f"⚠️  Detected {len(anomalies)} anomalies in update metrics:")
+                for anomaly in anomalies:
+                    logger.warning(f"  - {anomaly.metric_name}: {anomaly.explanation}")
+
+                # If alert triggered, send notification
+                if should_alert:
+                    logger.warning("⚠️  Historical validation alert triggered - anomalies warrant attention")
+
+                    self.notifier.send(
+                        title="Historical Pattern Anomalies Detected",
+                        message=f"Update metrics show {len(anomalies)} anomalies compared to historical patterns",
+                        severity="warning" if not any(a.severity == 'critical' for a in anomalies) else "error",
+                        metadata={
+                            'anomaly_count': len(anomalies),
+                            'anomalies': [
+                                f"{a.metric_name}: {a.explanation}" for a in anomalies[:5]
+                            ],
+                            'current_metrics': current_metrics
+                        }
+                    )
+                else:
+                    logger.info("ℹ️  Anomalies detected but below alert threshold - no action required")
+
+        except Exception as e:
+            logger.error(f"Historical validation failed with exception: {e}", exc_info=True)
+            # Don't fail the update on historical validation errors
+            self.metrics.historical_anomalies.append({
+                'metric': 'validation_error',
+                'current_value': 0,
+                'expected_value': 0,
+                'z_score': 0,
+                'severity': 'error',
+                'explanation': f"Historical validation error: {str(e)}",
+                'confidence': 0
+            })
 
     def _create_database_backup(self) -> Optional[str]:
         """

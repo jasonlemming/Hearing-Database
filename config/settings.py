@@ -41,6 +41,11 @@ class Settings(BaseSettings):
     enable_batch_processing: bool = Field(default=False, env='ENABLE_BATCH_PROCESSING')
     batch_processing_size: int = Field(default=50, env='BATCH_PROCESSING_SIZE')
 
+    # Historical Validation Configuration (Phase 2.3.2)
+    enable_historical_validation: bool = Field(default=False, env='ENABLE_HISTORICAL_VALIDATION')
+    historical_min_days: int = Field(default=17, env='HISTORICAL_MIN_DAYS')
+    historical_z_threshold: float = Field(default=3.0, env='HISTORICAL_Z_THRESHOLD')
+
     # Update Configuration
     update_window_days: int = Field(default=30, env='UPDATE_WINDOW_DAYS')
     update_schedule_hour: int = Field(default=2, env='UPDATE_SCHEDULE_HOUR')

@@ -502,6 +502,295 @@ class UpdateValidator:
         return len(self.issues) == 0
 
 
+# ============================================================================
+# Phase 2.3.2: Historical Pattern Validation
+# ============================================================================
+
+from dataclasses import dataclass
+import statistics
+
+
+@dataclass
+class HistoricalStats:
+    """Statistical summary of a metric from historical data"""
+    metric_name: str
+    mean: float
+    std_dev: float
+    p5: float          # 5th percentile
+    p95: float         # 95th percentile
+    sample_size: int
+    last_updated: datetime
+
+
+@dataclass
+class Anomaly:
+    """Represents a detected anomaly in current metrics"""
+    metric_name: str
+    current_value: float
+    expected_value: float  # mean or baseline
+    z_score: float
+    severity: str  # "warning", "critical"
+    explanation: str
+    confidence: float  # 0.0 to 1.0
+
+
+class HistoricalValidator:
+    """
+    Validates current update metrics against historical patterns
+
+    Uses statistical analysis (z-score, percentiles) to detect anomalies
+    that static thresholds would miss.
+    """
+
+    def __init__(self, db: DatabaseManager, min_history_days: int = 17):
+        """
+        Initialize validator
+
+        Args:
+            db: Database manager instance
+            min_history_days: Minimum days of history required (default: 17)
+        """
+        self.db = db
+        self.min_history_days = min_history_days
+        self._stats_cache = {}
+        self._cache_timestamp = None
+
+    def get_historical_data(self, days: int = 30) -> List[Dict[str, Any]]:
+        """
+        Fetch historical update logs for analysis
+
+        Args:
+            days: Number of days to look back
+
+        Returns:
+            List of update log records
+        """
+        cutoff = datetime.now() - timedelta(days=days)
+        cutoff_str = cutoff.isoformat()
+
+        with self.db.transaction() as conn:
+            cursor = conn.execute('''
+                SELECT
+                    start_time,
+                    hearings_checked,
+                    hearings_updated,
+                    hearings_added,
+                    committees_updated,
+                    witnesses_updated,
+                    error_count,
+                    duration_seconds
+                FROM update_logs
+                WHERE start_time >= ?
+                AND hearings_checked > 0
+                ORDER BY start_time ASC
+            ''', (cutoff_str,))
+
+            records = []
+            for row in cursor.fetchall():
+                records.append({
+                    'start_time': row[0],
+                    'hearings_checked': row[1],
+                    'hearings_updated': row[2],
+                    'hearings_added': row[3],
+                    'committees_updated': row[4],
+                    'witnesses_updated': row[5],
+                    'error_count': row[6],
+                    'duration_seconds': row[7] or 0
+                })
+
+            return records
+
+    def calculate_stats(self, metric_name: str, values: List[float]) -> HistoricalStats:
+        """
+        Calculate statistical summary for a metric
+
+        Args:
+            metric_name: Name of the metric
+            values: List of historical values
+
+        Returns:
+            HistoricalStats object with calculated statistics
+        """
+        if len(values) < 2:
+            # Not enough data for statistics
+            return None
+
+        mean_val = statistics.mean(values)
+
+        # Calculate standard deviation (need at least 2 points)
+        if len(values) >= 2:
+            std_dev = statistics.stdev(values)
+        else:
+            std_dev = 0.0
+
+        # Calculate percentiles
+        sorted_vals = sorted(values)
+        p5_idx = max(0, int(len(sorted_vals) * 0.05))
+        p95_idx = min(len(sorted_vals) - 1, int(len(sorted_vals) * 0.95))
+
+        p5 = sorted_vals[p5_idx]
+        p95 = sorted_vals[p95_idx]
+
+        return HistoricalStats(
+            metric_name=metric_name,
+            mean=mean_val,
+            std_dev=std_dev,
+            p5=p5,
+            p95=p95,
+            sample_size=len(values),
+            last_updated=datetime.now()
+        )
+
+    def calculate_all_stats(self, days: int = 30) -> Dict[str, HistoricalStats]:
+        """
+        Calculate statistics for all tracked metrics
+
+        Args:
+            days: Number of days of history to analyze
+
+        Returns:
+            Dict mapping metric names to HistoricalStats objects
+        """
+        # Check cache (valid for 24 hours)
+        if self._cache_timestamp and self._stats_cache:
+            cache_age = (datetime.now() - self._cache_timestamp).total_seconds() / 3600
+            if cache_age < 24:
+                logger.info(f"Using cached historical stats (age: {cache_age:.1f}h)")
+                return self._stats_cache
+
+        logger.info(f"Calculating historical statistics (last {days} days)")
+
+        records = self.get_historical_data(days)
+
+        if len(records) < self.min_history_days:
+            logger.warning(f"Insufficient historical data: {len(records)} records (need >= {self.min_history_days})")
+            return {}
+
+        # Extract values for each metric
+        metrics = {
+            'hearings_checked': [r['hearings_checked'] for r in records],
+            'hearings_updated': [r['hearings_updated'] for r in records],
+            'hearings_added': [r['hearings_added'] for r in records],
+            'committees_updated': [r['committees_updated'] for r in records],
+            'witnesses_updated': [r['witnesses_updated'] for r in records],
+            'error_count': [r['error_count'] for r in records],
+        }
+
+        # Calculate stats for each metric
+        stats = {}
+        for metric_name, values in metrics.items():
+            stat = self.calculate_stats(metric_name, values)
+            if stat:
+                stats[metric_name] = stat
+                logger.debug(f"{metric_name}: mean={stat.mean:.1f}, std={stat.std_dev:.1f}, "
+                           f"p5={stat.p5:.1f}, p95={stat.p95:.1f}")
+
+        # Cache results
+        self._stats_cache = stats
+        self._cache_timestamp = datetime.now()
+
+        return stats
+
+    def detect_anomalies(self, current_metrics: Dict[str, float],
+                        z_threshold: float = 3.0) -> List[Anomaly]:
+        """
+        Detect anomalies in current metrics compared to historical patterns
+
+        Args:
+            current_metrics: Dict of current metric values
+            z_threshold: Z-score threshold for anomaly detection (default: 3.0)
+
+        Returns:
+            List of detected Anomaly objects
+        """
+        stats = self.calculate_all_stats()
+
+        if not stats:
+            logger.info("No historical statistics available, skipping historical validation")
+            return []
+
+        anomalies = []
+
+        for metric_name, current_value in current_metrics.items():
+            if metric_name not in stats:
+                continue
+
+            stat = stats[metric_name]
+
+            # Skip if no variation in historical data
+            if stat.std_dev == 0:
+                logger.debug(f"{metric_name}: No variation in historical data, skipping")
+                continue
+
+            # Calculate z-score
+            z_score = (current_value - stat.mean) / stat.std_dev
+
+            # Check for anomaly using z-score (3σ rule)
+            if abs(z_score) > z_threshold:
+                severity = "critical" if abs(z_score) > 4 else "warning"
+
+                # Generate explanation
+                direction = "higher" if z_score > 0 else "lower"
+                explanation = (
+                    f"{metric_name} is {abs(z_score):.1f} standard deviations {direction} "
+                    f"than historical mean ({current_value:.0f} vs {stat.mean:.0f})"
+                )
+
+                anomaly = Anomaly(
+                    metric_name=metric_name,
+                    current_value=current_value,
+                    expected_value=stat.mean,
+                    z_score=z_score,
+                    severity=severity,
+                    explanation=explanation,
+                    confidence=min(abs(z_score) / 5.0, 1.0)  # Confidence 0-1
+                )
+
+                anomalies.append(anomaly)
+                logger.info(f"Anomaly detected: {explanation}")
+
+            # Also check percentile method
+            elif current_value < stat.p5 or current_value > stat.p95:
+                severity = "warning"
+                direction = "below 5th percentile" if current_value < stat.p5 else "above 95th percentile"
+                explanation = f"{metric_name} is {direction} ({current_value:.0f} vs {stat.p5:.0f}-{stat.p95:.0f})"
+
+                anomaly = Anomaly(
+                    metric_name=metric_name,
+                    current_value=current_value,
+                    expected_value=stat.mean,
+                    z_score=z_score,
+                    severity=severity,
+                    explanation=explanation,
+                    confidence=0.7  # Lower confidence for percentile method
+                )
+
+                anomalies.append(anomaly)
+                logger.info(f"Anomaly detected: {explanation}")
+
+        return anomalies
+
+    def should_alert(self, anomalies: List[Anomaly]) -> bool:
+        """
+        Determine if anomalies warrant an alert
+
+        Uses multi-signal approach: requires 2+ anomalies OR 1 critical anomaly
+
+        Args:
+            anomalies: List of detected anomalies
+
+        Returns:
+            True if alert should be sent
+        """
+        if not anomalies:
+            return False
+
+        critical = [a for a in anomalies if a.severity == "critical"]
+
+        # Alert if 2+ anomalies OR 1+ critical anomalies
+        return len(anomalies) >= 2 or len(critical) >= 1
+
+
 def main():
     """Main entry point"""
     import argparse

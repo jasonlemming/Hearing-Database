@@ -4,6 +4,7 @@ Supports both SQLite and PostgreSQL
 """
 import sqlite3
 import os
+import re
 from contextlib import contextmanager
 from typing import Optional, Dict, Any, List, Tuple, Union
 from pathlib import Path
@@ -131,7 +132,6 @@ class DatabaseManager:
         # Replace boolean integer comparisons with PostgreSQL boolean syntax
         # Pattern: column_name = 1  =>  column_name = TRUE
         # Pattern: column_name = 0  =>  column_name = FALSE
-        import re
         # Match patterns like "is_primary = 1" or "is_active = 0"
         converted = re.sub(r'\b(is_\w+)\s*=\s*1\b', r'\1 = TRUE', converted)
         converted = re.sub(r'\b(is_\w+)\s*=\s*0\b', r'\1 = FALSE', converted)

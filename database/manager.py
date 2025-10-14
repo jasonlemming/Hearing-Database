@@ -69,23 +69,27 @@ class DatabaseManager:
 
     class ConnectionWrapper:
         """Wrapper to make PostgreSQL connections behave like SQLite for execute()"""
-        def __init__(self, conn, is_postgres):
+        def __init__(self, conn, is_postgres, manager):
             self._conn = conn
             self._is_postgres = is_postgres
+            self._manager = manager
 
         def execute(self, query, params=None):
             """Execute query with cursor handling for PostgreSQL"""
+            # Convert query placeholders if needed (? -> %s for PostgreSQL)
+            converted_query = self._manager._convert_query(query)
+
             if self._is_postgres:
                 cursor = self._conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
                 if params:
-                    cursor.execute(query, params)
+                    cursor.execute(converted_query, params)
                 else:
-                    cursor.execute(query)
+                    cursor.execute(converted_query)
                 return cursor
             else:
                 if params:
-                    return self._conn.execute(query, params)
-                return self._conn.execute(query)
+                    return self._conn.execute(converted_query, params)
+                return self._conn.execute(converted_query)
 
         def commit(self):
             return self._conn.commit()
@@ -106,7 +110,7 @@ class DatabaseManager:
     def transaction(self):
         """Context manager for database transactions"""
         conn = self.get_connection()
-        wrapped = self.ConnectionWrapper(conn, self.is_postgres)
+        wrapped = self.ConnectionWrapper(conn, self.is_postgres, self)
         try:
             yield wrapped
             conn.commit()

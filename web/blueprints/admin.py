@@ -324,7 +324,7 @@ def update_details(log_id: int):
 
             # Get recently modified hearings from this update
             cursor = conn.execute("""
-                SELECT event_id, title, chamber, hearing_date_only, updated_at
+                SELECT hearing_id, title, chamber, hearing_date_only, updated_at
                 FROM hearings
                 WHERE updated_at BETWEEN ? AND ?
                 ORDER BY updated_at DESC
@@ -334,7 +334,7 @@ def update_details(log_id: int):
             recent_hearings = []
             for h_row in cursor.fetchall():
                 recent_hearings.append({
-                    'event_id': h_row[0],
+                    'hearing_id': h_row[0],
                     'title': h_row[1],
                     'chamber': h_row[2],
                     'hearing_date': h_row[3],
@@ -761,7 +761,7 @@ def recent_hearings():
 
                 # Get committees for this hearing
                 committees_cursor = conn.execute("""
-                    SELECT c.name, c.system_code, c.chamber, hc.is_primary
+                    SELECT c.committee_id, c.name, c.system_code, c.chamber, hc.is_primary
                     FROM hearing_committees hc
                     JOIN committees c ON hc.committee_id = c.committee_id
                     WHERE hc.hearing_id = ?
@@ -771,10 +771,11 @@ def recent_hearings():
                 committees = []
                 for c_row in committees_cursor.fetchall():
                     committees.append({
-                        'name': c_row[0],
-                        'system_code': c_row[1],
-                        'chamber': c_row[2],
-                        'is_primary': bool(c_row[3])
+                        'committee_id': c_row[0],
+                        'name': c_row[1],
+                        'system_code': c_row[2],
+                        'chamber': c_row[3],
+                        'is_primary': bool(c_row[4])
                     })
 
                 # Get witnesses for this hearing

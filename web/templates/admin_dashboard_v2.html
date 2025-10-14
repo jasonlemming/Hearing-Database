@@ -726,7 +726,7 @@ async function toggleUpdateDetails(logId) {
             hearingsListHtml = '<h3>Modified Hearings</h3><ul style="margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.9rem;">';
             data.recent_hearings.forEach(h => {
                 const date = h.hearing_date ? new Date(h.hearing_date).toLocaleDateString() : 'No date';
-                hearingsListHtml += `<li><a href="/hearings/${h.event_id}" style="color: #1a1a1a; text-decoration: none;">${h.title || '(No title)'}</a> <span style="color: #6c757d;">· ${h.chamber} · ${date}</span></li>`;
+                hearingsListHtml += `<li><a href="/hearing/${h.hearing_id}" style="color: #1a1a1a; text-decoration: none;">${h.title || '(No title)'}</a> <span style="color: #6c757d;">· ${h.chamber} · ${date}</span></li>`;
             });
             hearingsListHtml += '</ul>';
             if (data.hearings_updated > data.recent_hearings.length) {
@@ -1033,7 +1033,7 @@ function createHearingCard(hearing) {
     const changeType = hearing.change_type === 'added' ? 'Added' : 'Updated';
 
     // Create links for each metadata item
-    const committeeLink = committeeCode ? `<a href="/committees?code=${committeeCode}">${committeeName}</a>` : committeeName;
+    const committeeLink = committee && committee.committee_id ? `<a href="/committee/${committee.committee_id}">${committeeName}</a>` : committeeName;
     const chamberLink = `<a href="/hearings?chamber=${hearing.chamber.toLowerCase()}">${hearing.chamber}</a>`;
     const dateLink = dateForUrl ? `<a href="/hearings?date=${dateForUrl}">${hearingDate}</a>` : hearingDate;
 
@@ -1042,7 +1042,7 @@ function createHearingCard(hearing) {
     const metaLine = metaParts.join(' · ');
 
     // Create link to hearing detail page
-    const hearingLink = `/hearings/${hearing.hearing_id}`;
+    const hearingLink = `/hearing/${hearing.hearing_id}`;
 
     card.innerHTML = `
         <div class="hearing-title"><a href="${hearingLink}">${hearing.title || '(No title)'}</a></div>

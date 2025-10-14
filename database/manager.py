@@ -67,12 +67,48 @@ class DatabaseManager:
             conn.execute("PRAGMA foreign_keys = ON")
             return conn
 
+    class ConnectionWrapper:
+        """Wrapper to make PostgreSQL connections behave like SQLite for execute()"""
+        def __init__(self, conn, is_postgres):
+            self._conn = conn
+            self._is_postgres = is_postgres
+
+        def execute(self, query, params=None):
+            """Execute query with cursor handling for PostgreSQL"""
+            if self._is_postgres:
+                cursor = self._conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+                if params:
+                    cursor.execute(query, params)
+                else:
+                    cursor.execute(query)
+                return cursor
+            else:
+                if params:
+                    return self._conn.execute(query, params)
+                return self._conn.execute(query)
+
+        def commit(self):
+            return self._conn.commit()
+
+        def rollback(self):
+            return self._conn.rollback()
+
+        def close(self):
+            return self._conn.close()
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return self._conn.__exit__(*args)
+
     @contextmanager
     def transaction(self):
         """Context manager for database transactions"""
         conn = self.get_connection()
+        wrapped = self.ConnectionWrapper(conn, self.is_postgres)
         try:
-            yield conn
+            yield wrapped
             conn.commit()
         except Exception:
             conn.rollback()

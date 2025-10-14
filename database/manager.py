@@ -63,6 +63,7 @@ class DatabaseManager:
         else:
             conn = sqlite3.connect(self.db_path)
             conn.row_factory = sqlite3.Row
+            # Enable foreign keys for SQLite only
             conn.execute("PRAGMA foreign_keys = ON")
             return conn
 

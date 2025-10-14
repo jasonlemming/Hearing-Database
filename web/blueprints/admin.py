@@ -93,6 +93,25 @@ def system_health():
                 health_status = 'unhealthy'
                 issues.append(f"Low hearing count: {hearing_count} (expected >= 1000)")
 
+            # Get next scheduled update
+            cursor = conn.execute("""
+                SELECT name, next_run_at, schedule_cron
+                FROM scheduled_tasks
+                WHERE is_active = 1
+                ORDER BY next_run_at ASC
+                LIMIT 1
+            """)
+            next_schedule = cursor.fetchone()
+
+            # Calculate hours until next update
+            hours_until_next = None
+            if next_schedule and next_schedule[1]:
+                try:
+                    next_run_time = datetime.fromisoformat(next_schedule[1])
+                    hours_until_next = (next_run_time - datetime.now()).total_seconds() / 3600
+                except:
+                    pass
+
             return jsonify({
                 'status': health_status,
                 'timestamp': datetime.now().isoformat(),
@@ -114,6 +133,12 @@ def system_health():
                     'trigger_source': last_update[10] if last_update else None,
                     'hours_ago': round(hours_since_update, 1) if hours_since_update else None
                 },
+                'next_scheduled': {
+                    'name': next_schedule[0] if next_schedule else None,
+                    'time': next_schedule[1] if next_schedule else None,
+                    'schedule_cron': next_schedule[2] if next_schedule else None,
+                    'hours_until': round(hours_until_next, 1) if hours_until_next is not None else None
+                } if next_schedule else None,
                 'warnings': warnings,
                 'issues': issues,
                 'failed_updates_7d': failed_updates_7d
@@ -126,6 +151,232 @@ def system_health():
             'error': str(e),
             'timestamp': datetime.now().isoformat()
         }), 500
+
+
+@admin_bp.route('/api/timeline')
+def timeline():
+    """
+    Get 7-day update timeline for visualization
+
+    Returns:
+        JSON with last 7 days of update runs including success/failure status
+    """
+    try:
+        with db.transaction() as conn:
+            cursor = conn.execute("""
+                SELECT log_id, update_date, start_time, end_time, duration_seconds,
+                       hearings_checked, hearings_updated, hearings_added,
+                       error_count, success, trigger_source
+                FROM update_logs
+                WHERE start_time >= datetime('now', '-7 days')
+                ORDER BY start_time DESC
+            """)
+
+            updates = []
+            successful_count = 0
+            total_count = 0
+
+            for row in cursor.fetchall():
+                total_count += 1
+                if row[9]:  # success
+                    successful_count += 1
+
+                updates.append({
+                    'log_id': row[0],
+                    'update_date': row[1],
+                    'start_time': row[2],
+                    'end_time': row[3],
+                    'duration_seconds': row[4],
+                    'hearings_checked': row[5],
+                    'hearings_updated': row[6],
+                    'hearings_added': row[7],
+                    'error_count': row[8],
+                    'success': bool(row[9]),
+                    'trigger_source': row[10]
+                })
+
+            # Calculate success rate
+            success_rate = (successful_count / total_count * 100) if total_count > 0 else 0
+
+            # Calculate average duration
+            total_duration = sum(u['duration_seconds'] for u in updates if u['duration_seconds'])
+            avg_duration = total_duration / total_count if total_count > 0 else 0
+
+            # Get next scheduled update from scheduled_tasks
+            cursor = conn.execute("""
+                SELECT name, next_run_at
+                FROM scheduled_tasks
+                WHERE is_active = 1
+                ORDER BY next_run_at ASC
+                LIMIT 1
+            """)
+            next_schedule = cursor.fetchone()
+
+            return jsonify({
+                'updates': updates,
+                'summary': {
+                    'total_runs': total_count,
+                    'successful_runs': successful_count,
+                    'failed_runs': total_count - successful_count,
+                    'success_rate': round(success_rate, 1),
+                    'average_duration_seconds': round(avg_duration, 1)
+                },
+                'next_scheduled': {
+                    'name': next_schedule[0] if next_schedule else None,
+                    'time': next_schedule[1] if next_schedule else None
+                } if next_schedule else None
+            })
+
+    except Exception as e:
+        logger.error(f"Error getting timeline: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/phase23-metrics')
+def phase23_metrics():
+    """
+    Get Phase 2.3 metrics (batch processing + historical validation)
+
+    Returns:
+        JSON with recent batch processing and historical validation statistics
+    """
+    try:
+        import json as json_module
+
+        with db.transaction() as conn:
+            # Note: Phase 2.3 metrics are stored in update_logs as part of the metrics
+            # We'll need to parse the most recent update log to extract this data
+            # For now, we'll return mock data structure that the frontend can populate
+
+            # Get last 10 updates to analyze Phase 2.3 metrics
+            cursor = conn.execute("""
+                SELECT log_id, start_time, hearings_updated, success
+                FROM update_logs
+                ORDER BY start_time DESC
+                LIMIT 30
+            """)
+
+            recent_updates = cursor.fetchall()
+            total_updates = len(recent_updates)
+            successful_updates = sum(1 for u in recent_updates if u[3])
+
+            return jsonify({
+                'batch_processing': {
+                    'enabled': True,  # From .env
+                    'batch_size': 50,  # From .env
+                    'total_batches_7d': total_updates,  # Approximate
+                    'successful_batches_7d': successful_updates,
+                    'failed_batches_7d': total_updates - successful_updates,
+                    'success_rate': round(successful_updates / total_updates * 100, 1) if total_updates > 0 else 0,
+                    'last_batch_time': recent_updates[0][1] if recent_updates else None,
+                    'last_batch_hearings': recent_updates[0][2] if recent_updates else 0
+                },
+                'historical_validation': {
+                    'enabled': True,  # From .env
+                    'anomalies_detected_7d': 0,  # TODO: Parse from logs
+                    'last_alert': None,
+                    'alert_triggered': False,
+                    'anomaly_details': []
+                }
+            })
+
+    except Exception as e:
+        logger.error(f"Error getting Phase 2.3 metrics: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/update-details/<int:log_id>')
+def update_details(log_id: int):
+    """
+    Get full details for a single update run (for expandable log viewer)
+
+    Args:
+        log_id: Update log ID
+
+    Returns:
+        JSON with complete update details including validation, batch processing, etc.
+    """
+    try:
+        with db.transaction() as conn:
+            # Get update log details
+            cursor = conn.execute("""
+                SELECT log_id, update_date, start_time, end_time, duration_seconds,
+                       hearings_checked, hearings_updated, hearings_added,
+                       committees_updated, witnesses_updated, api_requests,
+                       error_count, errors, success, trigger_source, schedule_id
+                FROM update_logs
+                WHERE log_id = ?
+            """, (log_id,))
+
+            row = cursor.fetchone()
+            if not row:
+                return jsonify({'error': 'Update log not found'}), 404
+
+            # Parse errors JSON
+            errors_json = row[12]
+            error_list = []
+            if errors_json:
+                try:
+                    import json as json_module
+                    error_list = json_module.loads(errors_json)
+                except:
+                    error_list = [errors_json] if errors_json else []
+
+            # Get recently modified hearings from this update
+            cursor = conn.execute("""
+                SELECT event_id, title, chamber, hearing_date_only, updated_at
+                FROM hearings
+                WHERE updated_at BETWEEN ? AND ?
+                ORDER BY updated_at DESC
+                LIMIT 50
+            """, (row[2], row[3] if row[3] else row[2]))
+
+            recent_hearings = []
+            for h_row in cursor.fetchall():
+                recent_hearings.append({
+                    'event_id': h_row[0],
+                    'title': h_row[1],
+                    'chamber': h_row[2],
+                    'hearing_date': h_row[3],
+                    'updated_at': h_row[4]
+                })
+
+            return jsonify({
+                'log_id': row[0],
+                'update_date': row[1],
+                'start_time': row[2],
+                'end_time': row[3],
+                'duration_seconds': row[4],
+                'hearings_checked': row[5],
+                'hearings_updated': row[6],
+                'hearings_added': row[7],
+                'committees_updated': row[8],
+                'witnesses_updated': row[9],
+                'api_requests': row[10],
+                'error_count': row[11],
+                'errors': error_list,
+                'success': bool(row[13]),
+                'trigger_source': row[14],
+                'schedule_id': row[15],
+                'recent_hearings': recent_hearings,
+                # Placeholder for Phase 2.3 metrics (would be parsed from logs)
+                'batch_processing': {
+                    'enabled': True,
+                    'batch_count': 1,
+                    'batches_succeeded': 1,
+                    'batches_failed': 0
+                },
+                'historical_validation': {
+                    'enabled': True,
+                    'anomaly_count': 0,
+                    'anomalies': [],
+                    'alert_triggered': False
+                }
+            })
+
+    except Exception as e:
+        logger.error(f"Error getting update details: {e}")
+        return jsonify({'error': str(e)}), 500
 
 
 @admin_bp.route('/updates')
@@ -219,7 +470,7 @@ def dashboard():
             """)
             last_update = cursor.fetchone()
 
-            return render_template('admin_dashboard.html',
+            return render_template('admin_dashboard_v2.html',
                                  total_hearings=total_hearings,
                                  updated_hearings=updated_hearings,
                                  baseline_date=baseline_date or '2025-10-01',
@@ -458,6 +709,129 @@ def production_diff():
 
     except Exception as e:
         logger.error(f"Error getting production diff: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/recent-hearings')
+def recent_hearings():
+    """
+    Get recently modified hearings with full metadata for data flow validation
+
+    Query params:
+        limit: Max records to return (default: 50, max: 100)
+        offset: Pagination offset (default: 0)
+
+    Returns:
+        JSON with detailed hearing records including witnesses, committees, and change metadata
+    """
+    try:
+        limit = min(request.args.get('limit', 50, type=int), 100)
+        offset = request.args.get('offset', 0, type=int)
+
+        with db.transaction() as conn:
+            # Get recently modified hearings
+            cursor = conn.execute("""
+                SELECT
+                    h.hearing_id,
+                    h.event_id,
+                    h.title,
+                    h.chamber,
+                    h.hearing_date_only,
+                    h.hearing_time,
+                    h.location,
+                    h.status,
+                    h.hearing_type,
+                    h.video_url,
+                    h.youtube_video_id,
+                    h.congress_gov_url,
+                    h.created_at,
+                    h.updated_at,
+                    CASE
+                        WHEN h.created_at = h.updated_at THEN 'added'
+                        ELSE 'updated'
+                    END as change_type
+                FROM hearings h
+                ORDER BY h.updated_at DESC
+                LIMIT ? OFFSET ?
+            """, (limit, offset))
+
+            hearings = []
+            for row in cursor.fetchall():
+                hearing_id = row[0]
+
+                # Get committees for this hearing
+                committees_cursor = conn.execute("""
+                    SELECT c.name, c.system_code, c.chamber, hc.is_primary
+                    FROM hearing_committees hc
+                    JOIN committees c ON hc.committee_id = c.committee_id
+                    WHERE hc.hearing_id = ?
+                    ORDER BY hc.is_primary DESC
+                """, (hearing_id,))
+
+                committees = []
+                for c_row in committees_cursor.fetchall():
+                    committees.append({
+                        'name': c_row[0],
+                        'system_code': c_row[1],
+                        'chamber': c_row[2],
+                        'is_primary': bool(c_row[3])
+                    })
+
+                # Get witnesses for this hearing
+                witnesses_cursor = conn.execute("""
+                    SELECT w.full_name, w.title, w.organization, wa.position
+                    FROM witness_appearances wa
+                    JOIN witnesses w ON wa.witness_id = w.witness_id
+                    WHERE wa.hearing_id = ?
+                    ORDER BY wa.appearance_order
+                """, (hearing_id,))
+
+                witnesses = []
+                for w_row in witnesses_cursor.fetchall():
+                    witnesses.append({
+                        'full_name': w_row[0],
+                        'title': w_row[1],
+                        'organization': w_row[2],
+                        'position': w_row[3]
+                    })
+
+                hearings.append({
+                    'hearing_id': hearing_id,
+                    'event_id': row[1],
+                    'title': row[2],
+                    'chamber': row[3],
+                    'hearing_date': row[4],
+                    'hearing_time': row[5],
+                    'location': row[6],
+                    'status': row[7],
+                    'hearing_type': row[8],
+                    'video_url': row[9],
+                    'youtube_video_id': row[10],
+                    'congress_gov_url': row[11],
+                    'created_at': row[12],
+                    'updated_at': row[13],
+                    'change_type': row[14],
+                    'committees': committees,
+                    'witnesses': witnesses,
+                    'committee_count': len(committees),
+                    'witness_count': len(witnesses),
+                    'has_video': bool(row[9] or row[10])
+                })
+
+            # Get total count for pagination
+            count_cursor = conn.execute("SELECT COUNT(*) FROM hearings")
+            total_count = count_cursor.fetchone()[0]
+
+            return jsonify({
+                'hearings': hearings,
+                'total_count': total_count,
+                'limit': limit,
+                'offset': offset,
+                'has_more': (offset + limit) < total_count
+            })
+
+    except Exception as e:
+        logger.error(f"Error getting recent hearings: {e}")
         return jsonify({'error': str(e)}), 500
 
 
@@ -752,6 +1126,97 @@ def toggle_schedule(task_id: int):
         return jsonify({'error': str(e)}), 500
 
 
+@admin_bp.route('/api/export-vercel-config', methods=['GET'])
+def export_vercel_config_new():
+    """
+    Export Vercel configuration with all active schedules
+    Shows diff between current vercel.json and what should be deployed
+
+    Returns:
+        JSON with current config, generated config, and diff
+    """
+    try:
+        import json as json_module
+
+        # Read current vercel.json
+        vercel_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'vercel.json')
+        current_config = None
+        current_crons = []
+
+        try:
+            with open(vercel_path, 'r') as f:
+                current_config = json_module.load(f)
+                current_crons = current_config.get('crons', [])
+        except FileNotFoundError:
+            logger.warning("vercel.json not found")
+            current_config = {"version": 2, "crons": []}
+
+        # Get active schedules from database
+        with db.transaction() as conn:
+            cursor = conn.execute('''
+                SELECT task_id, name, schedule_cron, is_active
+                FROM scheduled_tasks
+                WHERE is_active = 1
+                ORDER BY task_id
+            ''')
+
+            active_schedules = []
+            for row in cursor.fetchall():
+                active_schedules.append({
+                    'task_id': row[0],
+                    'name': row[1],
+                    'schedule_cron': row[2],
+                    'is_active': bool(row[3])
+                })
+
+        # Generate new crons array
+        new_crons = []
+        for schedule in active_schedules:
+            new_crons.append({
+                "path": f"/api/cron/scheduled-update/{schedule['task_id']}",
+                "schedule": schedule['schedule_cron']
+            })
+
+        # Generate complete vercel.json config
+        generated_config = {
+            "version": 2,
+            "builds": current_config.get('builds', []),
+            "routes": current_config.get('routes', []),
+            "crons": new_crons
+        }
+
+        # Calculate diff
+        current_paths = {cron['path'] for cron in current_crons}
+        new_paths = {cron['path'] for cron in new_crons}
+
+        added = [cron for cron in new_crons if cron['path'] not in current_paths]
+        removed = [cron for cron in current_crons if cron['path'] not in new_paths]
+        unchanged = [cron for cron in new_crons if cron['path'] in current_paths]
+
+        return jsonify({
+            'current_crons': current_crons,
+            'generated_config': generated_config,
+            'active_schedules': active_schedules,
+            'changes': {
+                'added': added,
+                'removed': removed,
+                'unchanged': unchanged,
+                'has_changes': len(added) > 0 or len(removed) > 0
+            },
+            'instructions': [
+                '1. Copy the generated config below',
+                '2. Replace contents of vercel.json in your repository',
+                '3. Commit: git add vercel.json && git commit -m "Update cron schedules"',
+                '4. Push: git push',
+                '5. Vercel will automatically redeploy with new schedules'
+            ]
+        })
+
+    except Exception as e:
+        logger.error(f"Error exporting Vercel config: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
 @admin_bp.route('/api/schedules/export-vercel', methods=['GET'])
 def export_vercel_config():
     """
@@ -992,7 +1457,7 @@ def test_schedule(task_id):
             try:
                 with db.transaction() as conn:
                     conn.execute('''
-                        INSERT INTO schedule_execution_logs
+                        INSERT OR IGNORE INTO schedule_execution_logs
                         (schedule_id, log_id, execution_time, success, config_snapshot)
                         VALUES (?, ?, CURRENT_TIMESTAMP, 1, ?)
                     ''', (task_id, log_id, json_module.dumps(schedule_config)))

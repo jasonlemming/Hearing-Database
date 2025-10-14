@@ -111,7 +111,7 @@ def create_execution_log(schedule_id, log_id, success, error_message=None, confi
 
     with db.transaction() as conn:
         conn.execute('''
-            INSERT INTO schedule_execution_logs
+            INSERT OR IGNORE INTO schedule_execution_logs
             (schedule_id, log_id, execution_time, success, error_message, config_snapshot)
             VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?, ?)
         ''', (schedule_id, log_id, success, error_message, json.dumps(config_snapshot) if config_snapshot else None))

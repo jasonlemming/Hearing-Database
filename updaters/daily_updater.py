@@ -1318,9 +1318,10 @@ class DailyUpdater:
         Validate a batch of hearings before processing.
 
         Fast validation checks:
-        - Foreign key references are valid
         - No duplicate hearing IDs within batch
-        - Data format is correct
+        - Required fields are present
+        - Data formats are correct
+        - Foreign key references are valid (committees exist)
 
         Args:
             batch: List of hearing changes to validate
@@ -1328,9 +1329,123 @@ class DailyUpdater:
         Returns:
             Tuple of (is_valid, list_of_issues)
         """
-        # TODO: Implement batch validation logic (Day 4)
-        # For now, return success
-        return (True, [])
+        issues = []
+
+        # Check 1: No duplicate hearing IDs within batch
+        event_ids = []
+        for item in batch:
+            # Handle both update and addition formats
+            if 'new_data' in item:
+                # Update format: {'existing': ..., 'new_data': ...}
+                event_id = item['new_data'].get('eventId')
+            else:
+                # Addition format: just the hearing data
+                event_id = item.get('eventId')
+
+            if event_id:
+                event_ids.append(event_id)
+
+        # Find duplicates
+        seen = set()
+        duplicates = set()
+        for event_id in event_ids:
+            if event_id in seen:
+                duplicates.add(event_id)
+            seen.add(event_id)
+
+        if duplicates:
+            issues.append(f"Duplicate hearing IDs within batch: {', '.join(sorted(duplicates))}")
+
+        # Check 2: Required fields are present
+        for i, item in enumerate(batch):
+            # Get the hearing data (handle both formats)
+            if 'new_data' in item:
+                hearing_data = item['new_data']
+            else:
+                hearing_data = item
+
+            # Check required fields
+            if not hearing_data.get('eventId'):
+                issues.append(f"Item {i}: Missing required field 'eventId'")
+
+            if not hearing_data.get('chamber'):
+                issues.append(f"Item {i}: Missing required field 'chamber'")
+
+            # Title is important but not strictly required (some hearings lack it)
+            # We'll issue a warning but not fail validation
+            if not hearing_data.get('title'):
+                logger.debug(f"Item {i} (eventId: {hearing_data.get('eventId')}): Missing 'title' field")
+
+        # Check 3: Data format validation
+        for i, item in enumerate(batch):
+            # Get the hearing data
+            if 'new_data' in item:
+                hearing_data = item['new_data']
+            else:
+                hearing_data = item
+
+            event_id = hearing_data.get('eventId', f'item_{i}')
+
+            # Validate chamber value
+            chamber = hearing_data.get('chamber')
+            if chamber and chamber.lower() not in ['house', 'senate', 'joint']:
+                issues.append(f"{event_id}: Invalid chamber value '{chamber}' (must be house, senate, or joint)")
+
+            # Validate date format if present
+            date_str = hearing_data.get('date')
+            if date_str:
+                try:
+                    # Try to parse the date
+                    datetime.fromisoformat(date_str.replace('Z', '+00:00'))
+                except (ValueError, TypeError) as e:
+                    issues.append(f"{event_id}: Invalid date format '{date_str}'")
+
+            # Validate congress number if present
+            congress = hearing_data.get('congress')
+            if congress is not None:
+                try:
+                    congress_int = int(congress)
+                    if congress_int < 1 or congress_int > 200:
+                        issues.append(f"{event_id}: Invalid congress number {congress_int} (must be 1-200)")
+                except (ValueError, TypeError):
+                    issues.append(f"{event_id}: Congress must be a number, got '{congress}'")
+
+        # Check 4: Foreign key validation - verify committees exist in database
+        # This is a fast check that prevents foreign key violations
+        with self.db.transaction() as conn:
+            for i, item in enumerate(batch):
+                # Get the hearing data
+                if 'new_data' in item:
+                    hearing_data = item['new_data']
+                else:
+                    hearing_data = item
+
+                event_id = hearing_data.get('eventId', f'item_{i}')
+                committees = hearing_data.get('committees', [])
+
+                if committees:
+                    for committee in committees:
+                        system_code = committee.get('systemCode')
+                        if system_code:
+                            # Check if committee exists
+                            cursor = conn.execute(
+                                'SELECT committee_id FROM committees WHERE system_code = ?',
+                                (system_code,)
+                            )
+                            if not cursor.fetchone():
+                                issues.append(f"{event_id}: Committee '{system_code}' not found in database")
+
+        # Return validation result
+        is_valid = len(issues) == 0
+
+        if not is_valid:
+            logger.warning(f"Batch validation failed with {len(issues)} issues")
+            for issue in issues[:5]:  # Log first 5 issues
+                logger.warning(f"  - {issue}")
+        else:
+            logger.debug(f"Batch validation passed ({len(batch)} items)")
+
+        return (is_valid, issues)
 
     def _rollback_checkpoint(self, checkpoint: Checkpoint) -> bool:
         """

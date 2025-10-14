@@ -128,10 +128,105 @@ def test_process_batch_skeleton():
     assert result.records == 10
     print(f"✅ PASS: Processed batch of {result.records} records")
 
+def test_validate_batch():
+    """Test the _validate_batch method"""
+    print("\n" + "="*70)
+    print("Testing _validate_batch() method")
+    print("="*70)
+
+    updater = DailyUpdater(congress=119, lookback_days=7)
+
+    # Test 1: All valid hearings
+    print("\nTest 1: All valid hearings")
+    batch = [
+        {
+            'eventId': 'TEST-119-001',
+            'chamber': 'House',
+            'title': 'Test Hearing 1',
+            'date': '2025-10-15T10:00:00Z',
+            'congress': 119
+        },
+        {
+            'eventId': 'TEST-119-002',
+            'chamber': 'Senate',
+            'title': 'Test Hearing 2',
+            'date': '2025-10-16T14:00:00Z',
+            'congress': 119
+        }
+    ]
+    is_valid, issues = updater._validate_batch(batch)
+    assert is_valid == True, f"Expected valid, got issues: {issues}"
+    assert len(issues) == 0
+    print(f"✅ PASS: Validated {len(batch)} valid hearings")
+
+    # Test 2: Duplicate event IDs
+    print("\nTest 2: Duplicate event IDs")
+    batch = [
+        {'eventId': 'TEST-119-001', 'chamber': 'House', 'title': 'Test 1'},
+        {'eventId': 'TEST-119-001', 'chamber': 'Senate', 'title': 'Test 2'},  # Duplicate
+        {'eventId': 'TEST-119-002', 'chamber': 'House', 'title': 'Test 3'}
+    ]
+    is_valid, issues = updater._validate_batch(batch)
+    assert is_valid == False, "Expected invalid due to duplicates"
+    assert len(issues) > 0
+    assert any('Duplicate' in issue for issue in issues)
+    print(f"✅ PASS: Detected duplicate event IDs")
+
+    # Test 3: Missing required fields
+    print("\nTest 3: Missing required fields")
+    batch = [
+        {'chamber': 'House', 'title': 'Test 1'},  # Missing eventId
+        {'eventId': 'TEST-119-002', 'title': 'Test 2'}  # Missing chamber
+    ]
+    is_valid, issues = updater._validate_batch(batch)
+    assert is_valid == False, "Expected invalid due to missing fields"
+    assert len(issues) >= 2
+    assert any('eventId' in issue for issue in issues)
+    assert any('chamber' in issue for issue in issues)
+    print(f"✅ PASS: Detected missing required fields")
+
+    # Test 4: Invalid data formats
+    print("\nTest 4: Invalid data formats")
+    batch = [
+        {
+            'eventId': 'TEST-119-001',
+            'chamber': 'InvalidChamber',  # Invalid
+            'title': 'Test 1'
+        },
+        {
+            'eventId': 'TEST-119-002',
+            'chamber': 'House',
+            'title': 'Test 2',
+            'date': 'not-a-date',  # Invalid date
+            'congress': 'not-a-number'  # Invalid congress
+        }
+    ]
+    is_valid, issues = updater._validate_batch(batch)
+    assert is_valid == False, "Expected invalid due to format errors"
+    assert len(issues) >= 3
+    assert any('chamber' in issue for issue in issues)
+    assert any('date' in issue for issue in issues)
+    assert any('Congress' in issue for issue in issues)
+    print(f"✅ PASS: Detected invalid data formats")
+
+    # Test 5: Mixed update and addition formats
+    print("\nTest 5: Mixed update and addition formats")
+    batch = [
+        {'eventId': 'TEST-119-001', 'chamber': 'House', 'title': 'Test 1'},
+        {
+            'existing': {'eventId': 'TEST-119-002'},
+            'new_data': {'eventId': 'TEST-119-002', 'chamber': 'Senate', 'title': 'Test 2'}
+        }
+    ]
+    is_valid, issues = updater._validate_batch(batch)
+    assert is_valid == True, f"Expected valid, got issues: {issues}"
+    assert len(issues) == 0
+    print(f"✅ PASS: Validated mixed formats")
+
 def main():
     """Run all manual tests"""
     print("\n" + "="*70)
-    print("MANUAL TEST SUITE - Phase 2.3.1 Day 3")
+    print("MANUAL TEST SUITE - Phase 2.3.1 Day 3-4")
     print("="*70)
 
     try:
@@ -139,6 +234,7 @@ def main():
         test_batch_result_class()
         test_divide_into_batches()
         test_process_batch_skeleton()
+        test_validate_batch()
 
         print("\n" + "="*70)
         print("ALL TESTS PASSED ✅")
@@ -148,7 +244,8 @@ def main():
         print("- BatchResult class: ✅ Working")
         print("- _divide_into_batches(): ✅ Working (4/4 tests)")
         print("- _process_batch() skeleton: ✅ Working")
-        print("\nDay 3 implementation complete!")
+        print("- _validate_batch(): ✅ Working (5/5 tests)")
+        print("\nDay 3-4 implementation complete!")
 
     except AssertionError as e:
         print(f"\n❌ TEST FAILED: {e}")

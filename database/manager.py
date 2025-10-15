@@ -68,6 +68,35 @@ class DatabaseManager:
             conn.execute("PRAGMA foreign_keys = ON")
             return conn
 
+    class TupleCursor:
+        """Wrapper around PostgreSQL cursor that converts RealDictRow to tuples"""
+        def __init__(self, cursor):
+            self._cursor = cursor
+
+        def fetchone(self):
+            row = self._cursor.fetchone()
+            if row is None:
+                return None
+            # Convert RealDictRow to tuple while preserving order
+            return tuple(row.values()) if hasattr(row, 'values') else row
+
+        def fetchall(self):
+            rows = self._cursor.fetchall()
+            if not rows:
+                return []
+            # Convert each RealDictRow to tuple
+            return [tuple(row.values()) if hasattr(row, 'values') else row for row in rows]
+
+        def fetchmany(self, size=None):
+            rows = self._cursor.fetchmany(size) if size else self._cursor.fetchmany()
+            if not rows:
+                return []
+            return [tuple(row.values()) if hasattr(row, 'values') else row for row in rows]
+
+        def __getattr__(self, name):
+            # Delegate all other attributes to the underlying cursor
+            return getattr(self._cursor, name)
+
     class ConnectionWrapper:
         """Wrapper to make PostgreSQL connections behave like SQLite for execute()"""
         def __init__(self, conn, is_postgres, manager):
@@ -86,7 +115,8 @@ class DatabaseManager:
                     cursor.execute(converted_query, params)
                 else:
                     cursor.execute(converted_query)
-                return cursor
+                # Wrap cursor to convert RealDictRow to tuples
+                return self._manager.TupleCursor(cursor)
             else:
                 if params:
                     return self._conn.execute(converted_query, params)

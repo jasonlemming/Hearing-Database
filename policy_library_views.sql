@@ -15,7 +15,9 @@ SELECT
     d.summary,
     d.full_text,
     d.url,
+    d.url AS url_html,  -- Alias for template compatibility
     d.pdf_url,
+    d.pdf_url AS url_pdf,  -- Alias for template compatibility
     d.page_count,
     d.word_count,
     d.checksum,

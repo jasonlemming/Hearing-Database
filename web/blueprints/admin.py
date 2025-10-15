@@ -49,13 +49,16 @@ def system_health():
 
             # Get database counts
             cursor = conn.execute("SELECT COUNT(*) FROM hearings")
-            hearing_count = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            hearing_count = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
             cursor = conn.execute("SELECT COUNT(*) FROM committees")
-            committee_count = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            committee_count = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
             cursor = conn.execute("SELECT COUNT(*) FROM witnesses")
-            witness_count = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            witness_count = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
             # Check for recent validation issues (from last 7 days)
             cursor = conn.execute("""
@@ -63,7 +66,8 @@ def system_health():
                 WHERE start_time >= datetime('now', '-7 days')
                 AND success = 0
             """)
-            failed_updates_7d = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            failed_updates_7d = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
             # Calculate hours since last update
             hours_since_update = None
@@ -453,13 +457,16 @@ def dashboard():
         with db.transaction() as conn:
             # Get summary stats
             cursor = conn.execute("SELECT COUNT(*) FROM hearings")
-            total_hearings = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            total_hearings = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
             cursor = conn.execute("SELECT COUNT(*) FROM hearings WHERE updated_at > created_at")
-            updated_hearings = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            updated_hearings = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
             cursor = conn.execute("SELECT MIN(created_at) FROM hearings")
-            baseline_date = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            baseline_date = row.get('min', row[0]) if hasattr(row, 'keys') else row[0]
 
             # Get last update info
             cursor = conn.execute("""
@@ -681,13 +688,16 @@ def production_diff():
     try:
         with db.transaction() as conn:
             cursor = conn.execute("SELECT COUNT(*) FROM hearings")
-            local_count = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            local_count = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
             cursor = conn.execute("SELECT COUNT(*) FROM hearings WHERE created_at > '2025-10-01'")
-            new_since_baseline = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            new_since_baseline = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
             cursor = conn.execute("SELECT COUNT(*) FROM hearings WHERE updated_at > created_at")
-            updated_since_baseline = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            updated_since_baseline = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
             cursor = conn.execute("SELECT MIN(created_at), MAX(updated_at) FROM hearings")
             row = cursor.fetchone()
@@ -821,7 +831,8 @@ def recent_hearings():
 
             # Get total count for pagination
             count_cursor = conn.execute("SELECT COUNT(*) FROM hearings")
-            total_count = count_cursor.fetchone()[0]
+            row = count_cursor.fetchone()
+            total_count = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
             return jsonify({
                 'hearings': hearings,
@@ -1357,7 +1368,8 @@ def get_schedule_executions(task_id):
                 SELECT COUNT(*) FROM schedule_execution_logs
                 WHERE schedule_id = ?
             ''', (task_id,))
-            total_count = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            total_count = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
             return jsonify({
                 'executions': executions,

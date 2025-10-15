@@ -77,7 +77,8 @@ def stats():
 
             for table in tables:
                 cursor = conn.execute(f'SELECT COUNT(*) FROM {table}')
-                stats[table] = cursor.fetchone()[0]
+                row = cursor.fetchone()
+                stats[table] = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
         return jsonify(stats)
     except Exception as e:

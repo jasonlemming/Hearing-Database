@@ -57,7 +57,8 @@ def members():
 
         with db.transaction() as conn:
             cursor = conn.execute(count_query, params)
-            total = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            total = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
             # Add sorting
             sort_columns = {
@@ -154,7 +155,8 @@ def witnesses():
 
         with db.transaction() as conn:
             cursor = conn.execute(count_query, params)
-            total = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            total = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
             # Add sorting
             sort_columns = {

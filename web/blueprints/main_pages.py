@@ -84,11 +84,11 @@ def members():
             # Get filter options
             cursor = conn.execute('SELECT DISTINCT party FROM members WHERE party IS NOT NULL ORDER BY party')
             rows = cursor.fetchall()
-            parties = [row.get('party', row[0]) if hasattr(row, 'keys') else row[0] for row in rows]
+            parties = [list(row.values())[0] if hasattr(row, 'keys') else row[0] for row in rows]
 
             cursor = conn.execute('SELECT DISTINCT state FROM members WHERE state IS NOT NULL ORDER BY state')
             rows = cursor.fetchall()
-            states = [row.get('state', row[0]) if hasattr(row, 'keys') else row[0] for row in rows]
+            states = [list(row.values())[0] if hasattr(row, 'keys') else row[0] for row in rows]
 
             chambers = ['House', 'Senate']
 
@@ -189,7 +189,7 @@ def witnesses():
             # Get filter options
             cursor = conn.execute('SELECT DISTINCT witness_type FROM witness_appearances WHERE witness_type IS NOT NULL ORDER BY witness_type')
             rows = cursor.fetchall()
-            witness_types = [row.get('witness_type', row[0]) if hasattr(row, 'keys') else row[0] for row in rows]
+            witness_types = [list(row.values())[0] if hasattr(row, 'keys') else row[0] for row in rows]
 
         # Pagination info
         total_pages = (total + per_page - 1) // per_page

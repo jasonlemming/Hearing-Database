@@ -92,11 +92,11 @@ def committees():
             # Get filter options
             cursor = conn.execute('SELECT DISTINCT chamber FROM committees ORDER BY chamber')
             rows = cursor.fetchall()
-            chambers = [row.get('chamber', row[0]) if hasattr(row, 'keys') else row[0] for row in rows]
+            chambers = [list(row.values())[0] if hasattr(row, 'keys') else row[0] for row in rows]
 
             cursor = conn.execute('SELECT DISTINCT type FROM committees ORDER BY type')
             rows = cursor.fetchall()
-            types = [row.get('type', row[0]) if hasattr(row, 'keys') else row[0] for row in rows]
+            types = [list(row.values())[0] if hasattr(row, 'keys') else row[0] for row in rows]
 
             # Get parent committees only for the selector dropdown
             cursor = conn.execute('''

@@ -436,12 +436,12 @@ def search():
 
             # Search witnesses
             cursor = conn.execute('''
-                SELECT w.witness_id, w.full_name, w.organization, wa.witness_type,
+                SELECT w.witness_id, w.full_name, w.organization, MAX(wa.witness_type) as witness_type,
                        COUNT(DISTINCT wa.hearing_id) as hearing_count
                 FROM witnesses w
                 LEFT JOIN witness_appearances wa ON w.witness_id = wa.witness_id
                 WHERE w.full_name LIKE ? OR w.organization LIKE ?
-                GROUP BY w.witness_id
+                GROUP BY w.witness_id, w.full_name, w.organization
                 ORDER BY w.full_name
                 LIMIT 10
             ''', (search_term, search_term))

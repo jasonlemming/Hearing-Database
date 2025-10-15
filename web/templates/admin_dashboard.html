@@ -1,13 +1,16 @@
-{% extends "base.html" %}
+{% extends "hearing_base.html" %}
 
-{% block title %}Admin Dashboard - Congressional Hearing Database{% endblock %}
+{% block title %}Admin Dashboard{% endblock %}
 
-{% block head %}
+{% block head_style %}
 <!-- Admin Dashboard CSS -->
 <link rel="stylesheet" href="{{ url_for('static', filename='admin/admin.css') }}">
 {% endblock %}
 
 {% block content %}
+<!-- Admin Dashboard Content -->
+<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 3rem;">
+<div class="admin-content">
 <div class="row mb-4">
     <div class="col-12">
         <h1 class="mb-3">
@@ -741,6 +744,8 @@
     </div>
 </div>
 
+</div><!-- .admin-content -->
+</div><!-- .container -->
 {% endblock %}
 
 {% block scripts %}

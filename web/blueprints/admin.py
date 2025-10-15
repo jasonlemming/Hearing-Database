@@ -8,7 +8,7 @@ DO NOT deploy /admin routes to production.
 import os
 import sys
 from flask import Blueprint, render_template, jsonify, request
-from database.manager import DatabaseManager
+from database.unified_manager import UnifiedDatabaseManager
 from datetime import datetime
 from typing import Dict, Any, List
 
@@ -22,8 +22,8 @@ logger = get_logger(__name__)
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
-# Initialize database manager
-db = DatabaseManager()
+# Initialize database manager (auto-detects Postgres if POSTGRES_URL is set)
+db = UnifiedDatabaseManager()
 
 
 @admin_bp.route('/updates')
@@ -31,58 +31,103 @@ def updates():
     """Admin page to view update history and status"""
     try:
         with db.transaction() as conn:
-            # Check if update_logs table exists
-            cursor = conn.execute("""
-                SELECT name FROM sqlite_master
-                WHERE type='table' AND name='update_logs'
-            """)
+            # Check if update_logs table exists (database-agnostic)
+            try:
+                if db.db_type == 'postgres':
+                    cursor = conn.cursor()
+                else:
+                    cursor = conn.cursor()
+                cursor.execute("SELECT COUNT(*) FROM update_logs LIMIT 1")
+                table_exists = True
+            except Exception:
+                table_exists = False
 
-            if not cursor.fetchone():
+            if not table_exists:
                 return render_template('admin_updates.html',
                                      updates=[],
                                      table_exists=False,
                                      now=datetime.now())
 
-            # Get update history (last 30 days)
-            cursor = conn.execute("""
+            # Get update history (last 30 days) - database-agnostic date handling
+            if db.db_type == 'postgres':
+                date_clause = "CURRENT_DATE - INTERVAL '30 days'"
+            else:
+                date_clause = "date('now', '-30 days')"
+
+            query = f"""
                 SELECT log_id, update_date, start_time, end_time, duration_seconds,
                        hearings_checked, hearings_updated, hearings_added,
                        committees_updated, witnesses_updated, api_requests,
                        error_count, errors, success, created_at
                 FROM update_logs
-                WHERE update_date >= date('now', '-30 days')
+                WHERE update_date >= {date_clause}
                 ORDER BY start_time DESC
                 LIMIT 50
-            """)
+            """
+
+            if db.db_type == 'postgres':
+                cursor = conn.cursor(cursor_factory=__import__('psycopg2.extras', fromlist=['RealDictCursor']).RealDictCursor)
+            else:
+                cursor = conn.cursor()
+            cursor.execute(query)
 
             updates = []
             for row in cursor.fetchall():
-                errors_json = row[12]
-                error_list = []
-                if errors_json:
-                    try:
-                        import json
-                        error_list = json.loads(errors_json)
-                    except:
-                        error_list = [errors_json]
+                # Handle both Postgres (dict-like) and SQLite (tuple) rows
+                if db.db_type == 'postgres':
+                    errors_json = row['errors']
+                    error_list = []
+                    if errors_json:
+                        try:
+                            import json
+                            error_list = json.loads(errors_json) if isinstance(errors_json, str) else errors_json
+                        except:
+                            error_list = [str(errors_json)]
 
-                updates.append({
-                    'log_id': row[0],
-                    'update_date': row[1],
-                    'start_time': row[2],
-                    'end_time': row[3],
-                    'duration_seconds': row[4],
-                    'hearings_checked': row[5],
-                    'hearings_updated': row[6],
-                    'hearings_added': row[7],
-                    'committees_updated': row[8],
-                    'witnesses_updated': row[9],
-                    'api_requests': row[10],
-                    'error_count': row[11],
-                    'errors': error_list,
-                    'success': bool(row[13]),
-                    'created_at': row[14]
-                })
+                    updates.append({
+                        'log_id': row['log_id'],
+                        'update_date': str(row['update_date']) if row['update_date'] else None,
+                        'start_time': str(row['start_time']) if row['start_time'] else None,
+                        'end_time': str(row['end_time']) if row['end_time'] else None,
+                        'duration_seconds': row['duration_seconds'],
+                        'hearings_checked': row['hearings_checked'],
+                        'hearings_updated': row['hearings_updated'],
+                        'hearings_added': row['hearings_added'],
+                        'committees_updated': row['committees_updated'],
+                        'witnesses_updated': row['witnesses_updated'],
+                        'api_requests': row['api_requests'],
+                        'error_count': row['error_count'],
+                        'errors': error_list,
+                        'success': bool(row['success']),
+                        'created_at': str(row['created_at']) if row['created_at'] else None
+                    })
+                else:
+                    errors_json = row[12]
+                    error_list = []
+                    if errors_json:
+                        try:
+                            import json
+                            error_list = json.loads(errors_json)
+                        except:
+                            error_list = [errors_json]
+
+                    updates.append({
+                        'log_id': row[0],
+                        'update_date': row[1],
+                        'start_time': row[2],
+                        'end_time': row[3],
+                        'duration_seconds': row[4],
+                        'hearings_checked': row[5],
+                        'hearings_updated': row[6],
+                        'hearings_added': row[7],
+                        'committees_updated': row[8],
+                        'witnesses_updated': row[9],
+                        'api_requests': row[10],
+                        'error_count': row[11],
+                        'errors': error_list,
+                        'success': bool(row[13]),
+                        'created_at': row[14]
+                    })
 
             return render_template('admin_updates.html',
                                  updates=updates,
@@ -98,18 +143,28 @@ def dashboard():
     """Main admin dashboard - landing page for admin section"""
     try:
         with db.transaction() as conn:
+            # Create cursor based on database type
+            if db.db_type == 'postgres':
+                import psycopg2.extras
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            else:
+                cursor = conn.cursor()
+
             # Get summary stats
-            cursor = conn.execute("SELECT COUNT(*) FROM hearings")
-            total_hearings = cursor.fetchone()[0]
+            cursor.execute("SELECT COUNT(*) FROM hearings")
+            result = cursor.fetchone()
+            total_hearings = result['count'] if db.db_type == 'postgres' else result[0]
 
-            cursor = conn.execute("SELECT COUNT(*) FROM hearings WHERE updated_at > created_at")
-            updated_hearings = cursor.fetchone()[0]
+            cursor.execute("SELECT COUNT(*) FROM hearings WHERE updated_at > created_at")
+            result = cursor.fetchone()
+            updated_hearings = result['count'] if db.db_type == 'postgres' else result[0]
 
-            cursor = conn.execute("SELECT MIN(created_at) FROM hearings")
-            baseline_date = cursor.fetchone()[0]
+            cursor.execute("SELECT MIN(created_at) FROM hearings")
+            result = cursor.fetchone()
+            baseline_date = result[0] if db.db_type == 'sqlite' else str(result['min']) if result else None
 
             # Get last update info
-            cursor = conn.execute("""
+            cursor.execute("""
                 SELECT update_date, start_time, hearings_updated, hearings_added
                 FROM update_logs
                 ORDER BY start_time DESC
@@ -127,6 +182,8 @@ def dashboard():
 
     except Exception as e:
         logger.error(f"Dashboard error: {e}")
+        import traceback
+        traceback.print_exc()
         return f"Error loading dashboard: {e}", 500
 
 

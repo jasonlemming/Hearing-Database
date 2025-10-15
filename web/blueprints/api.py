@@ -44,15 +44,26 @@ def debug():
     }
     try:
         with db.transaction() as conn:
-            if db.is_postgres:
-                cursor = conn.execute("SELECT COUNT(*) as cnt FROM hearings")
-                row = cursor.fetchone()
-                debug_info['hearings_count'] = row['cnt'] if isinstance(row, dict) else row[0]
-            else:
-                cursor = conn.execute("SELECT COUNT(*) FROM hearings")
-                debug_info['hearings_count'] = cursor.fetchone()[0]
+            cursor = conn.execute("SELECT COUNT(*) as cnt FROM hearings")
+            row = cursor.fetchone()
+            # Handle both dict-like (PostgreSQL RealDictCursor) and tuple-like (SQLite) results
+            try:
+                debug_info['hearings_count'] = row['cnt']
+            except (TypeError, KeyError):
+                debug_info['hearings_count'] = row[0] if row else 0
+
+            # Test a more complex query to verify data
+            cursor = conn.execute("SELECT COUNT(*) as cnt FROM committees")
+            row = cursor.fetchone()
+            try:
+                debug_info['committees_count'] = row['cnt']
+            except (TypeError, KeyError):
+                debug_info['committees_count'] = row[0] if row else 0
+
     except Exception as e:
         debug_info['db_error'] = str(e)
+        import traceback
+        debug_info['traceback'] = traceback.format_exc()
     return jsonify(debug_info)
 
 

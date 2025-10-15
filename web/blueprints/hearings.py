@@ -117,7 +117,8 @@ def hearings():
 
             # Get filter options
             cursor = conn.execute('SELECT DISTINCT chamber FROM hearings ORDER BY chamber')
-            chambers = [row[0] for row in cursor.fetchall()]
+            rows = cursor.fetchall()
+            chambers = [row.get('chamber', row[0]) if hasattr(row, 'keys') else row[0] for row in rows]
 
             cursor = conn.execute('''
                 SELECT DISTINCT

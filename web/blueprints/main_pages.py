@@ -58,7 +58,7 @@ def members():
         with db.transaction() as conn:
             cursor = conn.execute(count_query, params)
             row = cursor.fetchone()
-            total = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
+            total = list(row.values())[0] if hasattr(row, 'keys') else row[0]
 
             # Add sorting
             sort_columns = {
@@ -158,7 +158,7 @@ def witnesses():
         with db.transaction() as conn:
             cursor = conn.execute(count_query, params)
             row = cursor.fetchone()
-            total = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
+            total = list(row.values())[0] if hasattr(row, 'keys') else row[0]
 
             # Add sorting
             sort_columns = {
@@ -351,7 +351,7 @@ def witness_detail(witness_id):
             # Get documents for each hearing this witness appeared at
             hearing_documents = {}
             for appearance in appearances:
-                hearing_id = appearance[0]
+                hearing_id = appearance.get('hearing_id', appearance[0]) if hasattr(appearance, 'keys') else appearance[0]
 
                 # Get witness documents for this hearing
                 cursor = conn.execute('''

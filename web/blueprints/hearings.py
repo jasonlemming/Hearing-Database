@@ -85,7 +85,7 @@ def hearings():
         with db.transaction() as conn:
             cursor = conn.execute(count_query, params)
             row = cursor.fetchone()
-            total = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
+            total = list(row.values())[0] if hasattr(row, 'keys') else row[0]
 
             # Add sorting
             sort_columns = {

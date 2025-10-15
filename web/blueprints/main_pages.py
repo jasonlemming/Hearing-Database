@@ -131,7 +131,7 @@ def witnesses():
         # Build query for witnesses with hearing information
         query = '''
             SELECT w.witness_id, w.full_name, w.first_name, w.last_name, w.title, w.organization,
-                   wa.witness_type,
+                   MAX(wa.witness_type) as witness_type,
                    COUNT(DISTINCT wa.hearing_id) as hearing_count,
                    MAX(h.hearing_date) as latest_appearance
             FROM witnesses w
@@ -150,7 +150,7 @@ def witnesses():
             query += ' AND wa.witness_type = ?'
             params.append(witness_type)
 
-        query += ' GROUP BY w.witness_id'
+        query += ' GROUP BY w.witness_id, w.full_name, w.first_name, w.last_name, w.title, w.organization'
 
         # Count total for pagination
         count_query = f"SELECT COUNT(*) FROM ({query}) as count_query"
@@ -343,7 +343,7 @@ def witness_detail(witness_id):
                 JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id
                 JOIN committees c ON hc.committee_id = c.committee_id
                 WHERE wa.witness_id = ?
-                GROUP BY c.committee_id
+                GROUP BY c.committee_id, c.name, c.chamber, c.type
                 ORDER BY hearing_count DESC, c.name
             ''', (witness_id,))
             committees = cursor.fetchall()

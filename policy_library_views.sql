@@ -22,7 +22,6 @@ SELECT
     d.metadata_json,
     d.created_at,
     d.updated_at,
-    d.search_vector,
     -- Aggregate subjects into a JSONB array for topics
     COALESCE(
         (SELECT jsonb_agg(s.name)

@@ -11,6 +11,7 @@ import sys
 import requests
 import json
 from datetime import datetime
+from contextlib import contextmanager
 
 # Add parent directory to path for database imports
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
@@ -19,12 +20,32 @@ from database.postgres_config import get_connection
 crs_bp = Blueprint('crs', __name__, url_prefix='/crs')
 
 
+@contextmanager
 def get_crs_db():
     """
     Get CRS database connection (PostgreSQL)
-    Returns context manager for connection
+    Context manager for connections
+    Uses CRS_DATABASE_URL if available, otherwise falls back to DATABASE_URL
     """
-    return get_connection()
+    # Try CRS-specific database URL first
+    crs_url = os.getenv('CRS_DATABASE_URL')
+    if not crs_url:
+        # Fall back to default DATABASE_URL
+        crs_url = os.getenv('DATABASE_URL')
+
+    if not crs_url:
+        raise ValueError("Neither CRS_DATABASE_URL nor DATABASE_URL environment variable is set")
+
+    # Create direct connection
+    conn = psycopg2.connect(crs_url)
+    try:
+        yield conn
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
 
 
 def fetch_content_from_blob(blob_url, timeout=10):

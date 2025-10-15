@@ -2,12 +2,12 @@
 Committee-related routes blueprint
 """
 from flask import Blueprint, render_template, request
-from database.manager import DatabaseManager
+from database.unified_manager import UnifiedDatabaseManager
 
 committees_bp = Blueprint('committees', __name__)
 
-# Initialize database manager
-db = DatabaseManager()
+# Initialize database manager (auto-detects Postgres if POSTGRES_URL is set)
+db = UnifiedDatabaseManager()
 
 
 @committees_bp.route('/committees')

@@ -2,12 +2,12 @@
 Main pages blueprint - members, witnesses, and search
 """
 from flask import Blueprint, render_template, request
-from database.manager import DatabaseManager
+from database.unified_manager import UnifiedDatabaseManager
 
 main_pages_bp = Blueprint('main_pages', __name__)
 
-# Initialize database manager
-db = DatabaseManager()
+# Initialize database manager (auto-detects Postgres if POSTGRES_URL is set)
+db = UnifiedDatabaseManager()
 
 
 @main_pages_bp.route('/members')

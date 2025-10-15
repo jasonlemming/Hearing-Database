@@ -2,13 +2,13 @@
 Hearing-related routes blueprint
 """
 from flask import Blueprint, render_template, request
-from database.manager import DatabaseManager
+from database.unified_manager import UnifiedDatabaseManager
 from datetime import datetime, timedelta, date
 
 hearings_bp = Blueprint('hearings', __name__)
 
-# Initialize database manager
-db = DatabaseManager()
+# Initialize database manager (auto-detects Postgres if POSTGRES_URL is set)
+db = UnifiedDatabaseManager()
 
 
 @hearings_bp.route('/hearings')

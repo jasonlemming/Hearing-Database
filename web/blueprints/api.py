@@ -6,13 +6,13 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from flask import Blueprint, jsonify
-from database.manager import DatabaseManager
+from database.unified_manager import UnifiedDatabaseManager
 from datetime import datetime
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
-# Initialize database manager
-db = DatabaseManager()
+# Initialize database manager (auto-detects Postgres if POSTGRES_URL is set)
+db = UnifiedDatabaseManager()
 
 
 

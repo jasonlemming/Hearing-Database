@@ -384,19 +384,33 @@ def production_diff():
     """
     try:
         with db.transaction() as conn:
-            cursor = conn.execute("SELECT COUNT(*) FROM hearings")
-            local_count = cursor.fetchone()[0]
+            # Create cursor based on database type
+            if db.db_type == 'postgres':
+                import psycopg2.extras
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            else:
+                cursor = conn.cursor()
 
-            cursor = conn.execute("SELECT COUNT(*) FROM hearings WHERE created_at > '2025-10-01'")
-            new_since_baseline = cursor.fetchone()[0]
+            cursor.execute("SELECT COUNT(*) FROM hearings")
+            result = cursor.fetchone()
+            local_count = result['count'] if db.db_type == 'postgres' else result[0]
 
-            cursor = conn.execute("SELECT COUNT(*) FROM hearings WHERE updated_at > created_at")
-            updated_since_baseline = cursor.fetchone()[0]
+            cursor.execute("SELECT COUNT(*) FROM hearings WHERE created_at > '2025-10-01'")
+            result = cursor.fetchone()
+            new_since_baseline = result['count'] if db.db_type == 'postgres' else result[0]
 
-            cursor = conn.execute("SELECT MIN(created_at), MAX(updated_at) FROM hearings")
+            cursor.execute("SELECT COUNT(*) FROM hearings WHERE updated_at > created_at")
+            result = cursor.fetchone()
+            updated_since_baseline = result['count'] if db.db_type == 'postgres' else result[0]
+
+            cursor.execute("SELECT MIN(created_at) as min_created, MAX(updated_at) as max_updated FROM hearings")
             row = cursor.fetchone()
-            baseline_date = row[0] if row else None
-            last_update_date = row[1] if row else None
+            if db.db_type == 'postgres':
+                baseline_date = str(row['min_created']) if row and row['min_created'] else None
+                last_update_date = str(row['max_updated']) if row and row['max_updated'] else None
+            else:
+                baseline_date = row[0] if row else None
+                last_update_date = row[1] if row else None
 
             # Production count from README
             production_count = 1168
@@ -430,7 +444,14 @@ def list_schedules():
     """
     try:
         with db.transaction() as conn:
-            cursor = conn.execute('''
+            # Create cursor based on database type
+            if db.db_type == 'postgres':
+                import psycopg2.extras
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            else:
+                cursor = conn.cursor()
+
+            cursor.execute('''
                 SELECT task_id, name, description, schedule_cron, lookback_days,
                        components, chamber, mode, is_active, is_deployed,
                        last_run_at, next_run_at, created_at, updated_at
@@ -441,7 +462,85 @@ def list_schedules():
             schedules = []
             for row in cursor.fetchall():
                 import json
-                schedules.append({
+                if db.db_type == 'postgres':
+                    schedules.append({
+                        'task_id': row['task_id'],
+                        'name': row['name'],
+                        'description': row['description'],
+                        'schedule_cron': row['schedule_cron'],
+                        'lookback_days': row['lookback_days'],
+                        'components': json.loads(row['components']) if row['components'] else [],
+                        'chamber': row['chamber'],
+                        'mode': row['mode'],
+                        'is_active': bool(row['is_active']),
+                        'is_deployed': bool(row['is_deployed']),
+                        'last_run_at': str(row['last_run_at']) if row['last_run_at'] else None,
+                        'next_run_at': str(row['next_run_at']) if row['next_run_at'] else None,
+                        'created_at': str(row['created_at']) if row['created_at'] else None,
+                        'updated_at': str(row['updated_at']) if row['updated_at'] else None
+                    })
+                else:
+                    schedules.append({
+                        'task_id': row[0],
+                        'name': row[1],
+                        'description': row[2],
+                        'schedule_cron': row[3],
+                        'lookback_days': row[4],
+                        'components': json.loads(row[5]) if row[5] else [],
+                        'chamber': row[6],
+                        'mode': row[7],
+                        'is_active': bool(row[8]),
+                        'is_deployed': bool(row[9]),
+                        'last_run_at': row[10],
+                        'next_run_at': row[11],
+                        'created_at': row[12],
+                        'updated_at': row[13]
+                    })
+
+            return jsonify({'schedules': schedules})
+
+    except Exception as e:
+        logger.error(f"Error listing schedules: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/schedules/<int:task_id>', methods=['GET'])
+def get_schedule(task_id: int):
+    """Get a single scheduled task by ID"""
+    try:
+        with db.transaction() as conn:
+            cursor = _execute_query(conn, '''
+                SELECT task_id, name, description, schedule_cron, lookback_days,
+                       components, chamber, mode, is_active, is_deployed,
+                       last_run_at, next_run_at, created_at, updated_at
+                FROM scheduled_tasks
+                WHERE task_id = ?
+            ''', (task_id,))
+
+            row = cursor.fetchone()
+            if not row:
+                return jsonify({'error': 'Schedule not found'}), 404
+
+            import json
+            if db.db_type == 'postgres':
+                schedule = {
+                    'task_id': row['task_id'],
+                    'name': row['name'],
+                    'description': row['description'],
+                    'schedule_cron': row['schedule_cron'],
+                    'lookback_days': row['lookback_days'],
+                    'components': json.loads(row['components']) if row['components'] else [],
+                    'chamber': row['chamber'],
+                    'mode': row['mode'],
+                    'is_active': bool(row['is_active']),
+                    'is_deployed': bool(row['is_deployed']),
+                    'last_run_at': str(row['last_run_at']) if row['last_run_at'] else None,
+                    'next_run_at': str(row['next_run_at']) if row['next_run_at'] else None,
+                    'created_at': str(row['created_at']) if row['created_at'] else None,
+                    'updated_at': str(row['updated_at']) if row['updated_at'] else None
+                }
+            else:
+                schedule = {
                     'task_id': row[0],
                     'name': row[1],
                     'description': row[2],
@@ -456,49 +555,7 @@ def list_schedules():
                     'next_run_at': row[11],
                     'created_at': row[12],
                     'updated_at': row[13]
-                })
-
-            return jsonify({'schedules': schedules})
-
-    except Exception as e:
-        logger.error(f"Error listing schedules: {e}")
-        return jsonify({'error': str(e)}), 500
-
-
-@admin_bp.route('/api/schedules/<int:task_id>', methods=['GET'])
-def get_schedule(task_id: int):
-    """Get a single scheduled task by ID"""
-    try:
-        with db.transaction() as conn:
-            cursor = conn.execute('''
-                SELECT task_id, name, description, schedule_cron, lookback_days,
-                       components, chamber, mode, is_active, is_deployed,
-                       last_run_at, next_run_at, created_at, updated_at
-                FROM scheduled_tasks
-                WHERE task_id = ?
-            ''', (task_id,))
-
-            row = cursor.fetchone()
-            if not row:
-                return jsonify({'error': 'Schedule not found'}), 404
-
-            import json
-            schedule = {
-                'task_id': row[0],
-                'name': row[1],
-                'description': row[2],
-                'schedule_cron': row[3],
-                'lookback_days': row[4],
-                'components': json.loads(row[5]) if row[5] else [],
-                'chamber': row[6],
-                'mode': row[7],
-                'is_active': bool(row[8]),
-                'is_deployed': bool(row[9]),
-                'last_run_at': row[10],
-                'next_run_at': row[11],
-                'created_at': row[12],
-                'updated_at': row[13]
-            }
+                }
 
             return jsonify({'schedule': schedule})
 
@@ -547,7 +604,7 @@ def create_schedule():
 
         import json
         with db.transaction() as conn:
-            cursor = conn.execute('''
+            cursor = _execute_query(conn, '''
                 INSERT INTO scheduled_tasks
                 (name, description, schedule_cron, lookback_days, components,
                  chamber, mode, is_active, is_deployed)
@@ -564,7 +621,13 @@ def create_schedule():
                 False  # New schedules start as not deployed
             ))
 
-            task_id = cursor.lastrowid
+            # Get the inserted task_id
+            if db.db_type == 'postgres':
+                cursor.execute('SELECT lastval()')
+                task_id = cursor.fetchone()[0] if db.db_type == 'sqlite' else cursor.fetchone()['lastval']
+            else:
+                task_id = cursor.lastrowid
+
             logger.info(f"Created new schedule: {data['name']} (ID: {task_id})")
 
             return jsonify({
@@ -585,7 +648,7 @@ def update_schedule(task_id: int):
 
         # Validate if schedule exists
         with db.transaction() as conn:
-            cursor = conn.execute('SELECT task_id FROM scheduled_tasks WHERE task_id = ?', (task_id,))
+            cursor = _execute_query(conn, 'SELECT task_id FROM scheduled_tasks WHERE task_id = ?', (task_id,))
             if not cursor.fetchone():
                 return jsonify({'error': 'Schedule not found'}), 404
 
@@ -646,7 +709,7 @@ def update_schedule(task_id: int):
 
         with db.transaction() as conn:
             query = f"UPDATE scheduled_tasks SET {', '.join(update_fields)} WHERE task_id = ?"
-            conn.execute(query, params)
+            _execute_query(conn, query, tuple(params))
 
         logger.info(f"Updated schedule ID: {task_id}")
         return jsonify({'message': 'Schedule updated successfully'})
@@ -661,14 +724,14 @@ def delete_schedule(task_id: int):
     """Delete a scheduled task"""
     try:
         with db.transaction() as conn:
-            cursor = conn.execute('SELECT name FROM scheduled_tasks WHERE task_id = ?', (task_id,))
+            cursor = _execute_query(conn, 'SELECT name FROM scheduled_tasks WHERE task_id = ?', (task_id,))
             row = cursor.fetchone()
 
             if not row:
                 return jsonify({'error': 'Schedule not found'}), 404
 
-            schedule_name = row[0]
-            conn.execute('DELETE FROM scheduled_tasks WHERE task_id = ?', (task_id,))
+            schedule_name = row['name'] if db.db_type == 'postgres' else row[0]
+            _execute_query(conn, 'DELETE FROM scheduled_tasks WHERE task_id = ?', (task_id,))
 
         logger.info(f"Deleted schedule: {schedule_name} (ID: {task_id})")
         return jsonify({'message': 'Schedule deleted successfully'})
@@ -683,14 +746,15 @@ def toggle_schedule(task_id: int):
     """Toggle a schedule's active status"""
     try:
         with db.transaction() as conn:
-            cursor = conn.execute('SELECT is_active FROM scheduled_tasks WHERE task_id = ?', (task_id,))
+            cursor = _execute_query(conn, 'SELECT is_active FROM scheduled_tasks WHERE task_id = ?', (task_id,))
             row = cursor.fetchone()
 
             if not row:
                 return jsonify({'error': 'Schedule not found'}), 404
 
-            new_status = not bool(row[0])
-            conn.execute('''
+            current_status = row['is_active'] if db.db_type == 'postgres' else row[0]
+            new_status = not bool(current_status)
+            _execute_query(conn, '''
                 UPDATE scheduled_tasks
                 SET is_active = ?, updated_at = CURRENT_TIMESTAMP
                 WHERE task_id = ?
@@ -717,7 +781,7 @@ def export_vercel_config():
     """
     try:
         with db.transaction() as conn:
-            cursor = conn.execute('''
+            cursor = _execute_query(conn, '''
                 SELECT task_id, name, schedule_cron
                 FROM scheduled_tasks
                 WHERE is_active = 1
@@ -728,7 +792,13 @@ def export_vercel_config():
 
         # Generate Vercel cron configuration
         crons = []
-        for task_id, name, schedule_cron in schedules:
+        for row in schedules:
+            if db.db_type == 'postgres':
+                task_id = row['task_id']
+                schedule_cron = row['schedule_cron']
+            else:
+                task_id = row[0]
+                schedule_cron = row[2]
             crons.append({
                 "path": f"/api/cron/scheduled-update/{task_id}",
                 "schedule": schedule_cron
@@ -792,7 +862,7 @@ def get_schedule_executions(task_id):
 
         with db.transaction() as conn:
             # Get execution history with metrics
-            cursor = conn.execute('''
+            cursor = _execute_query(conn, '''
                 SELECT
                     se.execution_id,
                     se.execution_time,
@@ -821,32 +891,54 @@ def get_schedule_executions(task_id):
             executions = []
             for row in cursor.fetchall():
                 import json
-                executions.append({
-                    'execution_id': row[0],
-                    'execution_time': row[1],
-                    'success': bool(row[2]),
-                    'error_message': row[3],
-                    'log_id': row[4],
-                    'update_date': row[5],
-                    'start_time': row[6],
-                    'end_time': row[7],
-                    'duration_seconds': row[8],
-                    'hearings_checked': row[9],
-                    'hearings_updated': row[10],
-                    'hearings_added': row[11],
-                    'committees_updated': row[12],
-                    'witnesses_updated': row[13],
-                    'api_requests': row[14],
-                    'error_count': row[15],
-                    'errors': json.loads(row[16]) if row[16] else []
-                })
+                if db.db_type == 'postgres':
+                    executions.append({
+                        'execution_id': row['execution_id'],
+                        'execution_time': str(row['execution_time']) if row['execution_time'] else None,
+                        'success': bool(row['success']),
+                        'error_message': row['error_message'],
+                        'log_id': row['log_id'],
+                        'update_date': str(row['update_date']) if row['update_date'] else None,
+                        'start_time': str(row['start_time']) if row['start_time'] else None,
+                        'end_time': str(row['end_time']) if row['end_time'] else None,
+                        'duration_seconds': row['duration_seconds'],
+                        'hearings_checked': row['hearings_checked'],
+                        'hearings_updated': row['hearings_updated'],
+                        'hearings_added': row['hearings_added'],
+                        'committees_updated': row['committees_updated'],
+                        'witnesses_updated': row['witnesses_updated'],
+                        'api_requests': row['api_requests'],
+                        'error_count': row['error_count'],
+                        'errors': json.loads(row['errors']) if isinstance(row['errors'], str) else (row['errors'] if row['errors'] else [])
+                    })
+                else:
+                    executions.append({
+                        'execution_id': row[0],
+                        'execution_time': row[1],
+                        'success': bool(row[2]),
+                        'error_message': row[3],
+                        'log_id': row[4],
+                        'update_date': row[5],
+                        'start_time': row[6],
+                        'end_time': row[7],
+                        'duration_seconds': row[8],
+                        'hearings_checked': row[9],
+                        'hearings_updated': row[10],
+                        'hearings_added': row[11],
+                        'committees_updated': row[12],
+                        'witnesses_updated': row[13],
+                        'api_requests': row[14],
+                        'error_count': row[15],
+                        'errors': json.loads(row[16]) if row[16] else []
+                    })
 
             # Get total count
-            cursor = conn.execute('''
+            cursor = _execute_query(conn, '''
                 SELECT COUNT(*) FROM schedule_execution_logs
                 WHERE schedule_id = ?
             ''', (task_id,))
-            total_count = cursor.fetchone()[0]
+            result = cursor.fetchone()
+            total_count = result['count'] if db.db_type == 'postgres' else result[0]
 
             return jsonify({
                 'executions': executions,
@@ -876,7 +968,7 @@ def test_schedule(task_id):
     try:
         # Get schedule configuration from database
         with db.transaction() as conn:
-            cursor = conn.execute('''
+            cursor = _execute_query(conn, '''
                 SELECT task_id, name, lookback_days, mode, components, is_active
                 FROM scheduled_tasks
                 WHERE task_id = ? AND is_active = 1
@@ -891,17 +983,30 @@ def test_schedule(task_id):
 
             # Parse configuration
             import json as json_module
+            if db.db_type == 'postgres':
+                task_id_val = row['task_id']
+                name = row['name']
+                lookback_days = row['lookback_days']
+                mode = row['mode']
+                components_str = row['components']
+            else:
+                task_id_val = row[0]
+                name = row[1]
+                lookback_days = row[2]
+                mode = row[3]
+                components_str = row[4]
+
             try:
-                components = json_module.loads(row[4]) if row[4] else ['hearings', 'witnesses', 'committees']
+                components = json_module.loads(components_str) if components_str else ['hearings', 'witnesses', 'committees']
             except:
                 components = ['hearings', 'witnesses', 'committees']
 
             schedule_config = {
-                'task_id': row[0],
-                'schedule_name': row[1],
+                'task_id': task_id_val,
+                'schedule_name': name,
                 'congress': 119,
-                'lookback_days': row[2],
-                'update_mode': row[3],
+                'lookback_days': lookback_days,
+                'update_mode': mode,
                 'enabled_components': components,
             }
 
@@ -924,7 +1029,7 @@ def test_schedule(task_id):
 
         # Update last run timestamp
         with db.transaction() as conn:
-            conn.execute('''
+            _execute_query(conn, '''
                 UPDATE scheduled_tasks
                 SET last_run_at = CURRENT_TIMESTAMP
                 WHERE task_id = ?
@@ -932,21 +1037,21 @@ def test_schedule(task_id):
 
         # Get the log_id that was just created
         with db.transaction() as conn:
-            cursor = conn.execute('''
+            cursor = _execute_query(conn, '''
                 SELECT log_id FROM update_logs
                 WHERE schedule_id = ? AND trigger_source = 'test'
                 ORDER BY start_time DESC
                 LIMIT 1
             ''', (task_id,))
             row = cursor.fetchone()
-            log_id = row[0] if row else None
+            log_id = row['log_id'] if db.db_type == 'postgres' and row else (row[0] if row else None)
 
         # Create execution log entry
         if log_id:
             import json as json_module
             try:
                 with db.transaction() as conn:
-                    conn.execute('''
+                    _execute_query(conn, '''
                         INSERT INTO schedule_execution_logs
                         (schedule_id, log_id, execution_time, success, config_snapshot)
                         VALUES (?, ?, CURRENT_TIMESTAMP, 1, ?)
@@ -995,7 +1100,7 @@ def get_all_executions():
         success_filter = 'AND se.success = 1' if success_only else ''
 
         with db.transaction() as conn:
-            cursor = conn.execute(f'''
+            cursor = _execute_query(conn, f'''
                 SELECT
                     se.execution_id,
                     se.schedule_id,
@@ -1019,20 +1124,36 @@ def get_all_executions():
 
             executions = []
             for row in cursor.fetchall():
-                executions.append({
-                    'execution_id': row[0],
-                    'schedule_id': row[1],
-                    'schedule_name': row[2],
-                    'execution_time': row[3],
-                    'success': bool(row[4]),
-                    'error_message': row[5],
-                    'log_id': row[6],
-                    'duration_seconds': row[7],
-                    'hearings_checked': row[8],
-                    'hearings_updated': row[9],
-                    'hearings_added': row[10],
-                    'trigger_source': row[11]
-                })
+                if db.db_type == 'postgres':
+                    executions.append({
+                        'execution_id': row['execution_id'],
+                        'schedule_id': row['schedule_id'],
+                        'schedule_name': row['schedule_name'],
+                        'execution_time': str(row['execution_time']) if row['execution_time'] else None,
+                        'success': bool(row['success']),
+                        'error_message': row['error_message'],
+                        'log_id': row['log_id'],
+                        'duration_seconds': row['duration_seconds'],
+                        'hearings_checked': row['hearings_checked'],
+                        'hearings_updated': row['hearings_updated'],
+                        'hearings_added': row['hearings_added'],
+                        'trigger_source': row['trigger_source']
+                    })
+                else:
+                    executions.append({
+                        'execution_id': row[0],
+                        'schedule_id': row[1],
+                        'schedule_name': row[2],
+                        'execution_time': row[3],
+                        'success': bool(row[4]),
+                        'error_message': row[5],
+                        'log_id': row[6],
+                        'duration_seconds': row[7],
+                        'hearings_checked': row[8],
+                        'hearings_updated': row[9],
+                        'hearings_added': row[10],
+                        'trigger_source': row[11]
+                    })
 
             return jsonify({'executions': executions})
 
@@ -1042,6 +1163,36 @@ def get_all_executions():
 
 
 # Helper functions
+
+def _execute_query(conn, query: str, params: tuple = None):
+    """
+    Execute a database query with proper cursor handling for both SQLite and Postgres
+
+    Args:
+        conn: Database connection
+        query: SQL query string (use ? for SQLite, %s for Postgres)
+        params: Query parameters
+
+    Returns:
+        Cursor with results
+    """
+    if db.db_type == 'postgres':
+        import psycopg2.extras
+        # Convert ? placeholders to %s for Postgres
+        postgres_query = query.replace('?', '%s')
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        if params:
+            cursor.execute(postgres_query, params)
+        else:
+            cursor.execute(postgres_query)
+    else:
+        cursor = conn.cursor()
+        if params:
+            cursor.execute(query, params)
+        else:
+            cursor.execute(query)
+    return cursor
+
 
 def _build_cli_command(lookback_days: int, components: List[str], chamber: str, dry_run: bool, mode: str = 'incremental') -> List[str]:
     """
@@ -1115,19 +1266,30 @@ def _get_hearing_changes(since_date: str, limit: int) -> List[Dict[str, Any]]:
                 LIMIT ?
             """
 
-            cursor = conn.execute(query, (since_date, limit))
+            cursor = _execute_query(conn, query, (since_date, limit))
             changes = []
 
             for row in cursor.fetchall():
-                changes.append({
-                    'event_id': row[0],
-                    'title': row[1] or '(No title)',
-                    'chamber': row[2],
-                    'hearing_date': row[3],
-                    'change_type': row[4],
-                    'created_at': row[5],
-                    'updated_at': row[6]
-                })
+                if db.db_type == 'postgres':
+                    changes.append({
+                        'event_id': row['event_id'],
+                        'title': row['title'] or '(No title)',
+                        'chamber': row['chamber'],
+                        'hearing_date': str(row['hearing_date']) if row['hearing_date'] else None,
+                        'change_type': row['change_type'],
+                        'created_at': str(row['created_at']) if row['created_at'] else None,
+                        'updated_at': str(row['updated_at']) if row['updated_at'] else None
+                    })
+                else:
+                    changes.append({
+                        'event_id': row[0],
+                        'title': row[1] or '(No title)',
+                        'chamber': row[2],
+                        'hearing_date': row[3],
+                        'change_type': row[4],
+                        'created_at': row[5],
+                        'updated_at': row[6]
+                    })
 
             return changes
 

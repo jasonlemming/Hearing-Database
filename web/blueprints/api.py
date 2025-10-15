@@ -21,21 +21,36 @@ def debug():
     """Debug endpoint for troubleshooting deployment issues"""
     import os
     import sys
+
+    # Mask sensitive parts of URLs
+    def mask_url(url):
+        if not url:
+            return None
+        # Show just the host part
+        if '@' in url:
+            parts = url.split('@')
+            if len(parts) > 1:
+                return f"postgresql://***@{parts[1]}"
+        return url[:50] + "..."
+
     debug_info = {
         'cwd': os.getcwd(),
-        'path': sys.path[:3],
-        'db_path': db.db_path,
-        'db_exists': os.path.exists(db.db_path),
-        'files_in_root': os.listdir('.'),
-        'python_version': sys.version
+        'is_postgres': db.is_postgres,
+        'postgres_url_masked': mask_url(db.postgres_url),
+        'db_path': db.db_path if not db.is_postgres else None,
+        'python_version': sys.version[:20],
+        'DATABASE_URL_set': 'DATABASE_URL' in os.environ,
+        'POSTGRES_URL_set': 'POSTGRES_URL' in os.environ,
     }
     try:
-        if os.path.exists(db.db_path):
-            with db.transaction() as conn:
-                cursor = conn.execute("SELECT name FROM sqlite_master WHERE type='table'")
-                debug_info['tables'] = [row[0] for row in cursor.fetchall()]
-        else:
-            debug_info['tables'] = 'database file not found'
+        with db.transaction() as conn:
+            if db.is_postgres:
+                cursor = conn.execute("SELECT COUNT(*) as cnt FROM hearings")
+                row = cursor.fetchone()
+                debug_info['hearings_count'] = row['cnt'] if isinstance(row, dict) else row[0]
+            else:
+                cursor = conn.execute("SELECT COUNT(*) FROM hearings")
+                debug_info['hearings_count'] = cursor.fetchone()[0]
     except Exception as e:
         debug_info['db_error'] = str(e)
     return jsonify(debug_info)

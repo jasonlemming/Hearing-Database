@@ -31,7 +31,7 @@ def members():
                        ELSE 'House'
                    END as chamber
             FROM members m
-            LEFT JOIN committee_memberships cm ON m.member_id = cm.member_id AND cm.is_active = 1
+            LEFT JOIN committee_memberships cm ON m.member_id = cm.member_id AND cm.is_active = TRUE
             WHERE 1=1
         '''
         params = []
@@ -233,7 +233,7 @@ def member_detail(member_id):
                 FROM committee_memberships cm
                 JOIN committees c ON cm.committee_id = c.committee_id
                 LEFT JOIN committees pc ON c.parent_committee_id = pc.committee_id
-                WHERE cm.member_id = ? AND cm.is_active = 1
+                WHERE cm.member_id = ? AND cm.is_active = TRUE
                 ORDER BY c.chamber, COALESCE(pc.name, c.name), c.parent_committee_id IS NOT NULL, c.name
             ''', (member_id,))
             committees_raw = cursor.fetchall()
@@ -266,7 +266,7 @@ def member_detail(member_id):
                 JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id
                 JOIN committees c ON hc.committee_id = c.committee_id
                 JOIN committee_memberships cm ON c.committee_id = cm.committee_id
-                WHERE cm.member_id = ? AND cm.is_active = 1
+                WHERE cm.member_id = ? AND cm.is_active = TRUE
                 ORDER BY h.hearing_date DESC NULLS LAST
                 LIMIT 10
             ''', (member_id,))
@@ -305,7 +305,7 @@ def witness_detail(witness_id):
                        c.name as primary_committee_name, c.committee_id as primary_committee_id
                 FROM witness_appearances wa
                 JOIN hearings h ON wa.hearing_id = h.hearing_id
-                LEFT JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id AND hc.is_primary = 1
+                LEFT JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id AND hc.is_primary = TRUE
                 LEFT JOIN committees c ON hc.committee_id = c.committee_id
                 WHERE wa.witness_id = ?
                 ORDER BY h.hearing_date DESC NULLS LAST, wa.appearance_order ASC
@@ -411,7 +411,7 @@ def search():
             cursor = conn.execute('''
                 SELECT h.hearing_id, h.title, h.hearing_date, c.name as committee_name
                 FROM hearings h
-                LEFT JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id AND hc.is_primary = 1
+                LEFT JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id AND hc.is_primary = TRUE
                 LEFT JOIN committees c ON hc.committee_id = c.committee_id
                 WHERE h.title LIKE ?
                 ORDER BY h.hearing_date DESC NULLS LAST

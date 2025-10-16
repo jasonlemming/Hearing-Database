@@ -44,11 +44,11 @@ def hearings():
                    COALESCE(parent_primary.committee_id, c_primary.committee_id, parent_any.committee_id, c_any.committee_id) as committee_id,
                    h.updated_at, h.event_id
             FROM hearings h
-            LEFT JOIN hearing_committees hc_primary ON h.hearing_id = hc_primary.hearing_id AND hc_primary.is_primary = 1
+            LEFT JOIN hearing_committees hc_primary ON h.hearing_id = hc_primary.hearing_id AND hc_primary.is_primary = TRUE
             LEFT JOIN committees c_primary ON hc_primary.committee_id = c_primary.committee_id
             LEFT JOIN committees parent_primary ON c_primary.parent_committee_id = parent_primary.committee_id
             LEFT JOIN hearing_committees hc_any ON h.hearing_id = hc_any.hearing_id
-                AND NOT EXISTS (SELECT 1 FROM hearing_committees WHERE hearing_id = h.hearing_id AND is_primary = 1)
+                AND NOT EXISTS (SELECT 1 FROM hearing_committees WHERE hearing_id = h.hearing_id AND is_primary = TRUE)
             LEFT JOIN committees c_any ON hc_any.committee_id = c_any.committee_id
             LEFT JOIN committees parent_any ON c_any.parent_committee_id = parent_any.committee_id
             WHERE 1=1

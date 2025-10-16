@@ -37,6 +37,16 @@ class CongressAPIClient:
         self.base_url = settings.api_base_url
         self.rate_limiter = RateLimiter(max_requests=rate_limit)
 
+        # Validate API key
+        if self.api_key:
+            # Strip any surrounding quotes that might have been included
+            self.api_key = self.api_key.strip('"').strip("'")
+            logger.info(f"API client initialized with key: {self.api_key[:8]}... (length: {len(self.api_key)})")
+            if len(self.api_key) != 40:
+                logger.warning(f"API key length is {len(self.api_key)}, expected 40. This may cause authentication failures.")
+        else:
+            logger.error("API client initialized WITHOUT an API key! All requests will fail.")
+
         # Initialize circuit breaker if enabled
         self.circuit_breaker = None
         if settings.circuit_breaker_enabled:

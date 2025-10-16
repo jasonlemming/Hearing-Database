@@ -88,3 +88,4 @@ test_*.py
 docs/_build/
 .vercel
 /.env.vercel*
+/.env.production*

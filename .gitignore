@@ -87,3 +87,4 @@ test_*.py
 # Documentation builds
 docs/_build/
 .vercel
+/.env.vercel*

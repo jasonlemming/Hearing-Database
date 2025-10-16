@@ -934,7 +934,9 @@ async function pollTaskStatus() {
             if (data.status === 'completed') {
                 alert('Update completed successfully!');
             } else {
-                alert('Update failed: ' + data.error_message);
+                // Get error message from result.error or fallback to generic message
+                const errorMsg = (data.result && data.result.error) || data.error_message || 'Unknown error';
+                alert('Update failed: ' + errorMsg);
             }
         }
 

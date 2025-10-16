@@ -479,21 +479,45 @@ class DailyUpdater:
 
                 self.metrics.api_requests += 1
                 logger.info(f"Retrieved {len(all_recent)} hearings from {fetch_window}-day window")
-                logger.info(f"DEBUG: Type of all_recent: {type(all_recent)}")
-                logger.info(f"DEBUG: First hearing if exists: {all_recent[0] if all_recent else 'EMPTY LIST'}")
-                logger.info(f"DEBUG: About to enter loop to process {len(all_recent)} hearings")
 
-                # Report that we're now checking each hearing
+                # **OPTIMIZATION**: Filter by updateDate BEFORE fetching full details
+                # This dramatically reduces API calls from ~900 to just those recently updated
+                filtered_by_date = []
+                for hearing in all_recent:
+                    updated_at = hearing.get('updateDate')
+                    if updated_at:
+                        try:
+                            update_date = datetime.fromisoformat(updated_at.replace('Z', '+00:00'))
+                            if update_date >= cutoff_date.replace(tzinfo=timezone.utc):
+                                filtered_by_date.append(hearing)
+                        except (ValueError, TypeError):
+                            # Can't parse date, include it to be safe
+                            filtered_by_date.append(hearing)
+                    else:
+                        # No updateDate - check hearing date as fallback
+                        hearing_date = hearing.get('date')
+                        if hearing_date:
+                            try:
+                                h_date = datetime.fromisoformat(hearing_date.replace('Z', '+00:00'))
+                                if h_date >= cutoff_date.replace(tzinfo=timezone.utc):
+                                    filtered_by_date.append(hearing)
+                            except (ValueError, TypeError):
+                                filtered_by_date.append(hearing)
+
+                logger.info(f"Filtered to {len(filtered_by_date)} hearings updated in last {self.lookback_days} days")
+                logger.info(f"Optimization: Reduced API calls from {len(all_recent)} to {len(filtered_by_date)} (saved {len(all_recent) - len(filtered_by_date)} calls)")
+
+                # Report that we're now fetching details
                 if progress_callback:
                     progress_callback({
                         'phase': 'checking',
-                        'message': f'Checking {len(all_recent)} hearings for updates...',
+                        'message': f'Fetching details for {len(filtered_by_date)} updated hearings...',
                         'hearings_checked': 0,
-                        'total_hearings': len(all_recent),
+                        'total_hearings': len(filtered_by_date),
                         'percent': 0
                     })
 
-                # Step 2: Fetch details and filter by updateDate
+                # Step 2: Fetch details for filtered hearings only
                 # Import ThreadPoolExecutor once at the beginning
                 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 
@@ -504,15 +528,9 @@ class DailyUpdater:
                 recent_hearings = []
                 retry_queue = []  # Track hearings that timed out for retry
 
-                logger.info(f"DEBUG: Starting loop iteration over {len(all_recent)} hearings")
-                for i, hearing in enumerate(all_recent):
-                    if i == 0:
-                        logger.info(f"DEBUG: Processing first hearing: {hearing}")
+                for i, hearing in enumerate(filtered_by_date):
                     event_id = hearing.get('eventId')
                     chamber = hearing.get('chamber', '').lower()
-
-                    if i < 3:  # Log first 3 iterations for debugging
-                        logger.info(f"DEBUG: Loop iteration {i}: event_id={event_id}, chamber={chamber}")
 
                     if event_id and chamber:
                         try:
@@ -576,16 +594,16 @@ class DailyUpdater:
                             self.metrics.api_requests += 1
 
                             # Progress reporting every 10 hearings (increased frequency for better UX)
-                            if (i + 1) % 10 == 0 or (i + 1) == len(all_recent):
-                                logger.info(f"Checked {i + 1}/{len(all_recent)} hearings, found {len(recent_hearings)} updates")
+                            if (i + 1) % 10 == 0 or (i + 1) == len(filtered_by_date):
+                                logger.info(f"Checked {i + 1}/{len(filtered_by_date)} hearings, found {len(recent_hearings)} updates")
 
                                 # Call progress callback if provided
                                 if progress_callback:
                                     progress_callback({
                                         'hearings_checked': i + 1,
-                                        'total_hearings': len(all_recent),
+                                        'total_hearings': len(filtered_by_date),
                                         'hearings_found': len(recent_hearings),
-                                        'percent': int((i + 1) / len(all_recent) * 100)
+                                        'percent': int((i + 1) / len(filtered_by_date) * 100)
                                     })
 
                         except Exception as e:
@@ -673,7 +691,7 @@ class DailyUpdater:
                 # Shutdown executor (don't wait for hung threads)
                 executor.shutdown(wait=False)
 
-                self.metrics.hearings_checked = len(all_recent)
+                self.metrics.hearings_checked = len(filtered_by_date)
                 logger.info(f"Found {len(recent_hearings)} hearings updated in last {self.lookback_days} days")
                 return recent_hearings
 

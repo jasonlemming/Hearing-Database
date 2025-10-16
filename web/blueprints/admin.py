@@ -114,7 +114,7 @@ def system_health():
             cursor = conn.execute(f"""
                 SELECT COUNT(*) FROM update_logs
                 WHERE start_time >= {get_date_expr(7)}
-                AND success = 0
+                AND success = FALSE
             """)
             row = cursor.fetchone()
             failed_updates_7d = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]

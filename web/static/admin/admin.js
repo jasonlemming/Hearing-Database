@@ -100,7 +100,7 @@ async function handleUpdateSubmit(event) {
             body: JSON.stringify({
                 lookback_days: lookbackDays,
                 components: components,
-                mode: 'incremental',
+                mode: 'full',
                 dry_run: dryRun
             })
         });

@@ -33,6 +33,12 @@ class CongressAPIClient:
             api_key: API key for Congress.gov (defaults to settings)
             rate_limit: Requests per hour limit
         """
+        # EMERGENCY BYPASS: Read directly from environment if not provided
+        import os
+        if not api_key:
+            api_key = os.environ.get('CONGRESS_API_KEY') or os.environ.get('API_KEY')
+            logger.info(f"[BYPASS] Reading API key directly from environment: {bool(api_key)}")
+
         self.api_key = api_key or settings.api_key
         self.base_url = settings.api_base_url
         self.rate_limiter = RateLimiter(max_requests=rate_limit)
@@ -46,6 +52,9 @@ class CongressAPIClient:
                 logger.warning(f"API key length is {len(self.api_key)}, expected 40. This may cause authentication failures.")
         else:
             logger.error("API client initialized WITHOUT an API key! All requests will fail.")
+            logger.error(f"[DEBUG] settings.api_key = {settings.api_key}")
+            logger.error(f"[DEBUG] CONGRESS_API_KEY env = {os.environ.get('CONGRESS_API_KEY', 'NOT SET')[:20]}...")
+            logger.error(f"[DEBUG] API_KEY env = {os.environ.get('API_KEY', 'NOT SET')[:20]}...")
 
         # Initialize circuit breaker if enabled
         self.circuit_breaker = None

@@ -187,10 +187,10 @@ class UpdateValidator:
             with self.db.transaction() as conn:
                 # Check duplicate hearings
                 cursor = conn.execute('''
-                    SELECT event_id, COUNT(*) as count
+                    SELECT event_id, COUNT(*) as cnt
                     FROM hearings
                     GROUP BY event_id
-                    HAVING count > 1
+                    HAVING COUNT(*) > 1
                 ''')
                 dup_hearings = cursor.fetchall()
                 if dup_hearings:
@@ -199,11 +199,11 @@ class UpdateValidator:
 
                 # Check duplicate witnesses (same name + org)
                 cursor = conn.execute('''
-                    SELECT full_name, organization, COUNT(*) as count
+                    SELECT full_name, organization, COUNT(*) as cnt
                     FROM witnesses
                     WHERE organization IS NOT NULL
                     GROUP BY full_name, organization
-                    HAVING count > 1
+                    HAVING COUNT(*) > 1
                 ''')
                 dup_witnesses = cursor.fetchall()
                 if dup_witnesses:
@@ -212,10 +212,10 @@ class UpdateValidator:
 
                 # Check duplicate committee system_codes
                 cursor = conn.execute('''
-                    SELECT system_code, COUNT(*) as count
+                    SELECT system_code, COUNT(*) as cnt
                     FROM committees
                     GROUP BY system_code
-                    HAVING count > 1
+                    HAVING COUNT(*) > 1
                 ''')
                 dup_committees = cursor.fetchall()
                 if dup_committees:
@@ -230,6 +230,9 @@ class UpdateValidator:
         logger.info("Checking for missing relationships...")
 
         try:
+            # Detect if we're using PostgreSQL or SQLite
+            is_postgres = os.environ.get('POSTGRES_URL') or os.environ.get('DATABASE_URL', '').startswith('postgres')
+
             with self.db.transaction() as conn:
                 # Hearings without committees
                 cursor = conn.execute('''
@@ -244,9 +247,14 @@ class UpdateValidator:
                     self.stats['hearings_no_committees'] = no_committees
 
                 # Hearings without witnesses (not always an issue)
-                cursor = conn.execute('''
+                if is_postgres:
+                    date_condition = "hearing_date_only < (CURRENT_DATE - INTERVAL '30 days')"
+                else:
+                    date_condition = "hearing_date_only < DATE('now', '-30 days')"
+
+                cursor = conn.execute(f'''
                     SELECT COUNT(*) FROM hearings h
-                    WHERE hearing_date_only < DATE('now', '-30 days')
+                    WHERE {date_condition}
                     AND NOT EXISTS (
                         SELECT 1 FROM witness_appearances wa WHERE wa.hearing_id = h.hearing_id
                     )
@@ -279,18 +287,33 @@ class UpdateValidator:
         logger.info("Checking for anomalies...")
 
         try:
+            # Detect if we're using PostgreSQL or SQLite
+            is_postgres = os.environ.get('POSTGRES_URL') or os.environ.get('DATABASE_URL', '').startswith('postgres')
+
             with self.db.transaction() as conn:
                 # Check for sudden drops in hearing counts
-                cursor = conn.execute('''
-                    SELECT
-                        DATE(hearing_date_only) as date,
-                        COUNT(*) as count
-                    FROM hearings
-                    WHERE hearing_date_only >= DATE('now', '-90 days')
-                    GROUP BY DATE(hearing_date_only)
-                    ORDER BY date DESC
-                    LIMIT 30
-                ''')
+                if is_postgres:
+                    cursor = conn.execute('''
+                        SELECT
+                            hearing_date_only::date as date,
+                            COUNT(*) as cnt
+                        FROM hearings
+                        WHERE hearing_date_only >= (CURRENT_DATE - INTERVAL '90 days')
+                        GROUP BY hearing_date_only::date
+                        ORDER BY date DESC
+                        LIMIT 30
+                    ''')
+                else:
+                    cursor = conn.execute('''
+                        SELECT
+                            DATE(hearing_date_only) as date,
+                            COUNT(*) as cnt
+                        FROM hearings
+                        WHERE hearing_date_only >= DATE('now', '-90 days')
+                        GROUP BY DATE(hearing_date_only)
+                        ORDER BY date DESC
+                        LIMIT 30
+                    ''')
                 daily_counts = cursor.fetchall()
 
                 if daily_counts:
@@ -312,15 +335,20 @@ class UpdateValidator:
                     self.warnings.append(f"{long_titles} hearings have unusually long titles")
 
                 # Check for hearings missing video URLs (recent hearings)
-                cursor = conn.execute('''
+                if is_postgres:
+                    date_check = "(CURRENT_DATE - INTERVAL '30 days')"
+                else:
+                    date_check = "DATE('now', '-30 days')"
+
+                cursor = conn.execute(f'''
                     SELECT COUNT(*) FROM hearings
-                    WHERE hearing_date_only >= DATE('now', '-30 days')
+                    WHERE hearing_date_only >= {date_check}
                     AND (video_url IS NULL OR video_url = '')
                 ''')
                 no_video = cursor.fetchone()[0]
-                total_recent = conn.execute('''
+                total_recent = conn.execute(f'''
                     SELECT COUNT(*) FROM hearings
-                    WHERE hearing_date_only >= DATE('now', '-30 days')
+                    WHERE hearing_date_only >= {date_check}
                 ''').fetchone()[0]
 
                 if total_recent > 0:
@@ -363,10 +391,10 @@ class UpdateValidator:
 
                 # NEW: Check for hearings with duplicate titles (potential data quality issue)
                 cursor = conn.execute('''
-                    SELECT title, COUNT(*) as count
+                    SELECT title, COUNT(*) as cnt
                     FROM hearings
                     GROUP BY title
-                    HAVING count > 5
+                    HAVING COUNT(*) > 5
                 ''')
                 duplicate_titles = cursor.fetchall()
 
@@ -396,9 +424,14 @@ class UpdateValidator:
                         )
 
                 # NEW: Check for hearing dates far in the future (> 2 years)
-                cursor = conn.execute('''
+                if is_postgres:
+                    future_check = "(CURRENT_DATE + INTERVAL '730 days')"
+                else:
+                    future_check = "DATE('now', '+730 days')"
+
+                cursor = conn.execute(f'''
                     SELECT COUNT(*) FROM hearings
-                    WHERE hearing_date_only > DATE('now', '+730 days')
+                    WHERE hearing_date_only > {future_check}
                 ''')
                 far_future = cursor.fetchone()[0]
                 if far_future > 0:

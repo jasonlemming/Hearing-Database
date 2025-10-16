@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS admin_tasks (
 );
 
 -- Index for quick status lookups
-CREATE INDEX idx_admin_tasks_status ON admin_tasks(status);
-CREATE INDEX idx_admin_tasks_created_at ON admin_tasks(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_admin_tasks_status ON admin_tasks(status);
+CREATE INDEX IF NOT EXISTS idx_admin_tasks_created_at ON admin_tasks(created_at DESC);
 
 -- View for recent tasks
 CREATE OR REPLACE VIEW recent_admin_tasks AS

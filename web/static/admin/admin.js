@@ -257,9 +257,14 @@ function updateProgressUI(data) {
         statusEl.innerHTML = `<i class="fas fa-clock me-2"></i>Running for ${duration}...`;
     }
 
-    // Update recent logs
+    // Update recent logs (stdout)
     if (data.recent_logs && data.recent_logs.length > 0) {
         appendLogs(data.recent_logs);
+    }
+
+    // Also append stderr if available
+    if (data.stderr_logs && data.stderr_logs.length > 0) {
+        appendLogs(data.stderr_logs.map(line => '[STDERR] ' + line));
     }
 
     // Show recent changes if available

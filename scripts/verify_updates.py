@@ -113,24 +113,31 @@ class UpdateValidator:
                     FROM hearings
                     WHERE hearing_date_only IS NOT NULL
                 ''')
-                min_date, max_date, count = cursor.fetchone()
+                row = cursor.fetchone()
+                min_date, max_date, count = row[0], row[1], row[2]
 
                 if min_date and max_date:
+                    # Convert dates to string if they're datetime objects (PostgreSQL)
+                    min_date_str = min_date.isoformat() if hasattr(min_date, 'isoformat') else min_date
+                    max_date_str = max_date.isoformat() if hasattr(max_date, 'isoformat') else max_date
+
                     self.stats['hearing_date_range'] = {
-                        'min': min_date,
-                        'max': max_date,
+                        'min': min_date_str,
+                        'max': max_date_str,
                         'count': count
                     }
 
                     # Warn if dates are in future (more than 1 year)
                     future_cutoff = (datetime.now() + timedelta(days=365)).date()
-                    if max_date and datetime.fromisoformat(max_date).date() > future_cutoff:
-                        self.warnings.append(f"Latest hearing date is far in future: {max_date}")
+                    max_date_obj = max_date if hasattr(max_date, 'year') else datetime.fromisoformat(max_date).date()
+                    if max_date_obj > future_cutoff:
+                        self.warnings.append(f"Latest hearing date is far in future: {max_date_str}")
 
                     # Warn if dates are too old (more than 2 years ago)
                     old_cutoff = (datetime.now() - timedelta(days=730)).date()
-                    if min_date and datetime.fromisoformat(min_date).date() < old_cutoff:
-                        self.warnings.append(f"Earliest hearing date is very old: {min_date}")
+                    min_date_obj = min_date if hasattr(min_date, 'year') else datetime.fromisoformat(min_date).date()
+                    if min_date_obj < old_cutoff:
+                        self.warnings.append(f"Earliest hearing date is very old: {min_date_str}")
 
                 # Check for hearings with missing dates
                 cursor = conn.execute('SELECT COUNT(*) FROM hearings WHERE hearing_date_only IS NULL')
@@ -147,18 +154,26 @@ class UpdateValidator:
         logger.info("Checking foreign key integrity...")
 
         try:
-            with self.db.transaction() as conn:
-                # Enable foreign key check
-                conn.execute('PRAGMA foreign_keys = ON')
-                cursor = conn.execute('PRAGMA foreign_key_check')
-                violations = cursor.fetchall()
+            # Detect if we're using PostgreSQL or SQLite
+            is_postgres = os.environ.get('POSTGRES_URL') or os.environ.get('DATABASE_URL', '').startswith('postgres')
 
-                if violations:
-                    for violation in violations:
-                        self.issues.append(f"Foreign key violation: {violation}")
-                    self.stats['fk_violations'] = len(violations)
+            with self.db.transaction() as conn:
+                if not is_postgres:
+                    # SQLite: Use PRAGMA
+                    conn.execute('PRAGMA foreign_keys = ON')
+                    cursor = conn.execute('PRAGMA foreign_key_check')
+                    violations = cursor.fetchall()
+
+                    if violations:
+                        for violation in violations:
+                            self.issues.append(f"Foreign key violation: {violation}")
+                        self.stats['fk_violations'] = len(violations)
+                    else:
+                        logger.info("No foreign key violations found")
+                        self.stats['fk_violations'] = 0
                 else:
-                    logger.info("No foreign key violations found")
+                    # PostgreSQL: Foreign keys are always enforced, just note that
+                    logger.info("PostgreSQL enforces foreign key constraints automatically")
                     self.stats['fk_violations'] = 0
 
         except Exception as e:
@@ -410,9 +425,13 @@ class UpdateValidator:
                 if last_update:
                     start_time, end_time, duration, updated, added, errors, success = last_update
 
+                    # Handle both PostgreSQL (returns datetime objects) and SQLite (returns strings)
+                    start_time_str = start_time.isoformat() if hasattr(start_time, 'isoformat') else start_time
+                    end_time_str = end_time.isoformat() if hasattr(end_time, 'isoformat') else end_time
+
                     self.stats['last_update'] = {
-                        'start_time': start_time,
-                        'end_time': end_time,
+                        'start_time': start_time_str,
+                        'end_time': end_time_str,
                         'duration_seconds': duration,
                         'hearings_updated': updated,
                         'hearings_added': added,
@@ -428,7 +447,12 @@ class UpdateValidator:
 
                     # Check if update was recent (within 48 hours)
                     if start_time:
-                        hours_ago = (datetime.now() - datetime.fromisoformat(start_time)).total_seconds() / 3600
+                        # Convert to datetime if it's a string
+                        if isinstance(start_time, str):
+                            start_dt = datetime.fromisoformat(start_time)
+                        else:
+                            start_dt = start_time
+                        hours_ago = (datetime.now() - start_dt).total_seconds() / 3600
                         if hours_ago > 48:
                             self.warnings.append(f"Last update was {hours_ago:.1f} hours ago (> 48h)")
                 else:

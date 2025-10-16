@@ -15,8 +15,8 @@ from typing import Dict, Any, List
 # Add project root to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from config.task_manager import task_manager
 from config.logging_config import get_logger
+from updaters.daily_updater import DailyUpdater
 
 logger = get_logger(__name__)
 
@@ -196,26 +196,24 @@ def history():
 @admin_bp.route('/api/start-update', methods=['POST'])
 def start_update():
     """
-    Start a manual update task
+    Start a manual update task (synchronous execution)
 
     Request JSON:
         {
             "lookback_days": 7,
-            "components": ["hearings", "videos"],
+            "components": ["hearings", "witnesses", "committees"],
             "chamber": "both",
             "mode": "incremental",
             "dry_run": false
         }
 
     Returns:
-        {"task_id": "uuid", "status": "started"}
+        {
+            "success": true/false,
+            "metrics": {...},
+            "error": "error message" (if failed)
+        }
     """
-    # Check if running on Vercel (serverless environment)
-    if os.environ.get('VERCEL'):
-        return jsonify({
-            'error': 'Manual updates are not available on Vercel (serverless environment). Use scheduled tasks instead.'
-        }), 501
-
     try:
         params = request.get_json() or {}
 
@@ -249,107 +247,37 @@ def start_update():
         if not components:
             return jsonify({'error': 'At least one component required'}), 400
 
-        # Build CLI command
-        command = _build_cli_command(lookback_days, components, chamber, dry_run, mode)
+        # Log the start of manual update
+        logger.info(f"Starting manual update: mode={mode}, lookback={lookback_days}, chamber={chamber}, components={components}, dry_run={dry_run}")
 
-        # Start task
-        task_id = task_manager.start_task(command)
+        # Create updater instance
+        updater = DailyUpdater(
+            congress=119,
+            lookback_days=lookback_days,
+            update_mode=mode,
+            components=components
+        )
 
-        logger.info(f"Started update task {task_id} with mode={mode}, lookback={lookback_days}, chamber={chamber}")
+        # Set trigger source for tracking
+        updater.trigger_source = 'manual'
 
-        return jsonify({
-            'task_id': task_id,
-            'status': 'started',
-            'command': ' '.join(command)
-        })
+        # Run the update synchronously
+        result = updater.run_daily_update(dry_run=dry_run)
 
-    except RuntimeError as e:
-        # Another task is already running
-        return jsonify({'error': str(e)}), 409
-
-    except Exception as e:
-        logger.error(f"Failed to start update: {e}")
-        return jsonify({'error': str(e)}), 500
-
-
-@admin_bp.route('/api/task-status/<task_id>')
-def task_status(task_id: str):
-    """
-    Get current status and progress of a task
-
-    Returns:
-        {
-            "status": "running" | "completed" | "failed" | "cancelled",
-            "progress": {...},
-            "recent_logs": [...],
-            "metrics": {...}
-        }
-    """
-    try:
-        status = task_manager.get_task_status(task_id)
-
-        if not status:
-            return jsonify({'error': 'Task not found'}), 404
-
-        # Get recent log lines (last 20)
-        logs = task_manager.get_task_logs(task_id, since_line=max(0, status['stdout_lines'] - 20))
-
-        return jsonify({
-            'status': status['status'],
-            'progress': status['progress'],
-            'duration_seconds': status['duration_seconds'],
-            'recent_logs': logs['stdout'][-20:] if logs else [],
-            'stderr_logs': logs['stderr'] if logs else [],  # Include all stderr
-            'error_count': status['progress'].get('errors', 0),
-            'result': status['result'],
-            'error_message': status.get('error_message')
-        })
-
-    except Exception as e:
-        logger.error(f"Error getting task status: {e}")
-        return jsonify({'error': str(e)}), 500
-
-
-@admin_bp.route('/api/task-logs/<task_id>')
-def task_logs(task_id: str):
-    """
-    Get full log output for a task
-
-    Query params:
-        since_line: Start from this line number (for incremental updates)
-
-    Returns:
-        {"stdout": [...], "stderr": [...], "total_lines": N}
-    """
-    try:
-        since_line = request.args.get('since_line', 0, type=int)
-        logs = task_manager.get_task_logs(task_id, since_line=since_line)
-
-        if not logs:
-            return jsonify({'error': 'Task not found'}), 404
-
-        return jsonify(logs)
-
-    except Exception as e:
-        logger.error(f"Error getting task logs: {e}")
-        return jsonify({'error': str(e)}), 500
-
-
-@admin_bp.route('/api/cancel-update/<task_id>', methods=['POST'])
-def cancel_update(task_id: str):
-    """Cancel a running update task"""
-    try:
-        success = task_manager.cancel_task(task_id)
-
-        if success:
-            logger.info(f"Cancelled task {task_id}")
-            return jsonify({'status': 'cancelled'})
+        # Log completion
+        if result.get('success'):
+            logger.info(f"Manual update completed successfully")
         else:
-            return jsonify({'error': 'Task not found or not running'}), 404
+            logger.error(f"Manual update failed: {result.get('error', 'Unknown error')}")
+
+        return jsonify(result)
 
     except Exception as e:
-        logger.error(f"Error cancelling task: {e}")
-        return jsonify({'error': str(e)}), 500
+        logger.error(f"Failed to start manual update: {e}", exc_info=True)
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
 
 
 @admin_bp.route('/api/recent-changes')
@@ -1199,56 +1127,6 @@ def _execute_query(conn, query: str, params: tuple = None):
         else:
             cursor.execute(query)
     return cursor
-
-
-def _build_cli_command(lookback_days: int, components: List[str], chamber: str, dry_run: bool, mode: str = 'incremental') -> List[str]:
-    """
-    Build CLI command from UI parameters
-
-    Args:
-        lookback_days: Number of days to look back
-        components: List of components to update
-        chamber: Chamber filter
-        dry_run: Whether to run in dry-run mode
-        mode: Update mode ('incremental' or 'full')
-
-    Returns:
-        Command as list of strings
-    """
-    # Get project root directory
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-    # Try to find venv Python, fall back to system Python
-    venv_python = os.path.join(project_root, '.venv', 'bin', 'python3')
-    python_exec = venv_python if os.path.exists(venv_python) else sys.executable
-
-    cli_path = os.path.join(project_root, 'cli.py')
-
-    # Base command
-    command = [
-        python_exec,  # Use venv Python if available
-        cli_path,
-        'update',
-        'incremental',
-        '--congress', '119',
-        '--lookback-days', str(lookback_days),
-        '--mode', mode,
-        '--json-progress'
-    ]
-
-    # Add component flags (hearings is always included)
-    if components:
-        for component in components:
-            command.extend(['--components', component])
-
-    # Add dry-run flag if enabled
-    if dry_run:
-        command.append('--dry-run')
-
-    # Note: Chamber filtering would require additional CLI work
-    # For now, incremental updates process both chambers
-
-    return command
 
 
 def _get_hearing_changes(since_date: str, limit: int) -> List[Dict[str, Any]]:

@@ -10,8 +10,6 @@
  */
 
 // Global state
-let currentTaskId = null;
-let pollInterval = null;
 let logLineCount = 0;
 
 /**
@@ -52,18 +50,12 @@ function initializeDashboard() {
         });
     }
 
-    // Cancel button
-    const cancelBtn = document.getElementById('cancel-update-btn');
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', handleCancelUpdate);
-    }
-
     // Initialize scheduling UI
     initializeScheduling();
 }
 
 /**
- * Handle update form submission
+ * Handle update form submission (synchronous execution)
  */
 async function handleUpdateSubmit(event) {
     event.preventDefault();
@@ -84,13 +76,20 @@ async function handleUpdateSubmit(event) {
     const chamber = document.querySelector('input[name="chamber"]:checked').value;
     const dryRun = document.getElementById('dry-run').checked;
 
-    // Disable form
+    // Disable form and show progress container
     const submitBtn = document.getElementById('start-update-btn');
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Starting...';
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Running update...';
+
+    document.getElementById('progress-container').style.display = 'block';
+    resetProgressUI();
+
+    // Show status message
+    const statusEl = document.getElementById('current-status');
+    statusEl.innerHTML = '<i class="fas fa-sync fa-spin me-2"></i>Running update... This may take a few minutes.';
 
     try {
-        // Start update
+        // Run update synchronously
         const response = await fetch('/admin/api/start-update', {
             method: 'POST',
             headers: {
@@ -110,26 +109,15 @@ async function handleUpdateSubmit(event) {
             throw new Error(data.error || 'Failed to start update');
         }
 
-        // Store task ID and start polling
-        currentTaskId = data.task_id;
-
-        // Show progress container
-        document.getElementById('progress-container').style.display = 'block';
-
-        // Reset progress UI
-        resetProgressUI();
-
-        // Start polling
-        startPolling(currentTaskId);
-
-        // Show alert
-        const alert = document.getElementById('current-task-alert');
-        const message = document.getElementById('current-task-message');
-        message.textContent = `Update task ${currentTaskId.substring(0, 8)}... started successfully`;
-        alert.style.display = 'block';
+        // Handle completion
+        handleUpdateCompletion(data);
 
     } catch (error) {
-        alert('Error starting update: ' + error.message);
+        // Handle error
+        statusEl.innerHTML = '<i class="fas fa-times-circle text-danger me-2"></i>Update failed: ' + error.message;
+        alert('Error running update: ' + error.message);
+    } finally {
+        // Re-enable form
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<i class="fas fa-play me-2"></i>Start Update';
     }
@@ -158,118 +146,37 @@ function resetProgressUI() {
 }
 
 /**
- * Start AJAX polling for task status
+ * Handle update completion (synchronous response)
  */
-function startPolling(taskId) {
-    // Clear any existing interval
-    if (pollInterval) {
-        clearInterval(pollInterval);
-    }
-
-    // Poll every 2 seconds
-    pollInterval = setInterval(() => {
-        pollTaskStatus(taskId);
-    }, 2000);
-
-    // Immediate first poll
-    pollTaskStatus(taskId);
-}
-
-/**
- * Stop polling
- */
-function stopPolling() {
-    if (pollInterval) {
-        clearInterval(pollInterval);
-        pollInterval = null;
-    }
-}
-
-/**
- * Poll task status from server
- */
-async function pollTaskStatus(taskId) {
-    try {
-        const response = await fetch(`/admin/api/task-status/${taskId}`);
-
-        if (!response.ok) {
-            throw new Error('Failed to get task status');
-        }
-
-        const data = await response.json();
-
-        // Update UI
-        updateProgressUI(data);
-
-        // Check if complete
-        if (data.status === 'completed' || data.status === 'failed' || data.status === 'cancelled') {
-            stopPolling();
-            handleTaskCompletion(data);
-        }
-
-    } catch (error) {
-        console.error('Error polling task status:', error);
-        // Don't stop polling on transient errors
-    }
-}
-
-/**
- * Update progress UI with latest data
- */
-function updateProgressUI(data) {
-    // Parse recent logs for progress messages
-    let latestProgress = null;
-    if (data.recent_logs && data.recent_logs.length > 0) {
-        // Look for the most recent progress message
-        for (let i = data.recent_logs.length - 1; i >= 0; i--) {
-            const line = data.recent_logs[i];
-            try {
-                const parsed = JSON.parse(line);
-                if (parsed.type === 'progress' && parsed.data) {
-                    latestProgress = parsed.data;
-                    break;  // Found most recent progress
-                }
-            } catch (e) {
-                // Not JSON or parsing failed, skip
-            }
-        }
-    }
-
-    // Use progress data from JSON messages if available
-    const progress = latestProgress || data.progress || {};
-    const percent = progress.percent || 0;
-    updateProgress(percent);
-
-    // Update stats
-    document.getElementById('stat-checked').textContent = progress.hearings_checked || 0;
-    document.getElementById('stat-updated').textContent = progress.hearings_updated || 0;
-    document.getElementById('stat-added').textContent = progress.hearings_added || 0;
-    document.getElementById('stat-errors').textContent = data.error_count || 0;
-
-    // Update status message
+function handleUpdateCompletion(data) {
     const statusEl = document.getElementById('current-status');
-    const duration = data.duration_seconds ? formatDuration(data.duration_seconds) : '0s';
 
-    // Add progress info to status if available
-    if (latestProgress && latestProgress.total_hearings) {
-        statusEl.innerHTML = `<i class="fas fa-sync fa-spin me-2"></i>Checking hearings (${latestProgress.hearings_checked}/${latestProgress.total_hearings})...`;
+    if (data.success) {
+        // Success
+        statusEl.innerHTML = '<i class="fas fa-check-circle text-success me-2"></i>Update completed successfully!';
+        updateProgress(100);
+
+        // Update stats from metrics
+        const metrics = data.metrics || {};
+        document.getElementById('stat-checked').textContent = metrics.hearings_checked || 0;
+        document.getElementById('stat-updated').textContent = metrics.hearings_updated || 0;
+        document.getElementById('stat-added').textContent = metrics.hearings_added || 0;
+        document.getElementById('stat-errors').textContent = metrics.error_count || 0;
+
+        // Show completion message
+        showCompletionSummary(metrics);
+
+        // Reload page after 2 seconds to refresh stats
+        setTimeout(() => {
+            location.reload();
+        }, 2000);
+
     } else {
-        statusEl.innerHTML = `<i class="fas fa-clock me-2"></i>Running for ${duration}...`;
-    }
+        // Failed
+        statusEl.innerHTML = '<i class="fas fa-times-circle text-danger me-2"></i>Update failed: ' + (data.error || 'Unknown error');
 
-    // Update recent logs (stdout)
-    if (data.recent_logs && data.recent_logs.length > 0) {
-        appendLogs(data.recent_logs);
-    }
-
-    // Also append stderr if available
-    if (data.stderr_logs && data.stderr_logs.length > 0) {
-        appendLogs(data.stderr_logs.map(line => '[STDERR] ' + line));
-    }
-
-    // Show recent changes if available
-    if (progress.recent_changes) {
-        updateRecentChangesList(progress.recent_changes);
+        // Show error message
+        alert('Update failed: ' + (data.error || 'Unknown error'));
     }
 }
 
@@ -312,160 +219,18 @@ function appendLogs(logs) {
 }
 
 /**
- * Update recent changes list in progress panel
- */
-function updateRecentChangesList(changes) {
-    const listEl = document.getElementById('change-items');
-
-    changes.forEach(change => {
-        const li = document.createElement('li');
-        li.className = 'list-group-item list-group-item-action';
-
-        let icon, typeClass;
-        if (change.type === 'added') {
-            icon = 'plus';
-            typeClass = 'change-added';
-        } else if (change.type === 'updated') {
-            icon = 'edit';
-            typeClass = 'change-updated';
-        } else {
-            icon = 'exclamation-triangle';
-            typeClass = 'change-error';
-        }
-
-        li.innerHTML = `
-            <i class="fas fa-${icon} ${typeClass} me-2"></i>
-            <span class="${typeClass}">${change.type.toUpperCase()}</span>:
-            Hearing ${change.event_id} - ${change.title || '(No title)'}
-        `;
-
-        listEl.appendChild(li);
-    });
-
-    // Keep only last 10
-    while (listEl.children.length > 10) {
-        listEl.removeChild(listEl.firstChild);
-    }
-}
-
-/**
- * Handle task completion
- */
-function handleTaskCompletion(data) {
-    const statusEl = document.getElementById('current-status');
-    const submitBtn = document.getElementById('start-update-btn');
-
-    // Re-enable form
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = '<i class="fas fa-play me-2"></i>Start Update';
-
-    // Hide alert
-    document.getElementById('current-task-alert').style.display = 'none';
-
-    if (data.status === 'completed') {
-        statusEl.innerHTML = '<i class="fas fa-check-circle text-success me-2"></i>Update completed successfully!';
-        updateProgress(100);
-
-        // Show completion message
-        const result = data.result || {};
-        showCompletionSummary(result);
-
-        // Show Copy Logs button
-        const copyBtn = document.getElementById('copy-logs-btn');
-        copyBtn.style.display = 'block';
-        copyBtn.onclick = copyLogsToClipboard;
-
-        // Change cancel button to "Close" button
-        const cancelBtn = document.getElementById('cancel-update-btn');
-        cancelBtn.innerHTML = '<i class="fas fa-times me-1"></i> Close';
-        cancelBtn.classList.remove('btn-danger');
-        cancelBtn.classList.add('btn-secondary');
-        cancelBtn.onclick = () => {
-            document.getElementById('progress-container').style.display = 'none';
-            location.reload();  // Reload to refresh stats
-        };
-
-    } else if (data.status === 'failed') {
-        statusEl.innerHTML = '<i class="fas fa-times-circle text-danger me-2"></i>Update failed: ' + (data.error_message || 'Unknown error');
-
-        // Show Copy Logs button
-        const copyBtn = document.getElementById('copy-logs-btn');
-        copyBtn.style.display = 'block';
-        copyBtn.onclick = copyLogsToClipboard;
-
-        // Change cancel button to "Close" button
-        const cancelBtn = document.getElementById('cancel-update-btn');
-        cancelBtn.innerHTML = '<i class="fas fa-times me-1"></i> Close';
-        cancelBtn.classList.remove('btn-danger');
-        cancelBtn.classList.add('btn-secondary');
-        cancelBtn.onclick = () => {
-            document.getElementById('progress-container').style.display = 'none';
-            location.reload();
-        };
-
-    } else if (data.status === 'cancelled') {
-        statusEl.innerHTML = '<i class="fas fa-ban text-warning me-2"></i>Update was cancelled';
-
-        // Show Copy Logs button
-        const copyBtn = document.getElementById('copy-logs-btn');
-        copyBtn.style.display = 'block';
-        copyBtn.onclick = copyLogsToClipboard;
-
-        // Change cancel button to "Close" button
-        const cancelBtn = document.getElementById('cancel-update-btn');
-        cancelBtn.innerHTML = '<i class="fas fa-times me-1"></i> Close';
-        cancelBtn.classList.remove('btn-danger');
-        cancelBtn.classList.add('btn-secondary');
-        cancelBtn.onclick = () => {
-            document.getElementById('progress-container').style.display = 'none';
-            location.reload();
-        };
-    }
-}
-
-/**
  * Show completion summary
  */
-function showCompletionSummary(result) {
+function showCompletionSummary(metrics) {
     const message = `
         Update completed!
-        - ${result.hearings_updated || 0} hearings updated
-        - ${result.hearings_added || 0} hearings added
-        - ${result.hearings_checked || 0} hearings checked
-        ${result.error_count > 0 ? `\n- ${result.error_count} errors encountered` : ''}
+        - ${metrics.hearings_updated || 0} hearings updated
+        - ${metrics.hearings_added || 0} hearings added
+        - ${metrics.hearings_checked || 0} hearings checked
+        ${metrics.error_count > 0 ? `\n- ${metrics.error_count} errors encountered` : ''}
     `;
 
     alert(message);
-}
-
-/**
- * Handle cancel update
- */
-async function handleCancelUpdate() {
-    if (!currentTaskId) {
-        return;
-    }
-
-    if (!confirm('Are you sure you want to cancel the running update?')) {
-        return;
-    }
-
-    try {
-        const response = await fetch(`/admin/api/cancel-update/${currentTaskId}`, {
-            method: 'POST'
-        });
-
-        if (response.ok) {
-            stopPolling();
-            document.getElementById('current-status').innerHTML =
-                '<i class="fas fa-ban text-warning me-2"></i>Cancelling update...';
-        } else {
-            alert('Failed to cancel update');
-        }
-
-    } catch (error) {
-        alert('Error cancelling update: ' + error.message);
-    }
 }
 
 /**

@@ -84,7 +84,8 @@ def hearings():
 
         with db.transaction() as conn:
             cursor = conn.execute(count_query, params)
-            total = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            total = list(row.values())[0] if hasattr(row, 'keys') else row[0]
 
             # Add sorting
             sort_columns = {
@@ -116,7 +117,8 @@ def hearings():
 
             # Get filter options
             cursor = conn.execute('SELECT DISTINCT chamber FROM hearings ORDER BY chamber')
-            chambers = [row[0] for row in cursor.fetchall()]
+            rows = cursor.fetchall()
+            chambers = [list(row.values())[0] if hasattr(row, 'keys') else row[0] for row in rows]
 
             cursor = conn.execute('''
                 SELECT DISTINCT

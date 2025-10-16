@@ -1,0 +1,925 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Congressional Hearing Database{% endblock %}
+
+{% block head %}
+<!-- Admin Dashboard CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='admin/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="mb-3">
+            <i class="fas fa-tachometer-alt me-3"></i>
+            Admin Dashboard
+        </h1>
+        <p class="text-muted">
+            <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+            <strong>Localhost only</strong> - This interface has no authentication and should never be deployed to production.
+        </p>
+    </div>
+</div>
+
+<!-- Header Stats -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card stat-card bg-light">
+            <div class="card-body text-center">
+                <h2 class="display-4 mb-0">{{ total_hearings }}</h2>
+                <small class="text-muted">Total Hearings (Local)</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card bg-light">
+            <div class="card-body text-center">
+                <h2 class="display-4 mb-0 text-success">+{{ total_hearings - production_count }}</h2>
+                <small class="text-muted">Ahead of Production</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card bg-light">
+            <div class="card-body text-center">
+                <h2 class="display-4 mb-0 text-info">{{ updated_hearings }}</h2>
+                <small class="text-muted">Updated Since Baseline</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card bg-light">
+            <div class="card-body text-center">
+                {% if last_update %}
+                    <h4 class="mb-0 text-primary">{{ last_update[0] }}</h4>
+                    <small class="text-muted">Last Update</small>
+                {% else %}
+                    <h4 class="mb-0 text-muted">Never</h4>
+                    <small class="text-muted">Last Update</small>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- System Health Status -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div id="system-health-card" class="card border-success">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-heartbeat me-2"></i>
+                    System Health
+                </h5>
+                <button id="refresh-health-btn" class="btn btn-outline-light btn-sm">
+                    <i class="fas fa-sync me-1"></i> Refresh
+                </button>
+            </div>
+            <div class="card-body">
+                <div id="health-loading" class="text-center py-3">
+                    <i class="fas fa-spinner fa-spin fa-2x text-muted"></i>
+                    <p class="text-muted mt-2">Checking system health...</p>
+                </div>
+                <div id="health-content" style="display: none;">
+                    <div class="row">
+                        <!-- Health Status Badge -->
+                        <div class="col-md-3 text-center mb-3">
+                            <div id="health-status-badge">
+                                <i id="health-icon" class="fas fa-check-circle fa-3x text-success"></i>
+                                <h4 id="health-status-text" class="mt-2 text-success">Healthy</h4>
+                                <small id="health-timestamp" class="text-muted d-block"></small>
+                            </div>
+                        </div>
+
+                        <!-- Database Stats -->
+                        <div class="col-md-3">
+                            <h6 class="text-muted mb-2"><i class="fas fa-database me-1"></i> Database</h6>
+                            <ul class="list-unstyled mb-0">
+                                <li><small class="text-muted">Hearings:</small> <strong id="db-hearings">-</strong></li>
+                                <li><small class="text-muted">Committees:</small> <strong id="db-committees">-</strong></li>
+                                <li><small class="text-muted">Witnesses:</strong> <strong id="db-witnesses">-</strong></li>
+                            </ul>
+                        </div>
+
+                        <!-- Last Update Info -->
+                        <div class="col-md-3">
+                            <h6 class="text-muted mb-2"><i class="fas fa-clock me-1"></i> Last Update</h6>
+                            <ul class="list-unstyled mb-0">
+                                <li><small class="text-muted">When:</small> <strong id="last-update-time">-</strong></li>
+                                <li><small class="text-muted">Updated:</small> <span id="last-update-stats" class="badge bg-info">-</span></li>
+                                <li><small class="text-muted">Added:</small> <span id="last-update-added" class="badge bg-success">-</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- Issues & Warnings -->
+                        <div class="col-md-3">
+                            <h6 class="text-muted mb-2"><i class="fas fa-exclamation-triangle me-1"></i> Status</h6>
+                            <div id="health-issues">
+                                <span class="badge bg-success"><i class="fas fa-check me-1"></i> No Issues</span>
+                            </div>
+                            <div id="health-warnings" class="mt-2">
+                                <!-- Warnings appear here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="health-error" style="display: none;" class="alert alert-danger mb-0">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <strong>Error checking system health.</strong> <span id="health-error-message"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Advanced Update Control Panel -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-cog me-2"></i>
+                    Manual Update Controls
+                </h5>
+            </div>
+            <div class="card-body">
+                <form id="update-form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- Lookback Days Slider -->
+                            <div class="mb-3">
+                                <label for="lookback-days" class="form-label">
+                                    Lookback Days: <span id="lookback-display" class="badge bg-primary">7</span>
+                                </label>
+                                <input type="range" class="form-range" id="lookback-days"
+                                       min="1" max="90" value="7" step="1">
+                                <div class="d-flex justify-content-between">
+                                    <small class="text-muted">1 day</small>
+                                    <small class="text-muted">90 days</small>
+                                </div>
+                            </div>
+
+                            <!-- Component Selection -->
+                            <div class="mb-3">
+                                <label class="form-label">Components to Update:</label>
+
+                                <!-- Hearings (always required) -->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="comp-hearings" checked disabled>
+                                    <label class="form-check-label" for="comp-hearings">
+                                        <i class="fas fa-calendar-alt me-1"></i> <strong>Hearing Metadata</strong>
+                                        <small class="text-muted d-block ms-4">
+                                            Title, date, status, location, videos (always included)
+                                        </small>
+                                    </label>
+                                </div>
+
+                                <!-- Witnesses -->
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="comp-witnesses" checked>
+                                    <label class="form-check-label" for="comp-witnesses">
+                                        <i class="fas fa-users me-1"></i> Witnesses & Documents
+                                        <small class="text-muted d-block ms-4">
+                                            Uncheck for ~30% faster updates
+                                        </small>
+                                    </label>
+                                </div>
+
+                                <!-- Committees -->
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="comp-committees" checked>
+                                    <label class="form-check-label" for="comp-committees">
+                                        <i class="fas fa-building me-1"></i> Committee Associations
+                                        <small class="text-muted d-block ms-4">
+                                            Uncheck for ~20% faster updates
+                                        </small>
+                                    </label>
+                                </div>
+
+                                <div class="alert alert-info mt-3 mb-0 py-2">
+                                    <small>
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        <strong>Note:</strong> Video data is included with hearing metadata (same API response).
+                                        Member updates run separately on weekly schedule.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <!-- Chamber Radio -->
+                            <div class="mb-3">
+                                <label class="form-label">Chamber:</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="chamber" id="chamber-both" value="both" checked>
+                                    <label class="form-check-label" for="chamber-both">
+                                        Both Chambers
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="chamber" id="chamber-house" value="house">
+                                    <label class="form-check-label" for="chamber-house">
+                                        House Only
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="chamber" id="chamber-senate" value="senate">
+                                    <label class="form-check-label" for="chamber-senate">
+                                        Senate Only
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Dry Run Toggle -->
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="dry-run">
+                                    <label class="form-check-label" for="dry-run">
+                                        <i class="fas fa-eye me-1"></i> Dry Run (preview only, don't modify database)
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-grid gap-2">
+                                <button type="submit" id="start-update-btn" class="btn btn-success btn-lg">
+                                    <i class="fas fa-play me-2"></i>
+                                    Start Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Current Task Status -->
+                    <div id="current-task-alert" class="alert alert-warning mt-3" style="display: none;">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <span id="current-task-message"></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Live Progress Dashboard (Initially Hidden) -->
+<div id="progress-container" class="row mb-4" style="display: none;">
+    <div class="col-12">
+        <div class="card border-primary">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-spinner fa-spin me-2"></i>
+                    Update in Progress
+                </h5>
+                <div class="btn-group">
+                    <button id="copy-logs-btn" class="btn btn-light btn-sm" style="display: none;">
+                        <i class="fas fa-copy me-1"></i> Copy Logs
+                    </button>
+                    <button id="cancel-update-btn" class="btn btn-danger btn-sm">
+                        <i class="fas fa-stop me-1"></i> Cancel
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Progress Bar -->
+                <div class="progress mb-3" style="height: 30px;">
+                    <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
+                         role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        <span id="progress-text">0%</span>
+                    </div>
+                </div>
+
+                <!-- Current Status -->
+                <p id="current-status" class="text-muted mb-3">
+                    <i class="fas fa-clock me-2"></i>Starting update...
+                </p>
+
+                <!-- Stats Table -->
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h4 id="stat-checked" class="mb-0">0</h4>
+                                <small class="text-muted">Checked</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h4 id="stat-updated" class="mb-0 text-info">0</h4>
+                                <small class="text-muted">Updated</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h4 id="stat-added" class="mb-0 text-success">0</h4>
+                                <small class="text-muted">Added</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h4 id="stat-errors" class="mb-0 text-danger">0</h4>
+                                <small class="text-muted">Errors</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Changes List -->
+                <div id="recent-changes-section" class="mb-3">
+                    <h6><i class="fas fa-list me-2"></i>Recent Changes:</h6>
+                    <ul id="change-items" class="list-group" style="max-height: 200px; overflow-y: auto;">
+                        <!-- Populated dynamically -->
+                    </ul>
+                </div>
+
+                <!-- Expandable Log Viewer -->
+                <details id="log-details">
+                    <summary class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-code me-1"></i> Show Detailed Logs
+                    </summary>
+                    <pre id="log-output" class="mt-2 p-3" style="max-height: 400px; overflow-y: auto;"></pre>
+                </details>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Deployment Warning Banner -->
+<div id="deployment-warning" class="row mb-4" style="display: none;">
+    <div class="col-12">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <h5 class="alert-heading">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Deployment Needed
+            </h5>
+            <p id="deployment-warning-message" class="mb-2"></p>
+            <hr>
+            <p class="mb-0">
+                <strong>Next steps:</strong>
+                <ol class="mb-0 mt-2">
+                    <li>Click "Export Vercel Config" below to generate the configuration</li>
+                    <li>Update your <code>vercel.json</code> file with the new cron schedules</li>
+                    <li>Deploy to Vercel using <code>vercel --prod</code> or via GitHub push</li>
+                    <li>Mark schedules as deployed after confirming deployment</li>
+                </ol>
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<!-- Scheduled Tasks Section -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center bg-info text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-clock me-2"></i>
+                    Scheduled Updates
+                </h5>
+                <button id="btn-create-schedule" class="btn btn-light btn-sm">
+                    <i class="fas fa-plus me-1"></i> New Schedule
+                </button>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-3">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Scheduled tasks automatically fetch new hearing data from Congress.gov at specified times.
+                    Create schedules below, then export and deploy them to Vercel to activate automation.
+                </p>
+
+                <div id="schedules-loading" class="text-center py-4">
+                    <i class="fas fa-spinner fa-spin fa-2x text-muted"></i>
+                    <p class="text-muted mt-2">Loading schedules...</p>
+                </div>
+                <div id="schedules-content" style="display: none;">
+                    <!-- Schedules Table -->
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Schedule</th>
+                                    <th>Lookback</th>
+                                    <th>Components</th>
+                                    <th>Status</th>
+                                    <th>Deployment</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schedules-tbody">
+                                <!-- Populated via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Export Vercel Config Button -->
+                    <div class="text-end mt-3">
+                        <button id="btn-export-vercel" class="btn btn-primary">
+                            <i class="fas fa-download me-1"></i> Export Vercel Config
+                        </button>
+                    </div>
+                </div>
+                <div id="schedules-empty" class="text-center py-4" style="display: none;">
+                    <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No schedules configured. Create your first schedule to automate data updates.</p>
+                    <button class="btn btn-primary" onclick="document.getElementById('btn-create-schedule').click()">
+                        <i class="fas fa-plus me-1"></i> Create Schedule
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Execution History Section -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-history me-2"></i>
+                    Recent Execution History
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-3">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Track execution history of your scheduled updates, including success status and metrics.
+                </p>
+
+                <div id="executions-loading" class="text-center py-4">
+                    <i class="fas fa-spinner fa-spin fa-2x text-muted"></i>
+                    <p class="text-muted mt-2">Loading execution history...</p>
+                </div>
+                <div id="executions-content" style="display: none;">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Schedule</th>
+                                    <th>Execution Time</th>
+                                    <th>Status</th>
+                                    <th>Duration</th>
+                                    <th>Hearings</th>
+                                    <th>Source</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="executions-tbody">
+                                <!-- Populated via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="executions-empty" class="text-center py-4" style="display: none;">
+                    <i class="fas fa-calendar-check fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No execution history yet. Scheduled updates will appear here once they run.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- What's New / Recent Changes Widget -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-star me-2"></i>
+                    Changes Since Baseline
+                </h5>
+                <div>
+                    <input type="date" id="baseline-date" class="form-control form-control-sm"
+                           value="{{ baseline_date[:10] if baseline_date else '2025-10-01' }}">
+                    <button id="refresh-changes" class="btn btn-primary btn-sm ms-2">
+                        <i class="fas fa-sync me-1"></i> Refresh
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="changes-loading" class="text-center py-4">
+                    <i class="fas fa-spinner fa-spin fa-2x text-muted"></i>
+                    <p class="text-muted mt-2">Loading changes...</p>
+                </div>
+                <div id="changes-content" style="display: none;">
+                    <div class="table-responsive">
+                        <table id="recent-changes-table" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Event ID</th>
+                                    <th>Title</th>
+                                    <th>Chamber</th>
+                                    <th>Date</th>
+                                    <th>Change Type</th>
+                                    <th>Updated At</th>
+                                </tr>
+                            </thead>
+                            <tbody id="changes-tbody">
+                                <!-- Populated via AJAX -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update History Link -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-history me-2"></i>
+                    Update History
+                </h5>
+                <a href="/admin/history" class="btn btn-outline-primary btn-sm">
+                    View Full History <i class="fas fa-arrow-right ms-1"></i>
+                </a>
+            </div>
+            <div class="card-body">
+                {% if last_update %}
+                <p class="mb-2">
+                    <strong>Last Update:</strong> {{ last_update[0] }} at {{ last_update[1][-8:] if last_update[1] else 'Unknown' }}
+                </p>
+                <p class="mb-0">
+                    <span class="badge bg-info me-2">{{ last_update[2] or 0 }} updated</span>
+                    <span class="badge bg-success me-2">{{ last_update[3] or 0 }} added</span>
+                </p>
+                {% else %}
+                <p class="text-muted mb-0">No update history available. Run your first update to get started!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Links -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h6 class="card-title">Quick Links</h6>
+                <div class="row">
+                    <div class="col-md-4">
+                        <a href="/hearings" class="btn btn-outline-primary btn-sm w-100 mb-2">
+                            <i class="fas fa-calendar-alt me-1"></i> Browse Hearings
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="/admin/history" class="btn btn-outline-primary btn-sm w-100 mb-2">
+                            <i class="fas fa-history me-1"></i> Full Update History
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="/api/debug" class="btn btn-outline-secondary btn-sm w-100 mb-2" target="_blank">
+                            <i class="fas fa-bug me-1"></i> Debug Info
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Schedule Create/Edit Modal -->
+<div class="modal fade" id="scheduleModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="scheduleModalTitle">Create Schedule</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info mb-4">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>About Schedules:</strong> Schedules automatically update your database with new hearing data from Congress.gov.
+                    After creating or editing schedules, you'll need to export the configuration and deploy it to Vercel for the automation to work.
+                </div>
+
+                <form id="schedule-form">
+                    <input type="hidden" id="schedule-id">
+
+                    <!-- Name -->
+                    <div class="mb-3">
+                        <label for="schedule-name" class="form-label">Schedule Name *</label>
+                        <input type="text" class="form-control" id="schedule-name" required
+                               placeholder="e.g., Daily Hearings Update">
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label for="schedule-description" class="form-label">Description</label>
+                        <textarea class="form-control" id="schedule-description" rows="2"
+                                  placeholder="Optional description"></textarea>
+                    </div>
+
+                    <!-- Cron Expression -->
+                    <div class="mb-3">
+                        <label for="schedule-cron" class="form-label">
+                            When to Run *
+                            <i class="fas fa-question-circle text-muted" data-bs-toggle="tooltip"
+                               title="Specify when this update should run automatically"></i>
+                        </label>
+                        <input type="text" class="form-control" id="schedule-cron" required
+                               placeholder="e.g., 0 6 * * * (daily at 6am UTC)">
+                        <small class="form-text text-muted">
+                            <strong>Common schedules:</strong><br>
+                            • <code>0 6 * * *</code> = Every day at 6:00 AM UTC<br>
+                            • <code>0 */4 * * *</code> = Every 4 hours<br>
+                            • <code>0 0 * * 1</code> = Every Monday at midnight UTC<br>
+                            • <code>0 12 * * 1-5</code> = Weekdays at noon UTC
+                        </small>
+                    </div>
+
+                    <div class="row">
+                        <!-- Lookback Days -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="schedule-lookback" class="form-label">
+                                    How Far Back to Check: <span id="lookback-value" class="badge bg-primary">7</span> days
+                                    <i class="fas fa-question-circle text-muted ms-1" data-bs-toggle="tooltip"
+                                       title="Check for updates to hearings from this many days ago until now"></i>
+                                </label>
+                                <input type="range" class="form-range" id="schedule-lookback"
+                                       min="1" max="90" value="7">
+                                <small class="form-text text-muted">
+                                    Recommended: 7 days for daily updates, 3 days for frequent updates
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Chamber -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    Which Chamber to Update
+                                    <i class="fas fa-question-circle text-muted ms-1" data-bs-toggle="tooltip"
+                                       title="Choose whether to update House hearings, Senate hearings, or both"></i>
+                                </label>
+                                <select class="form-select" id="schedule-chamber">
+                                    <option value="both">Both House and Senate (recommended)</option>
+                                    <option value="house">House Only</option>
+                                    <option value="senate">Senate Only</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Mode -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    Update Type
+                                    <i class="fas fa-question-circle text-muted ms-1" data-bs-toggle="tooltip"
+                                       title="Incremental only updates changed hearings (faster). Full refreshes everything (slower but more thorough)"></i>
+                                </label>
+                                <select class="form-select" id="schedule-mode">
+                                    <option value="incremental">Smart Update - Only update what changed (recommended)</option>
+                                    <option value="full">Complete Refresh - Update everything</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Active Status -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    Enable This Schedule
+                                    <i class="fas fa-question-circle text-muted ms-1" data-bs-toggle="tooltip"
+                                       title="Turn this on to include the schedule in your Vercel deployment. Turn off to disable without deleting."></i>
+                                </label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="schedule-active" checked>
+                                    <label class="form-check-label" for="schedule-active">
+                                        <span class="text-success"><i class="fas fa-check-circle me-1"></i>Active</span>
+                                        <small class="text-muted d-block">Schedule will run automatically when deployed</small>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Components -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            What to Update *
+                            <i class="fas fa-question-circle text-muted ms-1" data-bs-toggle="tooltip"
+                               title="Choose which data to fetch and update during this scheduled run"></i>
+                        </label>
+                        <div class="form-check">
+                            <input class="form-check-input schedule-component" type="checkbox"
+                                   id="comp-hearings-modal" value="hearings" checked disabled>
+                            <label class="form-check-label" for="comp-hearings-modal">
+                                <i class="fas fa-calendar-alt me-1 text-primary"></i>
+                                <strong>Hearing Information</strong> (always included)
+                                <br><small class="text-muted ms-4">Updates hearing titles, dates, times, locations, and statuses</small>
+                            </label>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input schedule-component" type="checkbox"
+                                   id="comp-committees-modal" value="committees" checked>
+                            <label class="form-check-label" for="comp-committees-modal">
+                                <i class="fas fa-building me-1 text-info"></i>
+                                <strong>Committee Associations</strong>
+                                <br><small class="text-muted ms-4">Links hearings to their host committees and subcommittees</small>
+                            </label>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input schedule-component" type="checkbox"
+                                   id="comp-witnesses-modal" value="witnesses" checked>
+                            <label class="form-check-label" for="comp-witnesses-modal">
+                                <i class="fas fa-user me-1 text-success"></i>
+                                <strong>Witness Information</strong>
+                                <br><small class="text-muted ms-4">Updates who testified at each hearing</small>
+                            </label>
+                        </div>
+                        <small class="form-text text-muted d-block mt-2">
+                            <i class="fas fa-info-circle me-1"></i>
+                            <strong>Tip:</strong> Including all components gives you the most complete data but takes longer.
+                            For frequent updates, you can uncheck witnesses to speed things up.
+                        </small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btn-save-schedule">
+                    <i class="fas fa-save me-1"></i> Save Schedule
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Vercel Export Modal -->
+<div class="modal fade" id="vercelExportModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-cloud-upload-alt me-2"></i>
+                    Deploy Schedules to Vercel
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning mb-3">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Important:</strong> The schedules you create here won't run automatically until you complete the steps below.
+                </div>
+
+                <h6 class="fw-bold mb-2">Step 1: Copy the Configuration</h6>
+                <p class="text-muted small mb-3">
+                    Click the "Copy to Clipboard" button below to copy the Vercel configuration code.
+                </p>
+                <pre id="vercel-config-output" class="bg-light p-3 border rounded" style="max-height: 300px; overflow-y: auto;"><code></code></pre>
+
+                <hr class="my-3">
+
+                <h6 class="fw-bold mb-2">Step 2: Update Your vercel.json File</h6>
+                <ol class="text-muted small mb-3">
+                    <li>Open the <code>vercel.json</code> file in the root of your repository</li>
+                    <li>Replace the contents with the configuration you just copied</li>
+                    <li>Save the file</li>
+                </ol>
+
+                <h6 class="fw-bold mb-2">Step 3: Deploy to Vercel</h6>
+                <ol class="text-muted small mb-0">
+                    <li>Commit your changes: <code>git add vercel.json && git commit -m "Update scheduled tasks"</code></li>
+                    <li>Push to GitHub: <code>git push</code></li>
+                    <li>Vercel will automatically detect the changes and redeploy</li>
+                    <li>Your schedules will start running automatically according to their timing</li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btn-copy-vercel">
+                    <i class="fas fa-copy me-1"></i> Copy Configuration to Clipboard
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- Load admin JavaScript -->
+<script src="/static/admin/admin.js"></script>
+
+<script>
+// System Health Functions
+function loadSystemHealth() {
+    fetch('/admin/api/system-health')
+        .then(response => response.json())
+        .then(data => {
+            // Hide loading, show content
+            document.getElementById('health-loading').style.display = 'none';
+            document.getElementById('health-content').style.display = 'block';
+            document.getElementById('health-error').style.display = 'none';
+
+            // Update health status badge
+            const statusText = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+            document.getElementById('health-status-text').textContent = statusText;
+
+            const healthCard = document.getElementById('system-health-card');
+            const healthIcon = document.getElementById('health-icon');
+
+            // Set colors and icons based on status
+            if (data.status === 'healthy') {
+                healthCard.className = 'card border-success';
+                healthIcon.className = 'fas fa-check-circle fa-3x text-success';
+                document.getElementById('health-status-text').className = 'mt-2 text-success';
+            } else if (data.status === 'degraded') {
+                healthCard.className = 'card border-warning';
+                healthIcon.className = 'fas fa-exclamation-triangle fa-3x text-warning';
+                document.getElementById('health-status-text').className = 'mt-2 text-warning';
+            } else {
+                healthCard.className = 'card border-danger';
+                healthIcon.className = 'fas fa-times-circle fa-3x text-danger';
+                document.getElementById('health-status-text').className = 'mt-2 text-danger';
+            }
+
+            // Update timestamp
+            const timestamp = new Date(data.timestamp);
+            document.getElementById('health-timestamp').textContent =
+                'Checked ' + timestamp.toLocaleTimeString();
+
+            // Update database stats
+            document.getElementById('db-hearings').textContent = data.database.hearings.toLocaleString();
+            document.getElementById('db-committees').textContent = data.database.committees.toLocaleString();
+            document.getElementById('db-witnesses').textContent = data.database.witnesses.toLocaleString();
+
+            // Update last update info
+            if (data.last_update.hours_ago !== null) {
+                document.getElementById('last-update-time').textContent =
+                    data.last_update.hours_ago + 'h ago';
+            } else {
+                document.getElementById('last-update-time').textContent = 'Never';
+            }
+            document.getElementById('last-update-stats').textContent =
+                data.last_update.hearings_updated + ' updated';
+            document.getElementById('last-update-added').textContent =
+                data.last_update.hearings_added + ' added';
+
+            // Update issues and warnings
+            const issuesDiv = document.getElementById('health-issues');
+            const warningsDiv = document.getElementById('health-warnings');
+
+            if (data.issues.length === 0) {
+                issuesDiv.innerHTML = '<span class="badge bg-success"><i class="fas fa-check me-1"></i> No Issues</span>';
+            } else {
+                issuesDiv.innerHTML = data.issues.map(issue =>
+                    `<div class="alert alert-danger alert-sm mb-1 py-1 px-2"><small>${issue}</small></div>`
+                ).join('');
+            }
+
+            if (data.warnings.length > 0) {
+                warningsDiv.innerHTML = data.warnings.map(warning =>
+                    `<div class="alert alert-warning alert-sm mb-1 py-1 px-2"><small>${warning}</small></div>`
+                ).join('');
+            } else {
+                warningsDiv.innerHTML = '';
+            }
+        })
+        .catch(error => {
+            document.getElementById('health-loading').style.display = 'none';
+            document.getElementById('health-content').style.display = 'none';
+            document.getElementById('health-error').style.display = 'block';
+            document.getElementById('health-error-message').textContent = error.message;
+        });
+}
+
+// Initialize dashboard on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Load system health
+    loadSystemHealth();
+
+    // Refresh button handler
+    document.getElementById('refresh-health-btn').addEventListener('click', function() {
+        document.getElementById('health-loading').style.display = 'block';
+        document.getElementById('health-content').style.display = 'none';
+        loadSystemHealth();
+    });
+
+    // Auto-refresh health every 60 seconds
+    setInterval(loadSystemHealth, 60000);
+
+    // Load initial changes
+    loadRecentChanges(document.getElementById('baseline-date').value);
+
+    // Check for production diff
+    loadProductionDiff();
+});
+</script>
+{% endblock %}

@@ -11,9 +11,12 @@ load_dotenv()
 class Config:
     """Configuration settings for Brookings ingester"""
 
-    # Database (use POSTGRES_URL for unified database, fallback to BROOKINGS_DATABASE_URL, then SQLite)
-    # Priority: POSTGRES_URL (unified) > BROOKINGS_DATABASE_URL (legacy) > SQLite local
-    DATABASE_URL = os.getenv('POSTGRES_URL') or os.getenv('BROOKINGS_DATABASE_URL') or os.getenv('DATABASE_URL', 'sqlite:///brookings_products.db')
+    # Database (use BROOKINGS_DATABASE_URL to avoid conflict with CRS PostgreSQL)
+    # Default to PostgreSQL on Neon for production deployment
+    DATABASE_URL = os.getenv(
+        'BROOKINGS_DATABASE_URL',
+        os.getenv('DATABASE_URL', 'postgresql://neondb_owner:npg_7Z4JjDIFYctk@ep-withered-frost-add6lq34-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require')
+    )
 
     # Storage paths
     BASE_DIR = Path(__file__).parent.parent

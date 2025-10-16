@@ -59,7 +59,7 @@ def committees():
             # Get subcommittees for each parent
             committees_with_subs = []
             for parent in parent_committees:
-                parent_id = parent[0]
+                parent_id = parent.get('committee_id', parent[0]) if hasattr(parent, 'keys') else parent[0]
 
                 # Get subcommittees for this parent
                 # Only count hearings that are exclusively associated with this subcommittee
@@ -91,10 +91,12 @@ def committees():
 
             # Get filter options
             cursor = conn.execute('SELECT DISTINCT chamber FROM committees ORDER BY chamber')
-            chambers = [row[0] for row in cursor.fetchall()]
+            rows = cursor.fetchall()
+            chambers = [list(row.values())[0] if hasattr(row, 'keys') else row[0] for row in rows]
 
             cursor = conn.execute('SELECT DISTINCT type FROM committees ORDER BY type')
-            types = [row[0] for row in cursor.fetchall()]
+            rows = cursor.fetchall()
+            types = [list(row.values())[0] if hasattr(row, 'keys') else row[0] for row in rows]
 
             # Get parent committees only for the selector dropdown
             cursor = conn.execute('''

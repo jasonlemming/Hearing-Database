@@ -16,6 +16,7 @@ try:
     from flask import Flask, jsonify, request
     from database.manager import DatabaseManager
     from updaters.daily_updater import DailyUpdater
+    from updaters.policy_library_updater import PolicyLibraryUpdater
     from config.logging_config import get_logger
 except ImportError as e:
     print(f"Import error: {e}")
@@ -111,7 +112,7 @@ def create_execution_log(schedule_id, log_id, success, error_message=None, confi
 
     with db.transaction() as conn:
         conn.execute('''
-            INSERT INTO schedule_execution_logs
+            INSERT OR IGNORE INTO schedule_execution_logs
             (schedule_id, log_id, execution_time, success, error_message, config_snapshot)
             VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?, ?)
         ''', (schedule_id, log_id, success, error_message, json.dumps(config_snapshot) if config_snapshot else None))
@@ -260,10 +261,30 @@ def scheduled_update(task_id):
         JSON response with update results
     """
     try:
+        # Log ALL incoming requests for debugging
+        logger.info(f"[CRON DIAGNOSTIC] Received request for task_id={task_id}")
+        logger.info(f"[CRON DIAGNOSTIC] Method: {request.method}")
+        logger.info(f"[CRON DIAGNOSTIC] Headers: {dict(request.headers)}")
+        logger.info(f"[CRON DIAGNOSTIC] Remote addr: {request.remote_addr}")
+        logger.info(f"[CRON DIAGNOSTIC] User agent: {request.user_agent}")
+
+        # Check if CRON_SECRET is configured
+        expected_secret = os.environ.get('CRON_SECRET')
+        logger.info(f"[CRON DIAGNOSTIC] CRON_SECRET configured: {bool(expected_secret)}")
+        if expected_secret:
+            logger.info(f"[CRON DIAGNOSTIC] CRON_SECRET value (first 5 chars): {expected_secret[:5]}...")
+
         # Verify authentication
+        cron_secret = request.headers.get('Authorization')
+        logger.info(f"[CRON DIAGNOSTIC] Authorization header present: {bool(cron_secret)}")
+        if cron_secret:
+            logger.info(f"[CRON DIAGNOSTIC] Authorization header (first 10 chars): {cron_secret[:10]}...")
+
         if not verify_cron_auth():
-            logger.warning(f"Unauthorized cron request for task {task_id}")
+            logger.warning(f"[CRON DIAGNOSTIC] Authentication FAILED for task {task_id}")
             return jsonify({'error': 'Unauthorized'}), 401
+
+        logger.info(f"[CRON DIAGNOSTIC] Authentication SUCCESS for task {task_id}")
 
         # Get schedule configuration
         schedule_config = get_schedule_config(task_id)
@@ -336,6 +357,308 @@ def test_schedule(task_id):
             'timestamp': datetime.now().isoformat(),
             'status': 'error',
             'task_id': task_id,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/cron/health', methods=['GET'])
+def health_check():
+    """
+    Health check endpoint for monitoring system status
+
+    Returns comprehensive system health information:
+    - Database connectivity and size
+    - Last update status and timing
+    - Scheduled tasks status
+    - Data statistics
+    - Error rates
+
+    Returns:
+        JSON response with health status
+    """
+    try:
+        db = DatabaseManager()
+        health_status = {
+            'timestamp': datetime.now().isoformat(),
+            'status': 'healthy',
+            'checks': {},
+            'warnings': [],
+            'errors': []
+        }
+
+        # Check 1: Database connectivity
+        try:
+            with db.transaction() as conn:
+                conn.execute('SELECT 1').fetchone()
+            health_status['checks']['database'] = 'connected'
+        except Exception as e:
+            health_status['checks']['database'] = 'error'
+            health_status['errors'].append(f'Database connection failed: {str(e)}')
+            health_status['status'] = 'unhealthy'
+
+        # Check 2: Database size
+        try:
+            with db.transaction() as conn:
+                cursor = conn.execute('''
+                    SELECT page_count * page_size / 1024.0 / 1024.0 as size_mb
+                    FROM pragma_page_count('main'), pragma_page_size()
+                ''')
+                size_mb = cursor.fetchone()[0]
+                health_status['checks']['database_size_mb'] = round(size_mb, 2)
+
+                # Warn if database is getting large (> 50 MB)
+                if size_mb > 50:
+                    health_status['warnings'].append(f'Database size ({size_mb:.2f} MB) approaching SQLite limits')
+        except Exception as e:
+            health_status['errors'].append(f'Failed to check database size: {str(e)}')
+
+        # Check 3: Last update status
+        try:
+            with db.transaction() as conn:
+                cursor = conn.execute('''
+                    SELECT update_date, start_time, end_time, duration_seconds,
+                           hearings_updated, hearings_added, error_count, success, trigger_source
+                    FROM update_logs
+                    ORDER BY start_time DESC
+                    LIMIT 1
+                ''')
+                last_update = cursor.fetchone()
+
+                if last_update:
+                    health_status['checks']['last_update'] = {
+                        'date': last_update[0],
+                        'start_time': last_update[1],
+                        'end_time': last_update[2],
+                        'duration_seconds': last_update[3],
+                        'hearings_updated': last_update[4],
+                        'hearings_added': last_update[5],
+                        'error_count': last_update[6],
+                        'success': bool(last_update[7]),
+                        'trigger_source': last_update[8]
+                    }
+
+                    # Check if last update failed
+                    if not last_update[7]:
+                        health_status['errors'].append('Last update failed')
+                        health_status['status'] = 'degraded'
+
+                    # Check if last update was more than 48 hours ago
+                    if last_update[1]:
+                        last_update_time = datetime.fromisoformat(last_update[1])
+                        hours_since_update = (datetime.now() - last_update_time).total_seconds() / 3600
+                        health_status['checks']['hours_since_last_update'] = round(hours_since_update, 1)
+
+                        if hours_since_update > 48:
+                            health_status['warnings'].append(f'No updates in {hours_since_update:.1f} hours')
+                            health_status['status'] = 'degraded'
+                else:
+                    health_status['warnings'].append('No update logs found')
+        except Exception as e:
+            health_status['errors'].append(f'Failed to check last update: {str(e)}')
+
+        # Check 4: Scheduled tasks status
+        try:
+            with db.transaction() as conn:
+                cursor = conn.execute('''
+                    SELECT task_id, name, schedule_cron, is_active, is_deployed, last_run_at
+                    FROM scheduled_tasks
+                    WHERE is_active = 1
+                ''')
+                active_tasks = cursor.fetchall()
+
+                health_status['checks']['active_tasks'] = len(active_tasks)
+                health_status['checks']['tasks'] = []
+
+                for task in active_tasks:
+                    task_info = {
+                        'id': task[0],
+                        'name': task[1],
+                        'schedule': task[2],
+                        'deployed': bool(task[4]),
+                        'last_run': task[5]
+                    }
+                    health_status['checks']['tasks'].append(task_info)
+
+                    # Warn if active task is not deployed
+                    if not task[4]:
+                        health_status['warnings'].append(f'Task "{task[1]}" (ID: {task[0]}) is active but not deployed')
+        except Exception as e:
+            health_status['errors'].append(f'Failed to check scheduled tasks: {str(e)}')
+
+        # Check 5: Data statistics
+        try:
+            counts = db.get_table_counts()
+            health_status['checks']['data_counts'] = counts
+
+            # Warn if hearing count seems low (< 1000 for 119th Congress)
+            if counts.get('hearings', 0) < 1000:
+                health_status['warnings'].append(f'Hearing count ({counts["hearings"]}) seems low')
+        except Exception as e:
+            health_status['errors'].append(f'Failed to get data counts: {str(e)}')
+
+        # Check 6: Error rate (last 10 updates)
+        try:
+            with db.transaction() as conn:
+                cursor = conn.execute('''
+                    SELECT COUNT(*) as total, SUM(CASE WHEN success = 0 THEN 1 ELSE 0 END) as failed
+                    FROM update_logs
+                    WHERE start_time >= datetime('now', '-7 days')
+                ''')
+                stats = cursor.fetchone()
+                total_updates = stats[0]
+                failed_updates = stats[1] or 0
+
+                if total_updates > 0:
+                    error_rate = (failed_updates / total_updates) * 100
+                    health_status['checks']['error_rate_7days'] = {
+                        'total_updates': total_updates,
+                        'failed_updates': failed_updates,
+                        'error_rate_pct': round(error_rate, 2)
+                    }
+
+                    # Warn if error rate > 10%
+                    if error_rate > 10:
+                        health_status['warnings'].append(f'High error rate: {error_rate:.1f}%')
+                        health_status['status'] = 'degraded'
+        except Exception as e:
+            health_status['errors'].append(f'Failed to calculate error rate: {str(e)}')
+
+        # Check 7: Circuit breaker status (if enabled)
+        try:
+            from api.client import CongressAPIClient
+            from config.settings import Settings
+            settings = Settings()
+
+            # Create temporary API client to check circuit breaker stats
+            api_client = CongressAPIClient(api_key=settings.api_key)
+
+            if api_client.circuit_breaker:
+                cb_stats = api_client.get_circuit_breaker_stats()
+                if cb_stats:
+                    health_status['checks']['circuit_breaker'] = cb_stats
+
+                    # Critical alert if circuit breaker is open
+                    if cb_stats['state'] == 'open':
+                        health_status['errors'].append(f"Circuit breaker is OPEN - API requests blocked")
+                        health_status['status'] = 'unhealthy'
+                    elif cb_stats['state'] == 'half_open':
+                        health_status['warnings'].append(f"Circuit breaker is HALF_OPEN - testing recovery")
+
+                    # Warn on high failure rate
+                    if cb_stats.get('failure_rate_pct', 0) > 20:
+                        health_status['warnings'].append(f"High circuit breaker failure rate: {cb_stats['failure_rate_pct']}%")
+            else:
+                health_status['checks']['circuit_breaker'] = {'enabled': False}
+        except Exception as e:
+            logger.warning(f'Failed to check circuit breaker status: {str(e)}')
+            # Don't add to health_status errors - circuit breaker check is optional
+
+        # Check 8: Retry statistics (last 24 hours)
+        try:
+            from api.client import CongressAPIClient
+            from config.settings import Settings
+            settings = Settings()
+
+            # Create temporary API client to check retry stats
+            api_client = CongressAPIClient(api_key=settings.api_key)
+            retry_stats = api_client.get_retry_stats()
+
+            if retry_stats:
+                health_status['checks']['retry_stats'] = retry_stats
+
+                # Info only - high retry count isn't necessarily a problem
+                # (indicates resilience is working)
+                if retry_stats.get('total_retries', 0) > 100:
+                    health_status['warnings'].append(f"High retry count: {retry_stats['total_retries']} (indicates API instability)")
+        except Exception as e:
+            logger.warning(f'Failed to check retry statistics: {str(e)}')
+            # Don't add to health_status errors - retry stats check is optional
+
+        # Set overall status based on errors/warnings
+        if health_status['errors']:
+            health_status['status'] = 'unhealthy'
+        elif health_status['warnings']:
+            health_status['status'] = 'degraded'
+
+        # Return appropriate HTTP status code
+        if health_status['status'] == 'healthy':
+            return jsonify(health_status), 200
+        elif health_status['status'] == 'degraded':
+            return jsonify(health_status), 200  # Still return 200 for degraded
+        else:
+            return jsonify(health_status), 503  # Service Unavailable for unhealthy
+
+    except Exception as e:
+        logger.error(f"Health check failed: {e}")
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'status': 'unhealthy',
+            'error': str(e)
+        }), 503
+
+
+@app.route('/api/cron/policy-library-update', methods=['GET', 'POST'])
+def policy_library_update():
+    """
+    Vercel cron job endpoint for Policy Library (Jamie Dupree Substack) updates
+
+    Runs daily to fetch new posts from RSS feed and add them to the database.
+
+    Returns:
+        JSON response with update results
+    """
+    try:
+        # Verify authentication
+        if not verify_cron_auth():
+            logger.warning("Authentication failed for policy library update")
+            return jsonify({'error': 'Unauthorized'}), 401
+
+        logger.info("Starting policy library scheduled update")
+
+        # Check if BROOKINGS_DATABASE_URL is set
+        if not os.environ.get('BROOKINGS_DATABASE_URL'):
+            error_msg = "BROOKINGS_DATABASE_URL environment variable not set"
+            logger.error(error_msg)
+            return jsonify({
+                'timestamp': datetime.now().isoformat(),
+                'status': 'error',
+                'error': error_msg
+            }), 500
+
+        # Create PolicyLibraryUpdater with default settings
+        updater = PolicyLibraryUpdater(
+            lookback_days=7,  # Check last 7 days for new posts
+            publication='jamiedupree.substack.com',
+            author='Jamie Dupree'
+        )
+
+        # Run the update
+        result = updater.run_daily_update()
+
+        if result['success']:
+            logger.info("Policy library update completed successfully")
+            return jsonify({
+                'timestamp': datetime.now().isoformat(),
+                'status': 'success',
+                'service': 'policy_library',
+                'metrics': result['metrics']
+            }), 200
+        else:
+            logger.error(f"Policy library update failed: {result.get('error')}")
+            return jsonify({
+                'timestamp': datetime.now().isoformat(),
+                'status': 'error',
+                'service': 'policy_library',
+                'error': result.get('error'),
+                'metrics': result['metrics']
+            }), 500
+
+    except Exception as e:
+        logger.error(f"Policy library cron job failed: {e}", exc_info=True)
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'status': 'error',
+            'service': 'policy_library',
             'error': str(e)
         }), 500
 

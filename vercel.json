@@ -28,6 +28,14 @@
       "dest": "api/cron-update.py"
     },
     {
+      "src": "/api/cron/health",
+      "dest": "api/cron-update.py"
+    },
+    {
+      "src": "/api/cron/policy-library-update",
+      "dest": "api/cron-update.py"
+    },
+    {
       "src": "/api/admin/run-task/([0-9]+)",
       "dest": "api/admin-task.py"
     },
@@ -40,6 +48,10 @@
     {
       "path": "/api/cron/scheduled-update/3",
       "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/policy-library-update",
+      "schedule": "0 7 * * *"
     }
   ]
 }

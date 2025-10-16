@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #ffffff;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: #1a1a1a;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 1rem 0 0.5rem;
+            color: #333;
+        }
+
+        /* Status Banner */
+        .status-banner {
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-left: 3px solid;
+            background: #f8f9fa;
+        }
+
+        .status-banner.healthy { border-color: #28a745; }
+        .status-banner.degraded { border-color: #ffc107; }
+        .status-banner.unhealthy { border-color: #dc3545; }
+
+        .status-banner h2 {
+            margin: 0 0 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .status-info {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .status-info strong {
+            color: #1a1a1a;
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0 2rem;
+        }
+
+        .metric-card {
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .timeline-dot:hover {
+            transform: scale(1.4);
+        }
+
+        .timeline-dot.success {
+            background: #28a745;
+        }
+
+        .timeline-dot.failed {
+            background: #dc3545;
+        }
+
+        /* Update Entries */
+        .update-entry {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 1rem 0;
+        }
+
+        .update-entry:last-child {
+            border-bottom: none;
+        }
+
+        .update-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .update-header:hover {
+            background: #f8f9fa;
+            margin: 0 -0.5rem;
+            padding: 0 0.5rem;
+        }
+
+        .update-time {
+            font-size: 0.95rem;
+            color: #1a1a1a;
+        }
+
+        .update-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .update-details {
+            display: none;
+            padding: 1rem;
+            margin-top: 1rem;
+            background: #f8f9fa;
+            border-left: 3px solid #0d6efd;
+        }
+
+        .update-details.show {
+            display: block;
+        }
+
+        .data-flow {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            margin: 0.5rem 0;
+        }
+
+        /* Phase 2.3 Section */
+        .phase23-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .phase23-card {
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            background: #f8f9fa;
+        }
+
+        .phase23-card h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1rem;
+        }
+
+        .phase23-metric {
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .phase23-metric strong {
+            color: #1a1a1a;
+        }
+
+        /* Controls */
+        .controls {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            margin: 2rem 0;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+
+        label {
+            font-size: 0.9rem;
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            background: #1a1a1a;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background: #333;
+        }
+
+        button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #6c757d;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            font-size: 0.9rem;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            background: #e0e0e0;
+            color: #1a1a1a;
+            margin: 0 0.25rem;
+        }
+
+        .badge.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge.danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Loading */
+        .loading {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        /* Hearing Cards - Match main landing page */
+        .hearing-card {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 2rem 0 0.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .hearing-card:first-child {
+            padding-top: 0;
+        }
+
+        .hearing-card:last-child {
+            border-bottom: none;
+        }
+
+        .hearing-card:hover {
+            transform: translateX(5px);
+        }
+
+        .hearing-title {
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .hearing-title a {
+            color: #1a1a1a;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .hearing-title a:hover {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .hearing-meta {
+            font-size: 0.9rem;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+
+        .hearing-meta a {
+            color: #6c757d;
+            text-decoration: none;
+        }
+
+        .hearing-meta a:hover {
+            color: #1a1a1a;
+            text-decoration: underline;
+        }
+
+        /* Utility */
+        .mb-1 { margin-bottom: 1rem; }
+        .mb-2 { margin-bottom: 2rem; }
+        .mt-1 { margin-top: 1rem; }
+        .mt-2 { margin-top: 2rem; }
+        .text-muted { color: #6c757d; }
+        .text-success { color: #28a745; }
+        .text-danger { color: #dc3545; }
+    </style>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+
+    <!-- Status Banner -->
+    <div id="statusBanner" class="status-banner healthy">
+        <h2 id="statusText">System Healthy</h2>
+        <div class="status-info">
+            <strong>Last Update:</strong> <span id="lastUpdateTime" class="loading">Loading...</span><br>
+            <strong>Next Update:</strong> <span id="nextUpdateTime" class="loading">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Timeline & Metrics -->
+    <h2>Update Timeline (Last 7 Days)</h2>
+
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-value" id="successRate">--</div>
+            <div class="metric-label">Success Rate</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value" id="totalRuns">--</div>
+            <div class="metric-label">Total Runs</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value" id="avgDuration">--</div>
+            <div class="metric-label">Avg Duration (s)</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value text-success" id="successfulRuns">--</div>
+            <div class="metric-label">Successful</div>
+        </div>
+    </div>
+
+    <div class="timeline" id="timelineDots">
+        <div class="loading">Loading timeline...</div>
+    </div>
+    <p class="text-muted" style="font-size: 0.85rem;">Hover over dots for details. Green = success, Red = failed.</p>
+
+    <!-- Phase 2.3 Metrics -->
+    <h2>Phase 2.3 Metrics</h2>
+
+    <div class="phase23-grid">
+        <div class="phase23-card">
+            <h3>Batch Processing</h3>
+            <div class="phase23-metric">
+                <strong>Success Rate:</strong> <span id="batchSuccessRate" class="text-success">--</span>
+            </div>
+            <div class="phase23-metric">
+                <strong>Batch Size:</strong> <span id="batchSize">50</span> hearings
+            </div>
+            <div class="phase23-metric">
+                <strong>Last Batch:</strong> <span id="lastBatchInfo">--</span>
+            </div>
+        </div>
+
+        <div class="phase23-card">
+            <h3>Historical Validation</h3>
+            <div class="phase23-metric">
+                <strong>Anomalies (7d):</strong> <span id="anomalyCount">--</span>
+            </div>
+            <div id="anomalyStatus" class="phase23-metric">
+                <span id="anomalyAlert" class="badge warning" style="display: none;">Alert Triggered</span>
+                <span id="noAnomalies" class="text-success">No anomalies detected</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Updates -->
+    <h2>Recent Updates</h2>
+
+    <div id="recentUpdates">
+        <div class="loading">Loading updates...</div>
+    </div>
+
+    <!-- Recent Hearings Modified -->
+    <h2>Recent Hearings Modified</h2>
+    <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1rem;">
+        Last 50 hearings modified. Click hearing title or metadata to expand details.
+    </p>
+
+    <div id="recentHearings" style="max-height: 600px; overflow-y: auto;">
+        <div class="loading" style="padding: 1rem;">Loading hearings...</div>
+    </div>
+
+    <div style="margin-top: 0.5rem;">
+        <button type="button" onclick="loadMoreHearings()">Load More</button>
+        <span id="hearingCount" class="text-muted" style="margin-left: 1rem; font-size: 0.9rem;"></span>
+    </div>
+
+    <!-- Manual Controls -->
+    <h2>Manual Update Controls</h2>
+
+    <div class="controls">
+        <form id="manualUpdateForm">
+            <label>
+                Lookback Days: <strong id="lookbackValue">7</strong>
+                <input type="range" id="lookbackDays" min="1" max="30" value="7"
+                       oninput="document.getElementById('lookbackValue').textContent = this.value">
+            </label>
+
+            <label style="display: block; margin-top: 1rem;">
+                <input type="checkbox" id="dryRun">
+                Dry Run (no changes)
+            </label>
+
+            <div>
+                <button type="submit" id="startUpdateBtn">Start Manual Update</button>
+                <button type="button" onclick="refreshDashboard()">Refresh Dashboard</button>
+            </div>
+
+            <div id="liveProgress" style="display: none; margin-top: 1rem;">
+                <p class="text-muted">Update in progress...</p>
+                <div style="background: #e0e0e0; height: 20px; margin: 0.5rem 0;">
+                    <div id="progressBar" style="background: #28a745; height: 100%; width: 0%; transition: width 0.3s;"></div>
+                </div>
+                <div id="progressStats" class="text-muted" style="font-size: 0.85rem;"></div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Scheduled Tasks -->
+    <h2>Scheduled Tasks</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Schedule</th>
+                <th>Next Run</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="scheduledTasksTable">
+            <tr>
+                <td colspan="4" class="loading">Loading schedules...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Vercel Deployment -->
+    <h2>Vercel Deployment</h2>
+
+    <div class="controls">
+        <div id="vercelStatus">
+            <div class="loading">Loading deployment status...</div>
+        </div>
+
+        <div style="margin-top: 1rem;">
+            <button type="button" onclick="loadVercelConfig()">Refresh Deployment Status</button>
+            <button type="button" onclick="copyVercelConfig()" id="copyConfigBtn" style="display: none;">Copy Config to Clipboard</button>
+        </div>
+
+        <!-- Generated Config (collapsible) -->
+        <div id="generatedConfig" style="display: none; margin-top: 1rem;">
+            <h3>Generated vercel.json</h3>
+            <pre id="configJson" style="background: #fff; border: 1px solid #e0e0e0; padding: 1rem; overflow-x: auto; font-size: 0.85rem;"></pre>
+
+            <h3>Deployment Instructions</h3>
+            <ol id="deployInstructions" style="margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.9rem;">
+            </ol>
+        </div>
+    </div>
+
+<script>
+// Same JavaScript as before
+let currentTaskId = null;
+let updateInterval = null;
+let lastProgressTimestamp = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('[DEBUG] DOMContentLoaded fired');
+
+    loadSystemHealth();
+    loadTimeline();
+    loadPhase23Metrics();
+    loadRecentUpdates();
+    loadScheduledTasks();
+    loadVercelConfig();
+    loadRecentHearings();
+
+    setInterval(function() {
+        loadSystemHealth();
+        loadTimeline();
+        loadPhase23Metrics();
+    }, 30000);
+
+    const form = document.getElementById('manualUpdateForm');
+    console.log('[DEBUG] Manual update form element:', form);
+
+    if (form) {
+        form.addEventListener('submit', startManualUpdate);
+        console.log('[DEBUG] Event listener attached to form');
+    } else {
+        console.error('[DEBUG] ERROR: manualUpdateForm not found!');
+    }
+});
+
+async function loadSystemHealth() {
+    try {
+        const response = await fetch('/admin/api/system-health');
+        const data = await response.json();
+
+        const banner = document.getElementById('statusBanner');
+        const statusText = document.getElementById('statusText');
+
+        banner.className = 'status-banner ' + data.status;
+
+        if (data.status === 'healthy') {
+            statusText.textContent = 'System Healthy';
+        } else if (data.status === 'degraded') {
+            statusText.textContent = 'System Degraded';
+        } else {
+            statusText.textContent = 'System Unhealthy';
+        }
+
+        if (data.last_update && data.last_update.hours_ago !== null) {
+            const hours = data.last_update.hours_ago;
+            let timeText = '';
+            if (hours < 1) {
+                timeText = Math.round(hours * 60) + ' minutes ago';
+            } else if (hours < 24) {
+                timeText = Math.round(hours) + ' hours ago';
+            } else {
+                timeText = Math.round(hours / 24) + ' days ago';
+            }
+            document.getElementById('lastUpdateTime').textContent = timeText;
+        } else {
+            document.getElementById('lastUpdateTime').textContent = 'Never';
+        }
+
+        if (data.next_scheduled && data.next_scheduled.hours_until !== null) {
+            const hours = data.next_scheduled.hours_until;
+            let timeText = '';
+            if (hours < 0) {
+                timeText = 'Overdue';
+            } else if (hours < 1) {
+                timeText = 'in ' + Math.round(hours * 60) + ' minutes';
+            } else if (hours < 24) {
+                timeText = 'in ' + Math.round(hours) + ' hours';
+            } else {
+                timeText = 'in ' + Math.round(hours / 24) + ' days';
+            }
+            document.getElementById('nextUpdateTime').textContent = timeText;
+        } else {
+            document.getElementById('nextUpdateTime').textContent = 'No schedule';
+        }
+
+    } catch (error) {
+        console.error('Error loading system health:', error);
+    }
+}
+
+async function loadTimeline() {
+    try {
+        const response = await fetch('/admin/api/timeline');
+        const data = await response.json();
+
+        document.getElementById('successRate').textContent = data.summary.success_rate + '%';
+        document.getElementById('totalRuns').textContent = data.summary.total_runs;
+        document.getElementById('avgDuration').textContent = data.summary.average_duration_seconds;
+        document.getElementById('successfulRuns').textContent = data.summary.successful_runs;
+
+        const container = document.getElementById('timelineDots');
+        container.innerHTML = '';
+
+        data.updates.forEach(update => {
+            const dot = document.createElement('div');
+            dot.className = 'timeline-dot ' + (update.success ? 'success' : 'failed');
+            dot.title = `${new Date(update.start_time).toLocaleString()}\n` +
+                       `Checked: ${update.hearings_checked}, Updated: ${update.hearings_updated}\n` +
+                       `Duration: ${Math.round(update.duration_seconds)}s`;
+            dot.onclick = () => showUpdateDetails(update.log_id);
+            container.appendChild(dot);
+        });
+
+    } catch (error) {
+        console.error('Error loading timeline:', error);
+    }
+}
+
+async function loadPhase23Metrics() {
+    try {
+        const response = await fetch('/admin/api/phase23-metrics');
+        const data = await response.json();
+
+        document.getElementById('batchSuccessRate').textContent = data.batch_processing.success_rate + '%';
+        document.getElementById('batchSize').textContent = data.batch_processing.batch_size;
+        document.getElementById('lastBatchInfo').textContent = `${data.batch_processing.last_batch_hearings} hearings`;
+
+        const anomalyCount = data.historical_validation.anomalies_detected_7d;
+        document.getElementById('anomalyCount').textContent = anomalyCount;
+
+        if (data.historical_validation.alert_triggered) {
+            document.getElementById('anomalyAlert').style.display = 'inline-block';
+            document.getElementById('noAnomalies').style.display = 'none';
+        } else {
+            document.getElementById('anomalyAlert').style.display = 'none';
+            document.getElementById('noAnomalies').style.display = 'inline';
+        }
+
+    } catch (error) {
+        console.error('Error loading Phase 2.3 metrics:', error);
+    }
+}
+
+async function loadRecentUpdates() {
+    try {
+        const response = await fetch('/admin/api/timeline');
+        const data = await response.json();
+
+        const container = document.getElementById('recentUpdates');
+        container.innerHTML = '';
+
+        const recentUpdates = data.updates.slice(0, 10);
+
+        recentUpdates.forEach(update => {
+            const entry = createUpdateEntry(update);
+            container.appendChild(entry);
+        });
+
+    } catch (error) {
+        console.error('Error loading recent updates:', error);
+    }
+}
+
+function createUpdateEntry(update) {
+    const entry = document.createElement('div');
+    entry.className = 'update-entry';
+
+    const startTime = new Date(update.start_time);
+    const statusIcon = update.success ? '✓' : '✗';
+
+    entry.innerHTML = `
+        <div class="update-header" onclick="toggleUpdateDetails(${update.log_id})">
+            <div class="update-time">
+                ${statusIcon} ${startTime.toLocaleString()} • ${Math.round(update.duration_seconds)}s
+            </div>
+            <div class="update-stats">
+                <span>${update.hearings_checked} checked</span>
+                <span>${update.hearings_updated} updated</span>
+                <span>${update.hearings_added} added</span>
+            </div>
+        </div>
+        <div id="details-${update.log_id}" class="update-details">
+            <div class="loading">Loading details...</div>
+        </div>
+    `;
+
+    return entry;
+}
+
+async function toggleUpdateDetails(logId) {
+    const detailsDiv = document.getElementById(`details-${logId}`);
+
+    if (detailsDiv.classList.contains('show')) {
+        detailsDiv.classList.remove('show');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/admin/api/update-details/${logId}`);
+        const data = await response.json();
+
+        // Build hearings list
+        let hearingsListHtml = '';
+        if (data.recent_hearings && data.recent_hearings.length > 0) {
+            hearingsListHtml = '<h3>Modified Hearings</h3><ul style="margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.9rem;">';
+            data.recent_hearings.forEach(h => {
+                const date = h.hearing_date ? new Date(h.hearing_date).toLocaleDateString() : 'No date';
+                hearingsListHtml += `<li><a href="/hearing/${h.hearing_id}" style="color: #1a1a1a; text-decoration: none;">${h.title || '(No title)'}</a> <span style="color: #6c757d;">· ${h.chamber} · ${date}</span></li>`;
+            });
+            hearingsListHtml += '</ul>';
+            if (data.hearings_updated > data.recent_hearings.length) {
+                hearingsListHtml += `<p style="color: #6c757d; font-size: 0.85rem; margin: 0.5rem 0;">Showing ${data.recent_hearings.length} of ${data.hearings_updated} updated hearings</p>`;
+            }
+        } else if (data.hearings_added > 0) {
+            hearingsListHtml = `<p style="color: #6c757d; font-size: 0.9rem;">${data.hearings_added} hearing(s) added, but details not available in log</p>`;
+        }
+
+        // Build errors list
+        let errorsHtml = '';
+        if (data.error_count > 0 && data.errors && data.errors.length > 0) {
+            errorsHtml = '<h3 style="color: #dc3545;">Errors</h3><ul style="margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.9rem; color: #dc3545;">';
+            data.errors.forEach(err => {
+                errorsHtml += `<li>${err}</li>`;
+            });
+            errorsHtml += '</ul>';
+        }
+
+        detailsDiv.innerHTML = `
+            <h3>Data Flow</h3>
+            <div class="data-flow">
+                ${data.hearings_checked} checked → ${data.hearings_updated} updated → ${data.hearings_added} added
+            </div>
+
+            ${hearingsListHtml}
+
+            <h3>Validation Results</h3>
+            <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                <li>Committees Updated: ${data.committees_updated}</li>
+                <li>Witnesses Updated: ${data.witnesses_updated}</li>
+                <li>API Requests: ${data.api_requests}</li>
+                <li>Errors: ${data.error_count}</li>
+            </ul>
+
+            ${errorsHtml}
+
+            <h3>Phase 2.3 Metrics</h3>
+            <p style="margin: 0.5rem 0;">
+                <strong>Batch Processing:</strong> ${data.batch_processing.batch_count} batch(es), ${data.batch_processing.batches_succeeded} succeeded<br>
+                <strong>Historical Validation:</strong> ${data.historical_validation.anomaly_count} anomaly(ies) detected
+            </p>
+        `;
+
+        detailsDiv.classList.add('show');
+
+    } catch (error) {
+        console.error('Error loading update details:', error);
+    }
+}
+
+function showUpdateDetails(logId) {
+    toggleUpdateDetails(logId);
+}
+
+async function loadScheduledTasks() {
+    try {
+        const response = await fetch('/admin/api/schedules');
+        const data = await response.json();
+
+        const tbody = document.getElementById('scheduledTasksTable');
+        tbody.innerHTML = '';
+
+        if (data.schedules.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="text-muted">No scheduled tasks</td></tr>';
+            return;
+        }
+
+        data.schedules.forEach(schedule => {
+            const row = document.createElement('tr');
+
+            const nextRun = schedule.next_run_at ?
+                new Date(schedule.next_run_at).toLocaleString() :
+                'Not scheduled';
+
+            const statusBadge = schedule.is_active ?
+                '<span class="badge success">Active</span>' :
+                '<span class="badge">Inactive</span>';
+
+            row.innerHTML = `
+                <td>${schedule.name}</td>
+                <td><code style="font-size: 0.85rem;">${schedule.schedule_cron}</code></td>
+                <td>${nextRun}</td>
+                <td>${statusBadge}</td>
+            `;
+
+            tbody.appendChild(row);
+        });
+
+    } catch (error) {
+        console.error('Error loading scheduled tasks:', error);
+    }
+}
+
+async function startManualUpdate(e) {
+    console.log('[DEBUG] startManualUpdate() called');
+    console.log('[DEBUG] Event object:', e);
+
+    e.preventDefault();
+    console.log('[DEBUG] preventDefault() called');
+
+    const lookbackDays = parseInt(document.getElementById('lookbackDays').value);
+    const dryRun = document.getElementById('dryRun').checked;
+    console.log('[DEBUG] lookbackDays:', lookbackDays, 'dryRun:', dryRun);
+
+    const payload = {
+        lookback_days: lookbackDays,
+        dry_run: dryRun,
+        components: ['hearings', 'witnesses', 'committees'],
+        chamber: 'both',
+        mode: 'incremental'
+    };
+    console.log('[DEBUG] Payload to send:', payload);
+
+    try {
+        console.log('[DEBUG] Sending POST request to /admin/api/start-update');
+        const response = await fetch('/admin/api/start-update', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        console.log('[DEBUG] Response received:', response);
+        console.log('[DEBUG] Response status:', response.status, response.statusText);
+
+        const data = await response.json();
+        console.log('[DEBUG] Response data:', data);
+
+        if (response.ok) {
+            console.log('[DEBUG] Update started successfully. Task ID:', data.task_id);
+            currentTaskId = data.task_id;
+            document.getElementById('liveProgress').style.display = 'block';
+            document.getElementById('startUpdateBtn').disabled = true;
+            updateInterval = setInterval(pollTaskStatus, 2000);
+        } else {
+            console.error('[DEBUG] Server returned error:', data.error);
+            alert('Error starting update: ' + data.error);
+        }
+
+    } catch (error) {
+        console.error('[DEBUG] Fetch error:', error);
+        console.error('[DEBUG] Error stack:', error.stack);
+        alert('Error starting update: ' + error.message);
+    }
+}
+
+async function pollTaskStatus() {
+    if (!currentTaskId) return;
+
+    try {
+        const response = await fetch(`/admin/api/task-status/${currentTaskId}`);
+        const data = await response.json();
+
+        const progressData = data.progress.data || data.progress;
+        const progress = progressData.hearings_checked || 0;
+        const total = progressData.total_hearings || 100;
+        const percent = Math.round((progress / total) * 100);
+
+        // Check if progress is stalled (no update for >60 seconds)
+        const currentTimestamp = data.progress.timestamp || progressData.timestamp;
+        let stallWarning = '';
+        if (currentTimestamp) {
+            const progressTime = new Date(currentTimestamp);
+            const now = new Date();
+            const secondsSinceUpdate = (now - progressTime) / 1000;
+
+            if (secondsSinceUpdate > 60) {
+                const minutes = Math.floor(secondsSinceUpdate / 60);
+                stallWarning = ` (⚠️  stalled for ${minutes}m - may be waiting on slow API)`;
+            }
+        }
+
+        document.getElementById('progressBar').style.width = percent + '%';
+        document.getElementById('progressStats').textContent = `${progress}/${total} hearings checked${stallWarning}`;
+
+        if (data.status === 'completed' || data.status === 'failed') {
+            clearInterval(updateInterval);
+            document.getElementById('startUpdateBtn').disabled = false;
+            setTimeout(refreshDashboard, 2000);
+
+            if (data.status === 'completed') {
+                alert('Update completed successfully!');
+            } else {
+                alert('Update failed: ' + data.error_message);
+            }
+        }
+
+    } catch (error) {
+        console.error('Error polling task status:', error);
+    }
+}
+
+function refreshDashboard() {
+    loadSystemHealth();
+    loadTimeline();
+    loadPhase23Metrics();
+    loadRecentUpdates();
+    loadScheduledTasks();
+}
+
+// Load Vercel deployment configuration
+async function loadVercelConfig() {
+    try {
+        const response = await fetch('/admin/api/export-vercel-config');
+        const data = await response.json();
+
+        const statusDiv = document.getElementById('vercelStatus');
+        const configDiv = document.getElementById('generatedConfig');
+        const configJson = document.getElementById('configJson');
+        const instructionsList = document.getElementById('deployInstructions');
+        const copyBtn = document.getElementById('copyConfigBtn');
+
+        // Display status
+        let statusHtml = `
+            <p><strong>Active schedules:</strong> ${data.active_schedules.length}</p>
+            <p><strong>Deployed schedules:</strong> ${data.current_crons.length}</p>
+        `;
+
+        if (data.changes.has_changes) {
+            statusHtml += '<h3>Changes to deploy:</h3><ul style="margin: 0.5rem 0; padding-left: 1.5rem;">';
+            data.changes.added.forEach(cron => {
+                const schedule = data.active_schedules.find(s =>
+                    `/api/cron/scheduled-update/${s.task_id}` === cron.path
+                );
+                statusHtml += `<li class="text-success">+ Add: "${schedule.name}" (ID ${schedule.task_id})</li>`;
+            });
+            data.changes.removed.forEach(cron => {
+                statusHtml += `<li class="text-danger">- Remove: ${cron.path}</li>`;
+            });
+            statusHtml += '</ul>';
+
+            // Show config and copy button
+            configDiv.style.display = 'block';
+            copyBtn.style.display = 'inline-block';
+            configJson.textContent = JSON.stringify(data.generated_config, null, 2);
+
+            // Show instructions
+            instructionsList.innerHTML = '';
+            data.instructions.forEach(instruction => {
+                const li = document.createElement('li');
+                li.textContent = instruction;
+                instructionsList.appendChild(li);
+            });
+        } else {
+            statusHtml += '<p class="text-success">✓ All active schedules are deployed</p>';
+            configDiv.style.display = 'none';
+            copyBtn.style.display = 'none';
+        }
+
+        statusDiv.innerHTML = statusHtml;
+
+    } catch (error) {
+        console.error('Error loading Vercel config:', error);
+        document.getElementById('vercelStatus').innerHTML =
+            '<p class="text-danger">Error loading deployment status</p>';
+    }
+}
+
+// Copy Vercel config to clipboard
+async function copyVercelConfig() {
+    const configJson = document.getElementById('configJson').textContent;
+
+    try {
+        await navigator.clipboard.writeText(configJson);
+        const btn = document.getElementById('copyConfigBtn');
+        const originalText = btn.textContent;
+        btn.textContent = '✓ Copied!';
+        setTimeout(() => {
+            btn.textContent = originalText;
+        }, 2000);
+    } catch (error) {
+        console.error('Error copying to clipboard:', error);
+        alert('Failed to copy. Please select and copy manually.');
+    }
+}
+
+// Recent hearings functionality
+let currentHearingsOffset = 0;
+const hearingsPerPage = 50;
+
+async function loadRecentHearings(append = false) {
+    try {
+        const response = await fetch(`/admin/api/recent-hearings?limit=${hearingsPerPage}&offset=${currentHearingsOffset}`);
+        const data = await response.json();
+
+        const container = document.getElementById('recentHearings');
+
+        if (!append) {
+            container.innerHTML = '';
+            currentHearingsOffset = 0;
+        }
+
+        data.hearings.forEach(hearing => {
+            const card = createHearingCard(hearing);
+            container.appendChild(card);
+        });
+
+        // Update count display
+        const countDisplay = document.getElementById('hearingCount');
+        const displayedCount = currentHearingsOffset + data.hearings.length;
+        countDisplay.textContent = `Showing ${displayedCount} of ${data.total_count} hearings`;
+
+        // Show/hide load more button
+        const loadMoreBtn = document.querySelector('button[onclick="loadMoreHearings()"]');
+        if (data.has_more) {
+            loadMoreBtn.style.display = 'inline-block';
+        } else {
+            loadMoreBtn.style.display = 'none';
+        }
+
+    } catch (error) {
+        console.error('Error loading recent hearings:', error);
+        document.getElementById('recentHearings').innerHTML =
+            '<p class="text-danger">Error loading hearings</p>';
+    }
+}
+
+function createHearingCard(hearing) {
+    const card = document.createElement('div');
+    card.className = 'hearing-card';
+
+    // Format date for display
+    const hearingDate = hearing.hearing_date ? new Date(hearing.hearing_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'No date';
+
+    // Format date for URL (YYYY-MM-DD)
+    const dateForUrl = hearing.hearing_date || '';
+
+    // Get primary committee
+    const primaryCommittee = hearing.committees.find(c => c.is_primary);
+    const committee = primaryCommittee || hearing.committees[0];
+    const committeeName = committee ? committee.name : 'No committee';
+    const committeeCode = committee ? committee.system_code : '';
+
+    // Change type indicator
+    const changeType = hearing.change_type === 'added' ? 'Added' : 'Updated';
+
+    // Create links for each metadata item
+    const committeeLink = committee && committee.committee_id ? `<a href="/committee/${committee.committee_id}">${committeeName}</a>` : committeeName;
+    const chamberLink = `<a href="/hearings?chamber=${hearing.chamber.toLowerCase()}">${hearing.chamber}</a>`;
+    const dateLink = dateForUrl ? `<a href="/hearings?date=${dateForUrl}">${hearingDate}</a>` : hearingDate;
+
+    // Build metadata line with linked items
+    const metaParts = [committeeLink, chamberLink, dateLink, changeType];
+    const metaLine = metaParts.join(' · ');
+
+    // Create link to hearing detail page
+    const hearingLink = `/hearing/${hearing.hearing_id}`;
+
+    card.innerHTML = `
+        <div class="hearing-title"><a href="${hearingLink}">${hearing.title || '(No title)'}</a></div>
+        <div class="hearing-meta">${metaLine}</div>
+    `;
+
+    return card;
+}
+
+function loadMoreHearings() {
+    currentHearingsOffset += hearingsPerPage;
+    loadRecentHearings(true);
+}
+</script>
+</body>
+</html>

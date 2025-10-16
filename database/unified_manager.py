@@ -23,6 +23,57 @@ from config.logging_config import get_logger
 logger = get_logger(__name__)
 
 
+class PostgresConnectionWrapper:
+    """
+    Wrapper for psycopg2 connections that adds execute() method for compatibility
+
+    This allows blueprints to use conn.execute() syntax which works for both
+    SQLite and Postgres without modification.
+    """
+    def __init__(self, conn, db_manager):
+        self._conn = conn
+        self._db_manager = db_manager
+
+    def execute(self, query, params=None):
+        """Execute query and return cursor (Postgres-compatible)"""
+        # Convert ? to %s for Postgres
+        query = query.replace('?', '%s')
+        cursor = self._conn.cursor()
+        if params:
+            cursor.execute(query, params)
+        else:
+            cursor.execute(query)
+        return cursor
+
+    def cursor(self, cursor_factory=None):
+        """Get cursor with optional factory"""
+        if cursor_factory:
+            return self._conn.cursor(cursor_factory=cursor_factory)
+        return self._conn.cursor()
+
+    def commit(self):
+        """Commit transaction"""
+        return self._conn.commit()
+
+    def rollback(self):
+        """Rollback transaction"""
+        return self._conn.rollback()
+
+    def close(self):
+        """Close connection"""
+        return self._conn.close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type:
+            self._conn.rollback()
+        else:
+            self._conn.commit()
+        self._conn.close()
+
+
 class UnifiedDatabaseManager:
     """
     Unified database manager supporting both SQLite and PostgreSQL
@@ -95,7 +146,7 @@ class UnifiedDatabaseManager:
         Get database connection with row factory
 
         Returns:
-            sqlite3.Connection or psycopg2.connection
+            sqlite3.Connection or PostgresConnectionWrapper
         """
         if self.db_type == 'sqlite':
             conn = sqlite3.connect(self.db_url)
@@ -103,7 +154,8 @@ class UnifiedDatabaseManager:
             conn.execute("PRAGMA foreign_keys = ON")
             return conn
         else:  # postgres
-            return psycopg2.connect(self.db_url)
+            raw_conn = psycopg2.connect(self.db_url)
+            return PostgresConnectionWrapper(raw_conn, self)
 
     @contextmanager
     def transaction(self):

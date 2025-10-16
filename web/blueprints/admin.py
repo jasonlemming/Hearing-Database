@@ -577,12 +577,14 @@ def start_update():
         # Trigger async execution via fire-and-forget HTTP request
         try:
             # Determine base URL
+            # Use production URL directly since VERCEL_URL is deployment-specific
             if os.environ.get('VERCEL'):
-                base_url = f"https://{os.environ.get('VERCEL_URL', 'capitollabsllc.com')}"
+                base_url = 'https://www.capitollabsllc.com'
             else:
                 base_url = 'http://localhost:5001'
 
             trigger_url = f"{base_url}/api/admin/run-task/{task_id}"
+            logger.info(f"Triggering async task at: {trigger_url}")
 
             # Fire-and-forget with very short timeout
             requests.post(trigger_url, timeout=0.5)

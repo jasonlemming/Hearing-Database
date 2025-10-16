@@ -3,6 +3,7 @@ Task manager for admin dashboard background operations
 
 Manages subprocess-based update tasks with progress tracking and log streaming.
 """
+import os
 import uuid
 import subprocess
 import json
@@ -122,6 +123,14 @@ class TaskManager:
         logger.info(f"Starting task {task_id}: {' '.join(command)}")
 
         try:
+            # Prepare environment - inherit current environment and ensure critical vars are set
+            env = os.environ.copy()
+
+            # Ensure database URLs are available (if set in current environment)
+            for env_var in ['POSTGRES_URL', 'DATABASE_URL', 'CONGRESS_API_KEY']:
+                if env_var in os.environ:
+                    env[env_var] = os.environ[env_var]
+
             # Start subprocess with stdout/stderr capture
             process = subprocess.Popen(
                 command,
@@ -129,7 +138,8 @@ class TaskManager:
                 stderr=subprocess.PIPE,
                 text=True,
                 bufsize=1,  # Line buffered
-                universal_newlines=True
+                universal_newlines=True,
+                env=env  # Pass environment variables
             )
 
             # Create task state

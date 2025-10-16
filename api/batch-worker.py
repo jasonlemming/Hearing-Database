@@ -227,8 +227,16 @@ def trigger_next_batch(task_id, current_batch_number):
             url = f"{base_url}/api/batch/process/{next_batch['batch_id']}"
             logger.info(f"Triggering next batch: {url}")
 
-            # Fire and forget - don't wait for response
-            requests.post(url, timeout=5)
+            # Fire and forget in background thread - don't wait for response
+            import threading
+            def _trigger():
+                try:
+                    requests.post(url, timeout=2)
+                except:
+                    pass  # Ignore errors - batch will be triggered
+
+            thread = threading.Thread(target=_trigger, daemon=True)
+            thread.start()
         else:
             logger.info(f"No more batches to process for task {task_id}")
 

@@ -164,8 +164,16 @@ def trigger_batch_worker(batch_id):
         url = f"{base_url}/api/batch/process/{batch_id}"
         logger.info(f"Triggering batch worker: {url}")
 
-        # Fire and forget - use timeout to prevent blocking
-        requests.post(url, timeout=5)
+        # Fire and forget in background thread - don't wait for response
+        import threading
+        def _trigger():
+            try:
+                requests.post(url, timeout=2)
+            except:
+                pass  # Ignore errors - batch will be triggered
+
+        thread = threading.Thread(target=_trigger, daemon=True)
+        thread.start()
 
     except Exception as e:
         logger.error(f"Failed to trigger batch worker: {e}")

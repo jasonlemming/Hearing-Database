@@ -55,8 +55,11 @@ function initializeDashboard() {
 }
 
 /**
- * Handle update form submission (synchronous execution)
+ * Handle update form submission (async task queue with polling)
  */
+let currentTaskId = null;
+let pollingInterval = null;
+
 async function handleUpdateSubmit(event) {
     event.preventDefault();
 
@@ -73,23 +76,22 @@ async function handleUpdateSubmit(event) {
         components.push('committees');
     }
 
-    const chamber = document.querySelector('input[name="chamber"]:checked').value;
     const dryRun = document.getElementById('dry-run').checked;
 
     // Disable form and show progress container
     const submitBtn = document.getElementById('start-update-btn');
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Running update...';
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Queuing update...';
 
     document.getElementById('progress-container').style.display = 'block';
     resetProgressUI();
 
     // Show status message
     const statusEl = document.getElementById('current-status');
-    statusEl.innerHTML = '<i class="fas fa-sync fa-spin me-2"></i>Running update... This may take a few minutes.';
+    statusEl.innerHTML = '<i class="fas fa-clock me-2"></i>Queuing update task...';
 
     try {
-        // Run update synchronously
+        // Create task in database
         const response = await fetch('/admin/api/start-update', {
             method: 'POST',
             headers: {
@@ -98,7 +100,7 @@ async function handleUpdateSubmit(event) {
             body: JSON.stringify({
                 lookback_days: lookbackDays,
                 components: components,
-                chamber: chamber,
+                mode: 'incremental',
                 dry_run: dryRun
             })
         });
@@ -106,21 +108,163 @@ async function handleUpdateSubmit(event) {
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.error || 'Failed to start update');
+            throw new Error(data.error || 'Failed to queue update');
         }
 
-        // Handle completion
-        handleUpdateCompletion(data);
+        // Store task ID and start polling
+        currentTaskId = data.task_id;
+        statusEl.innerHTML = '<i class="fas fa-sync fa-spin me-2"></i>Update task started... Monitoring progress.';
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Running update...';
+
+        // Start polling for task status
+        startPollingTaskStatus(currentTaskId);
 
     } catch (error) {
         // Handle error
-        statusEl.innerHTML = '<i class="fas fa-times-circle text-danger me-2"></i>Update failed: ' + error.message;
-        alert('Error running update: ' + error.message);
-    } finally {
+        statusEl.innerHTML = '<i class="fas fa-times-circle text-danger me-2"></i>Failed to queue update: ' + error.message;
+        alert('Error queuing update: ' + error.message);
+
         // Re-enable form
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<i class="fas fa-play me-2"></i>Start Update';
     }
+}
+
+/**
+ * Start polling for task status
+ */
+function startPollingTaskStatus(taskId) {
+    // Clear any existing polling
+    if (pollingInterval) {
+        clearInterval(pollingInterval);
+    }
+
+    // Poll every 2 seconds
+    pollingInterval = setInterval(() => {
+        pollTaskStatus(taskId);
+    }, 2000);
+
+    // Poll immediately
+    pollTaskStatus(taskId);
+}
+
+/**
+ * Stop polling
+ */
+function stopPolling() {
+    if (pollingInterval) {
+        clearInterval(pollingInterval);
+        pollingInterval = null;
+    }
+}
+
+/**
+ * Poll task status from database
+ */
+async function pollTaskStatus(taskId) {
+    try {
+        const response = await fetch(`/admin/api/task-status/${taskId}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || 'Failed to get task status');
+        }
+
+        // Update UI based on status
+        updateTaskStatusUI(data);
+
+        // Stop polling if task is completed or failed
+        if (data.status === 'completed' || data.status === 'failed') {
+            stopPolling();
+            handleTaskCompletion(data);
+        }
+
+    } catch (error) {
+        console.error('Error polling task status:', error);
+        // Don't stop polling on error - server might be temporarily unavailable
+    }
+}
+
+/**
+ * Update UI based on task status
+ */
+function updateTaskStatusUI(data) {
+    const statusEl = document.getElementById('current-status');
+
+    // Update status message
+    if (data.status === 'pending') {
+        statusEl.innerHTML = '<i class="fas fa-clock me-2"></i>Task queued, waiting to start...';
+    } else if (data.status === 'running') {
+        statusEl.innerHTML = '<i class="fas fa-sync fa-spin me-2"></i>Update running...';
+
+        // Show progress if available
+        if (data.progress && data.progress.stage) {
+            statusEl.innerHTML = `<i class="fas fa-sync fa-spin me-2"></i>${data.progress.stage}`;
+
+            // Estimate progress percentage based on stage
+            const stageProgress = {
+                'Fetching recent hearings': 20,
+                'Identifying changes': 40,
+                'Applying updates': 60,
+                'Updating related data': 80,
+                'Recording metrics': 90
+            };
+            const percent = stageProgress[data.progress.stage] || 50;
+            updateProgress(percent);
+        }
+    }
+
+    // Update stats if result is available
+    if (data.result && data.result.metrics) {
+        const metrics = data.result.metrics;
+        if (metrics.hearings_checked !== undefined) {
+            document.getElementById('stat-checked').textContent = metrics.hearings_checked;
+        }
+        if (metrics.hearings_updated !== undefined) {
+            document.getElementById('stat-updated').textContent = metrics.hearings_updated;
+        }
+        if (metrics.hearings_added !== undefined) {
+            document.getElementById('stat-added').textContent = metrics.hearings_added;
+        }
+        if (metrics.error_count !== undefined) {
+            document.getElementById('stat-errors').textContent = metrics.error_count;
+        }
+    }
+}
+
+/**
+ * Handle task completion (success or failure)
+ */
+function handleTaskCompletion(data) {
+    const statusEl = document.getElementById('current-status');
+    const submitBtn = document.getElementById('start-update-btn');
+
+    if (data.status === 'completed' && data.result && data.result.success) {
+        // Success
+        statusEl.innerHTML = '<i class="fas fa-check-circle text-success me-2"></i>Update completed successfully!';
+        updateProgress(100);
+
+        // Show completion summary
+        if (data.result.metrics) {
+            showCompletionSummary(data.result.metrics);
+        }
+
+        // Reload page after 2 seconds to refresh stats
+        setTimeout(() => {
+            location.reload();
+        }, 2000);
+
+    } else {
+        // Failed
+        const errorMsg = (data.result && data.result.error) || 'Unknown error';
+        statusEl.innerHTML = `<i class="fas fa-times-circle text-danger me-2"></i>Update failed: ${errorMsg}`;
+
+        alert('Update failed: ' + errorMsg);
+    }
+
+    // Re-enable form
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<i class="fas fa-play me-2"></i>Start Update';
 }
 
 /**
@@ -143,41 +287,6 @@ function resetProgressUI() {
     document.getElementById('log-output').textContent = '';
     document.getElementById('change-items').innerHTML = '';
     logLineCount = 0;
-}
-
-/**
- * Handle update completion (synchronous response)
- */
-function handleUpdateCompletion(data) {
-    const statusEl = document.getElementById('current-status');
-
-    if (data.success) {
-        // Success
-        statusEl.innerHTML = '<i class="fas fa-check-circle text-success me-2"></i>Update completed successfully!';
-        updateProgress(100);
-
-        // Update stats from metrics
-        const metrics = data.metrics || {};
-        document.getElementById('stat-checked').textContent = metrics.hearings_checked || 0;
-        document.getElementById('stat-updated').textContent = metrics.hearings_updated || 0;
-        document.getElementById('stat-added').textContent = metrics.hearings_added || 0;
-        document.getElementById('stat-errors').textContent = metrics.error_count || 0;
-
-        // Show completion message
-        showCompletionSummary(metrics);
-
-        // Reload page after 2 seconds to refresh stats
-        setTimeout(() => {
-            location.reload();
-        }, 2000);
-
-    } else {
-        // Failed
-        statusEl.innerHTML = '<i class="fas fa-times-circle text-danger me-2"></i>Update failed: ' + (data.error || 'Unknown error');
-
-        // Show error message
-        alert('Update failed: ' + (data.error || 'Unknown error'));
-    }
 }
 
 /**

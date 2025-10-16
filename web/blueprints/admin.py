@@ -196,39 +196,37 @@ def history():
 @admin_bp.route('/api/start-update', methods=['POST'])
 def start_update():
     """
-    Start a manual update task (synchronous execution)
+    Create a manual update task for async execution
 
     Request JSON:
         {
             "lookback_days": 7,
             "components": ["hearings", "witnesses", "committees"],
-            "chamber": "both",
             "mode": "incremental",
             "dry_run": false
         }
 
     Returns:
         {
-            "success": true/false,
-            "metrics": {...},
-            "error": "error message" (if failed)
+            "task_id": 123,
+            "status": "pending",
+            "message": "Task queued successfully"
         }
     """
+    import json
+    import requests
+
     try:
         params = request.get_json() or {}
 
         lookback_days = params.get('lookback_days', 7)
         components = params.get('components', ['hearings', 'witnesses', 'committees'])
-        chamber = params.get('chamber', 'both')
         mode = params.get('mode', 'incremental')
         dry_run = params.get('dry_run', False)
 
         # Validate inputs
         if not isinstance(lookback_days, int) or not (1 <= lookback_days <= 90):
             return jsonify({'error': 'lookback_days must be between 1 and 90'}), 400
-
-        if chamber not in ['both', 'house', 'senate']:
-            return jsonify({'error': 'chamber must be both, house, or senate'}), 400
 
         if mode not in ['incremental', 'full']:
             return jsonify({'error': 'mode must be incremental or full'}), 400
@@ -247,37 +245,137 @@ def start_update():
         if not components:
             return jsonify({'error': 'At least one component required'}), 400
 
-        # Log the start of manual update
-        logger.info(f"Starting manual update: mode={mode}, lookback={lookback_days}, chamber={chamber}, components={components}, dry_run={dry_run}")
+        # Create task record in database
+        task_params = {
+            'lookback_days': lookback_days,
+            'components': components,
+            'mode': mode,
+            'dry_run': dry_run
+        }
 
-        # Create updater instance
-        updater = DailyUpdater(
-            congress=119,
-            lookback_days=lookback_days,
-            update_mode=mode,
-            components=components
-        )
+        with db.transaction() as conn:
+            cursor = _execute_query(conn, '''
+                INSERT INTO admin_tasks
+                (task_type, status, parameters, triggered_by, environment)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (
+                'manual_update',
+                'pending',
+                json.dumps(task_params),
+                'admin_dashboard',
+                os.environ.get('VERCEL_ENV', 'development')
+            ))
 
-        # Set trigger source for tracking
-        updater.trigger_source = 'manual'
+            # Get task_id
+            if db.db_type == 'postgres':
+                cursor.execute('SELECT lastval()')
+                result = cursor.fetchone()
+                task_id = result['lastval'] if result else None
+            else:
+                task_id = cursor.lastrowid
 
-        # Run the update synchronously
-        result = updater.run_daily_update(dry_run=dry_run)
+        logger.info(f"Created manual update task {task_id}: {task_params}")
 
-        # Log completion
-        if result.get('success'):
-            logger.info(f"Manual update completed successfully")
+        # Trigger async execution via separate serverless function
+        # Build URL based on environment
+        if os.environ.get('VERCEL_ENV'):
+            # Production: use current host
+            base_url = request.host_url.rstrip('/')
         else:
-            logger.error(f"Manual update failed: {result.get('error', 'Unknown error')}")
+            # Local development
+            base_url = 'http://localhost:5000'
 
-        return jsonify(result)
+        trigger_url = f"{base_url}/api/admin/run-task/{task_id}"
+
+        # Fire-and-forget request to trigger execution
+        try:
+            # Use a very short timeout so we don't wait for the response
+            requests.post(trigger_url, timeout=0.5)
+        except requests.exceptions.Timeout:
+            # Expected - task is running in background
+            pass
+        except Exception as trigger_error:
+            logger.warning(f"Failed to trigger task execution: {trigger_error}")
+            # Task is still created in DB, can be manually triggered
+
+        return jsonify({
+            'task_id': task_id,
+            'status': 'pending',
+            'message': 'Task queued and execution triggered'
+        }), 202
 
     except Exception as e:
-        logger.error(f"Failed to start manual update: {e}", exc_info=True)
+        logger.error(f"Failed to create manual update task: {e}", exc_info=True)
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
+
+@admin_bp.route('/api/task-status/<int:task_id>', methods=['GET'])
+def get_task_status(task_id: int):
+    """
+    Get status of an admin task
+
+    Returns:
+        {
+            "task_id": 123,
+            "status": "running",  # pending, running, completed, failed
+            "progress": {...},    # Current progress if available
+            "result": {...},      # Final result if completed
+            "logs": "...",        # Captured logs
+            "created_at": "...",
+            "started_at": "...",
+            "completed_at": "..."
+        }
+    """
+    import json
+
+    try:
+        with db.transaction() as conn:
+            cursor = _execute_query(conn, '''
+                SELECT task_id, task_type, status, parameters, created_at,
+                       started_at, completed_at, result, logs, progress
+                FROM admin_tasks
+                WHERE task_id = ?
+            ''', (task_id,))
+
+            row = cursor.fetchone()
+            if not row:
+                return jsonify({'error': 'Task not found'}), 404
+
+            if db.db_type == 'postgres':
+                task_data = {
+                    'task_id': row['task_id'],
+                    'task_type': row['task_type'],
+                    'status': row['status'],
+                    'parameters': json.loads(row['parameters']) if row['parameters'] else {},
+                    'created_at': str(row['created_at']) if row['created_at'] else None,
+                    'started_at': str(row['started_at']) if row['started_at'] else None,
+                    'completed_at': str(row['completed_at']) if row['completed_at'] else None,
+                    'result': json.loads(row['result']) if row['result'] else None,
+                    'logs': row['logs'],
+                    'progress': json.loads(row['progress']) if row['progress'] else None
+                }
+            else:
+                task_data = {
+                    'task_id': row[0],
+                    'task_type': row[1],
+                    'status': row[2],
+                    'parameters': json.loads(row[3]) if row[3] else {},
+                    'created_at': row[4],
+                    'started_at': row[5],
+                    'completed_at': row[6],
+                    'result': json.loads(row[7]) if row[7] else None,
+                    'logs': row[8],
+                    'progress': json.loads(row[9]) if row[9] else None
+                }
+
+            return jsonify(task_data)
+
+    except Exception as e:
+        logger.error(f"Error getting task status: {e}")
+        return jsonify({'error': str(e)}), 500
 
 
 @admin_bp.route('/api/recent-changes')

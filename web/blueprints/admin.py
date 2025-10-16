@@ -151,7 +151,7 @@ def system_health():
             cursor = conn.execute("""
                 SELECT name, next_run_at, schedule_cron
                 FROM scheduled_tasks
-                WHERE is_active = 1
+                WHERE is_active = TRUE
                 ORDER BY next_run_at ASC
                 LIMIT 1
             """)
@@ -261,7 +261,7 @@ def timeline():
             cursor = conn.execute("""
                 SELECT name, next_run_at
                 FROM scheduled_tasks
-                WHERE is_active = 1
+                WHERE is_active = TRUE
                 ORDER BY next_run_at ASC
                 LIMIT 1
             """)
@@ -1228,7 +1228,7 @@ def export_vercel_config_new():
             cursor = conn.execute('''
                 SELECT task_id, name, schedule_cron, is_active
                 FROM scheduled_tasks
-                WHERE is_active = 1
+                WHERE is_active = TRUE
                 ORDER BY task_id
             ''')
 
@@ -1302,7 +1302,7 @@ def export_vercel_config():
             cursor = conn.execute('''
                 SELECT task_id, name, schedule_cron
                 FROM scheduled_tasks
-                WHERE is_active = 1
+                WHERE is_active = TRUE
                 ORDER BY name
             ''')
 
@@ -1462,7 +1462,7 @@ def test_schedule(task_id):
             cursor = conn.execute('''
                 SELECT task_id, name, lookback_days, mode, components, is_active
                 FROM scheduled_tasks
-                WHERE task_id = ? AND is_active = 1
+                WHERE task_id = ? AND is_active = TRUE
             ''', (task_id,))
             row = cursor.fetchone()
 

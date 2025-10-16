@@ -428,7 +428,6 @@
             <a href="{{ url_for('committees.committees') }}">Committees</a>
             <a href="{{ url_for('main_pages.witnesses') }}">Witnesses</a>
             <a href="{{ url_for('main_pages.members') }}">Members</a>
-            <a href="{{ url_for('admin.dashboard') }}">Admin</a>
         </div>
         <form class="search-form" method="GET" action="{{ url_for('hearings.hearings') }}">
             <input type="search" name="search" value="{{ request.args.get('search', '') }}">

@@ -8,6 +8,7 @@ pyyaml>=6.0
 flask>=3.0.0
 pydantic-settings>=2.0.0
 sqlalchemy>=2.0.0
+croniter>=2.0.0
 
 # PostgreSQL database support
 psycopg2-binary>=2.9.9

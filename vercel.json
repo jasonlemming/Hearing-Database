@@ -32,6 +32,13 @@
       "config": {
         "maxDuration": 60
       }
+    },
+    {
+      "src": "api/task-scheduler.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxDuration": 60
+      }
     }
   ],
   "routes": [
@@ -68,14 +75,18 @@
       "dest": "api/batch-orchestrator.py"
     },
     {
+      "src": "/api/cron/task-scheduler",
+      "dest": "api/task-scheduler.py"
+    },
+    {
       "src": "/(.*)",
       "dest": "api/index.py"
     }
   ],
   "crons": [
     {
-      "path": "/api/cron/scheduled-update/3",
-      "schedule": "0 6 * * *"
+      "path": "/api/cron/task-scheduler",
+      "schedule": "* * * * *"
     },
     {
       "path": "/api/cron/policy-library-update",

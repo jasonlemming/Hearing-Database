@@ -66,7 +66,10 @@ def execute_manual_update(db, task_id, parameters):
         mode = parameters.get('mode', 'incremental')
         dry_run = parameters.get('dry_run', False)
 
-        logger.info(f"Starting manual update task {task_id}: lookback={lookback_days}, components={components}")
+        # TEMPORARY: Force full mode for debugging
+        mode = 'full'
+
+        logger.info(f"Starting manual update task {task_id}: lookback={lookback_days}, mode={mode} (FORCED), components={components}, dry_run={dry_run}")
 
         # Mark as running
         update_task_status(db, task_id, 'running')

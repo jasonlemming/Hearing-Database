@@ -1342,13 +1342,27 @@ class DailyUpdater:
         logger.info("Running pre-update sanity checks...")
 
         try:
+            # Detect if we're using PostgreSQL or SQLite
+            is_postgres = os.environ.get('POSTGRES_URL') or os.environ.get('DATABASE_URL', '').startswith('postgres')
+
             with self.db.transaction() as conn:
                 # Check 1: Verify critical tables exist
-                cursor = conn.execute('''
-                    SELECT name FROM sqlite_master
-                    WHERE type='table' AND name IN ('hearings', 'committees', 'witnesses', 'update_logs')
-                    ORDER BY name
-                ''')
+                if is_postgres:
+                    # PostgreSQL: Use information_schema
+                    cursor = conn.execute('''
+                        SELECT table_name FROM information_schema.tables
+                        WHERE table_schema = 'public'
+                        AND table_name IN ('hearings', 'committees', 'witnesses', 'update_logs')
+                        ORDER BY table_name
+                    ''')
+                else:
+                    # SQLite: Use sqlite_master
+                    cursor = conn.execute('''
+                        SELECT name FROM sqlite_master
+                        WHERE type='table' AND name IN ('hearings', 'committees', 'witnesses', 'update_logs')
+                        ORDER BY name
+                    ''')
+
                 tables = [row[0] for row in cursor.fetchall()]
                 required_tables = ['committees', 'hearings', 'witnesses']
 
@@ -1361,7 +1375,8 @@ class DailyUpdater:
 
                 # Check 2: Verify minimum record counts (prevent operating on empty/broken database)
                 cursor = conn.execute('SELECT COUNT(*) FROM hearings')
-                hearing_count = cursor.fetchone()[0]
+                row = cursor.fetchone()
+                hearing_count = row[0] if row else 0
 
                 if hearing_count < 100:
                     logger.error(f"Database has only {hearing_count} hearings (minimum 100 required)")
@@ -1369,28 +1384,40 @@ class DailyUpdater:
 
                 logger.info(f"✓ Database has {hearing_count} hearings")
 
-                # Check 3: Check for foreign key violations
-                conn.execute('PRAGMA foreign_keys = ON')
-                cursor = conn.execute('PRAGMA foreign_key_check')
-                violations = cursor.fetchall()
+                # Check 3: Check for foreign key violations (only for SQLite)
+                if not is_postgres:
+                    conn.execute('PRAGMA foreign_keys = ON')
+                    cursor = conn.execute('PRAGMA foreign_key_check')
+                    violations = cursor.fetchall()
 
-                if violations:
-                    logger.error(f"Found {len(violations)} foreign key violations")
-                    for violation in violations[:5]:  # Show first 5
-                        logger.error(f"  - {violation}")
-                    return False
+                    if violations:
+                        logger.error(f"Found {len(violations)} foreign key violations")
+                        for violation in violations[:5]:  # Show first 5
+                            logger.error(f"  - {violation}")
+                        return False
 
-                logger.info("✓ No foreign key violations")
+                    logger.info("✓ No foreign key violations")
+                else:
+                    # PostgreSQL: Foreign key constraints are always enforced
+                    logger.info("✓ PostgreSQL enforces foreign key constraints automatically")
 
-                # Check 4: Verify database integrity
-                cursor = conn.execute('PRAGMA integrity_check')
-                integrity = cursor.fetchone()[0]
+                # Check 4: Verify database integrity (only for SQLite)
+                if not is_postgres:
+                    cursor = conn.execute('PRAGMA integrity_check')
+                    integrity = cursor.fetchone()[0]
 
-                if integrity != 'ok':
-                    logger.error(f"Database integrity check failed: {integrity}")
-                    return False
+                    if integrity != 'ok':
+                        logger.error(f"Database integrity check failed: {integrity}")
+                        return False
 
-                logger.info("✓ Database integrity check passed")
+                    logger.info("✓ Database integrity check passed")
+                else:
+                    # PostgreSQL: Run a simple connectivity test
+                    cursor = conn.execute('SELECT 1')
+                    if cursor.fetchone()[0] != 1:
+                        logger.error("PostgreSQL connectivity check failed")
+                        return False
+                    logger.info("✓ PostgreSQL connectivity check passed")
 
                 # Check 5: Verify last update wasn't too recent (prevent duplicate runs)
                 cursor = conn.execute('''
@@ -1400,7 +1427,13 @@ class DailyUpdater:
                 last_update_row = cursor.fetchone()
 
                 if last_update_row:
-                    last_update = datetime.fromisoformat(last_update_row[0])
+                    # Handle both PostgreSQL (returns datetime objects) and SQLite (returns strings)
+                    last_update_time = last_update_row[0]
+                    if isinstance(last_update_time, str):
+                        last_update = datetime.fromisoformat(last_update_time)
+                    else:
+                        last_update = last_update_time
+
                     hours_since_update = (datetime.now() - last_update).total_seconds() / 3600
 
                     if hours_since_update < 1:
@@ -1413,7 +1446,7 @@ class DailyUpdater:
                 return True
 
         except Exception as e:
-            logger.error(f"Pre-update sanity checks failed with exception: {e}")
+            logger.error(f"Pre-update sanity checks failed with exception: {e}", exc_info=True)
             return False
 
     def _run_post_update_validation(self) -> None:

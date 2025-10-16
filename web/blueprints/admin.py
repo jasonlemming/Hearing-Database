@@ -122,7 +122,6 @@ def system_health():
             # Calculate hours since last update
             hours_since_update = None
             if last_update and last_update[2]:
-                from datetime import datetime
                 last_update_time = datetime.fromisoformat(last_update[2])
                 hours_since_update = (datetime.now() - last_update_time).total_seconds() / 3600
 
@@ -678,7 +677,6 @@ def task_status(task_id: int):
             # Calculate duration if task has started
             duration_seconds = None
             if row[5]:  # started_at
-                from datetime import datetime
                 start_time = datetime.fromisoformat(row[5])
                 end_time = datetime.fromisoformat(row[6]) if row[6] else datetime.now()
                 duration_seconds = (end_time - start_time).total_seconds()

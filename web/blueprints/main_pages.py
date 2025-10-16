@@ -31,7 +31,7 @@ def members():
                        ELSE 'House'
                    END as chamber
             FROM members m
-            LEFT JOIN committee_memberships cm ON m.member_id = cm.member_id AND cm.is_active = 1
+            LEFT JOIN committee_memberships cm ON m.member_id = cm.member_id AND cm.is_active = TRUE
             WHERE 1=1
         '''
         params = []
@@ -238,7 +238,7 @@ def member_detail(member_id):
                 FROM committee_memberships cm
                 JOIN committees c ON cm.committee_id = c.committee_id
                 LEFT JOIN committees pc ON c.parent_committee_id = pc.committee_id
-                WHERE cm.member_id = ? AND cm.is_active = 1
+                WHERE cm.member_id = ? AND cm.is_active = TRUE
                 ORDER BY c.chamber, COALESCE(pc.name, c.name), c.parent_committee_id IS NOT NULL, c.name
             ''', (member_id,))
             committees_raw = cursor.fetchall()
@@ -271,7 +271,7 @@ def member_detail(member_id):
                 JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id
                 JOIN committees c ON hc.committee_id = c.committee_id
                 JOIN committee_memberships cm ON c.committee_id = cm.committee_id
-                WHERE cm.member_id = ? AND cm.is_active = 1
+                WHERE cm.member_id = ? AND cm.is_active = TRUE
                 ORDER BY h.hearing_date DESC NULLS LAST
                 LIMIT 10
             ''', (member_id,))

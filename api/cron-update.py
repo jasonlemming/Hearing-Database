@@ -53,7 +53,7 @@ def get_schedule_config(task_id):
             SELECT task_id, name, lookback_days, mode, components,
                    schedule_cron, is_active, chamber
             FROM scheduled_tasks
-            WHERE task_id = ? AND is_active = 1
+            WHERE task_id = ? AND is_active = TRUE
         ''', (task_id,))
 
         row = cursor.fetchone()
@@ -462,7 +462,7 @@ def health_check():
                 cursor = conn.execute('''
                     SELECT task_id, name, schedule_cron, is_active, is_deployed, last_run_at
                     FROM scheduled_tasks
-                    WHERE is_active = 1
+                    WHERE is_active = TRUE
                 ''')
                 active_tasks = cursor.fetchall()
 
@@ -680,7 +680,7 @@ def legacy_daily_update():
         with db.transaction() as conn:
             cursor = conn.execute('''
                 SELECT task_id FROM scheduled_tasks
-                WHERE is_active = 1
+                WHERE is_active = TRUE
                 ORDER BY created_at ASC
                 LIMIT 1
             ''')

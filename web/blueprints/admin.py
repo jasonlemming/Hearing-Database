@@ -574,30 +574,10 @@ def start_update():
 
         logger.info(f"Created task {task_id} with mode={mode}, lookback={lookback_days}, chamber={chamber}")
 
-        # Trigger async execution via fire-and-forget HTTP request
-        try:
-            # Determine base URL
-            # Use production URL directly since VERCEL_URL is deployment-specific
-            if os.environ.get('VERCEL'):
-                base_url = 'https://www.capitollabsllc.com'
-            else:
-                base_url = 'http://localhost:5001'
-
-            trigger_url = f"{base_url}/api/admin/run-task/{task_id}"
-            logger.info(f"Triggering async task at: {trigger_url}")
-
-            # Fire-and-forget with longer timeout to allow connection establishment
-            requests.post(trigger_url, timeout=3.0)
-            logger.info(f"Successfully triggered task {task_id}")
-        except requests.exceptions.Timeout:
-            # Expected - task is running in background
-            logger.info(f"Timeout triggering task {task_id} (expected for async)")
-            pass
-        except requests.exceptions.ConnectionError as e:
-            logger.error(f"Connection error triggering task {task_id}: {e}")
-        except Exception as trigger_error:
-            logger.error(f"Failed to trigger task {task_id}: {type(trigger_error).__name__}: {trigger_error}")
-            # Task is still in database, can be manually triggered
+        # NOTE: Async execution is triggered by the frontend JavaScript to avoid
+        # Vercel serverless function self-invocation issues. The client makes a
+        # fire-and-forget POST to /api/admin/run-task/{task_id} after receiving
+        # the task_id from this endpoint.
 
         return jsonify({
             'task_id': task_id,

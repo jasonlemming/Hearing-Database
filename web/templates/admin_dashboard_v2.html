@@ -871,6 +871,19 @@ async function startManualUpdate(e) {
             currentTaskId = data.task_id;
             document.getElementById('liveProgress').style.display = 'block';
             document.getElementById('startUpdateBtn').disabled = true;
+
+            // Trigger async execution from client side (fire-and-forget)
+            // This avoids Vercel serverless function self-invocation issues
+            console.log('[DEBUG] Triggering async execution from client...');
+            fetch(`/api/admin/run-task/${data.task_id}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            }).then(() => {
+                console.log('[DEBUG] Async trigger sent successfully');
+            }).catch(err => {
+                console.error('[DEBUG] Async trigger error (non-critical):', err);
+            });
+
             updateInterval = setInterval(pollTaskStatus, 2000);
         } else {
             console.error('[DEBUG] Server returned error:', data.error);

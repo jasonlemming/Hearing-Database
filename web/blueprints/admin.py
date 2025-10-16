@@ -586,13 +586,17 @@ def start_update():
             trigger_url = f"{base_url}/api/admin/run-task/{task_id}"
             logger.info(f"Triggering async task at: {trigger_url}")
 
-            # Fire-and-forget with very short timeout
-            requests.post(trigger_url, timeout=0.5)
+            # Fire-and-forget with longer timeout to allow connection establishment
+            requests.post(trigger_url, timeout=3.0)
+            logger.info(f"Successfully triggered task {task_id}")
         except requests.exceptions.Timeout:
             # Expected - task is running in background
+            logger.info(f"Timeout triggering task {task_id} (expected for async)")
             pass
+        except requests.exceptions.ConnectionError as e:
+            logger.error(f"Connection error triggering task {task_id}: {e}")
         except Exception as trigger_error:
-            logger.warning(f"Failed to trigger task execution: {trigger_error}")
+            logger.error(f"Failed to trigger task {task_id}: {type(trigger_error).__name__}: {trigger_error}")
             # Task is still in database, can be manually triggered
 
         return jsonify({

@@ -25,6 +25,13 @@
       "config": {
         "maxDuration": 60
       }
+    },
+    {
+      "src": "api/batch-orchestrator.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxDuration": 60
+      }
     }
   ],
   "routes": [
@@ -57,6 +64,10 @@
       "dest": "api/batch-worker.py"
     },
     {
+      "src": "/api/batch/orchestrator",
+      "dest": "api/batch-orchestrator.py"
+    },
+    {
       "src": "/(.*)",
       "dest": "api/index.py"
     }
@@ -69,6 +80,10 @@
     {
       "path": "/api/cron/policy-library-update",
       "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/batch/orchestrator",
+      "schedule": "* * * * *"
     }
   ]
 }

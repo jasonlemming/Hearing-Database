@@ -64,14 +64,27 @@ app.register_blueprint(policy_library_bp)
 
 # Template filters (shared across all blueprints)
 @app.template_filter('strptime')
-def strptime_filter(date_string, format):
-    """Parse date string into datetime object"""
-    return datetime.strptime(date_string, format)
+def strptime_filter(date_value, format):
+    """Parse date string into datetime object (handles both strings and date objects from Postgres)"""
+    import datetime as dt
+    # If it's already a date or datetime object, just return it
+    if isinstance(date_value, (dt.date, dt.datetime)):
+        return date_value
+    # Otherwise parse the string
+    return datetime.strptime(date_value, format)
 
 
 @app.template_filter('strftime')
 def strftime_filter(date_obj, format):
-    """Format datetime object as string"""
+    """Format datetime object as string (handles both strings and date objects from Postgres)"""
+    import datetime as dt
+    # If it's a string, first parse it
+    if isinstance(date_obj, str):
+        try:
+            date_obj = datetime.strptime(date_obj, '%Y-%m-%d')
+        except ValueError:
+            return date_obj  # Return as-is if parsing fails
+    # Format the date object
     return date_obj.strftime(format)
 
 

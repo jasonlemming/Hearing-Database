@@ -293,6 +293,7 @@ def task_status(task_id: str):
             'progress': status['progress'],
             'duration_seconds': status['duration_seconds'],
             'recent_logs': logs['stdout'][-20:] if logs else [],
+            'stderr_logs': logs['stderr'] if logs else [],  # Include all stderr
             'error_count': status['progress'].get('errors', 0),
             'result': status['result'],
             'error_message': status.get('error_message')

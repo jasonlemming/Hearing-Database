@@ -1208,10 +1208,19 @@ def _build_cli_command(lookback_days: int, components: List[str], chamber: str, 
     Returns:
         Command as list of strings
     """
+    # Get project root directory
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+    # Try to find venv Python, fall back to system Python
+    venv_python = os.path.join(project_root, '.venv', 'bin', 'python3')
+    python_exec = venv_python if os.path.exists(venv_python) else sys.executable
+
+    cli_path = os.path.join(project_root, 'cli.py')
+
     # Base command
     command = [
-        sys.executable,  # Use same Python interpreter
-        'cli.py',
+        python_exec,  # Use venv Python if available
+        cli_path,
         'update',
         'incremental',
         '--congress', '119',

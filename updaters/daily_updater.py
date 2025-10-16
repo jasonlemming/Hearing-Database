@@ -479,6 +479,9 @@ class DailyUpdater:
 
                 self.metrics.api_requests += 1
                 logger.info(f"Retrieved {len(all_recent)} hearings from {fetch_window}-day window")
+                logger.info(f"DEBUG: Type of all_recent: {type(all_recent)}")
+                logger.info(f"DEBUG: First hearing if exists: {all_recent[0] if all_recent else 'EMPTY LIST'}")
+                logger.info(f"DEBUG: About to enter loop to process {len(all_recent)} hearings")
 
                 # Report that we're now checking each hearing
                 if progress_callback:
@@ -501,9 +504,15 @@ class DailyUpdater:
                 recent_hearings = []
                 retry_queue = []  # Track hearings that timed out for retry
 
+                logger.info(f"DEBUG: Starting loop iteration over {len(all_recent)} hearings")
                 for i, hearing in enumerate(all_recent):
+                    if i == 0:
+                        logger.info(f"DEBUG: Processing first hearing: {hearing}")
                     event_id = hearing.get('eventId')
                     chamber = hearing.get('chamber', '').lower()
+
+                    if i < 3:  # Log first 3 iterations for debugging
+                        logger.info(f"DEBUG: Loop iteration {i}: event_id={event_id}, chamber={chamber}")
 
                     if event_id and chamber:
                         try:

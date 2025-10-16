@@ -18,6 +18,13 @@
       "config": {
         "maxDuration": 300
       }
+    },
+    {
+      "src": "api/batch-worker.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxDuration": 60
+      }
     }
   ],
   "routes": [
@@ -44,6 +51,10 @@
     {
       "src": "/api/admin/run-task/([0-9]+)",
       "dest": "api/admin-task.py"
+    },
+    {
+      "src": "/api/batch/process/([0-9]+)",
+      "dest": "api/batch-worker.py"
     },
     {
       "src": "/(.*)",

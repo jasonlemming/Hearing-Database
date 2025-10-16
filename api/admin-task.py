@@ -21,7 +21,10 @@ try:
     from flask import Flask, jsonify, request
     from database.unified_manager import UnifiedDatabaseManager
     from updaters.daily_updater import DailyUpdater
+    from fetchers.hearing_fetcher import HearingFetcher
+    from api.client import CongressAPIClient
     from config.logging_config import get_logger
+    import requests
 except ImportError as e:
     print(f"Import error: {e}")
     sys.exit(1)
@@ -57,6 +60,109 @@ def update_task_status(db, task_id, status, **kwargs):
     db.execute(query, tuple(params))
 
 
+def create_batched_update(db, task_id, parameters):
+    """Create batches for a full sync update"""
+    congress = 119
+    batch_size = 50  # Hearings per batch
+
+    logger.info(f"Creating batches for task {task_id}")
+
+    # Initialize API client and fetcher
+    api_client = CongressAPIClient()
+    hearing_fetcher = HearingFetcher(api_client)
+
+    # Fetch basic hearing list (no details) for both chambers
+    house_hearings = hearing_fetcher.fetch_hearings(congress, chamber='house')
+    senate_hearings = hearing_fetcher.fetch_hearings(congress, chamber='senate')
+
+    logger.info(f"Found {len(house_hearings)} House and {len(senate_hearings)} Senate hearings")
+
+    # Create hearing ID list
+    all_hearing_ids = []
+    for hearing in house_hearings:
+        event_id = hearing.get('eventId')
+        if event_id:
+            all_hearing_ids.append(f"house:{event_id}")
+
+    for hearing in senate_hearings:
+        event_id = hearing.get('eventId')
+        if event_id:
+            all_hearing_ids.append(f"senate:{event_id}")
+
+    # Split into batches
+    total_hearings = len(all_hearing_ids)
+    total_batches = (total_hearings + batch_size - 1) // batch_size  # Ceiling division
+
+    logger.info(f"Creating {total_batches} batches of ~{batch_size} hearings each")
+
+    # Update parent task to mark as batched
+    db.execute("""
+        UPDATE admin_tasks
+        SET is_batched = TRUE,
+            total_batches = %s,
+            status = 'running',
+            started_at = %s
+        WHERE task_id = %s
+    """, (total_batches, datetime.now(), task_id))
+
+    # Create batch records
+    for batch_num in range(total_batches):
+        start_idx = batch_num * batch_size
+        end_idx = min(start_idx + batch_size, total_hearings)
+        batch_hearing_ids = all_hearing_ids[start_idx:end_idx]
+
+        batch_data = {
+            'congress': congress,
+            'hearing_ids': batch_hearing_ids,
+            'chamber': 'both'
+        }
+
+        db.execute("""
+            INSERT INTO admin_task_batches
+            (task_id, batch_number, total_batches, status, batch_data)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (task_id, batch_num, total_batches, 'pending', json.dumps(batch_data)))
+
+    logger.info(f"Created {total_batches} batch records for task {task_id}")
+
+    # Trigger first batch
+    first_batch = db.fetch_one("""
+        SELECT batch_id FROM admin_task_batches
+        WHERE task_id = %s AND batch_number = 0
+    """, (task_id,))
+
+    if first_batch:
+        trigger_batch_worker(first_batch['batch_id'])
+
+    return {
+        'success': True,
+        'message': f'Created {total_batches} batches, processing started',
+        'total_batches': total_batches,
+        'total_hearings': total_hearings
+    }
+
+
+def trigger_batch_worker(batch_id):
+    """Trigger batch worker via HTTP"""
+    try:
+        base_url = os.environ.get('VERCEL_URL', '')
+        if not base_url:
+            # Fallback to production domain
+            base_url = 'www.capitollabsllc.com'
+
+        if not base_url.startswith('http'):
+            base_url = f"https://{base_url}"
+
+        url = f"{base_url}/api/batch/process/{batch_id}"
+        logger.info(f"Triggering batch worker: {url}")
+
+        # Fire and forget - use timeout to prevent blocking
+        requests.post(url, timeout=5)
+
+    except Exception as e:
+        logger.error(f"Failed to trigger batch worker: {e}")
+
+
 def execute_manual_update(db, task_id, parameters):
     """Execute manual update task"""
     try:
@@ -68,6 +174,13 @@ def execute_manual_update(db, task_id, parameters):
 
         logger.info(f"Starting manual update task {task_id}: lookback={lookback_days}, mode={mode}, components={components}, dry_run={dry_run}")
 
+        # For full mode, use batched processing
+        if mode == 'full':
+            logger.info(f"Using batched processing for full sync (task {task_id})")
+            result = create_batched_update(db, task_id, parameters)
+            return result
+
+        # For incremental mode, use synchronous processing
         # Mark as running
         update_task_status(db, task_id, 'running')
 

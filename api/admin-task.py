@@ -12,8 +12,8 @@ import sys
 import json
 from datetime import datetime
 
-# Add project root to path
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Add project root to path (Vercel serverless compatible)
+project_root = os.getcwd()
 sys.path.insert(0, project_root)
 
 from database.unified_manager import UnifiedDatabaseManager

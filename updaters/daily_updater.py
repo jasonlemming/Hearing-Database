@@ -21,6 +21,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from api.client import CongressAPIClient
 from database.manager import DatabaseManager
+from database.unified_manager import UnifiedDatabaseManager
 from fetchers.hearing_fetcher import HearingFetcher
 from fetchers.committee_fetcher import CommitteeFetcher
 from fetchers.witness_fetcher import WitnessFetcher
@@ -219,7 +220,10 @@ class DailyUpdater:
         self.congress = congress
         self.lookback_days = lookback_days
         self.update_mode = update_mode  # 'incremental' or 'full'
-        self.db = DatabaseManager()
+
+        # Use UnifiedDatabaseManager for PostgreSQL compatibility
+        # This auto-detects PostgreSQL from environment variables
+        self.db = UnifiedDatabaseManager(prefer_postgres=True)
 
         # Component selection (default: all hearing-related components)
         # Note: 'hearings' always includes videos (same API response)
@@ -1661,7 +1665,7 @@ class DailyUpdater:
                 logger.info(f"✓ Database rolled back successfully")
 
                 # Reinitialize database connection
-                self.db = DatabaseManager()
+                self.db = UnifiedDatabaseManager(prefer_postgres=True)
 
                 # Send notification about rollback
                 self.notifier.send(

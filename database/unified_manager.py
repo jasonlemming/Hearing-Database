@@ -96,8 +96,12 @@ class UnifiedDatabaseManager:
         # Determine database URL
         if db_url is None:
             # Auto-detect: Check for Postgres URL first if preferred
-            if prefer_postgres and os.environ.get('POSTGRES_URL'):
-                db_url = os.environ.get('POSTGRES_URL')
+            if prefer_postgres:
+                # Check both POSTGRES_URL and DATABASE_URL (common on Vercel/Neon)
+                db_url = os.environ.get('POSTGRES_URL') or os.environ.get('DATABASE_URL')
+                if not db_url or not db_url.startswith('postgres'):
+                    # Fall back to SQLite if no Postgres URL found
+                    db_url = settings.database_path
             else:
                 db_url = settings.database_path
 

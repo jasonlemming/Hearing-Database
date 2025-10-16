@@ -8,7 +8,7 @@ DO NOT deploy /admin routes to production.
 import os
 import sys
 from flask import Blueprint, render_template, jsonify, request
-from database.manager import DatabaseManager
+from database.unified_manager import UnifiedDatabaseManager
 from datetime import datetime
 from typing import Dict, Any, List
 
@@ -24,8 +24,54 @@ logger = get_logger(__name__)
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
-# Initialize database manager
-db = DatabaseManager()
+# Initialize database manager with PostgreSQL support
+db = UnifiedDatabaseManager(prefer_postgres=True)
+
+
+# Helper function for database-agnostic date/time expressions
+def get_date_expr(days_ago: int = 0) -> str:
+    """
+    Generate database-agnostic SQL expression for date calculations
+
+    Args:
+        days_ago: Number of days to subtract from current date
+
+    Returns:
+        SQL expression string compatible with both SQLite and PostgreSQL
+    """
+    if db.db_type == 'postgres':
+        if days_ago == 0:
+            return "NOW()"
+        return f"NOW() - INTERVAL '{days_ago} days'"
+    else:  # sqlite
+        if days_ago == 0:
+            return "datetime('now')"
+        return f"datetime('now', '-{days_ago} days')"
+
+
+def table_exists(table_name: str) -> bool:
+    """Check if a table exists in the database (works for both SQLite and PostgreSQL)"""
+    try:
+        with db.transaction() as conn:
+            if db.db_type == 'postgres':
+                cursor = conn.execute("""
+                    SELECT EXISTS (
+                        SELECT FROM information_schema.tables
+                        WHERE table_schema = 'public'
+                        AND table_name = %s
+                    )
+                """, (table_name,))
+                result = cursor.fetchone()
+                return result[0] if result else False
+            else:  # sqlite
+                cursor = conn.execute("""
+                    SELECT name FROM sqlite_master
+                    WHERE type='table' AND name=?
+                """, (table_name,))
+                return cursor.fetchone() is not None
+    except Exception as e:
+        logger.error(f"Error checking if table {table_name} exists: {e}")
+        return False
 
 
 @admin_bp.route('/api/system-health')
@@ -63,9 +109,9 @@ def system_health():
             witness_count = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
             # Check for recent validation issues (from last 7 days)
-            cursor = conn.execute("""
+            cursor = conn.execute(f"""
                 SELECT COUNT(*) FROM update_logs
-                WHERE start_time >= datetime('now', '-7 days')
+                WHERE start_time >= {get_date_expr(7)}
                 AND success = 0
             """)
             row = cursor.fetchone()
@@ -169,12 +215,12 @@ def timeline():
     """
     try:
         with db.transaction() as conn:
-            cursor = conn.execute("""
+            cursor = conn.execute(f"""
                 SELECT log_id, update_date, start_time, end_time, duration_seconds,
                        hearings_checked, hearings_updated, hearings_added,
                        error_count, success, trigger_source
                 FROM update_logs
-                WHERE start_time >= datetime('now', '-7 days')
+                WHERE start_time >= {get_date_expr(7)}
                 ORDER BY start_time DESC
             """)
 
@@ -389,27 +435,22 @@ def update_details(log_id: int):
 def updates():
     """Admin page to view update history and status"""
     try:
+        # Check if update_logs table exists using helper function
+        if not table_exists('update_logs'):
+            return render_template('admin_updates.html',
+                                 updates=[],
+                                 table_exists=False,
+                                 now=datetime.now())
+
         with db.transaction() as conn:
-            # Check if update_logs table exists
-            cursor = conn.execute("""
-                SELECT name FROM sqlite_master
-                WHERE type='table' AND name='update_logs'
-            """)
-
-            if not cursor.fetchone():
-                return render_template('admin_updates.html',
-                                     updates=[],
-                                     table_exists=False,
-                                     now=datetime.now())
-
             # Get update history (last 30 days)
-            cursor = conn.execute("""
+            cursor = conn.execute(f"""
                 SELECT log_id, update_date, start_time, end_time, duration_seconds,
                        hearings_checked, hearings_updated, hearings_added,
                        committees_updated, witnesses_updated, api_requests,
                        error_count, errors, success, created_at
                 FROM update_logs
-                WHERE update_date >= date('now', '-30 days')
+                WHERE start_time >= {get_date_expr(30)}
                 ORDER BY start_time DESC
                 LIMIT 50
             """)

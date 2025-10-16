@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     """Application settings with environment variable support"""
 
     # API Configuration
-    api_key: Optional[str] = Field(default=None, env='API_KEY')
+    api_key: Optional[str] = Field(default=None, env='CONGRESS_API_KEY')
     api_base_url: str = Field(default='https://api.congress.gov/v3', env='API_BASE_URL')
     rate_limit: int = Field(default=5000, env='RATE_LIMIT')
 

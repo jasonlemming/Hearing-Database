@@ -671,10 +671,10 @@ def task_status(task_id: int):
             if not row:
                 return jsonify({'error': 'Task not found'}), 404
 
-            # Parse JSON fields
-            parameters = json.loads(row[3]) if row[3] else {}
-            result = json.loads(row[7]) if row[7] else None
-            progress = json.loads(row[9]) if row[9] else {}
+            # Parse JSON fields - handle both PostgreSQL (returns dict) and SQLite (returns JSON string)
+            parameters = row[3] if isinstance(row[3], dict) else (json.loads(row[3]) if row[3] else {})
+            result = row[7] if isinstance(row[7], dict) else (json.loads(row[7]) if row[7] else None)
+            progress = row[9] if isinstance(row[9], dict) else (json.loads(row[9]) if row[9] else {})
 
             # Calculate duration if task has started
             duration_seconds = None

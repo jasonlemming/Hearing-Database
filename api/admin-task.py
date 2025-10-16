@@ -164,16 +164,18 @@ def trigger_batch_worker(batch_id):
         url = f"{base_url}/api/batch/process/{batch_id}"
         logger.info(f"Triggering batch worker: {url}")
 
-        # Fire and forget in background thread - don't wait for response
-        import threading
-        def _trigger():
-            try:
-                requests.post(url, timeout=2)
-            except:
-                pass  # Ignore errors - batch will be triggered
-
-        thread = threading.Thread(target=_trigger, daemon=True)
-        thread.start()
+        # Fire and forget using curl subprocess - completely detached
+        import subprocess
+        try:
+            # Use curl in background, redirect output to /dev/null
+            subprocess.Popen(
+                ['curl', '-X', 'POST', '-m', '2', url],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                start_new_session=True  # Detach from parent process
+            )
+        except:
+            pass  # Ignore errors - batch will be triggered
 
     except Exception as e:
         logger.error(f"Failed to trigger batch worker: {e}")

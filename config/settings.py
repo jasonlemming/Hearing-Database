@@ -84,6 +84,17 @@ class Settings(BaseSettings):
 
 def get_settings() -> Settings:
     """Get application settings instance"""
+    # DEBUGGING: Force load from environment and strip quotes
+    import os
+    api_key_raw = os.environ.get('CONGRESS_API_KEY', os.environ.get('API_KEY'))
+    if api_key_raw:
+        # Strip any surrounding quotes
+        api_key_clean = api_key_raw.strip('"').strip("'")
+        os.environ['CONGRESS_API_KEY'] = api_key_clean
+        print(f"[SETTINGS DEBUG] API key loaded: {api_key_clean[:8]}... (length: {len(api_key_clean)})")
+    else:
+        print("[SETTINGS DEBUG] NO API KEY FOUND in environment!")
+
     return Settings()
 
 

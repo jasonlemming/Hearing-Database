@@ -210,6 +210,12 @@ def start_update():
     Returns:
         {"task_id": "uuid", "status": "started"}
     """
+    # Check if running on Vercel (serverless environment)
+    if os.environ.get('VERCEL'):
+        return jsonify({
+            'error': 'Manual updates are not available on Vercel (serverless environment). Use scheduled tasks instead.'
+        }), 501
+
     try:
         params = request.get_json() or {}
 

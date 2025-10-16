@@ -157,7 +157,9 @@ def update_status():
             if latest:
                 if latest[12]:  # success
                     # Check if update was today
-                    update_date = datetime.fromisoformat(latest[2]).date()
+                    # Handle both PostgreSQL (returns datetime objects) and SQLite (returns strings)
+                    update_time = latest[2] if isinstance(latest[2], datetime) else datetime.fromisoformat(latest[2])
+                    update_date = update_time.date()
                     if update_date == datetime.now().date():
                         status = 'updated_today'
                     else:

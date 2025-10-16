@@ -122,7 +122,8 @@ def system_health():
             # Calculate hours since last update
             hours_since_update = None
             if last_update and last_update[2]:
-                last_update_time = datetime.fromisoformat(last_update[2])
+                # Handle both PostgreSQL (returns datetime objects) and SQLite (returns strings)
+                last_update_time = last_update[2] if isinstance(last_update[2], datetime) else datetime.fromisoformat(last_update[2])
                 hours_since_update = (datetime.now() - last_update_time).total_seconds() / 3600
 
             # Determine health status
@@ -160,7 +161,8 @@ def system_health():
             hours_until_next = None
             if next_schedule and next_schedule[1]:
                 try:
-                    next_run_time = datetime.fromisoformat(next_schedule[1])
+                    # Handle both PostgreSQL (returns datetime objects) and SQLite (returns strings)
+                    next_run_time = next_schedule[1] if isinstance(next_schedule[1], datetime) else datetime.fromisoformat(next_schedule[1])
                     hours_until_next = (next_run_time - datetime.now()).total_seconds() / 3600
                 except:
                     pass
@@ -677,8 +679,9 @@ def task_status(task_id: int):
             # Calculate duration if task has started
             duration_seconds = None
             if row[5]:  # started_at
-                start_time = datetime.fromisoformat(row[5])
-                end_time = datetime.fromisoformat(row[6]) if row[6] else datetime.now()
+                # Handle both PostgreSQL (returns datetime objects) and SQLite (returns strings)
+                start_time = row[5] if isinstance(row[5], datetime) else datetime.fromisoformat(row[5])
+                end_time = (row[6] if isinstance(row[6], datetime) else datetime.fromisoformat(row[6])) if row[6] else datetime.now()
                 duration_seconds = (end_time - start_time).total_seconds()
 
             return jsonify({

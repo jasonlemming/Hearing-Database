@@ -39,7 +39,9 @@ def get_date_expr(days_ago: int = 0) -> str:
     Returns:
         SQL expression string compatible with both SQLite and PostgreSQL
     """
-    if db.db_type == 'postgres':
+    # Always use PostgreSQL syntax in production (Vercel sets POSTGRES_URL)
+    # Use SQLite syntax in development (no POSTGRES_URL)
+    if os.environ.get('POSTGRES_URL'):
         if days_ago == 0:
             return "NOW()"
         return f"NOW() - INTERVAL '{days_ago} days'"
@@ -53,7 +55,7 @@ def table_exists(table_name: str) -> bool:
     """Check if a table exists in the database (works for both SQLite and PostgreSQL)"""
     try:
         with db.transaction() as conn:
-            if db.db_type == 'postgres':
+            if os.environ.get('POSTGRES_URL'):
                 cursor = conn.execute("""
                     SELECT EXISTS (
                         SELECT FROM information_schema.tables

@@ -784,7 +784,7 @@ def export_vercel_config():
             cursor = _execute_query(conn, '''
                 SELECT task_id, name, schedule_cron
                 FROM scheduled_tasks
-                WHERE is_active = 1
+                WHERE is_active = TRUE
                 ORDER BY name
             ''')
 
@@ -971,7 +971,7 @@ def test_schedule(task_id):
             cursor = _execute_query(conn, '''
                 SELECT task_id, name, lookback_days, mode, components, is_active
                 FROM scheduled_tasks
-                WHERE task_id = ? AND is_active = 1
+                WHERE task_id = ? AND is_active = TRUE
             ''', (task_id,))
             row = cursor.fetchone()
 
@@ -1097,7 +1097,7 @@ def get_all_executions():
         limit = request.args.get('limit', 100, type=int)
         success_only = request.args.get('success_only', 'false').lower() == 'true'
 
-        success_filter = 'AND se.success = 1' if success_only else ''
+        success_filter = 'AND se.success = TRUE' if success_only else ''
 
         with db.transaction() as conn:
             cursor = _execute_query(conn, f'''

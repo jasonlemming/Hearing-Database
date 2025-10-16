@@ -15,8 +15,10 @@ from typing import Dict, Any, List
 # Add project root to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from config.task_manager import task_manager
+# from config.task_manager import task_manager  # DEPRECATED: Using database-driven async tasks instead
 from config.logging_config import get_logger
+import requests
+import json
 
 logger = get_logger(__name__)
 
@@ -499,19 +501,19 @@ def history():
 @admin_bp.route('/api/start-update', methods=['POST'])
 def start_update():
     """
-    Start a manual update task
+    Start a manual update task using database-driven async queue
 
     Request JSON:
         {
             "lookback_days": 7,
-            "components": ["hearings", "videos"],
+            "components": ["hearings", "witnesses", "committees"],
             "chamber": "both",
             "mode": "incremental",
             "dry_run": false
         }
 
     Returns:
-        {"task_id": "uuid", "status": "started"}
+        {"task_id": 123, "status": "pending", "message": "Task queued and execution triggered"}
     """
     try:
         params = request.get_json() or {}
@@ -546,106 +548,127 @@ def start_update():
         if not components:
             return jsonify({'error': 'At least one component required'}), 400
 
-        # Build CLI command
-        command = _build_cli_command(lookback_days, components, chamber, dry_run, mode)
+        # Create task parameters
+        task_params = {
+            'lookback_days': lookback_days,
+            'components': components,
+            'chamber': chamber,
+            'mode': mode,
+            'dry_run': dry_run
+        }
 
-        # Start task
-        task_id = task_manager.start_task(command)
+        # Create task record in database
+        with db.transaction() as conn:
+            cursor = conn.execute('''
+                INSERT INTO admin_tasks
+                (task_type, status, parameters, triggered_by, environment)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (
+                'manual_update',
+                'pending',
+                json.dumps(task_params),
+                'admin_dashboard',
+                os.environ.get('VERCEL_ENV', 'development')
+            ))
+            task_id = cursor.lastrowid
 
-        logger.info(f"Started update task {task_id} with mode={mode}, lookback={lookback_days}, chamber={chamber}")
+        logger.info(f"Created task {task_id} with mode={mode}, lookback={lookback_days}, chamber={chamber}")
+
+        # Trigger async execution via fire-and-forget HTTP request
+        try:
+            # Determine base URL
+            if os.environ.get('VERCEL'):
+                base_url = f"https://{os.environ.get('VERCEL_URL', 'capitollabsllc.com')}"
+            else:
+                base_url = 'http://localhost:5001'
+
+            trigger_url = f"{base_url}/api/admin/run-task/{task_id}"
+
+            # Fire-and-forget with very short timeout
+            requests.post(trigger_url, timeout=0.5)
+        except requests.exceptions.Timeout:
+            # Expected - task is running in background
+            pass
+        except Exception as trigger_error:
+            logger.warning(f"Failed to trigger task execution: {trigger_error}")
+            # Task is still in database, can be manually triggered
 
         return jsonify({
             'task_id': task_id,
-            'status': 'started',
-            'command': ' '.join(command)
-        })
-
-    except RuntimeError as e:
-        # Another task is already running
-        return jsonify({'error': str(e)}), 409
+            'status': 'pending',
+            'message': 'Task queued and execution triggered'
+        }), 202
 
     except Exception as e:
         logger.error(f"Failed to start update: {e}")
         return jsonify({'error': str(e)}), 500
 
 
-@admin_bp.route('/api/task-status/<task_id>')
-def task_status(task_id: str):
+@admin_bp.route('/api/task-status/<int:task_id>')
+def task_status(task_id: int):
     """
-    Get current status and progress of a task
+    Get current status and progress of a task from admin_tasks table
 
     Returns:
         {
-            "status": "running" | "completed" | "failed" | "cancelled",
+            "status": "pending" | "running" | "completed" | "failed",
             "progress": {...},
-            "recent_logs": [...],
-            "metrics": {...}
+            "result": {...},
+            "logs": "...",
+            "created_at": "...",
+            "started_at": "...",
+            "completed_at": "..."
         }
     """
     try:
-        status = task_manager.get_task_status(task_id)
+        with db.transaction() as conn:
+            cursor = conn.execute('''
+                SELECT task_id, task_type, status, parameters, created_at, started_at,
+                       completed_at, result, logs, progress, triggered_by, environment
+                FROM admin_tasks
+                WHERE task_id = ?
+            ''', (task_id,))
 
-        if not status:
-            return jsonify({'error': 'Task not found'}), 404
+            row = cursor.fetchone()
 
-        # Get recent log lines (last 20)
-        logs = task_manager.get_task_logs(task_id, since_line=max(0, status['stdout_lines'] - 20))
+            if not row:
+                return jsonify({'error': 'Task not found'}), 404
 
-        return jsonify({
-            'status': status['status'],
-            'progress': status['progress'],
-            'duration_seconds': status['duration_seconds'],
-            'recent_logs': logs['stdout'][-20:] if logs else [],
-            'error_count': status['progress'].get('errors', 0),
-            'result': status['result'],
-            'error_message': status.get('error_message')
-        })
+            # Parse JSON fields
+            parameters = json.loads(row[3]) if row[3] else {}
+            result = json.loads(row[7]) if row[7] else None
+            progress = json.loads(row[9]) if row[9] else {}
+
+            # Calculate duration if task has started
+            duration_seconds = None
+            if row[5]:  # started_at
+                from datetime import datetime
+                start_time = datetime.fromisoformat(row[5])
+                end_time = datetime.fromisoformat(row[6]) if row[6] else datetime.now()
+                duration_seconds = (end_time - start_time).total_seconds()
+
+            return jsonify({
+                'task_id': row[0],
+                'task_type': row[1],
+                'status': row[2],
+                'parameters': parameters,
+                'created_at': row[4],
+                'started_at': row[5],
+                'completed_at': row[6],
+                'result': result,
+                'logs': row[8],
+                'progress': progress,
+                'triggered_by': row[10],
+                'environment': row[11],
+                'duration_seconds': duration_seconds
+            })
 
     except Exception as e:
         logger.error(f"Error getting task status: {e}")
         return jsonify({'error': str(e)}), 500
 
 
-@admin_bp.route('/api/task-logs/<task_id>')
-def task_logs(task_id: str):
-    """
-    Get full log output for a task
-
-    Query params:
-        since_line: Start from this line number (for incremental updates)
-
-    Returns:
-        {"stdout": [...], "stderr": [...], "total_lines": N}
-    """
-    try:
-        since_line = request.args.get('since_line', 0, type=int)
-        logs = task_manager.get_task_logs(task_id, since_line=since_line)
-
-        if not logs:
-            return jsonify({'error': 'Task not found'}), 404
-
-        return jsonify(logs)
-
-    except Exception as e:
-        logger.error(f"Error getting task logs: {e}")
-        return jsonify({'error': str(e)}), 500
-
-
-@admin_bp.route('/api/cancel-update/<task_id>', methods=['POST'])
-def cancel_update(task_id: str):
-    """Cancel a running update task"""
-    try:
-        success = task_manager.cancel_task(task_id)
-
-        if success:
-            logger.info(f"Cancelled task {task_id}")
-            return jsonify({'status': 'cancelled'})
-        else:
-            return jsonify({'error': 'Task not found or not running'}), 404
-
-    except Exception as e:
-        logger.error(f"Error cancelling task: {e}")
-        return jsonify({'error': str(e)}), 500
+# /api/task-logs and /api/cancel-update endpoints removed - logs are now in admin_tasks table
 
 
 @admin_bp.route('/api/recent-changes')
@@ -1565,47 +1588,6 @@ def get_all_executions():
 
 
 # Helper functions
-
-def _build_cli_command(lookback_days: int, components: List[str], chamber: str, dry_run: bool, mode: str = 'incremental') -> List[str]:
-    """
-    Build CLI command from UI parameters
-
-    Args:
-        lookback_days: Number of days to look back
-        components: List of components to update
-        chamber: Chamber filter
-        dry_run: Whether to run in dry-run mode
-        mode: Update mode ('incremental' or 'full')
-
-    Returns:
-        Command as list of strings
-    """
-    # Base command
-    command = [
-        sys.executable,  # Use same Python interpreter
-        'cli.py',
-        'update',
-        'incremental',
-        '--congress', '119',
-        '--lookback-days', str(lookback_days),
-        '--mode', mode,
-        '--json-progress'
-    ]
-
-    # Add component flags (hearings is always included)
-    if components:
-        for component in components:
-            command.extend(['--components', component])
-
-    # Add dry-run flag if enabled
-    if dry_run:
-        command.append('--dry-run')
-
-    # Note: Chamber filtering would require additional CLI work
-    # For now, incremental updates process both chambers
-
-    return command
-
 
 def _get_hearing_changes(since_date: str, limit: int) -> List[Dict[str, Any]]:
     """

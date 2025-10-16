@@ -83,13 +83,18 @@ def execute_manual_update(db, task_id, parameters):
         updater.task_id = task_id
 
         # Define progress callback to update database
-        def progress_callback(stage, details=None):
-            progress = {
-                'stage': stage,
-                'details': details,
-                'timestamp': datetime.now().isoformat()
-            }
-            update_task_status(db, task_id, 'running', progress=progress)
+        def progress_callback(progress_data):
+            """
+            Progress callback that receives a dict with progress information
+            from DailyUpdater and stores it in the database
+            """
+            if isinstance(progress_data, dict):
+                progress_data['timestamp'] = datetime.now().isoformat()
+                update_task_status(db, task_id, 'running', progress=progress_data)
+            else:
+                # Fallback for old-style calls (shouldn't happen)
+                logger.warning(f"progress_callback received non-dict: {progress_data}")
+                update_task_status(db, task_id, 'running', progress={'message': str(progress_data)})
 
         # Run the update
         result = updater.run_daily_update(dry_run=dry_run, progress_callback=progress_callback)

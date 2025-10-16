@@ -7,11 +7,17 @@
     },
     {
       "src": "api/cron-update.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python",
+      "config": {
+        "maxDuration": 300
+      }
     },
     {
       "src": "api/admin-task.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python",
+      "config": {
+        "maxDuration": 300
+      }
     }
   ],
   "routes": [

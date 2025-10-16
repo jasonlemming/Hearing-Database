@@ -1466,7 +1466,8 @@ class DailyUpdater:
         logger.info("Running post-update validation...")
 
         try:
-            validator = UpdateValidator(db_path=self.settings.database_path)
+            # Don't pass db_path - let UpdateValidator auto-detect PostgreSQL from environment
+            validator = UpdateValidator()
             results = validator.run_all_checks(fix_issues=False)
 
             # Store validation results in metrics

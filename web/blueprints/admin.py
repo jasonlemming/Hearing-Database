@@ -559,10 +559,12 @@ def start_update():
 
         # Create task record in database
         with db.transaction() as conn:
+            # Use RETURNING clause for PostgreSQL compatibility (lastrowid doesn't work in Postgres)
             cursor = conn.execute('''
                 INSERT INTO admin_tasks
                 (task_type, status, parameters, triggered_by, environment)
                 VALUES (?, ?, ?, ?, ?)
+                RETURNING task_id
             ''', (
                 'manual_update',
                 'pending',
@@ -570,7 +572,12 @@ def start_update():
                 'admin_dashboard',
                 os.environ.get('VERCEL_ENV', 'development')
             ))
-            task_id = cursor.lastrowid
+            # Fetch the returned task_id (works for both SQLite 3.35+ and PostgreSQL)
+            result = cursor.fetchone()
+            task_id = result[0] if result else None
+
+            if not task_id:
+                raise ValueError("Failed to get task_id from INSERT operation")
 
         logger.info(f"Created task {task_id} with mode={mode}, lookback={lookback_days}, chamber={chamber}")
 

@@ -271,11 +271,11 @@ class UpdateValidator:
                 # Committees without members (for current congress)
                 cursor = conn.execute('''
                     SELECT COUNT(*) FROM committees c
-                    WHERE c.is_current = 1
+                    WHERE c.is_current = TRUE
                     AND c.parent_committee_id IS NULL
                     AND NOT EXISTS (
                         SELECT 1 FROM committee_memberships cm
-                        WHERE cm.committee_id = c.committee_id AND cm.is_active = 1
+                        WHERE cm.committee_id = c.committee_id AND cm.is_active = TRUE
                     )
                 ''')
                 no_members = cursor.fetchone()[0]

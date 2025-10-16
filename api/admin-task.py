@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Admin Task Executor - Separate Vercel Serverless Function
 
@@ -12,14 +13,20 @@ import sys
 import json
 from datetime import datetime
 
-# Add project root to path (Vercel serverless compatible)
-project_root = os.getcwd()
+# Add project root to Python path
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_root)
 
-from database.unified_manager import UnifiedDatabaseManager
-from updaters.daily_updater import DailyUpdater
-from config.logging_config import get_logger
+try:
+    from flask import Flask, jsonify, request
+    from database.unified_manager import UnifiedDatabaseManager
+    from updaters.daily_updater import DailyUpdater
+    from config.logging_config import get_logger
+except ImportError as e:
+    print(f"Import error: {e}")
+    sys.exit(1)
 
+app = Flask(__name__)
 logger = get_logger(__name__)
 
 
@@ -107,28 +114,18 @@ def execute_manual_update(db, task_id, parameters):
         return error_result
 
 
-def handler(request):
+@app.route('/api/admin/run-task/<int:task_id>', methods=['POST', 'GET'])
+def run_task(task_id):
     """
-    Vercel serverless function handler
+    Vercel serverless function endpoint to execute admin tasks
 
-    Expects URL pattern: /api/admin/run-task/{task_id}
+    Args:
+        task_id: ID of the task to execute
+
+    Returns:
+        JSON response with task execution results
     """
     try:
-        # Extract task_id from URL path
-        path = request.get('path', request.get('url', ''))
-        task_id = None
-
-        # Parse task_id from path like /api/admin/run-task/123
-        parts = path.strip('/').split('/')
-        if len(parts) >= 4 and parts[0] == 'api' and parts[1] == 'admin' and parts[2] == 'run-task':
-            task_id = int(parts[3])
-
-        if not task_id:
-            return {
-                'statusCode': 400,
-                'body': json.dumps({'error': 'Missing task_id in URL'})
-            }
-
         logger.info(f"Admin task executor received request for task {task_id}")
 
         # Initialize database
@@ -138,10 +135,7 @@ def handler(request):
         task = db.fetch_one('SELECT * FROM admin_tasks WHERE task_id = %s', (task_id,))
 
         if not task:
-            return {
-                'statusCode': 404,
-                'body': json.dumps({'error': f'Task {task_id} not found'})
-            }
+            return jsonify({'error': f'Task {task_id} not found'}), 404
 
         # Parse parameters
         parameters = task.get('parameters', task.get('parameters'))
@@ -154,22 +148,13 @@ def handler(request):
         if task_type == 'manual_update':
             result = execute_manual_update(db, task_id, parameters)
         else:
-            return {
-                'statusCode': 400,
-                'body': json.dumps({'error': f'Unknown task type: {task_type}'})
-            }
+            return jsonify({'error': f'Unknown task type: {task_type}'}), 400
 
-        return {
-            'statusCode': 200,
-            'body': json.dumps({
-                'task_id': task_id,
-                'result': result
-            })
-        }
+        return jsonify({
+            'task_id': task_id,
+            'result': result
+        }), 200
 
     except Exception as e:
         logger.error(f"Admin task handler error: {e}", exc_info=True)
-        return {
-            'statusCode': 500,
-            'body': json.dumps({'error': str(e)})
-        }
+        return jsonify({'error': str(e)}), 500

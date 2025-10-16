@@ -139,6 +139,59 @@ class BrookingsHTMLParser:
 
     HEADING_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 
+    def _is_404_page(self, soup: BeautifulSoup) -> bool:
+        """
+        Detect if page is a 404 error page
+
+        Multiple detection strategies:
+        1. Check for Brookings-specific 404 class
+        2. Check title for 404 or "Page not found"
+        3. Check h1 for 404 error messages
+        4. Check for very short content (< 100 words)
+
+        Returns:
+            True if page is a 404 error page
+        """
+        # Strategy 1: Check for Brookings 404 class
+        if soup.select_one('.block-404, div.block-404, .error-404'):
+            logger.debug("Detected 404 via block-404 class")
+            return True
+
+        # Strategy 2: Check title
+        title = self._extract_title(soup)
+        if title and ("404" in title or "page not found" in title.lower() or "not found" in title.lower()):
+            logger.debug(f"Detected 404 via title: {title}")
+            return True
+
+        # Strategy 3: Check h1 for common 404 messages
+        h1_tags = soup.find_all('h1')
+        for h1 in h1_tags:
+            h1_text = h1.get_text(strip=True).lower()
+            if any(phrase in h1_text for phrase in [
+                "couldn't find the page",
+                "page not found",
+                "404",
+                "page you are looking for",
+                "page doesn't exist"
+            ]):
+                logger.debug(f"Detected 404 via h1: {h1_text[:50]}")
+                return True
+
+        # Strategy 4: Check for suspiciously short content
+        # Extract potential content area
+        content = soup.select_one('div.article-content, main, article')
+        if content:
+            text = content.get_text(strip=True)
+            word_count = len(text.split())
+            # Real articles have at least 100 words; 404 pages are much shorter
+            if word_count < 100:
+                # Double-check it's not just a short intro (check for search form or "try these links")
+                if 'try these links' in text.lower() or 'search' in text.lower():
+                    logger.debug(f"Detected 404 via short content: {word_count} words")
+                    return True
+
+        return False
+
     def parse(self, html: str, url: str) -> Optional[ParsedContent]:
         """
         Parse Brookings HTML content
@@ -154,10 +207,11 @@ class BrookingsHTMLParser:
             soup = BeautifulSoup(html, 'lxml')
 
             # Check for 404 pages - reject early
-            title = self._extract_title(soup)
-            if "Page not found" in title or "404" in title:
-                logger.warning(f"Detected 404 page, skipping: {title}")
+            if self._is_404_page(soup):
+                logger.warning(f"Detected 404 page, skipping: {url}")
                 return None
+
+            title = self._extract_title(soup)
 
             # Extract metadata
             authors = self._extract_authors(soup)

@@ -147,7 +147,7 @@ def witnesses():
             query += ' AND wa.witness_type = ?'
             params.append(witness_type)
 
-        query += ' GROUP BY w.witness_id'
+        query += ' GROUP BY w.witness_id, w.full_name, w.first_name, w.last_name, w.title, w.organization, wa.witness_type'
 
         # Count total for pagination
         count_query = f"SELECT COUNT(*) FROM ({query}) as count_query"
@@ -436,7 +436,7 @@ def search():
                 FROM witnesses w
                 LEFT JOIN witness_appearances wa ON w.witness_id = wa.witness_id
                 WHERE w.full_name LIKE ? OR w.organization LIKE ?
-                GROUP BY w.witness_id
+                GROUP BY w.witness_id, w.full_name, w.organization, wa.witness_type
                 ORDER BY w.full_name
                 LIMIT 10
             ''', (search_term, search_term))

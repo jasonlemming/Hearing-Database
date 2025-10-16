@@ -246,6 +246,6 @@ def hearing_detail(hearing_id):
                              transcripts=transcripts,
                              witness_documents=witness_documents,
                              supporting_documents=supporting_documents,
-                             today=date.today().isoformat())
+                             today=date.today())
     except Exception as e:
         return f"Error: {e}", 500

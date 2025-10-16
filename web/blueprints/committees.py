@@ -100,7 +100,7 @@ def committees():
             cursor = conn.execute('''
                 SELECT committee_id, name, chamber
                 FROM committees
-                WHERE is_current = 1 AND parent_committee_id IS NULL
+                WHERE is_current = TRUE AND parent_committee_id IS NULL
                 ORDER BY chamber, name
             ''')
             all_committees = cursor.fetchall()

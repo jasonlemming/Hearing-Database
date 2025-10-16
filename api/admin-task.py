@@ -69,6 +69,14 @@ def create_batched_update(db, task_id, parameters):
 
     # Initialize API client and fetcher
     api_client = CongressAPIClient()
+
+    # Log API key status for debugging
+    api_key = api_client.api_key
+    if api_key:
+        logger.info(f"API key loaded: {api_key[:8]}... (length: {len(api_key)})")
+    else:
+        logger.error("API key is None or empty!")
+
     hearing_fetcher = HearingFetcher(api_client)
 
     # Fetch basic hearing list (no details) for both chambers

@@ -216,7 +216,11 @@ def trigger_next_batch(task_id, current_batch_number):
 
         if next_batch:
             # Trigger next batch via HTTP (self-invoke)
-            base_url = os.environ.get('VERCEL_URL', 'localhost:5000')
+            base_url = os.environ.get('VERCEL_URL', '')
+            if not base_url:
+                # Fallback to production domain
+                base_url = 'www.capitollabsllc.com'
+
             if not base_url.startswith('http'):
                 base_url = f"https://{base_url}"
 

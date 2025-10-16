@@ -23,7 +23,7 @@ import json
 # Add project root to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from database.manager import DatabaseManager
+from database.unified_manager import UnifiedDatabaseManager
 from config.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -33,7 +33,11 @@ class UpdateValidator:
     """Validates database after updates"""
 
     def __init__(self, db_path: str = None):
-        self.db = DatabaseManager(db_path) if db_path else DatabaseManager()
+        # Use UnifiedDatabaseManager for PostgreSQL compatibility
+        if db_path:
+            self.db = UnifiedDatabaseManager(db_url=db_path, prefer_postgres=False)
+        else:
+            self.db = UnifiedDatabaseManager(prefer_postgres=True)
         self.issues = []
         self.warnings = []
         self.stats = {}
@@ -599,12 +603,12 @@ class HistoricalValidator:
     that static thresholds would miss.
     """
 
-    def __init__(self, db: DatabaseManager, min_history_days: int = 17):
+    def __init__(self, db: UnifiedDatabaseManager, min_history_days: int = 17):
         """
         Initialize validator
 
         Args:
-            db: Database manager instance
+            db: Database manager instance (UnifiedDatabaseManager)
             min_history_days: Minimum days of history required (default: 17)
         """
         self.db = db

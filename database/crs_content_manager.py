@@ -1,7 +1,6 @@
 """
 CRS Content Manager - Database operations for CRS content versions
 """
-import sqlite3
 import json
 import os
 import boto3
@@ -11,6 +10,8 @@ from datetime import datetime
 from pathlib import Path
 from contextlib import contextmanager
 from config.logging_config import get_logger
+from database.postgres_config import get_connection
+from psycopg2.extras import RealDictCursor
 
 logger = get_logger(__name__)
 
@@ -26,22 +27,13 @@ class CRSContentManager:
     - Content retrieval
     """
 
-    def __init__(self, db_path: str = 'crs_products.db'):
+    def __init__(self):
         """
         Initialize CRS content manager
 
-        Args:
-            db_path: Path to CRS SQLite database
+        Uses PostgreSQL connection from DATABASE_URL or CRS_DATABASE_URL environment variable
         """
-        self.db_path = db_path
-        self._ensure_database_exists()
         self._init_r2_client()
-
-    def _ensure_database_exists(self):
-        """Ensure database file exists"""
-        db_file = Path(self.db_path)
-        if not db_file.exists():
-            logger.warning(f"Database not found: {self.db_path}")
 
     def _init_r2_client(self):
         """Initialize Cloudflare R2 client for blob storage"""
@@ -115,19 +107,10 @@ class CRSContentManager:
             return None
 
     @contextmanager
-    def get_connection(self):
-        """Get database connection with row factory"""
-        conn = sqlite3.connect(self.db_path)
-        conn.row_factory = sqlite3.Row
-        conn.execute("PRAGMA foreign_keys = ON")
-        try:
+    def get_db_connection(self):
+        """Get PostgreSQL database connection"""
+        with get_connection() as conn:
             yield conn
-            conn.commit()
-        except Exception:
-            conn.rollback()
-            raise
-        finally:
-            conn.close()
 
     def upsert_version(self, product_id: str, version_number: int,
                       html_content: str, text_content: str, structure_json: Dict,
@@ -159,96 +142,100 @@ class CRSContentManager:
             if self.r2_enabled:
                 raise Exception(f"R2 upload failed for {product_id} v{version_number}")
 
-        with self.get_connection() as conn:
-            # Check if this version already exists
-            existing = conn.execute("""
-                SELECT version_id, content_hash
-                FROM product_versions
-                WHERE product_id = ? AND version_number = ?
-            """, (product_id, version_number)).fetchone()
+        with self.get_db_connection() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                # Check if this version already exists
+                cur.execute("""
+                    SELECT version_id, content_hash
+                    FROM product_versions
+                    WHERE product_id = %s AND version_number = %s
+                """, (product_id, version_number))
+                existing = cur.fetchone()
 
-            if existing:
-                # Check if content has changed
-                if existing['content_hash'] == content_hash:
-                    logger.debug(f"Version {version_number} of {product_id} unchanged, skipping update")
-                    return existing['version_id']
+                if existing:
+                    # Check if content has changed
+                    if existing['content_hash'] == content_hash:
+                        logger.debug(f"Version {version_number} of {product_id} unchanged, skipping update")
+                        return existing['version_id']
 
-                # Content changed, update it
-                conn.execute("""
+                    # Content changed, update it
+                    cur.execute("""
+                        UPDATE product_versions
+                        SET structure_json = %s,
+                            content_hash = %s,
+                            word_count = %s,
+                            html_url = %s,
+                            blob_url = %s,
+                            ingested_at = CURRENT_TIMESTAMP
+                        WHERE version_id = %s
+                    """, (json.dumps(structure_json), content_hash, word_count,
+                         html_url, blob_url, existing['version_id']))
+
+                    version_id = existing['version_id']
+                    logger.info(f"✓ Updated version {version_number} of {product_id} (content changed)")
+
+                else:
+                    # Insert new version using RETURNING clause
+                    cur.execute("""
+                        INSERT INTO product_versions
+                        (product_id, version_number, structure_json,
+                         content_hash, word_count, html_url, blob_url, is_current)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, FALSE)
+                        RETURNING version_id
+                    """, (product_id, version_number, json.dumps(structure_json),
+                         content_hash, word_count, html_url, blob_url))
+
+                    version_id = cur.fetchone()['version_id']
+                    logger.info(f"✓ Inserted version {version_number} of {product_id}")
+
+                # Mark this version as current, all others as not current
+                cur.execute("""
                     UPDATE product_versions
-                    SET structure_json = ?,
-                        content_hash = ?,
-                        word_count = ?,
-                        html_url = ?,
-                        blob_url = ?,
-                        ingested_at = CURRENT_TIMESTAMP
-                    WHERE version_id = ?
-                """, (json.dumps(structure_json), content_hash, word_count,
-                     html_url, blob_url, existing['version_id']))
+                    SET is_current = FALSE
+                    WHERE product_id = %s AND version_id != %s
+                """, (product_id, version_id))
 
-                version_id = existing['version_id']
-                logger.info(f"✓ Updated version {version_number} of {product_id} (content changed)")
+                cur.execute("""
+                    UPDATE product_versions
+                    SET is_current = TRUE
+                    WHERE version_id = %s
+                """, (version_id,))
 
-            else:
-                # Insert new version
-                cursor = conn.execute("""
-                    INSERT INTO product_versions
-                    (product_id, version_number, structure_json,
-                     content_hash, word_count, html_url, blob_url, is_current)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, 0)
-                """, (product_id, version_number, json.dumps(structure_json),
-                     content_hash, word_count, html_url, blob_url))
+                # Update FTS index
+                self._update_fts_index(cur, version_id, product_id, structure_json, text_content)
 
-                version_id = cursor.lastrowid
-                logger.info(f"✓ Inserted version {version_number} of {product_id}")
+                return version_id
 
-            # Mark this version as current, all others as not current
-            conn.execute("""
-                UPDATE product_versions
-                SET is_current = 0
-                WHERE product_id = ? AND version_id != ?
-            """, (product_id, version_id))
-
-            conn.execute("""
-                UPDATE product_versions
-                SET is_current = 1
-                WHERE version_id = ?
-            """, (version_id,))
-
-            # Update FTS index
-            self._update_fts_index(conn, version_id, product_id, structure_json, text_content)
-
-            return version_id
-
-    def _update_fts_index(self, conn: sqlite3.Connection, version_id: int,
+    def _update_fts_index(self, cur, version_id: int,
                          product_id: str, structure_json: Dict, text_content: str):
         """
         Update full-text search index for a version
 
         Args:
-            conn: Database connection
+            cur: Database cursor
             version_id: Version ID
             product_id: Product ID
             structure_json: Document structure
             text_content: Plain text content
         """
         # Get product title from products table
-        product = conn.execute("""
-            SELECT title FROM products WHERE product_id = ?
-        """, (product_id,)).fetchone()
+        cur.execute("""
+            SELECT title FROM products WHERE product_id = %s
+        """, (product_id,))
+        product = cur.fetchone()
 
         title = product['title'] if product else ''
         headings = ' '.join(structure_json.get('headings', []))
 
         # Delete existing FTS entry for this version
-        conn.execute("""
-            DELETE FROM product_content_fts WHERE version_id = ?
+        cur.execute("""
+            DELETE FROM product_content_fts WHERE version_id = %s
         """, (version_id,))
 
         # Insert new FTS entry
-        conn.execute("""
+        cur.execute("""
             INSERT INTO product_content_fts (product_id, version_id, title, headings, text_content)
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s)
         """, (product_id, version_id, title, headings, text_content))
 
     def get_current_version(self, product_id: str) -> Optional[Dict[str, Any]]:
@@ -261,15 +248,17 @@ class CRSContentManager:
         Returns:
             Version record as dict or None
         """
-        with self.get_connection() as conn:
-            version = conn.execute("""
-                SELECT * FROM product_versions
-                WHERE product_id = ? AND is_current = 1
-            """, (product_id,)).fetchone()
+        with self.get_db_connection() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute("""
+                    SELECT * FROM product_versions
+                    WHERE product_id = %s AND is_current = TRUE
+                """, (product_id,))
+                version = cur.fetchone()
 
-            if version:
-                return dict(version)
-            return None
+                if version:
+                    return dict(version)
+                return None
 
     def get_version(self, product_id: str, version_number: int) -> Optional[Dict[str, Any]]:
         """
@@ -282,15 +271,17 @@ class CRSContentManager:
         Returns:
             Version record as dict or None
         """
-        with self.get_connection() as conn:
-            version = conn.execute("""
-                SELECT * FROM product_versions
-                WHERE product_id = ? AND version_number = ?
-            """, (product_id, version_number)).fetchone()
+        with self.get_db_connection() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute("""
+                    SELECT * FROM product_versions
+                    WHERE product_id = %s AND version_number = %s
+                """, (product_id, version_number))
+                version = cur.fetchone()
 
-            if version:
-                return dict(version)
-            return None
+                if version:
+                    return dict(version)
+                return None
 
     def get_version_history(self, product_id: str) -> List[Dict[str, Any]]:
         """
@@ -302,16 +293,18 @@ class CRSContentManager:
         Returns:
             List of version records (without large content fields)
         """
-        with self.get_connection() as conn:
-            versions = conn.execute("""
-                SELECT version_id, product_id, version_number, word_count,
-                       content_hash, ingested_at, is_current, html_url
-                FROM product_versions
-                WHERE product_id = ?
-                ORDER BY version_number DESC
-            """, (product_id,)).fetchall()
+        with self.get_db_connection() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute("""
+                    SELECT version_id, product_id, version_number, word_count,
+                           content_hash, ingested_at, is_current, html_url
+                    FROM product_versions
+                    WHERE product_id = %s
+                    ORDER BY version_number DESC
+                """, (product_id,))
+                versions = cur.fetchall()
 
-            return [dict(v) for v in versions]
+                return [dict(v) for v in versions]
 
     def needs_update(self, product_id: str, version_number: int, html_url: str) -> bool:
         """
@@ -362,20 +355,22 @@ class CRSContentManager:
         Returns:
             List of product records that need content
         """
-        with self.get_connection() as conn:
-            query = """
-                SELECT p.*
-                FROM products p
-                LEFT JOIN product_versions pv ON p.product_id = pv.product_id AND pv.is_current = 1
-                WHERE pv.version_id IS NULL
-                ORDER BY p.publication_date DESC
-            """
+        with self.get_db_connection() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                query = """
+                    SELECT p.*
+                    FROM products p
+                    LEFT JOIN product_versions pv ON p.product_id = pv.product_id AND pv.is_current = TRUE
+                    WHERE pv.version_id IS NULL
+                    ORDER BY p.publication_date DESC
+                """
 
-            if limit:
-                query += f" LIMIT {limit}"
+                if limit:
+                    query += f" LIMIT {limit}"
 
-            products = conn.execute(query).fetchall()
-            return [dict(p) for p in products]
+                cur.execute(query)
+                products = cur.fetchall()
+                return [dict(p) for p in products]
 
     def start_ingestion_log(self, run_type: str) -> int:
         """
@@ -387,14 +382,16 @@ class CRSContentManager:
         Returns:
             log_id
         """
-        with self.get_connection() as conn:
-            cursor = conn.execute("""
-                INSERT INTO content_ingestion_logs
-                (run_type, started_at, status)
-                VALUES (?, ?, 'running')
-            """, (run_type, datetime.now().isoformat()))
+        with self.get_db_connection() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute("""
+                    INSERT INTO content_ingestion_logs
+                    (run_type, started_at, status)
+                    VALUES (%s, %s, 'running')
+                    RETURNING log_id
+                """, (run_type, datetime.now().isoformat()))
 
-            return cursor.lastrowid
+                return cur.fetchone()['log_id']
 
     def update_ingestion_log(self, log_id: int, **kwargs):
         """
@@ -410,10 +407,10 @@ class CRSContentManager:
 
         for key, value in kwargs.items():
             if key == 'error_details' and isinstance(value, (list, dict)):
-                set_parts.append(f"{key} = ?")
+                set_parts.append(f"{key} = %s")
                 values.append(json.dumps(value))
             else:
-                set_parts.append(f"{key} = ?")
+                set_parts.append(f"{key} = %s")
                 values.append(value)
 
         if not set_parts:
@@ -423,11 +420,12 @@ class CRSContentManager:
         query = f"""
             UPDATE content_ingestion_logs
             SET {', '.join(set_parts)}
-            WHERE log_id = ?
+            WHERE log_id = %s
         """
 
-        with self.get_connection() as conn:
-            conn.execute(query, values)
+        with self.get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(query, values)
 
     def complete_ingestion_log(self, log_id: int, status: str = 'completed'):
         """
@@ -437,23 +435,25 @@ class CRSContentManager:
             log_id: Log ID
             status: Final status ('completed', 'failed', 'partial')
         """
-        with self.get_connection() as conn:
-            # Calculate duration
-            log = conn.execute("""
-                SELECT started_at FROM content_ingestion_logs WHERE log_id = ?
-            """, (log_id,)).fetchone()
+        with self.get_db_connection() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                # Calculate duration
+                cur.execute("""
+                    SELECT started_at FROM content_ingestion_logs WHERE log_id = %s
+                """, (log_id,))
+                log = cur.fetchone()
 
-            if log:
-                started = datetime.fromisoformat(log['started_at'])
-                duration = (datetime.now() - started).total_seconds()
+                if log:
+                    started = datetime.fromisoformat(log['started_at'])
+                    duration = (datetime.now() - started).total_seconds()
 
-                conn.execute("""
-                    UPDATE content_ingestion_logs
-                    SET completed_at = ?,
-                        status = ?,
-                        total_duration_seconds = ?
-                    WHERE log_id = ?
-                """, (datetime.now().isoformat(), status, duration, log_id))
+                    cur.execute("""
+                        UPDATE content_ingestion_logs
+                        SET completed_at = %s,
+                            status = %s,
+                            total_duration_seconds = %s
+                        WHERE log_id = %s
+                    """, (datetime.now().isoformat(), status, duration, log_id))
 
     def get_ingestion_stats(self) -> Dict[str, Any]:
         """
@@ -462,60 +462,68 @@ class CRSContentManager:
         Returns:
             Dictionary with stats
         """
-        with self.get_connection() as conn:
-            stats = {}
+        with self.get_db_connection() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                stats = {}
 
-            # Total products
-            stats['total_products'] = conn.execute("SELECT COUNT(*) FROM products").fetchone()[0]
+                # Total products
+                cur.execute("SELECT COUNT(*) as count FROM products")
+                stats['total_products'] = cur.fetchone()['count']
 
-            # Products with content
-            stats['products_with_content'] = conn.execute("""
-                SELECT COUNT(DISTINCT product_id) FROM product_versions
-            """).fetchone()[0]
+                # Products with content
+                cur.execute("""
+                    SELECT COUNT(DISTINCT product_id) as count FROM product_versions
+                """)
+                stats['products_with_content'] = cur.fetchone()['count']
 
-            # Current versions
-            stats['current_versions'] = conn.execute("""
-                SELECT COUNT(*) FROM product_versions WHERE is_current = 1
-            """).fetchone()[0]
+                # Current versions
+                cur.execute("""
+                    SELECT COUNT(*) as count FROM product_versions WHERE is_current = TRUE
+                """)
+                stats['current_versions'] = cur.fetchone()['count']
 
-            # Total versions
-            stats['total_versions'] = conn.execute("""
-                SELECT COUNT(*) FROM product_versions
-            """).fetchone()[0]
+                # Total versions
+                cur.execute("""
+                    SELECT COUNT(*) as count FROM product_versions
+                """)
+                stats['total_versions'] = cur.fetchone()['count']
 
-            # Total storage (now in R2, show count of blob URLs instead)
-            blob_count = conn.execute("""
-                SELECT COUNT(*) as blob_count
-                FROM product_versions
-                WHERE blob_url IS NOT NULL
-            """).fetchone()
-            stats['content_in_r2'] = blob_count['blob_count'] or 0
+                # Total storage (now in R2, show count of blob URLs instead)
+                cur.execute("""
+                    SELECT COUNT(*) as blob_count
+                    FROM product_versions
+                    WHERE blob_url IS NOT NULL
+                """)
+                blob_count = cur.fetchone()
+                stats['content_in_r2'] = blob_count['blob_count'] or 0
 
-            # Average word count
-            avg_words = conn.execute("""
-                SELECT AVG(word_count) as avg_words
-                FROM product_versions
-                WHERE is_current = 1
-            """).fetchone()
-            stats['avg_word_count'] = round(avg_words['avg_words'] or 0, 0)
+                # Average word count
+                cur.execute("""
+                    SELECT AVG(word_count) as avg_words
+                    FROM product_versions
+                    WHERE is_current = TRUE
+                """)
+                avg_words = cur.fetchone()
+                stats['avg_word_count'] = round(avg_words['avg_words'] or 0, 0)
 
-            # Last ingestion
-            last_log = conn.execute("""
-                SELECT started_at, status, content_fetched
-                FROM content_ingestion_logs
-                ORDER BY started_at DESC
-                LIMIT 1
-            """).fetchone()
+                # Last ingestion
+                cur.execute("""
+                    SELECT started_at, status, content_fetched
+                    FROM content_ingestion_logs
+                    ORDER BY started_at DESC
+                    LIMIT 1
+                """)
+                last_log = cur.fetchone()
 
-            if last_log:
-                stats['last_ingestion'] = dict(last_log)
+                if last_log:
+                    stats['last_ingestion'] = dict(last_log)
 
-            # Coverage percentage
-            if stats['total_products'] > 0:
-                stats['coverage_percent'] = round(
-                    (stats['products_with_content'] / stats['total_products']) * 100, 1
-                )
-            else:
-                stats['coverage_percent'] = 0
+                # Coverage percentage
+                if stats['total_products'] > 0:
+                    stats['coverage_percent'] = round(
+                        (stats['products_with_content'] / stats['total_products']) * 100, 1
+                    )
+                else:
+                    stats['coverage_percent'] = 0
 
-            return stats
+                return stats

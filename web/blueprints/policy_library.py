@@ -461,6 +461,31 @@ def trigger_update():
         }), 500
 
 
+@policy_library_bp.route('/api/sync-crs', methods=['POST'])
+def sync_crs():
+    """Manually trigger CRS to Policy Library sync"""
+    try:
+        from brookings_ingester.crs_sync import sync_crs_to_policy_library
+
+        # Get optional limit parameter
+        limit = request.args.get('limit', type=int)
+
+        # Run sync
+        stats = sync_crs_to_policy_library(limit=limit)
+
+        return jsonify({
+            'success': True,
+            'message': 'CRS sync completed successfully',
+            'stats': stats
+        })
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
 @policy_library_bp.route('/test-update')
 def test_update_page():
     """Test page for manual updates"""

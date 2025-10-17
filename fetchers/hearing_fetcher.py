@@ -50,7 +50,9 @@ class HearingFetcher(BaseFetcher):
                 logger.info(f"Fetched {len([h for h in all_hearings if h['chamber'] == chamber_name.title()])} {chamber_name} hearings")
 
             except Exception as e:
-                logger.error(f"Error fetching {chamber_name} hearings: {e}")
+                logger.error(f"Error fetching {chamber_name} hearings: {e}", exc_info=True)
+                # Re-raise the exception to propagate it up for proper error handling
+                raise
 
         logger.info(f"Total hearings fetched: {len(all_hearings)}")
         return all_hearings

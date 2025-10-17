@@ -31,7 +31,7 @@ def members():
                        ELSE 'House'
                    END as chamber
             FROM members m
-            LEFT JOIN committee_memberships cm ON m.member_id = cm.member_id AND cm.is_active = 1
+            LEFT JOIN committee_memberships cm ON m.member_id = cm.member_id AND cm.is_active = TRUE
             WHERE 1=1
         '''
         params = []
@@ -57,7 +57,8 @@ def members():
 
         with db.transaction() as conn:
             cursor = conn.execute(count_query, params)
-            total = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            total = list(row.values())[0] if hasattr(row, 'keys') else row[0]
 
             # Add sorting
             sort_columns = {
@@ -82,10 +83,12 @@ def members():
 
             # Get filter options
             cursor = conn.execute('SELECT DISTINCT party FROM members WHERE party IS NOT NULL ORDER BY party')
-            parties = [row[0] for row in cursor.fetchall()]
+            rows = cursor.fetchall()
+            parties = [list(row.values())[0] if hasattr(row, 'keys') else row[0] for row in rows]
 
             cursor = conn.execute('SELECT DISTINCT state FROM members WHERE state IS NOT NULL ORDER BY state')
-            states = [row[0] for row in cursor.fetchall()]
+            rows = cursor.fetchall()
+            states = [list(row.values())[0] if hasattr(row, 'keys') else row[0] for row in rows]
 
             chambers = ['House', 'Senate']
 
@@ -128,7 +131,7 @@ def witnesses():
         # Build query for witnesses with hearing information
         query = '''
             SELECT w.witness_id, w.full_name, w.first_name, w.last_name, w.title, w.organization,
-                   wa.witness_type,
+                   MAX(wa.witness_type) as witness_type,
                    COUNT(DISTINCT wa.hearing_id) as hearing_count,
                    MAX(h.hearing_date) as latest_appearance
             FROM witnesses w
@@ -147,14 +150,15 @@ def witnesses():
             query += ' AND wa.witness_type = ?'
             params.append(witness_type)
 
-        query += ' GROUP BY w.witness_id'
+        query += ' GROUP BY w.witness_id, w.full_name, w.first_name, w.last_name, w.title, w.organization'
 
         # Count total for pagination
         count_query = f"SELECT COUNT(*) FROM ({query}) as count_query"
 
         with db.transaction() as conn:
             cursor = conn.execute(count_query, params)
-            total = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            total = list(row.values())[0] if hasattr(row, 'keys') else row[0]
 
             # Add sorting
             sort_columns = {
@@ -184,7 +188,8 @@ def witnesses():
 
             # Get filter options
             cursor = conn.execute('SELECT DISTINCT witness_type FROM witness_appearances WHERE witness_type IS NOT NULL ORDER BY witness_type')
-            witness_types = [row[0] for row in cursor.fetchall()]
+            rows = cursor.fetchall()
+            witness_types = [list(row.values())[0] if hasattr(row, 'keys') else row[0] for row in rows]
 
         # Pagination info
         total_pages = (total + per_page - 1) // per_page
@@ -233,7 +238,7 @@ def member_detail(member_id):
                 FROM committee_memberships cm
                 JOIN committees c ON cm.committee_id = c.committee_id
                 LEFT JOIN committees pc ON c.parent_committee_id = pc.committee_id
-                WHERE cm.member_id = ? AND cm.is_active = 1
+                WHERE cm.member_id = ? AND cm.is_active = TRUE
                 ORDER BY c.chamber, COALESCE(pc.name, c.name), c.parent_committee_id IS NOT NULL, c.name
             ''', (member_id,))
             committees_raw = cursor.fetchall()
@@ -266,7 +271,7 @@ def member_detail(member_id):
                 JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id
                 JOIN committees c ON hc.committee_id = c.committee_id
                 JOIN committee_memberships cm ON c.committee_id = cm.committee_id
-                WHERE cm.member_id = ? AND cm.is_active = 1
+                WHERE cm.member_id = ? AND cm.is_active = TRUE
                 ORDER BY h.hearing_date DESC NULLS LAST
                 LIMIT 10
             ''', (member_id,))
@@ -338,7 +343,7 @@ def witness_detail(witness_id):
                 JOIN hearing_committees hc ON h.hearing_id = hc.hearing_id
                 JOIN committees c ON hc.committee_id = c.committee_id
                 WHERE wa.witness_id = ?
-                GROUP BY c.committee_id
+                GROUP BY c.committee_id, c.name, c.chamber, c.type
                 ORDER BY hearing_count DESC, c.name
             ''', (witness_id,))
             committees = cursor.fetchall()
@@ -346,7 +351,7 @@ def witness_detail(witness_id):
             # Get documents for each hearing this witness appeared at
             hearing_documents = {}
             for appearance in appearances:
-                hearing_id = appearance[0]
+                hearing_id = appearance.get('hearing_id', appearance[0]) if hasattr(appearance, 'keys') else appearance[0]
 
                 # Get witness documents for this hearing
                 cursor = conn.execute('''
@@ -431,12 +436,12 @@ def search():
 
             # Search witnesses
             cursor = conn.execute('''
-                SELECT w.witness_id, w.full_name, w.organization, wa.witness_type,
+                SELECT w.witness_id, w.full_name, w.organization, MAX(wa.witness_type) as witness_type,
                        COUNT(DISTINCT wa.hearing_id) as hearing_count
                 FROM witnesses w
                 LEFT JOIN witness_appearances wa ON w.witness_id = wa.witness_id
                 WHERE w.full_name LIKE ? OR w.organization LIKE ?
-                GROUP BY w.witness_id
+                GROUP BY w.witness_id, w.full_name, w.organization
                 ORDER BY w.full_name
                 LIMIT 10
             ''', (search_term, search_term))

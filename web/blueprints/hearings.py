@@ -2,13 +2,13 @@
 Hearing-related routes blueprint
 """
 from flask import Blueprint, render_template, request
-from database.manager import DatabaseManager
+from database.unified_manager import UnifiedDatabaseManager
 from datetime import datetime, timedelta, date
 
 hearings_bp = Blueprint('hearings', __name__)
 
-# Initialize database manager
-db = DatabaseManager()
+# Initialize database manager (auto-detects Postgres if POSTGRES_URL is set)
+db = UnifiedDatabaseManager()
 
 
 @hearings_bp.route('/hearings')
@@ -44,11 +44,11 @@ def hearings():
                    COALESCE(parent_primary.committee_id, c_primary.committee_id, parent_any.committee_id, c_any.committee_id) as committee_id,
                    h.updated_at, h.event_id
             FROM hearings h
-            LEFT JOIN hearing_committees hc_primary ON h.hearing_id = hc_primary.hearing_id AND hc_primary.is_primary = 1
+            LEFT JOIN hearing_committees hc_primary ON h.hearing_id = hc_primary.hearing_id AND hc_primary.is_primary = TRUE
             LEFT JOIN committees c_primary ON hc_primary.committee_id = c_primary.committee_id
             LEFT JOIN committees parent_primary ON c_primary.parent_committee_id = parent_primary.committee_id
             LEFT JOIN hearing_committees hc_any ON h.hearing_id = hc_any.hearing_id
-                AND NOT EXISTS (SELECT 1 FROM hearing_committees WHERE hearing_id = h.hearing_id AND is_primary = 1)
+                AND NOT EXISTS (SELECT 1 FROM hearing_committees WHERE hearing_id = h.hearing_id AND is_primary = TRUE)
             LEFT JOIN committees c_any ON hc_any.committee_id = c_any.committee_id
             LEFT JOIN committees parent_any ON c_any.parent_committee_id = parent_any.committee_id
             WHERE 1=1
@@ -84,7 +84,8 @@ def hearings():
 
         with db.transaction() as conn:
             cursor = conn.execute(count_query, params)
-            total = cursor.fetchone()[0]
+            row = cursor.fetchone()
+            total = list(row.values())[0] if hasattr(row, 'keys') else row[0]
 
             # Add sorting
             sort_columns = {
@@ -116,7 +117,8 @@ def hearings():
 
             # Get filter options
             cursor = conn.execute('SELECT DISTINCT chamber FROM hearings ORDER BY chamber')
-            chambers = [row[0] for row in cursor.fetchall()]
+            rows = cursor.fetchall()
+            chambers = [list(row.values())[0] if hasattr(row, 'keys') else row[0] for row in rows]
 
             cursor = conn.execute('''
                 SELECT DISTINCT
@@ -246,6 +248,6 @@ def hearing_detail(hearing_id):
                              transcripts=transcripts,
                              witness_documents=witness_documents,
                              supporting_documents=supporting_documents,
-                             today=date.today().isoformat())
+                             today=date.today())
     except Exception as e:
         return f"Error: {e}", 500

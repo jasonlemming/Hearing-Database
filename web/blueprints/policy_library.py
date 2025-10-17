@@ -10,8 +10,6 @@ import io
 import re
 import sys
 import os
-import gzip
-import shutil
 sys.path.insert(0, '/Users/jasonlemons/Documents/GitHub/Hearing-Database')
 
 from brookings_ingester.models import get_session, Document, Author, Subject, Source, DocumentAuthor, DocumentSubject
@@ -20,26 +18,16 @@ from markupsafe import Markup, escape
 
 policy_library_bp = Blueprint('policy_library', __name__, url_prefix='/library')
 
-# Database paths
-BROOKINGS_DB_GZ_PATH = 'brookings_products.db.gz'
-# Use /tmp for decompressed database on Vercel (read-only filesystem)
-BROOKINGS_DB_PATH = os.path.join('/tmp', 'brookings_products.db') if os.environ.get('VERCEL') else 'brookings_products.db'
-
-
-def ensure_brookings_database_decompressed():
-    """Decompress database if needed (for production deployment)"""
-    # Check if compressed version exists and decompressed doesn't
-    if not os.path.exists(BROOKINGS_DB_PATH) and os.path.exists(BROOKINGS_DB_GZ_PATH):
-        print(f"Decompressing {BROOKINGS_DB_GZ_PATH} to {BROOKINGS_DB_PATH}...")
-        os.makedirs(os.path.dirname(BROOKINGS_DB_PATH) or '.', exist_ok=True)
-        with gzip.open(BROOKINGS_DB_GZ_PATH, 'rb') as f_in:
-            with open(BROOKINGS_DB_PATH, 'wb') as f_out:
-                shutil.copyfileobj(f_in, f_out)
-        print("Brookings database decompressed successfully!")
-
-    # Set BROOKINGS_DATABASE_URL (separate from CRS PostgreSQL DATABASE_URL)
-    if os.environ.get('VERCEL') or not os.environ.get('BROOKINGS_DATABASE_URL'):
-        os.environ['BROOKINGS_DATABASE_URL'] = f'sqlite:///{BROOKINGS_DB_PATH}'
+# PostgreSQL database configuration
+# Use BROOKINGS_DATABASE_URL environment variable (separate from main DATABASE_URL)
+def ensure_brookings_database_configured():
+    """Ensure policy library database connection is configured"""
+    if not os.environ.get('BROOKINGS_DATABASE_URL'):
+        # Default to Neon PostgreSQL (production)
+        os.environ['BROOKINGS_DATABASE_URL'] = (
+            'postgresql://neondb_owner:npg_7Z4JjDIFYctk@ep-withered-frost-add6lq34-pooler.c-2.us-east-1.aws.neon.tech/'
+            'neondb?sslmode=require'
+        )
 
 
 def format_transcript_text(text):
@@ -203,8 +191,8 @@ policy_library_bp.add_app_template_filter(format_transcript_text, 'format_transc
 
 def get_brookings_source_id():
     """Get Brookings source ID"""
-    # Ensure database is ready (decompress if on Vercel)
-    ensure_brookings_database_decompressed()
+    # Ensure database is configured
+    ensure_brookings_database_configured()
 
     session = get_session()
     brookings = session.query(Source).filter_by(source_code='BROOKINGS').first()
@@ -309,7 +297,7 @@ def index():
 
 @policy_library_bp.route('/search')
 def search():
-    """Search policy library documents"""
+    """Search policy library documents using PostgreSQL full-text search"""
     try:
         query_text = request.args.get('q', '')
         source_filter = request.args.get('source', '')
@@ -325,16 +313,15 @@ def search():
 
         session = get_session()
 
-        # Simple text search (can be enhanced with FTS later)
-        search_pattern = f"%{query_text}%"
+        # Use PostgreSQL full-text search with ranking
+        from sqlalchemy import text
+
+        # Build FTS query using websearch_to_tsquery for natural language search
+        # This supports phrases, AND, OR, and NOT operators
         query = session.query(Document)\
             .filter(~Document.title.like('%Page not Found%'))\
             .filter(~Document.title.like('%404%'))\
-            .filter(
-                (Document.title.like(search_pattern)) |
-                (Document.summary.like(search_pattern)) |
-                (Document.full_text.like(search_pattern))
-            )
+            .filter(Document.search_vector.op('@@')(func.websearch_to_tsquery('english', query_text)))
 
         # Apply source filter if specified
         if source_filter:
@@ -343,19 +330,20 @@ def search():
                 query = query.filter_by(source_id=source.source_id)
 
         total = query.count()
+
+        # Order by relevance ranking (title > summary > full_text based on weights A, B, C)
         results = query.options(joinedload(Document.source))\
-            .order_by(desc(Document.publication_date)).limit(limit).offset(offset).all()
+            .order_by(
+                desc(func.ts_rank(Document.search_vector, func.websearch_to_tsquery('english', query_text))),
+                desc(Document.publication_date)
+            ).limit(limit).offset(offset).all()
 
         # Get only sources that have documents matching the search (excluding source filter)
-        # Build a base query without the source filter
+        # Build a base query without the source filter using FTS
         sources_query = session.query(Document)\
             .filter(~Document.title.like('%Page not Found%'))\
             .filter(~Document.title.like('%404%'))\
-            .filter(
-                (Document.title.like(search_pattern)) |
-                (Document.summary.like(search_pattern)) |
-                (Document.full_text.like(search_pattern))
-            )
+            .filter(Document.search_vector.op('@@')(func.websearch_to_tsquery('english', query_text)))
 
         # Get distinct source IDs from the search results
         available_source_ids = [s[0] for s in sources_query.with_entities(Document.source_id).distinct().all()]
@@ -444,6 +432,35 @@ def document_detail(document_id):
                              source_config=source_config)
     except Exception as e:
         return f"Error: {e}", 500
+
+
+@policy_library_bp.route('/api/trigger-update', methods=['POST'])
+def trigger_update():
+    """Manually trigger policy library update (for testing/emergency use)"""
+    try:
+        from updaters.policy_library_updater import PolicyLibraryUpdater
+
+        updater = PolicyLibraryUpdater(
+            lookback_days=30,  # Check last 30 days
+            publication='jamiedupree.substack.com',
+            author='Jamie Dupree'
+        )
+
+        result = updater.run_daily_update()
+
+        return jsonify(result)
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@policy_library_bp.route('/test-update')
+def test_update_page():
+    """Test page for manual updates"""
+    return render_template('test_update.html')
 
 
 @policy_library_bp.route('/api/export')

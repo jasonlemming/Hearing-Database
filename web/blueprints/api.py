@@ -6,13 +6,13 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from flask import Blueprint, jsonify
-from database.manager import DatabaseManager
+from database.unified_manager import UnifiedDatabaseManager
 from datetime import datetime
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
-# Initialize database manager
-db = DatabaseManager()
+# Initialize database manager (auto-detects Postgres if POSTGRES_URL is set)
+db = UnifiedDatabaseManager()
 
 
 
@@ -21,23 +21,49 @@ def debug():
     """Debug endpoint for troubleshooting deployment issues"""
     import os
     import sys
+
+    # Mask sensitive parts of URLs
+    def mask_url(url):
+        if not url:
+            return None
+        # Show just the host part
+        if '@' in url:
+            parts = url.split('@')
+            if len(parts) > 1:
+                return f"postgresql://***@{parts[1]}"
+        return url[:50] + "..."
+
     debug_info = {
         'cwd': os.getcwd(),
-        'path': sys.path[:3],
-        'db_path': db.db_path,
-        'db_exists': os.path.exists(db.db_path),
-        'files_in_root': os.listdir('.'),
-        'python_version': sys.version
+        'is_postgres': db.is_postgres,
+        'postgres_url_masked': mask_url(db.postgres_url),
+        'db_path': db.db_path if not db.is_postgres else None,
+        'python_version': sys.version[:20],
+        'DATABASE_URL_set': 'DATABASE_URL' in os.environ,
+        'POSTGRES_URL_set': 'POSTGRES_URL' in os.environ,
     }
     try:
-        if os.path.exists(db.db_path):
-            with db.transaction() as conn:
-                cursor = conn.execute("SELECT name FROM sqlite_master WHERE type='table'")
-                debug_info['tables'] = [row[0] for row in cursor.fetchall()]
-        else:
-            debug_info['tables'] = 'database file not found'
+        with db.transaction() as conn:
+            cursor = conn.execute("SELECT COUNT(*) as cnt FROM hearings")
+            row = cursor.fetchone()
+            # Handle both dict-like (PostgreSQL RealDictCursor) and tuple-like (SQLite) results
+            try:
+                debug_info['hearings_count'] = row['cnt']
+            except (TypeError, KeyError):
+                debug_info['hearings_count'] = row[0] if row else 0
+
+            # Test a more complex query to verify data
+            cursor = conn.execute("SELECT COUNT(*) as cnt FROM committees")
+            row = cursor.fetchone()
+            try:
+                debug_info['committees_count'] = row['cnt']
+            except (TypeError, KeyError):
+                debug_info['committees_count'] = row[0] if row else 0
+
     except Exception as e:
         debug_info['db_error'] = str(e)
+        import traceback
+        debug_info['traceback'] = traceback.format_exc()
     return jsonify(debug_info)
 
 
@@ -51,7 +77,8 @@ def stats():
 
             for table in tables:
                 cursor = conn.execute(f'SELECT COUNT(*) FROM {table}')
-                stats[table] = cursor.fetchone()[0]
+                row = cursor.fetchone()
+                stats[table] = row.get('count', row[0]) if hasattr(row, 'keys') else row[0]
 
         return jsonify(stats)
     except Exception as e:
@@ -130,7 +157,9 @@ def update_status():
             if latest:
                 if latest[12]:  # success
                     # Check if update was today
-                    update_date = datetime.fromisoformat(latest[2]).date()
+                    # Handle both PostgreSQL (returns datetime objects) and SQLite (returns strings)
+                    update_time = latest[2] if isinstance(latest[2], datetime) else datetime.fromisoformat(latest[2])
+                    update_date = update_time.date()
                     if update_date == datetime.now().date():
                         status = 'updated_today'
                     else:

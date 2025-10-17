@@ -1,8 +1,10 @@
 """
 Database manager for Congressional Hearing Database
+Supports both SQLite and PostgreSQL
 """
 import sqlite3
 import os
+import re
 from contextlib import contextmanager
 from typing import Optional, Dict, Any, List, Tuple, Union
 from pathlib import Path
@@ -12,38 +14,136 @@ from config.logging_config import get_logger
 
 logger = get_logger(__name__)
 
+# Try to import psycopg2 for PostgreSQL support
+try:
+    import psycopg2
+    import psycopg2.extras
+    POSTGRES_AVAILABLE = True
+except ImportError:
+    POSTGRES_AVAILABLE = False
+    logger.warning("psycopg2 not installed - PostgreSQL support disabled")
+
 
 class DatabaseManager:
-    """Manages database operations with transaction support"""
+    """Manages database operations with transaction support for SQLite and PostgreSQL"""
 
-    def __init__(self, db_path: Optional[str] = None):
+    def __init__(self, db_path: Optional[str] = None, postgres_url: Optional[str] = None):
         """
         Initialize database manager
 
         Args:
-            db_path: Path to SQLite database file
+            db_path: Path to SQLite database file (legacy)
+            postgres_url: PostgreSQL connection URL (preferred for production)
         """
+        # Determine database type
+        # Check both POSTGRES_URL and DATABASE_URL for flexibility (Vercel uses DATABASE_URL)
+        self.postgres_url = postgres_url or os.getenv('POSTGRES_URL') or os.getenv('DATABASE_URL')
         self.db_path = db_path or settings.database_path
-        self.ensure_database_directory()
+
+        # Set database type
+        self.is_postgres = bool(self.postgres_url and POSTGRES_AVAILABLE)
+
+        if self.is_postgres:
+            logger.info("Using PostgreSQL database")
+        else:
+            logger.info("Using SQLite database")
+            self.ensure_database_directory()
 
     def ensure_database_directory(self):
-        """Ensure database directory exists"""
-        db_dir = Path(self.db_path).parent
-        db_dir.mkdir(parents=True, exist_ok=True)
+        """Ensure database directory exists (SQLite only)"""
+        if not self.is_postgres:
+            db_dir = Path(self.db_path).parent
+            db_dir.mkdir(parents=True, exist_ok=True)
 
-    def get_connection(self) -> sqlite3.Connection:
+    def get_connection(self):
         """Get database connection with row factory"""
-        conn = sqlite3.connect(self.db_path)
-        conn.row_factory = sqlite3.Row
-        conn.execute("PRAGMA foreign_keys = ON")
-        return conn
+        if self.is_postgres:
+            conn = psycopg2.connect(self.postgres_url)
+            # Use RealDictCursor for dict-like row access
+            return conn
+        else:
+            conn = sqlite3.connect(self.db_path)
+            conn.row_factory = sqlite3.Row
+            # Enable foreign keys for SQLite only
+            conn.execute("PRAGMA foreign_keys = ON")
+            return conn
+
+    class TupleCursor:
+        """Wrapper around PostgreSQL cursor that converts RealDictRow to tuples"""
+        def __init__(self, cursor):
+            self._cursor = cursor
+
+        def fetchone(self):
+            row = self._cursor.fetchone()
+            if row is None:
+                return None
+            # Convert RealDictRow to tuple while preserving order
+            return tuple(row.values()) if hasattr(row, 'values') else row
+
+        def fetchall(self):
+            rows = self._cursor.fetchall()
+            if not rows:
+                return []
+            # Convert each RealDictRow to tuple
+            return [tuple(row.values()) if hasattr(row, 'values') else row for row in rows]
+
+        def fetchmany(self, size=None):
+            rows = self._cursor.fetchmany(size) if size else self._cursor.fetchmany()
+            if not rows:
+                return []
+            return [tuple(row.values()) if hasattr(row, 'values') else row for row in rows]
+
+        def __getattr__(self, name):
+            # Delegate all other attributes to the underlying cursor
+            return getattr(self._cursor, name)
+
+    class ConnectionWrapper:
+        """Wrapper to make PostgreSQL connections behave like SQLite for execute()"""
+        def __init__(self, conn, is_postgres, manager):
+            self._conn = conn
+            self._is_postgres = is_postgres
+            self._manager = manager
+
+        def execute(self, query, params=None):
+            """Execute query with cursor handling for PostgreSQL"""
+            # Convert query placeholders if needed (? -> %s for PostgreSQL)
+            converted_query = self._manager._convert_query(query)
+
+            if self._is_postgres:
+                cursor = self._conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+                if params:
+                    cursor.execute(converted_query, params)
+                else:
+                    cursor.execute(converted_query)
+                # Wrap cursor to convert RealDictRow to tuples
+                return self._manager.TupleCursor(cursor)
+            else:
+                if params:
+                    return self._conn.execute(converted_query, params)
+                return self._conn.execute(converted_query)
+
+        def commit(self):
+            return self._conn.commit()
+
+        def rollback(self):
+            return self._conn.rollback()
+
+        def close(self):
+            return self._conn.close()
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return self._conn.__exit__(*args)
 
     @contextmanager
     def transaction(self):
         """Context manager for database transactions"""
         conn = self.get_connection()
+        wrapped = self.ConnectionWrapper(conn, self.is_postgres, self)
         try:
-            yield conn
+            yield wrapped
             conn.commit()
         except Exception:
             conn.rollback()
@@ -51,7 +151,33 @@ class DatabaseManager:
         finally:
             conn.close()
 
-    def execute(self, query: str, params: Optional[Union[Tuple, List]] = None) -> sqlite3.Cursor:
+    def _convert_query(self, query: str) -> str:
+        """Convert SQLite query to PostgreSQL if needed"""
+        if not self.is_postgres:
+            return query
+
+        # Replace ? placeholders with %s for PostgreSQL
+        converted = query.replace('?', '%s')
+
+        # Replace boolean integer comparisons with PostgreSQL boolean syntax
+        # Pattern: column_name = 1  =>  column_name = TRUE
+        # Pattern: column_name = 0  =>  column_name = FALSE
+        # Match patterns like "is_primary = 1" or "is_active = 0"
+        converted = re.sub(r'\b(is_\w+)\s*=\s*1\b', r'\1 = TRUE', converted)
+        converted = re.sub(r'\b(is_\w+)\s*=\s*0\b', r'\1 = FALSE', converted)
+
+        # Replace CURRENT_TIMESTAMP with NOW() for PostgreSQL (both work, but NOW() is more common)
+        # Actually, CURRENT_TIMESTAMP works in both, so we'll leave it
+
+        # Replace INSERT OR REPLACE with INSERT ... ON CONFLICT for PostgreSQL
+        if 'INSERT OR REPLACE' in converted:
+            # This is a simple replacement - for production we'd need smarter parsing
+            converted = converted.replace('INSERT OR REPLACE', 'INSERT')
+            # We'll handle ON CONFLICT on a case-by-case basis
+
+        return converted
+
+    def execute(self, query: str, params: Optional[Union[Tuple, List]] = None):
         """
         Execute single query
 
@@ -60,12 +186,21 @@ class DatabaseManager:
             params: Query parameters
 
         Returns:
-            Cursor with results
+            Cursor with results (type varies by database)
         """
+        query = self._convert_query(query)
         with self.transaction() as conn:
-            if params:
-                return conn.execute(query, params)
-            return conn.execute(query)
+            if self.is_postgres:
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+                if params:
+                    cursor.execute(query, params)
+                else:
+                    cursor.execute(query)
+                return cursor
+            else:
+                if params:
+                    return conn.execute(query, params)
+                return conn.execute(query)
 
     def execute_many(self, query: str, params_list: List[Tuple]) -> None:
         """
@@ -75,26 +210,85 @@ class DatabaseManager:
             query: SQL query
             params_list: List of parameter tuples
         """
+        query = self._convert_query(query)
         with self.transaction() as conn:
-            conn.executemany(query, params_list)
-
-    def fetch_one(self, query: str, params: Optional[Tuple] = None) -> Optional[sqlite3.Row]:
-        """Fetch single row"""
-        with self.transaction() as conn:
-            if params:
-                cursor = conn.execute(query, params)
+            if self.is_postgres:
+                cursor = conn.cursor()
+                cursor.executemany(query, params_list)
             else:
-                cursor = conn.execute(query)
-            return cursor.fetchone()
+                conn.executemany(query, params_list)
 
-    def fetch_all(self, query: str, params: Optional[Tuple] = None) -> List[sqlite3.Row]:
-        """Fetch all rows"""
+    def fetch_one(self, query: str, params: Optional[Tuple] = None) -> Optional[Dict[str, Any]]:
+        """Fetch single row as dictionary"""
+        query = self._convert_query(query)
         with self.transaction() as conn:
-            if params:
-                cursor = conn.execute(query, params)
+            if self.is_postgres:
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+                if params:
+                    cursor.execute(query, params)
+                else:
+                    cursor.execute(query)
+                result = cursor.fetchone()
+                return dict(result) if result else None
             else:
-                cursor = conn.execute(query)
-            return cursor.fetchall()
+                if params:
+                    cursor = conn.execute(query, params)
+                else:
+                    cursor = conn.execute(query)
+                result = cursor.fetchone()
+                return dict(result) if result else None
+
+    def fetch_all(self, query: str, params: Optional[Tuple] = None) -> List[Dict[str, Any]]:
+        """Fetch all rows as list of dictionaries"""
+        query = self._convert_query(query)
+        with self.transaction() as conn:
+            if self.is_postgres:
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+                if params:
+                    cursor.execute(query, params)
+                else:
+                    cursor.execute(query)
+                results = cursor.fetchall()
+                return [dict(row) for row in results] if results else []
+            else:
+                if params:
+                    cursor = conn.execute(query, params)
+                else:
+                    cursor = conn.execute(query)
+                results = cursor.fetchall()
+                return [dict(row) for row in results] if results else []
+
+    def execute_insert(self, query: str, params: Optional[Union[Tuple, List]], id_column: str) -> int:
+        """
+        Execute INSERT and return the new row's ID.
+
+        For SQLite: Uses cursor.lastrowid
+        For PostgreSQL: Adds RETURNING clause to query
+
+        Args:
+            query: INSERT query
+            params: Query parameters
+            id_column: Name of the ID column (e.g., 'committee_id', 'member_id')
+
+        Returns:
+            The ID of the inserted row
+        """
+        if self.is_postgres:
+            # Add RETURNING clause for PostgreSQL
+            query = self._convert_query(query)
+            if 'RETURNING' not in query.upper():
+                query = query.rstrip().rstrip(';') + f' RETURNING {id_column}'
+
+            with self.transaction() as conn:
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+                cursor.execute(query, params)
+                result = cursor.fetchone()
+                return result[id_column] if result else None
+        else:
+            # Use lastrowid for SQLite
+            with self.transaction() as conn:
+                cursor = conn.execute(query, params)
+                return cursor.lastrowid
 
     def initialize_schema(self, schema_file: str = "database/schema.sql") -> None:
         """
@@ -177,10 +371,9 @@ class DatabaseManager:
                 committee_data.get('congress')
             )
 
-            cursor = self.execute(insert_query, params)
-            return cursor.lastrowid
+            return self.execute_insert(insert_query, params, 'committee_id')
 
-    def get_committee_by_system_code(self, system_code: str) -> Optional[sqlite3.Row]:
+    def get_committee_by_system_code(self, system_code: str) -> Optional[Dict[str, Any]]:
         """Get committee by system code"""
         query = "SELECT * FROM committees WHERE system_code = ?"
         return self.fetch_one(query, (system_code,))
@@ -274,10 +467,9 @@ class DatabaseManager:
                 member_data.get('congress')
             )
 
-            cursor = self.execute(insert_query, params)
-            return cursor.lastrowid
+            return self.execute_insert(insert_query, params, 'member_id')
 
-    def get_member_by_bioguide_id(self, bioguide_id: str) -> Optional[sqlite3.Row]:
+    def get_member_by_bioguide_id(self, bioguide_id: str) -> Optional[Dict[str, Any]]:
         """Get member by bioguide ID"""
         query = "SELECT * FROM members WHERE bioguide_id = ?"
         return self.fetch_one(query, (bioguide_id,))
@@ -405,10 +597,9 @@ class DatabaseManager:
                 hearing_data.get('update_date')
             )
 
-            cursor = self.execute(insert_query, params)
-            return cursor.lastrowid
+            return self.execute_insert(insert_query, params, 'hearing_id')
 
-    def get_hearing_by_event_id(self, event_id: str) -> Optional[sqlite3.Row]:
+    def get_hearing_by_event_id(self, event_id: str) -> Optional[Dict[str, Any]]:
         """Get hearing by event ID"""
         query = "SELECT * FROM hearings WHERE event_id = ?"
         return self.fetch_one(query, (event_id,))
@@ -549,9 +740,9 @@ class DatabaseManager:
             organization
         )
 
-        cursor = self.execute(insert_query, params)
-        logger.debug(f"Created new witness {cursor.lastrowid}: '{full_name}'")
-        return cursor.lastrowid
+        witness_id = self.execute_insert(insert_query, params, 'witness_id')
+        logger.debug(f"Created new witness {witness_id}: '{full_name}'")
+        return witness_id
 
     # Bill operations
     def upsert_bill(self, bill_data: Dict[str, Any]) -> int:
@@ -610,10 +801,9 @@ class DatabaseManager:
                 bill_data.get('introduced_date')
             )
 
-            cursor = self.execute(insert_query, params)
-            return cursor.lastrowid
+            return self.execute_insert(insert_query, params, 'bill_id')
 
-    def get_bill_by_congress_type_number(self, congress: int, bill_type: str, bill_number: int) -> Optional[sqlite3.Row]:
+    def get_bill_by_congress_type_number(self, congress: int, bill_type: str, bill_number: int) -> Optional[Dict[str, Any]]:
         """Get bill by congress, type, and number"""
         query = "SELECT * FROM bills WHERE congress = ? AND bill_type = ? AND bill_number = ?"
         return self.fetch_one(query, (congress, bill_type, bill_number))
@@ -631,37 +821,55 @@ class DatabaseManager:
 
     def link_hearing_committee(self, hearing_id: int, committee_id: int, is_primary: bool = True) -> None:
         """Link hearing to committee"""
-        query = """
-        INSERT OR REPLACE INTO hearing_committees (hearing_id, committee_id, is_primary)
-        VALUES (?, ?, ?)
-        """
+        if self.is_postgres:
+            query = """
+            INSERT INTO hearing_committees (hearing_id, committee_id, is_primary)
+            VALUES (%s, %s, %s)
+            ON CONFLICT (hearing_id, committee_id) DO UPDATE SET is_primary = EXCLUDED.is_primary
+            """
+        else:
+            query = """
+            INSERT OR REPLACE INTO hearing_committees (hearing_id, committee_id, is_primary)
+            VALUES (?, ?, ?)
+            """
         self.execute(query, (hearing_id, committee_id, is_primary))
 
     def link_hearing_bill(self, hearing_id: int, bill_id: int, relationship_type: str = 'mentioned') -> None:
         """Link hearing to bill"""
-        query = """
-        INSERT OR REPLACE INTO hearing_bills (hearing_id, bill_id, relationship_type)
-        VALUES (?, ?, ?)
-        """
+        if self.is_postgres:
+            query = """
+            INSERT INTO hearing_bills (hearing_id, bill_id, relationship_type)
+            VALUES (%s, %s, %s)
+            ON CONFLICT (hearing_id, bill_id) DO UPDATE SET relationship_type = EXCLUDED.relationship_type
+            """
+        else:
+            query = """
+            INSERT OR REPLACE INTO hearing_bills (hearing_id, bill_id, relationship_type)
+            VALUES (?, ?, ?)
+            """
         self.execute(query, (hearing_id, bill_id, relationship_type))
 
     def create_committee_membership(self, member_id: int, committee_id: int, role: str, congress: int) -> None:
         """Create committee membership record"""
-        query = """
-        INSERT OR REPLACE INTO committee_memberships
-        (committee_id, member_id, role, congress, is_active)
-        VALUES (?, ?, ?, ?, 1)
-        """
+        if self.is_postgres:
+            query = """
+            INSERT INTO committee_memberships
+            (committee_id, member_id, role, congress, is_active)
+            VALUES (%s, %s, %s, %s, true)
+            ON CONFLICT (committee_id, member_id, congress) DO UPDATE SET
+                role = EXCLUDED.role,
+                is_active = EXCLUDED.is_active
+            """
+        else:
+            query = """
+            INSERT OR REPLACE INTO committee_memberships
+            (committee_id, member_id, role, congress, is_active)
+            VALUES (?, ?, ?, ?, 1)
+            """
         self.execute(query, (committee_id, member_id, role, congress))
 
     def create_witness_appearance(self, witness_id: int, hearing_id: int, appearance_data: Dict[str, Any]) -> int:
         """Create witness appearance record"""
-        query = """
-        INSERT OR REPLACE INTO witness_appearances
-        (witness_id, hearing_id, position, witness_type, appearance_order)
-        VALUES (?, ?, ?, ?, ?)
-        """
-
         params = (
             witness_id,
             hearing_id,
@@ -670,8 +878,24 @@ class DatabaseManager:
             appearance_data.get('appearance_order')
         )
 
-        cursor = self.execute(query, params)
-        return cursor.lastrowid
+        if self.is_postgres:
+            query = """
+            INSERT INTO witness_appearances
+            (witness_id, hearing_id, position, witness_type, appearance_order)
+            VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT (witness_id, hearing_id) DO UPDATE SET
+                position = EXCLUDED.position,
+                witness_type = EXCLUDED.witness_type,
+                appearance_order = EXCLUDED.appearance_order
+            """
+            return self.execute_insert(query, params, 'appearance_id')
+        else:
+            query = """
+            INSERT OR REPLACE INTO witness_appearances
+            (witness_id, hearing_id, position, witness_type, appearance_order)
+            VALUES (?, ?, ?, ?, ?)
+            """
+            return self.execute_insert(query, params, 'appearance_id')
 
     # Sync tracking
     def record_sync(self, entity_type: str, status: str, records_processed: int = 0, errors_count: int = 0, notes: str = None) -> None:
@@ -683,7 +907,7 @@ class DatabaseManager:
         """
         self.execute(query, (entity_type, records_processed, errors_count, status, notes))
 
-    def get_last_sync(self, entity_type: str) -> Optional[sqlite3.Row]:
+    def get_last_sync(self, entity_type: str) -> Optional[Dict[str, Any]]:
         """Get last successful sync for entity type"""
         query = """
         SELECT * FROM sync_tracking
@@ -706,15 +930,23 @@ class DatabaseManager:
 
     # Utility methods
     def vacuum(self) -> None:
-        """Vacuum database to reclaim space"""
+        """Vacuum database to reclaim space (SQLite only)"""
+        if self.is_postgres:
+            logger.warning("VACUUM not supported for PostgreSQL via this method")
+            return
+
         with self.get_connection() as conn:
             conn.execute("VACUUM")
         logger.info("Database vacuumed")
 
     def analyze(self) -> None:
         """Analyze database for query optimization"""
-        with self.get_connection() as conn:
-            conn.execute("ANALYZE")
+        if self.is_postgres:
+            # PostgreSQL uses ANALYZE differently
+            self.execute("ANALYZE")
+        else:
+            with self.get_connection() as conn:
+                conn.execute("ANALYZE")
         logger.info("Database analyzed")
 
     def get_table_counts(self) -> Dict[str, int]:
@@ -726,9 +958,8 @@ class DatabaseManager:
         ]
 
         counts = {}
-        with self.transaction() as conn:
-            for table in tables:
-                cursor = conn.execute(f"SELECT COUNT(*) FROM {table}")
-                counts[table] = cursor.fetchone()[0]
+        for table in tables:
+            result = self.fetch_one(f"SELECT COUNT(*) as count FROM {table}")
+            counts[table] = result['count'] if result else 0
 
         return counts

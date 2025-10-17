@@ -16,8 +16,8 @@ def get_database_url():
     Returns:
         str: PostgreSQL connection URL
     """
-    # Check for Neon/PostgreSQL connection string
-    database_url = os.environ.get('DATABASE_URL')
+    # Check for CRS-specific database URL first, then fall back to DATABASE_URL
+    database_url = os.environ.get('CRS_DATABASE_URL') or os.environ.get('DATABASE_URL')
 
     if not database_url:
         raise ValueError(

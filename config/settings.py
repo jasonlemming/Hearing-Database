@@ -11,10 +11,23 @@ class Settings(BaseSettings):
     """Application settings with environment variable support"""
 
     # API Configuration
-    api_key: Optional[str] = Field(default=None, env='API_KEY')
+    api_key: Optional[str] = Field(default=None, env='CONGRESS_API_KEY')
     api_base_url: str = Field(default='https://api.congress.gov/v3', env='API_BASE_URL')
     rate_limit: int = Field(default=5000, env='RATE_LIMIT')
-    request_timeout: int = Field(default=30, env='REQUEST_TIMEOUT')
+
+    # Timeout Configuration (separate connect and read timeouts)
+    # Connect timeout: How long to wait for TCP connection establishment
+    # Read timeout: How long to wait for server response after connection
+    connect_timeout: int = Field(default=5, env='CONNECT_TIMEOUT')
+    read_timeout: int = Field(default=15, env='READ_TIMEOUT')
+    request_timeout: int = Field(default=30, env='REQUEST_TIMEOUT')  # Legacy fallback
+
+    # Error Handling & Retry Configuration
+    retry_attempts: int = Field(default=3, env='RETRY_ATTEMPTS')  # Reduced from 5 to prevent long hangs
+    retry_backoff_factor: float = Field(default=2.0, env='RETRY_BACKOFF_FACTOR')
+    circuit_breaker_enabled: bool = Field(default=True, env='CIRCUIT_BREAKER_ENABLED')
+    circuit_breaker_threshold: int = Field(default=5, env='CIRCUIT_BREAKER_THRESHOLD')
+    circuit_breaker_timeout: int = Field(default=60, env='CIRCUIT_BREAKER_TIMEOUT')
 
     # Database Configuration
     database_path: str = Field(default='database.db', env='DATABASE_PATH')
@@ -30,6 +43,15 @@ class Settings(BaseSettings):
     batch_size: int = Field(default=50, env='BATCH_SIZE')
     validation_mode: bool = Field(default=False, env='VALIDATION_MODE')
 
+    # Batch Processing Configuration (Phase 2.3.1)
+    enable_batch_processing: bool = Field(default=False, env='ENABLE_BATCH_PROCESSING')
+    batch_processing_size: int = Field(default=50, env='BATCH_PROCESSING_SIZE')
+
+    # Historical Validation Configuration (Phase 2.3.2)
+    enable_historical_validation: bool = Field(default=False, env='ENABLE_HISTORICAL_VALIDATION')
+    historical_min_days: int = Field(default=17, env='HISTORICAL_MIN_DAYS')
+    historical_z_threshold: float = Field(default=3.0, env='HISTORICAL_Z_THRESHOLD')
+
     # Update Configuration
     update_window_days: int = Field(default=30, env='UPDATE_WINDOW_DAYS')
     update_schedule_hour: int = Field(default=2, env='UPDATE_SCHEDULE_HOUR')
@@ -37,6 +59,13 @@ class Settings(BaseSettings):
     # Logging Configuration
     log_level: str = Field(default='INFO', env='LOG_LEVEL')
     log_file: str = Field(default='logs/import.log', env='LOG_FILE')
+
+    # Notification Configuration
+    notification_enabled: bool = Field(default=False, env='NOTIFICATION_ENABLED')
+    notification_type: str = Field(default='log', env='NOTIFICATION_TYPE')  # log, email, webhook
+    notification_webhook_url: Optional[str] = Field(default=None, env='NOTIFICATION_WEBHOOK_URL')
+    notification_email: Optional[str] = Field(default=None, env='NOTIFICATION_EMAIL')
+    sendgrid_api_key: Optional[str] = Field(default=None, env='SENDGRID_API_KEY')
 
     class Config:
         env_file = '.env'
@@ -55,6 +84,17 @@ class Settings(BaseSettings):
 
 def get_settings() -> Settings:
     """Get application settings instance"""
+    # DEBUGGING: Force load from environment and strip quotes
+    import os
+    api_key_raw = os.environ.get('CONGRESS_API_KEY', os.environ.get('API_KEY'))
+    if api_key_raw:
+        # Strip any surrounding quotes
+        api_key_clean = api_key_raw.strip('"').strip("'")
+        os.environ['CONGRESS_API_KEY'] = api_key_clean
+        print(f"[SETTINGS DEBUG] API key loaded: {api_key_clean[:8]}... (length: {len(api_key_clean)})")
+    else:
+        print("[SETTINGS DEBUG] NO API KEY FOUND in environment!")
+
     return Settings()
 
 

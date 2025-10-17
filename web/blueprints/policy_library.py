@@ -17,8 +17,10 @@ if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
 from brookings_ingester.models import get_session, Document, Author, Subject, Source, DocumentAuthor, DocumentSubject
+from brookings_ingester.models.document import DocumentVersion
 from datetime import datetime
 from markupsafe import Markup, escape
+import requests
 
 policy_library_bp = Blueprint('policy_library', __name__, url_prefix='/library')
 
@@ -191,6 +193,29 @@ def format_transcript_text(text):
 
 # Register the custom filter
 policy_library_bp.add_app_template_filter(format_transcript_text, 'format_transcript')
+
+
+def fetch_content_from_blob(blob_url, timeout=10):
+    """
+    Fetch HTML content from R2/Blob storage
+
+    Args:
+        blob_url: URL to the blob
+        timeout: Request timeout in seconds
+
+    Returns:
+        HTML content string, or None if fetch fails
+    """
+    try:
+        response = requests.get(blob_url, timeout=timeout)
+        if response.status_code == 200:
+            return response.text
+        else:
+            print(f"Error fetching blob: {response.status_code}")
+            return None
+    except Exception as e:
+        print(f"Error fetching blob from {blob_url}: {e}")
+        return None
 
 
 def get_brookings_source_id():
@@ -427,13 +452,49 @@ def document_detail(document_id):
             document.source.source_code if document.source else None
         )
 
+        # For CRS documents, fetch HTML content from R2 blob storage
+        content_version = None
+        if document.source and document.source.source_code == 'CRS':
+            # Get current document version
+            version = session.query(DocumentVersion).filter_by(
+                document_id=document_id,
+                is_current=True
+            ).first()
+
+            if version and version.structure_json:
+                # Parse structure_json to get blob_url
+                try:
+                    structure_data = json.loads(version.structure_json) if isinstance(version.structure_json, str) else version.structure_json
+
+                    content_version = {
+                        'version_id': version.version_id,
+                        'version_number': version.version_number,
+                        'structure_json': structure_data,
+                        'word_count': version.word_count,
+                        'ingested_at': version.ingested_at
+                    }
+
+                    # Fetch HTML content from blob storage if blob_url exists
+                    blob_url = structure_data.get('blob_url')
+                    if blob_url:
+                        html_content = fetch_content_from_blob(blob_url)
+                        if html_content:
+                            content_version['html_content'] = html_content
+                        else:
+                            print(f"Warning: Failed to fetch content from blob URL: {blob_url}")
+                    else:
+                        print(f"Warning: No blob_url found for CRS document {document_id}")
+                except Exception as e:
+                    print(f"Error parsing structure_json for document {document_id}: {e}")
+
         session.close()
 
         return render_template('policy_library_detail.html',
                              document=document,
                              authors=authors,
                              subjects=subjects,
-                             source_config=source_config)
+                             source_config=source_config,
+                             content_version=content_version)
     except Exception as e:
         return f"Error: {e}", 500
 

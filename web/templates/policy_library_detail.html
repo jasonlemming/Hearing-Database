@@ -262,6 +262,169 @@
     color: #757575;
 }
 
+/* CRS-specific content styling */
+.content-preview h1,
+.content-preview h2,
+.content-preview h3,
+.content-preview .Heading1,
+.content-preview .Heading2,
+.content-preview .Heading3,
+.content-preview .SummaryHeading {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.content-preview h1,
+.content-preview .Heading1,
+.content-preview .SummaryHeading {
+    font-size: 1.5rem;
+    margin-top: 3rem;
+}
+
+.content-preview h2,
+.content-preview .Heading2 {
+    font-size: 1.25rem;
+    margin-top: 2rem;
+}
+
+.content-preview h3,
+.content-preview .Heading3 {
+    font-size: 1.1rem;
+}
+
+/* Hide duplicate elements from CRS content */
+.content-preview .ReportHeader,
+.content-preview .TOC,
+.content-preview .Title,
+.content-preview .CoverDate,
+.content-preview > div[style*="border-bottom"] {
+    display: none;
+}
+
+/* CRS Tables */
+.content-preview table {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.content-preview table th,
+.content-preview table td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+    text-align: left;
+    vertical-align: top;
+}
+
+.content-preview table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.content-preview table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* CRS Lists */
+.content-preview ul,
+.content-preview ol {
+    margin-bottom: 1.2rem;
+    padding-left: 2rem;
+}
+
+.content-preview li {
+    margin-bottom: 0.5rem;
+}
+
+/* Sticky TOC Sidebar - minimal styling */
+.sticky-toc-sidebar {
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sticky-toc {
+    background: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    padding: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.sticky-toc h2 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sticky-toc ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.sticky-toc li {
+    margin-bottom: 0.25rem;
+}
+
+.sticky-toc a {
+    color: #6c757d;
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+    display: block;
+    border-radius: 4px;
+    transition: all 0.2s;
+    font-size: 0.85rem;
+}
+
+.sticky-toc a:hover {
+    color: #0d6efd;
+    background: #f8f9fa;
+}
+
+.sticky-toc a.active {
+    color: #0d6efd;
+    background: #f8f9fa;
+    font-weight: 500;
+}
+
+.sticky-toc .TOC2 {
+    padding-left: 1rem;
+}
+
+.sticky-toc .TOC3 {
+    padding-left: 2rem;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+.content-preview h1,
+.content-preview h2,
+.content-preview h3 {
+    scroll-margin-top: 80px;
+}
+
+/* Hide sticky TOC on mobile */
+@media (max-width: 991px) {
+    .sticky-toc-sidebar {
+        display: none;
+    }
+}
+
 @media (max-width: 768px) {
     .doc-title {
         font-size: 1.5rem;
@@ -282,7 +445,13 @@
         </span>
         · Published {{ document.publication_date or 'n.d.' }}
         {% if document.document_type %} · {{ document.document_type }}{% endif %}
+        {% if document.document_identifier %} · {{ document.document_identifier }}{% endif %}
+        {% if content_version and content_version.get('word_count') %}
+        · {{ "{:,}".format(content_version['word_count']|int) }} words
+        · ~{{ (content_version['word_count']|int / 200)|round|int }} min read
+        {% elif document.word_count %}
         · {{ document.word_count|number_format or 0 }} words
+        {% endif %}
         {% if document.page_count %} · {{ document.page_count }} pages{% endif %}
     </div>
 
@@ -302,6 +471,32 @@
         {% if document.pdf_url %}<a href="{{ document.pdf_url }}" target="_blank" rel="noopener noreferrer">PDF</a>{% endif %}
     </div>
 </div>
+
+<!-- CRS Content with TOC -->
+{% if content_version and content_version.get('html_content') %}
+<div class="row">
+    {% set structure_obj = content_version.get('structure_json', {}) %}
+    {% set has_toc = structure_obj and structure_obj.get('toc', [])|length > 0 %}
+
+    <div class="{% if has_toc %}col-lg-9{% else %}col-12{% endif %}">
+        <div class="section">
+            <div class="content-preview">
+                {{ content_version['html_content']|safe }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky TOC Sidebar (only shown when TOC is available) -->
+    {% if has_toc %}
+    <div class="col-lg-3">
+        <div class="sticky-toc-sidebar" id="sticky-toc-sidebar">
+            <!-- TOC will be cloned here by JavaScript -->
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% else %}
+<!-- Non-CRS content or CRS without HTML -->
 
 <!-- Summary -->
 {% if document.summary %}
@@ -325,6 +520,13 @@
     <button id="show-more-btn" class="show-more-btn" onclick="toggleFullText()">Show More</button>
     {% endif %}
 </div>
+{% elif document.source and document.source.source_code == 'CRS' %}
+<!-- CRS document without HTML content yet -->
+<div class="section">
+    <p class="text-secondary">Full content not yet available.</p>
+</div>
+{% endif %}
+
 {% endif %}
 
 <!-- Document ID (for reference) -->
@@ -335,17 +537,80 @@
 
 {% block scripts %}
 <script>
+// Setup floating TOC for CRS documents
+document.addEventListener('DOMContentLoaded', function() {
+    const originalToc = document.querySelector('.content-preview .TOC');
+    const sidebar = document.getElementById('sticky-toc-sidebar');
+
+    if (originalToc && sidebar) {
+        // Create sticky TOC
+        const stickyTocDiv = document.createElement('div');
+        stickyTocDiv.className = 'sticky-toc';
+
+        // Add header
+        const header = document.createElement('h2');
+        header.textContent = 'Contents';
+        stickyTocDiv.appendChild(header);
+
+        // Clone TOC content
+        const tocContent = originalToc.cloneNode(true);
+        // Remove the h1 "Contents" heading from cloned version
+        const h1 = tocContent.querySelector('h1');
+        if (h1) h1.remove();
+
+        stickyTocDiv.appendChild(tocContent);
+        sidebar.appendChild(stickyTocDiv);
+
+        // Scroll spy - highlight current section
+        const tocLinks = stickyTocDiv.querySelectorAll('a');
+        const sections = [];
+
+        tocLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                const targetId = href.substring(1);
+                const target = document.querySelector(`[name="${targetId}"], #${targetId}`);
+                if (target) {
+                    sections.push({ link: link, element: target });
+                }
+            }
+        });
+
+        function updateActiveSection() {
+            const scrollPosition = window.scrollY + 100;
+
+            let currentSection = null;
+            sections.forEach(section => {
+                const rect = section.element.getBoundingClientRect();
+                const elementTop = rect.top + window.scrollY;
+
+                if (scrollPosition >= elementTop) {
+                    currentSection = section;
+                }
+            });
+
+            tocLinks.forEach(link => link.classList.remove('active'));
+            if (currentSection) {
+                currentSection.link.classList.add('active');
+            }
+        }
+
+        window.addEventListener('scroll', updateActiveSection);
+        updateActiveSection();
+    }
+});
+
 function toggleFullText() {
     const previewText = document.getElementById('preview-text');
     const fullText = document.getElementById('full-text');
     const btn = document.getElementById('show-more-btn');
 
-    if (fullText.style.display === 'none') {
+    if (fullText && fullText.style.display === 'none') {
         // Show full text
         previewText.style.display = 'none';
         fullText.style.display = 'block';
         btn.textContent = 'Show Less';
-    } else {
+    } else if (fullText) {
         // Show preview
         previewText.style.display = 'block';
         fullText.style.display = 'none';

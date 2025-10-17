@@ -55,11 +55,12 @@ class CRSPolicyLibrarySync:
         logger.info(f"CRS sync initialized (CRS DB: {self.crs_db_url[:30]}...)")
 
     def get_crs_connection(self):
-        """Get read-only connection to CRS database"""
+        """Get connection to CRS database (read-only via code, not connection param)"""
         return psycopg2.connect(
             self.crs_db_url,
-            cursor_factory=RealDictCursor,
-            options='-c default_transaction_read_only=on'  # Read-only mode
+            cursor_factory=RealDictCursor
+            # Note: Can't use options='-c default_transaction_read_only=on' with Neon pooled connections
+            # Enforcing read-only behavior at query level instead
         )
 
     def get_or_create_crs_source(self, session) -> Source:
@@ -204,14 +205,25 @@ class CRSPolicyLibrarySync:
         ).first()
 
         # Prepare metadata JSON with CRS-specific fields
-        metadata = {
+        # Use raw_json from CRS database as base metadata
+        metadata = {}
+        if product.get('raw_json'):
+            try:
+                if isinstance(product['raw_json'], str):
+                    metadata = json.loads(product['raw_json'])
+                elif isinstance(product['raw_json'], dict):
+                    metadata = product['raw_json']
+            except:
+                pass
+
+        # Add CRS-specific tracking fields
+        metadata.update({
             'product_type': product.get('product_type'),
             'crs_product_id': product_id,
             'crs_status': product.get('status'),
             'url_html': product.get('url_html'),
-            'url_pdf': product.get('url_pdf'),
-            'raw_json': product.get('raw_json')
-        }
+            'url_pdf': product.get('url_pdf')
+        })
 
         # Create or update document
         if existing_doc:
@@ -269,15 +281,27 @@ class CRSPolicyLibrarySync:
             if isinstance(authors_data, str):
                 authors_data = json.loads(authors_data)
 
-            for idx, author_name in enumerate(authors_data):
+            # Track seen author IDs to avoid duplicates within the same document
+            seen_author_ids = set()
+            author_order = 1
+
+            for author_name in authors_data:
                 if author_name and author_name.strip():
                     author = self.get_or_create_author(session, author_name.strip())
+
+                    # Skip if we've already added this author to this document
+                    if author.author_id in seen_author_ids:
+                        logger.debug(f"Skipping duplicate author {author_name} for product {product_id}")
+                        continue
+
+                    seen_author_ids.add(author.author_id)
                     doc_author = DocumentAuthor(
                         document_id=document.document_id,
                         author_id=author.author_id,
-                        author_order=idx + 1
+                        author_order=author_order
                     )
                     session.add(doc_author)
+                    author_order += 1
 
         # Handle topics/subjects
         if product.get('topics'):
@@ -291,9 +315,19 @@ class CRSPolicyLibrarySync:
             if isinstance(topics_data, str):
                 topics_data = json.loads(topics_data)
 
+            # Track seen subject IDs to avoid duplicates within the same document
+            seen_subject_ids = set()
+
             for topic_name in topics_data:
                 if topic_name and topic_name.strip():
                     subject = self.get_or_create_subject(session, topic_name.strip())
+
+                    # Skip if we've already added this subject to this document
+                    if subject.subject_id in seen_subject_ids:
+                        logger.debug(f"Skipping duplicate subject {topic_name} for product {product_id}")
+                        continue
+
+                    seen_subject_ids.add(subject.subject_id)
                     doc_subject = DocumentSubject(
                         document_id=document.document_id,
                         subject_id=subject.subject_id

@@ -17,6 +17,7 @@ try:
     from database.manager import DatabaseManager
     from updaters.daily_updater import DailyUpdater
     from updaters.policy_library_updater import PolicyLibraryUpdater
+    from updaters.crs_updater import CRSUpdater
     from config.logging_config import get_logger
 except ImportError as e:
     print(f"Import error: {e}")
@@ -659,6 +660,62 @@ def policy_library_update():
             'timestamp': datetime.now().isoformat(),
             'status': 'error',
             'service': 'policy_library',
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/cron/crs-library-update', methods=['GET', 'POST'])
+def crs_library_update():
+    """
+    Vercel cron job endpoint for CRS Library updates
+
+    Runs daily to fetch updated CRS report content from congress.gov
+    and add them to the database with version tracking.
+
+    Returns:
+        JSON response with update results
+    """
+    try:
+        # Verify authentication
+        if not verify_cron_auth():
+            logger.warning("Authentication failed for CRS library update")
+            return jsonify({'error': 'Unauthorized'}), 401
+
+        logger.info("Starting CRS library scheduled update")
+
+        # Create CRSUpdater with default settings
+        updater = CRSUpdater(
+            lookback_days=30,  # Check last 30 days for updates
+            max_products=100   # Update up to 100 products per run
+        )
+
+        # Run the update
+        result = updater.run_daily_update()
+
+        if result['success']:
+            logger.info("CRS library update completed successfully")
+            return jsonify({
+                'timestamp': datetime.now().isoformat(),
+                'status': 'success',
+                'service': 'crs_library',
+                'metrics': result['metrics']
+            }), 200
+        else:
+            logger.error(f"CRS library update failed: {result.get('error')}")
+            return jsonify({
+                'timestamp': datetime.now().isoformat(),
+                'status': 'error',
+                'service': 'crs_library',
+                'error': result.get('error'),
+                'metrics': result['metrics']
+            }), 500
+
+    except Exception as e:
+        logger.error(f"CRS library cron job failed: {e}", exc_info=True)
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'status': 'error',
+            'service': 'crs_library',
             'error': str(e)
         }), 500
 

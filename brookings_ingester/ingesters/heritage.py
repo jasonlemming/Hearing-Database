@@ -199,15 +199,39 @@ class HeritageIngester(BaseIngester):
         Returns:
             True if URL matches research patterns
         """
-        # Include commentary, reports, articles
-        # Exclude model legislation, generic pages
-        if any(pattern in url for pattern in self.include_patterns):
-            return True
+        # Extract path from URL
+        path = url.replace('https://www.heritage.org/', '')
+        parts = path.split('/')
 
-        # Exclude non-content pages
-        if any(pattern in url for pattern in ['/model-legislation/', '/search/', '/about/', '/donate/']):
+        # Exclude generic /article/ pages (copyright-notice, heritage-academy-speakers, etc.)
+        # These start with /article/ directly, unlike research articles which are /{topic}/article/
+        if len(parts) >= 1 and parts[0] == 'article':
+            logger.debug(f"Excluding generic article page: {url}")
             return False
 
+        # Exclude model legislation
+        if '/model-legislation/' in url:
+            logger.debug(f"Excluding model legislation: {url}")
+            return False
+
+        # Exclude other non-content pages
+        excluded_patterns = ['/search/', '/about/', '/donate/', '/press/', '/staff/']
+        if any(pattern in url for pattern in excluded_patterns):
+            logger.debug(f"Excluding non-content page: {url}")
+            return False
+
+        # Include research content patterns
+        # Must have a topic category (first part) and content type (second part)
+        if len(parts) >= 2:
+            content_type = parts[1]
+            research_types = ['commentary', 'report', 'backgrounder', 'issue-brief',
+                            'legal-memorandum', 'testimony', 'article']
+
+            if content_type in research_types:
+                logger.debug(f"Including research content: {url}")
+                return True
+
+        logger.debug(f"No match for URL: {url}")
         return False
 
     def fetch(self, document_meta: Dict[str, Any]) -> Optional[Dict[str, Any]]:

@@ -298,11 +298,19 @@
 
 /* Hide duplicate elements from CRS content */
 .content-preview .ReportHeader,
-.content-preview .TOC,
 .content-preview .Title,
 .content-preview .CoverDate,
 .content-preview > div[style*="border-bottom"] {
     display: none;
+}
+
+/* Hide TOC visually but keep it in DOM for JavaScript to clone */
+.content-preview .TOC {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
 }
 
 /* CRS Tables */

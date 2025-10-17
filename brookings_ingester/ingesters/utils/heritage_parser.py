@@ -248,8 +248,8 @@ class HeritageHTMLParser:
         for card in author_cards:
             author_data = {}
 
-            # Extract name from author-card__name
-            name_elem = card.select_one('p.author-card__name, .author-card__name')
+            # Extract name from author-card__name (can be <a> or <p>)
+            name_elem = card.select_one('a.author-card__name, p.author-card__name, .author-card__name')
             if name_elem:
                 # Get the span inside or the text directly
                 name_span = name_elem.find('span')
@@ -265,6 +265,14 @@ class HeritageHTMLParser:
 
                 author_data['name'] = name
                 seen_names.add(name)
+
+                # Extract profile URL if name is a link
+                if name_elem.name == 'a':
+                    profile_url = name_elem.get('href', '')
+                    if profile_url:
+                        if not profile_url.startswith('http'):
+                            profile_url = f"https://www.heritage.org{profile_url if profile_url.startswith('/') else '/' + profile_url}"
+                        author_data['profile_url'] = profile_url
 
                 # Extract title from author-card__title
                 title_elem = card.select_one('p.author-card__title, .author-card__title')
@@ -396,19 +404,27 @@ class HeritageHTMLParser:
 
     def _extract_summary(self, soup: BeautifulSoup) -> str:
         """Extract article summary/description"""
+        # Remove author cards first to avoid contamination
+        soup_copy = BeautifulSoup(str(soup), 'lxml')
+        for card in soup_copy.find_all('div', class_='author-card'):
+            card.decompose()
+        for card in soup_copy.find_all('div', class_='author-card__author-info-wrapper'):
+            if card.parent:
+                card.parent.decompose()
+
         for selector in self.METADATA_SELECTORS['summary']:
-            element = soup.select_one(selector)
+            element = soup_copy.select_one(selector)
             if element:
                 if element.name == 'meta':
                     summary = element.get('content', '').strip()
                 else:
                     summary = element.get_text(strip=True)
 
-                if summary:
+                if summary and len(summary) > 50:  # Require meaningful summary
                     return summary
 
         # Fallback: First paragraph of content
-        content = self._extract_content_area(soup)
+        content = self._extract_content_area(soup_copy)
         if content:
             first_p = content.find('p')
             if first_p:
@@ -472,14 +488,21 @@ class HeritageHTMLParser:
         """
         Remove Heritage-specific content elements
 
+        - Author cards (entire div.author-card)
         - Author bio signatures (paragraphs starting with "- AuthorName is...")
         - Reference paragraphs ("This piece originally appeared in...")
-        - Author card elements
+        - Commentary intro wrapper (just the wrapper, keep content inside)
         """
-        # Remove author cards (already extracted for metadata)
+        # Remove entire author cards (already extracted for metadata)
+        for card in content_soup.find_all('div', class_='author-card'):
+            card.decompose()
+
+        # Also catch any orphaned author-card__author-info-wrapper
         for card in content_soup.find_all('div', class_='author-card__author-info-wrapper'):
             if card.parent:
                 card.parent.decompose()
+            else:
+                card.decompose()
 
         # Remove author bio signatures at end of article
         for p in content_soup.find_all('p'):
@@ -492,13 +515,18 @@ class HeritageHTMLParser:
         for p in content_soup.find_all('p', class_='article-body__reference'):
             p.decompose()
 
-        # Remove "COMMENTARY BY" figcaptions
+        # Remove "COMMENTARY BY" figcaptions and their parent figures
         for fig in content_soup.find_all('figcaption'):
             if 'COMMENTARY BY' in fig.get_text().upper():
                 if fig.parent and fig.parent.name == 'figure':
                     fig.parent.decompose()
                 else:
                     fig.decompose()
+
+        # Remove commentary__intro-wrapper div but keep its content
+        for intro in content_soup.find_all('div', class_='commentary__intro-wrapper'):
+            # Unwrap - keep children, remove wrapper
+            intro.unwrap()
 
     def _build_structure(self, soup: BeautifulSoup) -> Dict[str, Any]:
         """Build document structure from headings"""

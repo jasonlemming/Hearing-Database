@@ -592,7 +592,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const originalToc = document.querySelector('.content-preview .TOC');
     const sidebar = document.getElementById('sticky-toc-sidebar');
 
+    console.log('TOC Debug:', {
+        originalToc: originalToc,
+        sidebar: sidebar,
+        tocExists: !!originalToc,
+        sidebarExists: !!sidebar
+    });
+
     if (originalToc && sidebar) {
+        console.log('Creating sticky TOC...');
         // Create sticky TOC
         const stickyTocDiv = document.createElement('div');
         stickyTocDiv.className = 'sticky-toc';

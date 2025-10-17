@@ -26,3 +26,9 @@ tqdm>=4.66.0        # Progress bars
 beautifulsoup4>=4.12.0
 lxml>=5.0.0
 sqlalchemy>=2.0.0
+
+# PostgreSQL database support
+psycopg2-binary>=2.9.9
+
+# Cloud storage
+boto3>=1.34.0  # For Cloudflare R2/S3 storage

@@ -27,6 +27,10 @@ import os
 import click
 import logging
 from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Add project root to path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -807,7 +811,8 @@ def backfill(limit, product_id, skip_existing):
         from fetchers.crs_content_fetcher import CRSContentFetcher
         from parsers.crs_html_parser import CRSHTMLParser
         from database.crs_content_manager import CRSContentManager
-        import sqlite3
+        from database.postgres_config import get_connection
+        from psycopg2.extras import RealDictCursor
 
         logger.info("Starting CRS content backfill...")
 
@@ -822,10 +827,10 @@ def backfill(limit, product_id, skip_existing):
         # Get products to process
         if product_id:
             # Single product
-            conn = sqlite3.connect('crs_products.db')
-            conn.row_factory = sqlite3.Row
-            product = conn.execute("SELECT * FROM products WHERE product_id = ?", (product_id,)).fetchone()
-            conn.close()
+            with get_connection() as conn:
+                with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                    cur.execute("SELECT * FROM products WHERE product_id = %s", (product_id,))
+                    product = cur.fetchone()
 
             if not product:
                 logger.error(f"Product {product_id} not found")
@@ -840,13 +845,13 @@ def backfill(limit, product_id, skip_existing):
                 logger.info(f"Found {len(products)} products without content")
             else:
                 # Get all products
-                conn = sqlite3.connect('crs_products.db')
-                conn.row_factory = sqlite3.Row
-                query = "SELECT * FROM products ORDER BY publication_date DESC"
-                if limit:
-                    query += f" LIMIT {limit}"
-                products = [dict(row) for row in conn.execute(query).fetchall()]
-                conn.close()
+                with get_connection() as conn:
+                    with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                        query = "SELECT * FROM products ORDER BY publication_date DESC"
+                        if limit:
+                            query += f" LIMIT {limit}"
+                        cur.execute(query)
+                        products = [dict(row) for row in cur.fetchall()]
                 logger.info(f"Processing {len(products)} products (including existing)")
 
         # Process products
@@ -934,6 +939,19 @@ def backfill(limit, product_id, skip_existing):
         logger.info(f"  Total size: {stats['total_bytes'] / 1024 / 1024:.1f} MB")
         logger.info("=" * 70)
 
+        # Sync CRS products to Policy Library
+        if success_count > 0:
+            try:
+                logger.info("\nSyncing CRS products to Policy Library...")
+                from brookings_ingester.crs_sync import sync_crs_to_policy_library
+
+                sync_stats = sync_crs_to_policy_library()
+                logger.info(f"✓ Policy Library sync complete: {sync_stats['documents_created']} created, "
+                           f"{sync_stats['documents_updated']} updated, {sync_stats['documents_skipped']} skipped")
+            except Exception as sync_error:
+                logger.warning(f"Policy Library sync failed (non-fatal): {sync_error}")
+                # Don't fail the entire backfill if sync fails
+
         if error_count > 0:
             logger.warning(f"{error_count} errors occurred during backfill")
             sys.exit(1)
@@ -959,8 +977,9 @@ def update(days):
         from fetchers.crs_content_fetcher import CRSContentFetcher
         from parsers.crs_html_parser import CRSHTMLParser
         from database.crs_content_manager import CRSContentManager
+        from database.postgres_config import get_connection
+        from psycopg2.extras import RealDictCursor
         from datetime import datetime, timedelta
-        import sqlite3
 
         logger.info(f"Updating CRS content for products modified in last {days} days...")
 
@@ -971,17 +990,15 @@ def update(days):
 
         # Get recently updated products
         cutoff = (datetime.now() - timedelta(days=days)).isoformat()
-        conn = sqlite3.connect('crs_products.db')
-        conn.row_factory = sqlite3.Row
-        products = conn.execute("""
-            SELECT * FROM products
-            WHERE updated_at >= ?
-            OR publication_date >= ?
-            ORDER BY updated_at DESC
-        """, (cutoff, cutoff)).fetchall()
-        conn.close()
-
-        products = [dict(p) for p in products]
+        with get_connection() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute("""
+                    SELECT * FROM products
+                    WHERE updated_at >= %s
+                    OR publication_date >= %s
+                    ORDER BY updated_at DESC
+                """, (cutoff, cutoff))
+                products = [dict(p) for p in cur.fetchall()]
         logger.info(f"Found {len(products)} recently updated products")
 
         if not products:
@@ -1035,6 +1052,19 @@ def update(days):
         manager.complete_ingestion_log(log_id)
 
         logger.info(f"Update complete: {success_count} updated, {error_count} errors")
+
+        # Sync CRS products to Policy Library
+        if success_count > 0:
+            try:
+                logger.info("Syncing CRS products to Policy Library...")
+                from brookings_ingester.crs_sync import sync_crs_to_policy_library
+
+                sync_stats = sync_crs_to_policy_library()
+                logger.info(f"✓ Policy Library sync complete: {sync_stats['documents_created']} created, "
+                           f"{sync_stats['documents_updated']} updated, {sync_stats['documents_skipped']} skipped")
+            except Exception as sync_error:
+                logger.warning(f"Policy Library sync failed (non-fatal): {sync_error}")
+                # Don't fail the entire ingestion if sync fails
 
     except Exception as e:
         logger.error(f"Update failed: {e}")

@@ -179,10 +179,11 @@ class Author(Base):
     bio = Column(Text)
 
     # Brookings-specific metadata (also useful for other sources)
-    job_title = Column(String(200))  # e.g., "Senior Fellow", "President"
-    affiliation_text = Column(String(500))  # e.g., "Global Economy and Development"
-    profile_url = Column(String(500))  # Source's author profile page
-    linkedin_url = Column(String(500))  # LinkedIn profile
+    # NOTE: These columns don't exist in current schema - commented out for now
+    # job_title = Column(String(200))  # e.g., "Senior Fellow", "President"
+    # affiliation_text = Column(String(500))  # e.g., "Global Economy and Development"
+    # profile_url = Column(String(500))  # Source's author profile page
+    # linkedin_url = Column(String(500))  # LinkedIn profile
 
     created_at = Column(DateTime, default=datetime.utcnow)
 

@@ -506,8 +506,8 @@ html {
 <!-- CRS Content with TOC -->
 {% if content_version and content_version.get('html_content') %}
 <div class="row">
-    {% set structure_obj = content_version.get('structure_json', {}) %}
-    {% set has_toc = structure_obj and structure_obj.get('toc', [])|length > 0 %}
+    {# Check if HTML content contains a TOC div - JavaScript will handle the rest #}
+    {% set has_toc = 'class="TOC"' in content_version['html_content'] or 'class=\'TOC\'' in content_version['html_content'] %}
 
     <div class="{% if has_toc %}col-lg-9{% else %}col-12{% endif %}">
         <div class="section">
@@ -517,7 +517,7 @@ html {
         </div>
     </div>
 
-    <!-- Sticky TOC Sidebar (only shown when TOC is available) -->
+    <!-- Sticky TOC Sidebar (always render for CRS docs, JavaScript will populate if TOC exists) -->
     {% if has_toc %}
     <div class="col-lg-3">
         <div class="sticky-toc-sidebar" id="sticky-toc-sidebar">

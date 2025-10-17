@@ -390,6 +390,11 @@
     justify-content: center;
 }
 
+/* Widen container for CRS documents with TOC */
+.policy-library-container.has-toc {
+    max-width: 1200px !important;
+}
+
 /* Sticky TOC Sidebar - minimal styling */
 .sticky-toc-sidebar {
     position: sticky;
@@ -602,6 +607,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (originalToc && sidebar) {
         console.log('Creating sticky TOC...');
+
+        // Widen the container for TOC layout
+        const container = document.querySelector('.policy-library-container');
+        if (container) {
+            container.classList.add('has-toc');
+        }
+
         // Create sticky TOC
         const stickyTocDiv = document.createElement('div');
         stickyTocDiv.className = 'sticky-toc';

@@ -10,7 +10,11 @@ import io
 import re
 import sys
 import os
-sys.path.insert(0, '/Users/jasonlemons/Documents/GitHub/Hearing-Database')
+
+# Add project root to path (works both locally and on Vercel)
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
 
 from brookings_ingester.models import get_session, Document, Author, Subject, Source, DocumentAuthor, DocumentSubject
 from datetime import datetime

@@ -479,6 +479,9 @@ def document_detail(document_id):
                     if blob_url:
                         html_content = fetch_content_from_blob(blob_url)
                         if html_content:
+                            # Strip invalid <body> tags that break DOM structure
+                            html_content = re.sub(r'<body[^>]*>', '', html_content, flags=re.IGNORECASE)
+                            html_content = re.sub(r'</body>', '', html_content, flags=re.IGNORECASE)
                             content_version['html_content'] = html_content
                         else:
                             print(f"Warning: Failed to fetch content from blob URL: {blob_url}")

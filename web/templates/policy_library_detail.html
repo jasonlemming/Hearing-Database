@@ -342,6 +342,37 @@
     margin-bottom: 0.5rem;
 }
 
+/* CRS Images */
+.content-preview img {
+    max-width: 100%;
+    height: auto;
+    margin: 2rem 0;
+    border-radius: 4px;
+}
+
+.content-preview img.Figure {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Image fallback when image fails to load */
+.content-preview img.broken-image {
+    display: inline-block;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.9rem;
+    color: #6c757d;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Sticky TOC Sidebar - minimal styling */
 .sticky-toc-sidebar {
     position: sticky;
@@ -598,6 +629,32 @@ document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('scroll', updateActiveSection);
         updateActiveSection();
     }
+
+    // Handle broken images from Congress.gov (they require authentication)
+    const images = document.querySelectorAll('.content-preview img');
+    images.forEach(img => {
+        img.onerror = function() {
+            // Create a fallback placeholder
+            const fallback = document.createElement('div');
+            fallback.className = 'image-fallback';
+            fallback.style.cssText = 'padding: 2rem; background-color: #f8f9fa; border: 2px dashed #dee2e6; text-align: center; font-size: 0.9rem; color: #6c757d; margin: 2rem 0; border-radius: 4px;';
+
+            const title = this.getAttribute('title') || this.getAttribute('alt') || 'Figure';
+            const originalSrc = this.getAttribute('data-original-src') || '';
+
+            fallback.innerHTML = `
+                <div style="padding: 1rem;">
+                    <p style="margin: 0 0 0.5rem 0; font-weight: 500;">${title}</p>
+                    <p style="margin: 0; font-size: 0.85rem; color: #999;">
+                        Image unavailable (requires Congress.gov authentication)
+                    </p>
+                    ${originalSrc ? `<p style="margin: 0.5rem 0 0 0; font-size: 0.75rem; color: #999;">Reference: ${originalSrc}</p>` : ''}
+                </div>
+            `;
+
+            this.parentNode.replaceChild(fallback, this);
+        };
+    });
 });
 
 function toggleFullText() {

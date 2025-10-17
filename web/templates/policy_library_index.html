@@ -238,7 +238,48 @@
     line-height: 1.6;
 }
 
-/* Badges inline in metadata */
+/* Source badges - colored by source */
+.source-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.source-badge[data-source="BROOKINGS"] {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.source-badge[data-source="SUBSTACK"] {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.source-badge[data-source="CRS"] {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.source-badge[data-source="GAO"] {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.source-badge[data-source="HERITAGE"] {
+    background: #fce4ec;
+    color: #c2185b;
+}
+
+.source-badge[data-source="UNKNOWN"] {
+    background: #f5f5f5;
+    color: #757575;
+}
+
+/* Regular badges for document types */
 .badge {
     display: inline-block;
     font-weight: 400;
@@ -455,9 +496,11 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="document-title">{{ doc.title }}</div>
         <div class="document-meta">
             {% if doc.source %}
-                <a href="{{ url_for('policy_library.index', source=doc.source.source_code) }}" onclick="event.stopPropagation();">{{ doc.source.name }}</a>
+                <a href="{{ url_for('policy_library.index', source=doc.source.source_code) }}" onclick="event.stopPropagation();">
+                    <span class="source-badge" data-source="{{ doc.source.source_code }}">{{ doc.source.name }}</span>
+                </a>
             {% else %}
-                Unknown
+                <span class="source-badge" data-source="UNKNOWN">Unknown</span>
             {% endif %}
             ·
             {% if doc.publication_date %}
@@ -465,7 +508,7 @@ document.addEventListener('DOMContentLoaded', function() {
             {% else %}
                 No date
             {% endif %}
-            {% if doc.document_type %} · <span class="badge bg-primary">{{ doc.document_type }}</span>{% endif %}
+            {% if doc.document_type %} · {{ doc.document_type }}{% endif %}
             · {{ doc.word_count|number_format or 0 }} words
             {% if doc.pdf_url %} · PDF available{% endif %}
         </div>

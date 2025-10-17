@@ -1624,6 +1624,225 @@ def get_all_executions():
         return jsonify({'error': str(e)}), 500
 
 
+# ============================================================================
+# CRS LIBRARY API ENDPOINTS
+# ============================================================================
+
+@admin_bp.route('/api/crs/stats')
+def crs_stats():
+    """
+    Get CRS library statistics
+
+    Returns:
+        JSON with CRS library metrics
+    """
+    try:
+        from database.crs_content_manager_postgres import CRSContentManager
+        manager = CRSContentManager()
+
+        stats = manager.get_ingestion_stats()
+
+        return jsonify({
+            'status': 'success',
+            'stats': stats,
+            'timestamp': datetime.now().isoformat()
+        })
+
+    except Exception as e:
+        logger.error(f"Error getting CRS stats: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/crs/ingestion-logs')
+def crs_ingestion_logs():
+    """
+    Get recent CRS content ingestion logs
+
+    Query params:
+        limit: Number of logs to return (default: 10)
+
+    Returns:
+        JSON with ingestion log history
+    """
+    try:
+        limit = request.args.get('limit', 10, type=int)
+
+        from database.crs_content_manager_postgres import CRSContentManager
+        manager = CRSContentManager()
+
+        logs = manager.get_recent_ingestion_logs(limit=limit)
+
+        return jsonify({
+            'status': 'success',
+            'logs': logs,
+            'count': len(logs)
+        })
+
+    except Exception as e:
+        logger.error(f"Error getting CRS ingestion logs: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/crs/products')
+def crs_products():
+    """
+    Get CRS products with version info
+
+    Query params:
+        limit: Number of products to return (default: 100)
+        offset: Pagination offset (default: 0)
+
+    Returns:
+        JSON with product list
+    """
+    try:
+        limit = request.args.get('limit', 100, type=int)
+        offset = request.args.get('offset', 0, type=int)
+
+        from database.crs_content_manager_postgres import CRSContentManager
+        manager = CRSContentManager()
+
+        products = manager.get_products_with_versions(limit=limit, offset=offset)
+
+        return jsonify({
+            'status': 'success',
+            'products': products,
+            'count': len(products),
+            'limit': limit,
+            'offset': offset
+        })
+
+    except Exception as e:
+        logger.error(f"Error getting CRS products: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/crs/trigger-update', methods=['POST'])
+def crs_trigger_update():
+    """
+    Manually trigger a CRS library update
+
+    Request JSON (optional):
+        {
+            "lookback_days": 30,
+            "max_products": 100
+        }
+
+    Returns:
+        JSON with task ID (for fire-and-forget execution)
+    """
+    try:
+        params = request.get_json() or {}
+
+        lookback_days = params.get('lookback_days', 30)
+        max_products = params.get('max_products', 100)
+
+        # Validate inputs
+        if not isinstance(lookback_days, int) or not (1 <= lookback_days <= 90):
+            return jsonify({'error': 'lookback_days must be between 1 and 90'}), 400
+
+        if not isinstance(max_products, int) or not (1 <= max_products <= 500):
+            return jsonify({'error': 'max_products must be between 1 and 500'}), 400
+
+        # Create task parameters
+        task_params = {
+            'lookback_days': lookback_days,
+            'max_products': max_products,
+            'library': 'crs'
+        }
+
+        # Create task record in database
+        with db.transaction() as conn:
+            cursor = conn.execute('''
+                INSERT INTO admin_tasks
+                (task_type, status, parameters, triggered_by, environment)
+                VALUES (?, ?, ?, ?, ?)
+                RETURNING task_id
+            ''', (
+                'crs_update',
+                'pending',
+                json.dumps(task_params),
+                'admin_dashboard',
+                os.environ.get('VERCEL_ENV', 'development')
+            ))
+            result = cursor.fetchone()
+            task_id = result[0] if result else None
+
+            if not task_id:
+                raise ValueError("Failed to get task_id from INSERT operation")
+
+        logger.info(f"Created CRS update task {task_id} with lookback={lookback_days}, max_products={max_products}")
+
+        # Trigger execution via API (fire-and-forget)
+        # The frontend will make a separate request to /api/admin/run-task/{task_id}
+
+        return jsonify({
+            'task_id': task_id,
+            'status': 'pending',
+            'message': 'CRS update task queued'
+        }), 202
+
+    except Exception as e:
+        logger.error(f"Failed to trigger CRS update: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@admin_bp.route('/api/crs/health')
+def crs_health():
+    """
+    Get CRS library health status
+
+    Returns:
+        JSON with health check results
+    """
+    try:
+        from database.crs_content_manager_postgres import CRSContentManager
+        manager = CRSContentManager()
+
+        stats = manager.get_ingestion_stats()
+        logs = manager.get_recent_ingestion_logs(limit=5)
+
+        # Determine health status
+        health_status = 'healthy'
+        warnings = []
+        issues = []
+
+        # Check coverage
+        if stats['coverage_percent'] < 50:
+            health_status = 'degraded'
+            warnings.append(f"Low content coverage: {stats['coverage_percent']}%")
+
+        # Check recent ingestion
+        if logs:
+            last_log = logs[0]
+            if last_log['status'] == 'failed':
+                health_status = 'unhealthy'
+                issues.append("Last ingestion failed")
+            elif last_log['status'] == 'partial':
+                health_status = 'degraded'
+                warnings.append("Last ingestion had errors")
+        else:
+            health_status = 'unhealthy'
+            issues.append("No ingestion history found")
+
+        return jsonify({
+            'status': health_status,
+            'timestamp': datetime.now().isoformat(),
+            'stats': stats,
+            'warnings': warnings,
+            'issues': issues,
+            'last_ingestion': logs[0] if logs else None
+        })
+
+    except Exception as e:
+        logger.error(f"Error getting CRS health: {e}")
+        return jsonify({
+            'status': 'error',
+            'error': str(e),
+            'timestamp': datetime.now().isoformat()
+        }), 500
+
+
 # Helper functions
 
 def _get_hearing_changes(since_date: str, limit: int) -> List[Dict[str, Any]]:

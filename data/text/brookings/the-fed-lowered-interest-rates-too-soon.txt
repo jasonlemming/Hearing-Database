@@ -1,163 +1,27 @@
-[H1]The Fed Lowered Interest Rates Too Soon
+Please enable cookies.
 
-COMMENTARY Monetary Policy
+[H2]What happened?
 
-[H1]The Fed Lowered Interest Rates Too Soon
+The owner of this website (www. heritage. org) has banned you temporarily from accessing this website.
 
-Jan 9, 2025 5 min read
+Please see https://developers. cloudflare. com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1015/ for more details.
 
-Inflation cuts real wages for workers and erodes the real value of savings.
+Was this page helpful?
 
-Javier Ghersi / Getty Images
+Thank you for your feedback!
 
-[H3]Key Takeaways
+Cloudflare Ray ID: 9900d296c713d639
+•
 
-The costs of prematurely stopping the anti-inflation campaign are clear.
+Your IP:
 
-Inflation cuts real wages for workers and erodes the real value of savings.
+73.250.227.86
+•
 
-If the Fed stays the course until inflation is back at 2 percent, it could still achieve the hoped-for soft landing.
+Performance & security by Cloudflare
 
-In 2025, the Federal Reserve should remain focused on inflation.
+We use cookies on our website.
 
-Copied
+By using our website, you consent to cookies.
 
-Inflation remains stubbornly above the Federal Reserve’s 2 percent target.
-
-Yet, instead of maintaining a firm stance at its December 18 meeting, the Fed cut interest rates for the third time in three months.
-
-The Fed should move slowly going forward and look for stronger evidence that post-pandemic inflation has run its course before continuing with cuts.
-
-The costs of prematurely stopping the anti-inflation campaign are clear.
-
-Inflation cuts real wages for workers and erodes the real value of savings.
-
-It distorts markets by redistributing wealth and raising uncertainty about investment in the future.
-
-Left unchecked, it could erode trust in the monetary system, just as trust in American institutions is falling.
-
-Multiple measures track inflation.
-
-The consumer price index (CPI), the most closely watched by the public,  grew 2.7 percent  over the 12 months that ended in November.
-
-The Fed’s preferred measure, the Personal Consumption Expenditures Price Index,  grew 2.3 percent  over the 12 months ending in October.
-
-Other measures of trend inflation are even more elevated.
-
-Core CPI, which discards volatile food and energy prices, rose 3.3 percent over the preceding year.
-
-Median CPI, which gives an indication of the trend in inflation by ignoring extreme changes,  went up 3.9 percent  over the previous year, and has been above CPI growth for the past two years.
-
-Similarly, the Atlanta Fed’s Sticky-Price CPI, which highlights prices that are slow to change,  increased 3.8 percent  over the past year.
->>>  Politicians Use Inflation To Target American Way of Life
-Rents are a major remaining driver of inflation.
-
-The pandemic led many Americans to reconsider where they live.
-
-Interestingly, more than  13 million Americans have moved  from progressive states to conservative ones, according to  IRS data  compiled by the American Enterprise Institute.
-
-The rental market moves more slowly than other markets, so it may take a while for it to adjust fully to the Covid shock.
-
-Altogether, the inflation data show an inflation rate that remains high and will take some time to come down.
-
-But maintaining stable prices isn’t the Fed’s only goal; it’s also tasked with ensuring full employment.
-
-The  unemployment rate is 4.2, still 0.2 percent below the non-cyclical rate of unemployment, which is the rate consistent with stable prices.
-
-Correspondingly,  real GDP is still above potential GDP  (the level of output consistent with stable inflation).
-
-This output gap has only widened since 2022.
-
-The Fed is often caught between trying to balance stable prices and full employment.
-
-A predetermined policy rule can help it manage this balance without over- or under-reacting to data.
-
-One popular policy rule,  named for economist John Taylor, adjusts the federal funds rate based on inflation and the output gap.
-
-Two different versions of the Taylor Rule suggest that the federal funds rate should be higher than it is currently.
-
-While the federal funds target after Wednesday’s meeting is 4 to 4.5 percent, the classic Taylor Rule, and a  modified version  proposed by former Fed Chairman Ben Bernanke, suggest  rates around 6 percent to 7.75 percent.
-
-Had the Fed followed the prescriptions of the Taylor Rule during and after the pandemic, it might not have missed the coming inflation in the first place.
-
-In 2021, the Taylor rule jumped along with inflation, but the Fed waited to start tightening until later in 2022.
-
-Though the data show that inflation and output are high, a case  can  be made for lower rates.
-
-The Fed wants to settle rates at a neutral level that neither fuels inflation nor crashes the economy, referred to as r-star.
-
-R-star is not observable; it has to be estimated from economic data.
-
-Two estimates of r-star  from the New York Fed suggest that a neutral rate would be much lower, around 0.75–1.25 percent.
-
-Those estimates have also been falling since the start of 2022.
-
-If the neutral rate is falling, then falling rates are consistent with inflation mitigation.
-
-This Fed meeting also included an  updated Summary of Economic Projections, which shows how committee members reacted to this quarter’s economic data and how they anticipate future data.
-
-They raised projections for inflation through 2026, slightly raised projections for GDP this year and next, and slightly lowered projections for unemployment this year and next.
-
-Correspondingly, they anticipated tightening future policy, with projections for the federal funds rate being about 0.5 percent higher through 2026.
->>>  Inflation May Be Cooling, but the Damage Has Been Done
-It’s reasonable to infer from the output and employment data that we’re nearing a turning point in the business cycle.
-
-But that suggests thinking of Fed cuts as easing off the brakes rather than hitting the gas.
-
-If the Fed maintains this framing over the next year and stays the course until inflation is back at 2 percent, it could still achieve the hoped-for soft landing.
-
-Congress could help the Fed achieve a soft landing by searching for some fiscal discipline in the next budget.
-
-The Congressional Budget Office projects the federal deficit to run  between 5.5 and 7.1 percent of GDP  over the next decade, compared with an  average deficit of 2.1 percent  between 1947–2019.
-
-The expiration of key provisions of the Tax Cuts and Jobs Act will provide an opportunity to revisit revenue and spending levels.
-
-Lower tax rates may spur growth, but high and rising federal debt will act as a drag on it.
-
-The  new Department of Government Efficiency  can also help identify spending cuts.
-
-A smaller federal deficit will help the Fed bring down rates and support growth without stoking more inflation.
-
-Meantime, the Fed will  review its framework  and long-term policy objectives next year.
-
-The  last framework,  released in August 2020, saw the agency adopt an asymmetric inflation target, which would make up for periods of low inflation by allowing periods of high inflation.
-
-The intervening cycle of inflation and disinflation offers lessons for the next review.
-
-The Fed should consider adopting a symmetric target and incorporating something like the Taylor Rule as an anchor for policy.
-
-In 2025, the Federal Reserve should remain focused on inflation.
-
-Cutting rates prematurely or too quickly risks sending the wrong signals about its commitment to securing stable price levels.
-
-[H2]Heritage Offers
-
-[H4]Activate your 2025 Membership
-
-By activating your membership you'll become part of a committed group of fellow patriots who stand for America's Founding principles.
-
-[H4]The Heritage Guide to the Constitution
-
-Receive a clause-by-clause analysis of the Constitution with input from more than 100 scholars and legal experts.
-
-[H4]American Founders
-
-In this FREE, extensive eBook, you will learn about how our Founders used intellect, prudence, and courage to create the greatest nation in the world.
-
-More on This Issue
-
-[H2]Monetary Policy
-
-COMMENTARY 3 min read
-
-Crypto Isn’t Going the Way of the Tulip Bulbs
-
-COMMENTARY 2 min read
-
-Will a Japanese Fire Sale Crash U.S.
-
-Debt?
-
-COMMENTARY 2 min read
-
-Bidenomics, Also Known As MMT
+Learn More.

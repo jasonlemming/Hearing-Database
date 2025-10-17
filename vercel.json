@@ -25,6 +25,20 @@
       "config": {
         "maxDuration": 60
       }
+    },
+    {
+      "src": "api/batch-orchestrator.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxDuration": 60
+      }
+    },
+    {
+      "src": "api/task-scheduler.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxDuration": 60
+      }
     }
   ],
   "routes": [
@@ -49,6 +63,10 @@
       "dest": "api/cron-update.py"
     },
     {
+      "src": "/api/cron/crs-library-update",
+      "dest": "api/cron-update.py"
+    },
+    {
       "src": "/api/admin/run-task/([0-9]+)",
       "dest": "api/admin-task.py"
     },
@@ -57,18 +75,34 @@
       "dest": "api/batch-worker.py"
     },
     {
+      "src": "/api/batch/orchestrator",
+      "dest": "api/batch-orchestrator.py"
+    },
+    {
+      "src": "/api/cron/task-scheduler",
+      "dest": "api/task-scheduler.py"
+    },
+    {
       "src": "/(.*)",
       "dest": "api/index.py"
     }
   ],
   "crons": [
     {
-      "path": "/api/cron/scheduled-update/3",
-      "schedule": "0 6 * * *"
+      "path": "/api/cron/task-scheduler",
+      "schedule": "* * * * *"
     },
     {
       "path": "/api/cron/policy-library-update",
       "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/cron/crs-library-update",
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/batch/orchestrator",
+      "schedule": "* * * * *"
     }
   ]
 }

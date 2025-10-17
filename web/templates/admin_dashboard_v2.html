@@ -531,6 +531,82 @@
         </div>
     </div>
 
+    <!-- CRS Library -->
+    <h2>CRS Library</h2>
+
+    <div id="crsStatusBanner" class="status-banner healthy">
+        <h2 id="crsStatusText">CRS System Healthy</h2>
+        <div class="status-info">
+            <strong>Coverage:</strong> <span id="crsCoverage" class="loading">Loading...</span><br>
+            <strong>Last Ingestion:</strong> <span id="crsLastIngestion" class="loading">Loading...</span>
+        </div>
+    </div>
+
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-value" id="crsTotalProducts">--</div>
+            <div class="metric-label">Total Products</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value text-success" id="crsProductsWithContent">--</div>
+            <div class="metric-label">With Content</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value" id="crsCoveragePercent">--</div>
+            <div class="metric-label">Coverage %</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value" id="crsAvgWordCount">--</div>
+            <div class="metric-label">Avg Words</div>
+        </div>
+    </div>
+
+    <!-- CRS Ingestion History -->
+    <h3>Recent Ingestions</h3>
+
+    <div id="crsIngestionLogs">
+        <div class="loading">Loading ingestion logs...</div>
+    </div>
+
+    <!-- CRS Manual Control -->
+    <h3>Manual CRS Update</h3>
+
+    <div class="controls">
+        <form id="crsUpdateForm">
+            <label>
+                Lookback Days: <strong id="crsLookbackValue">30</strong>
+                <input type="range" id="crsLookbackDays" min="1" max="90" value="30"
+                       oninput="document.getElementById('crsLookbackValue').textContent = this.value">
+            </label>
+
+            <label style="display: block; margin-top: 1rem;">
+                Max Products: <strong id="crsMaxProductsValue">100</strong>
+                <input type="range" id="crsMaxProducts" min="10" max="500" value="100" step="10"
+                       oninput="document.getElementById('crsMaxProductsValue').textContent = this.value">
+            </label>
+
+            <div>
+                <button type="submit" id="startCRSUpdateBtn">Start CRS Update</button>
+                <button type="button" onclick="refreshCRSDashboard()">Refresh CRS Stats</button>
+            </div>
+
+            <div id="crsLiveProgress" style="display: none; margin-top: 1rem;">
+                <p class="text-muted">CRS update in progress...</p>
+                <div style="background: #e0e0e0; height: 20px; margin: 0.5rem 0;">
+                    <div id="crsProgressBar" style="background: #28a745; height: 100%; width: 0%; transition: width 0.3s;"></div>
+                </div>
+                <div id="crsProgressStats" class="text-muted" style="font-size: 0.85rem;"></div>
+            </div>
+        </form>
+    </div>
+
+    <!-- CRS Products Browser -->
+    <h3>CRS Products (Last 50)</h3>
+
+    <div id="crsProducts" style="max-height: 400px; overflow-y: auto; border: 1px solid #e0e0e0; padding: 1rem;">
+        <div class="loading">Loading CRS products...</div>
+    </div>
+
 <script>
 // Same JavaScript as before
 let currentTaskId = null;
@@ -547,11 +623,15 @@ document.addEventListener('DOMContentLoaded', function() {
     loadScheduledTasks();
     loadVercelConfig();
     loadRecentHearings();
+    loadCRSStats();
+    loadCRSIngestionLogs();
+    loadCRSProducts();
 
     setInterval(function() {
         loadSystemHealth();
         loadTimeline();
         loadPhase23Metrics();
+        loadCRSStats();
     }, 30000);
 
     const form = document.getElementById('manualUpdateForm');
@@ -562,6 +642,12 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('[DEBUG] Event listener attached to form');
     } else {
         console.error('[DEBUG] ERROR: manualUpdateForm not found!');
+    }
+
+    // CRS form handler
+    const crsForm = document.getElementById('crsUpdateForm');
+    if (crsForm) {
+        crsForm.addEventListener('submit', startCRSUpdate);
     }
 });
 
@@ -1112,6 +1198,207 @@ function createHearingCard(hearing) {
 function loadMoreHearings() {
     currentHearingsOffset += hearingsPerPage;
     loadRecentHearings(true);
+}
+
+// ============================================================================
+// CRS Library Functions
+// ============================================================================
+
+let currentCRSTaskId = null;
+let crsUpdateInterval = null;
+
+async function loadCRSStats() {
+    try {
+        const response = await fetch('/admin/api/crs/stats');
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            const stats = data.stats;
+
+            // Update metrics
+            document.getElementById('crsTotalProducts').textContent = stats.total_products || 0;
+            document.getElementById('crsProductsWithContent').textContent = stats.products_with_content || 0;
+            document.getElementById('crsCoveragePercent').textContent = (stats.coverage_percent || 0) + '%';
+            document.getElementById('crsAvgWordCount').textContent = Math.round(stats.avg_word_count || 0).toLocaleString();
+
+            // Update status banner
+            document.getElementById('crsCoverage').textContent = `${stats.products_with_content}/${stats.total_products} (${stats.coverage_percent}%)`;
+
+            if (stats.last_ingestion) {
+                const lastIngestionDate = new Date(stats.last_ingestion.started_at);
+                document.getElementById('crsLastIngestion').textContent = lastIngestionDate.toLocaleString();
+            } else {
+                document.getElementById('crsLastIngestion').textContent = 'Never';
+            }
+        }
+
+    } catch (error) {
+        console.error('Error loading CRS stats:', error);
+    }
+}
+
+async function loadCRSIngestionLogs() {
+    try {
+        const response = await fetch('/admin/api/crs/ingestion-logs?limit=5');
+        const data = await response.json();
+
+        const container = document.getElementById('crsIngestionLogs');
+        container.innerHTML = '';
+
+        if (data.status === 'success' && data.logs && data.logs.length > 0) {
+            data.logs.forEach(log => {
+                const entry = document.createElement('div');
+                entry.className = 'update-entry';
+
+                const startTime = new Date(log.started_at);
+                const statusBadge = log.status === 'completed' ? '<span class="badge success">Success</span>' :
+                                   log.status === 'failed' ? '<span class="badge danger">Failed</span>' :
+                                   log.status === 'partial' ? '<span class="badge warning">Partial</span>' :
+                                   '<span class="badge">Running</span>';
+
+                entry.innerHTML = `
+                    <div style="padding: 0.5rem 0; border-bottom: 1px solid #e0e0e0;">
+                        <div style="font-size: 0.9rem;">
+                            ${startTime.toLocaleString()} · ${log.run_type} ${statusBadge}
+                        </div>
+                        <div style="font-size: 0.85rem; color: #6c757d; margin-top: 0.25rem;">
+                            Checked: ${log.products_checked} · Fetched: ${log.content_fetched} · Errors: ${log.errors_count}
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(entry);
+            });
+        } else {
+            container.innerHTML = '<p class="text-muted">No ingestion logs found</p>';
+        }
+
+    } catch (error) {
+        console.error('Error loading CRS ingestion logs:', error);
+        document.getElementById('crsIngestionLogs').innerHTML = '<p class="text-danger">Error loading logs</p>';
+    }
+}
+
+async function loadCRSProducts() {
+    try {
+        const response = await fetch('/admin/api/crs/products?limit=50');
+        const data = await response.json();
+
+        const container = document.getElementById('crsProducts');
+        container.innerHTML = '';
+
+        if (data.status === 'success' && data.products && data.products.length > 0) {
+            data.products.forEach(product => {
+                const entry = document.createElement('div');
+                entry.style.borderBottom = '1px solid #e0e0e0';
+                entry.style.padding = '0.75rem 0';
+
+                const pubDate = product.publication_date ? new Date(product.publication_date).toLocaleDateString() : 'No date';
+                const updateDate = product.update_date ? new Date(product.update_date).toLocaleDateString() : 'No date';
+                const hasContent = product.version_number ? '✓' : '✗';
+                const wordCount = product.word_count ? product.word_count.toLocaleString() : 'N/A';
+
+                entry.innerHTML = `
+                    <div style="font-weight: 500; font-size: 0.95rem;">${product.title || '(No title)'}</div>
+                    <div style="font-size: 0.85rem; color: #6c757d; margin-top: 0.25rem;">
+                        ${product.product_number || product.product_id} · ${product.product_type} ·
+                        Pub: ${pubDate} · Update: ${updateDate} ·
+                        Content: ${hasContent} · Words: ${wordCount}
+                    </div>
+                `;
+
+                container.appendChild(entry);
+            });
+        } else {
+            container.innerHTML = '<p class="text-muted">No products found</p>';
+        }
+
+    } catch (error) {
+        console.error('Error loading CRS products:', error);
+        document.getElementById('crsProducts').innerHTML = '<p class="text-danger">Error loading products</p>';
+    }
+}
+
+async function startCRSUpdate(e) {
+    e.preventDefault();
+
+    const lookbackDays = parseInt(document.getElementById('crsLookbackDays').value);
+    const maxProducts = parseInt(document.getElementById('crsMaxProducts').value);
+
+    const payload = {
+        lookback_days: lookbackDays,
+        max_products: maxProducts
+    };
+
+    try {
+        const response = await fetch('/admin/api/crs/trigger-update', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            currentCRSTaskId = data.task_id;
+            document.getElementById('crsLiveProgress').style.display = 'block';
+            document.getElementById('startCRSUpdateBtn').disabled = true;
+
+            // Trigger async execution (fire-and-forget)
+            fetch(`/api/admin/run-task/${data.task_id}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            }).catch(err => {
+                console.error('CRS async trigger error (non-critical):', err);
+            });
+
+            crsUpdateInterval = setInterval(pollCRSTaskStatus, 3000);
+        } else {
+            alert('Error starting CRS update: ' + data.error);
+        }
+
+    } catch (error) {
+        alert('Error starting CRS update: ' + error.message);
+    }
+}
+
+async function pollCRSTaskStatus() {
+    if (!currentCRSTaskId) return;
+
+    try {
+        const response = await fetch(`/admin/api/task-status/${currentCRSTaskId}`);
+        const data = await response.json();
+
+        const progressData = data.progress || {};
+        const progress = progressData.products_checked || 0;
+        const total = progressData.total_products || 100;
+        const percent = Math.round((progress / total) * 100);
+
+        document.getElementById('crsProgressBar').style.width = percent + '%';
+        document.getElementById('crsProgressStats').textContent = `${progress}/${total} products checked`;
+
+        if (data.status === 'completed' || data.status === 'failed') {
+            clearInterval(crsUpdateInterval);
+            document.getElementById('startCRSUpdateBtn').disabled = false;
+            setTimeout(refreshCRSDashboard, 2000);
+
+            if (data.status === 'completed') {
+                alert('CRS update completed successfully!');
+            } else {
+                const errorMsg = (data.result && data.result.error) || data.error_message || 'Unknown error';
+                alert('CRS update failed: ' + errorMsg);
+            }
+        }
+
+    } catch (error) {
+        console.error('Error polling CRS task status:', error);
+    }
+}
+
+function refreshCRSDashboard() {
+    loadCRSStats();
+    loadCRSIngestionLogs();
+    loadCRSProducts();
 }
 </script>
 </body>

@@ -526,13 +526,10 @@ html {
 </div>
 
 <!-- CRS Content with TOC -->
-<!-- DEBUG: content_version={{ 'exists' if content_version else 'None' }}, has_html={{ 'yes' if (content_version and content_version.get('html_content')) else 'no' }} -->
 {% if content_version and content_version.get('html_content') %}
 <div class="row">
     {# Check if HTML content contains a TOC div - JavaScript will handle the rest #}
     {% set has_toc = 'class="TOC"' in content_version['html_content'] or 'class=\'TOC\'' in content_version['html_content'] %}
-    {% set has_body_tag = '<body' in content_version['html_content']|lower %}
-    <!-- DEBUG: has_toc={{ has_toc }}, html_length={{ content_version['html_content']|length }}, has_body_tag={{ has_body_tag }} -->
 
     <div class="{% if has_toc %}col-lg-9{% else %}col-12{% endif %}">
         <div class="section">
@@ -598,15 +595,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const originalToc = document.querySelector('.content-preview .TOC');
     const sidebar = document.getElementById('sticky-toc-sidebar');
 
-    console.log('TOC Debug:', {
-        originalToc: originalToc,
-        sidebar: sidebar,
-        tocExists: !!originalToc,
-        sidebarExists: !!sidebar
-    });
-
     if (originalToc && sidebar) {
-        console.log('Creating sticky TOC...');
 
         // Widen the container for TOC layout
         const container = document.querySelector('.policy-library-container');

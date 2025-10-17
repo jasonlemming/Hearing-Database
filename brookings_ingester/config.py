@@ -12,14 +12,10 @@ class Config:
     """Configuration settings for Brookings ingester"""
 
     # Database - Policy Library (Neon Postgres)
-    # Use BROOKINGS_DATABASE_URL to override, otherwise use DATABASE_URL
+    # Use BROOKINGS_DATABASE_URL to override, otherwise use DATABASE_URL from env, or default to Policy Library
     DATABASE_URL = os.getenv(
         'BROOKINGS_DATABASE_URL',
         os.getenv('DATABASE_URL', 'postgresql://neondb_owner:npg_7Z4JjDIFYctk@ep-withered-frost-add6lq34-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require')
-    # Use BROOKINGS_DATABASE_URL to override, otherwise default to Neon Postgres
-    DATABASE_URL = os.getenv(
-        'BROOKINGS_DATABASE_URL',
-        'postgresql://neondb_owner:npg_7Z4JjDIFYctk@ep-withered-frost-add6lq34-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require'
     )
 
     # Storage paths

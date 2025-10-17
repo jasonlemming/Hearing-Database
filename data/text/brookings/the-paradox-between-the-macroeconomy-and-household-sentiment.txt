@@ -1,0 +1,587 @@
+Despite recent concerns over a slowdown, the U.S. economy is performing well according to most objective metrics.
+
+The top-line unemployment rate was 4.1% as of September 2024, well below its 21st-century average of 5.7%.
+
+GDP growth has been substantial, with real (inflation-adjusted) GDP growth of 3.0% over the past four quarters.
+
+Wages have outpaced inflation by 0.9% and the stock market has risen by 23% over a similar period.
+
+Investment, a key driver of the business cycle, fell very little as a share of GDP following the pandemic, outperforming the recoveries from every recession since 1980.
+
+Judged over a longer time horizon, U.S. economic performance is similarly impressive, especially given the wrenching shock from the COVID-19 shutdowns of 2020 and 2021.
+
+Between Q1 2020 and Q2 2024, gains in housing equity and the stock market led to a remarkable $50 trillion expansion in household wealth—$28 trillion in inflation-adjusted terms.
+
+Despite the 2021–2023 inflation surge, wages have outpaced price increases since Q4 2019, with real median weekly earnings up 0.3%—with the highest gains for lower-wage workers.
+
+Indeed, despite COVID-19, real U.S.
+
+GDP is now $130 billion higher than the Congressional Budget Office (CBO) projected it would be in its pre-COVID-19 forecast.
+
+Historically, consumer attitudes regarding the economy have closely tracked prominent macroeconomic indicators like GDP, unemployment, equity prices, and inflation.
+
+But since the pandemic, this relationship has fundamentally changed.
+
+By most measures, consumer attitudes about the economy have been divorced from the underlying economic conditions, with consumers feeling as poorly about the economy as they did in the immediate aftermath of the Great Recession.
+
+In this piece, we examine this decoupling.
+
+We first examine how consumer attitudes about the economy are measured and their divergence from predictions based on hard economic data.
+
+We then examine the extent to which people are revealing optimism or pessimism about the economy through their behavior as consumers, workers, entrepreneurs, and investors.
+
+Finally, we investigate possible explanations for this divergence, including political bias, negative news bias, and the impact of social media.
+
+[H3]The various measures of consumer sentiment
+
+The most closely followed measure of consumer attitudes about the economy is the University of Michigan’s Index of Consumer Sentiment (“sentiment”).
+
+Taken every month since 1978, the index effectively measures the share of survey respondents who feel good about the economy less the share of survey respondents who feel poorly about the economy, plus 100.
+
+Thus, any score above 100 indicates net positive feelings about the economy, while a score below 100 indicates net negative feelings.
+
+The panel survey is roughly 900 to 1,000 individuals each month, composed of both “fresh” respondents and “recontacted” respondents who participated six or twelve months ago.
+
+Another popular measure is the Conference Board’s Consumer Confidence (“confidence”) survey.
+
+Started in 1967, the survey currently samples 5,000 individuals each month to produce a similar measure of consumer attitudes. 1 The main difference between the two surveys is that sentiment tends to focus more on overall economic conditions while confidence tends to focus more on the labor market.
+
+Unsurprisingly, confidence has held up better since the pandemic, as the labor market has been particularly strong.
+
+The sentiment and confidence indices are based on questions that assess views of current and future economic conditions for the survey respondent’s own household and the aggregate economy.
+
+Since households only have first-hand knowledge of their own household’s current economic conditions and must rely on external sources to develop views about the future and the broader economy, the information that households receive may have an influence on these measures.
+
+The sentiment and confidence indices are correlated but not perfectly overlapping (see Figure 1).
+
+In every year between 1981 and 2017, sentiment exceeded confidence, with an average gap of around 20 points.
+
+The ordinal ranking reversed in 2018, when the sentiment index fell below that for confidence.
+
+After a brief rebound, sentiment fell sharply relative to confidence and has remained depressed by comparison since then.
+
+While these indices are not directly comparable, a key point is that the relative position of each appears to have systematically changed in the latter part of the last decade.
+
+While we are unaware of a compelling reason for this divergence, it is perhaps worth noting that this change occurred at roughly the same time when we observe similar divergences in other sentiment-related measures, such as the gap between actual and predicted sentiment and the gap between actual and predicted news sentiment (both explained below).
+
+In this piece, we mainly focus on the disconnect between observed economic data and sentiment, although the results largely hold for confidence as well.
+
+[H3]Actual sentiment versus predicted sentiment
+
+Before the pandemic, variation in sentiment could be largely explained using standard macroeconomic variables.
+
+In particular, a model that predicted sentiment using the unemployment rate, the inflation rate, aggregate consumption, and the performance of the stock market can explain 77.4% of the variation in sentiment over 2005–2019 (see Figure 2).
+
+However, over the last few years, this relationship has broken down, with a wide gap emerging between observed sentiment and predicted sentiment based on the state of the economy.
+
+This gap—replicated by many others—has been the subject of a contentious debate. 2 To be clear, the debate surrounding this uncoupling is not a question of whether or not many working-class Americans report feeling like they are subject to economic and financial pressure.
+
+Unfortunately, this has been an enduring feature of the American economy over the past 40 years. 3 In simple terms, the puzzle we are examining is as follows: At most points in time over the past four decades, if consumers lived under an identical macroeconomy as they have now, their feelings about the economy would have been largely positive.
+
+But now this is no longer true; consumer attitudes about the economy are instead near all-time lows.
+
+This decoupling is the mystery examined in this essay.
+
+To better understand this, we first examine more detailed accounts of how individuals are feeling and behaving.
+
+[H2]I.
+
+How are people feeling?
+
+Dissecting the sentiment data
+
+Sentiment is a complex phenomenon impacted by a variety of factors that extend beyond the current economic outlook.
+
+Households often report discrepancies between their views of their own situation and that of the broader economy.
+
+CEOs and other business leaders, presumably better informed about business prospects than the general population, are polled on their views separately.
+
+Politics also plays a major factor in sentiment, as shifts in presidential party affiliation typically portend large, but asymmetric, shifts in sentiment by party.
+
+Similarly, age has historically been correlated with sentiment, although that relationship has changed since the onset of the pandemic.
+
+In this section, we elaborate on some of the key underlying trends in sentiment.
+
+[H3]Macro interpretations versus own-situation sentiment
+
+Among the five questions comprising the sentiment index, the questions asking about the change in respondents’ personal financial situations over the last year and a change in business conditions over the last year have received particular attention. 4 Since most respondents don’t directly experience aggregate “business conditions”—and presumably form their views from media reports, social media posts, or general “vibes”—the gap between respondents’ perceptions of their personal financial situation and business conditions may provide some clues on the role of these external sources in sentiment.
+
+As Figure 3 shows, these measures diverge on a cyclical basis, with views on business conditions relative to personal financial situations plummeting during recessions.
+
+Consistent with this pattern, a smaller gap opened in summer 2022, when the majority of professional forecasters (incorrectly) predicted that the U.S. was heading for a recession.
+
+However, over the last two years, both of these measures have improved while the gap between them has shrunk.
+
+[H3]Sentiment by party affiliation
+
+Sentiment also asks respondents about their political affiliation.
+
+Figure 4 shows a striking difference in how partisans respond when a member of the opposite party is elected.
+
+Immediately after Donald Trump’s election, Republican sentiment spiked, while Democratic sentiment cratered.
+
+Likewise, when Joe Biden was elected four years later, the reverse occurred.
+
+As we discuss later though, the magnitudes of these switches in attitudes are not the same, as Republicans exhibit a bias 2.5 times stronger than that of Democrats.
+
+[H3]Sentiment by age
+
+Age has traditionally been an important determinant of sentiment, with younger respondents more optimistic than older survey-takers.
+
+Indeed, over the past five decades, respondents aged 18-34 have had more optimistic sentiment than respondents aged 55 or above in 549 out of 559 months.
+
+The relationship became less stark in the pandemic-era economy, perhaps because the average older American—with inflation-indexed Social Security benefits and relatively high gains in financial wealth and housing equity—fared better economically than their younger counterparts. 5 If the historical pattern continues, the systemic pessimism of older households has implications for aggregate sentiment moving forward, as the aging of the U.S. population will drag down sentiment over time.
+
+While younger respondents have generally remained more optimistic than their older counterparts in each period, there is some evidence that younger Americans are growing less happy overall.
+
+Indeed, recent research by Blanchflower, Bryson, and Xu (2024) found sharply elevated rates of despair for young adults in the 20s and 30s in 2019 through 2022 relative to the prior decade—reversing the longstanding U-shape in reported happiness by age. 6
+
+[H3]CEO and business leader sentiment
+
+Separate from consumer sentiment, some surveys also track the sentiment of business leaders such as CEOs.
+
+Among the more prominent CEO surveys is the Business Roundtable’s survey of CEOs, conducted on a quarterly basis.
+
+Figure 6 shows since the pandemic, sentiment and CEO confidence have charted separate paths.
+
+For example, between Q4 2019 and Q1 2022, sentiment declined by roughly 35%, while CEO confidence increased by roughly 49% for a stunning net difference of nearly 85%.
+
+In sum, several trends suggest that consumer sentiment is not wholly driven by rational and accurate perceptions.
+
+One, the gap between own-situation sentiment and macroeconomic assessments tends to diverge during recessions, and the widespread—but incorrect—assessment of the economy as being in a recession in 2022 may have dragged down the sentiment level.
+
+Two, the switch from a Republican to Democratic president likely resulted in an asymmetric negative sentiment shock—assuming historical relationships hold.
+
+Three, older Americans continued to report systemically more negative sentiment than younger households—despite relatively favorable financial conditions—potentially suggesting a long-term negative sentiment bias associated with an aging population.
+
+And lastly, the gap between CEO and household sentiment soared to unprecedented levels—potentially suggesting that individuals with a broader picture of the economy were relatively more optimistic about the post-COVID-19 economy.
+
+[H2]II.
+
+How are people behaving?
+
+Anatural way to understand the gap between hard economic data and consumer sentiment is to examine how people are behaving.
+
+In their behavior, are consumers, workers, entrepreneurs, and businesses acting like they are optimistic about the U.S. economy, or are they hunkering down to prepare for an economic storm?
+
+[H3]Consumption trends
+
+Historically, negative consumer attitudes have been reflected most immediately in lower spending as consumers tighten their proverbial belts.
+
+Yet consumers show no evidence of any belt-tightening in their spending behavior.
+
+Since January 2021, real consumption has grown at an annual rate of 3.4%, compared to an average of 2.4% between 2010 and 2019.
+
+Of course, aggregate consumption does not necessarily show that consumers are cheerfully spending on luxury items, as it includes major, necessary expenditure categories such as housing, utilities, and healthcare.
+
+But when we examine measures more sensitive to consumer incomes or expectations, we also observe a disconnect.
+
+Figure 8 shows that real spending on international travel and the volume of travelers going through Transportation Security Administration (TSA) checkpoints have rebounded back to their pre-pandemic levels.
+
+Real spending on air transportation has skyrocketed more than 40% above its pre-pandemic level.
+
+[H3]Worker and entrepreneur behavior
+
+Similarly, workers who are wary of the economic conditions are typically reluctant to voluntarily quit their jobs.
+
+Searching for and taking a new job is an especially risky proposition when one’s confidence in the economy and labor market is slim.
+
+Despite coming down gradually over the past two years, though, quit rates remain at pre-pandemic levels and are high relative to historical experience.
+
+In the same vein, uncertainty surrounding the economy’s future has historically been associated with lower rates of business formation, as potential entrepreneurs are less inclined to take the risk of starting their own businesses in a demand-depressed environment.
+
+But again, here we see another striking disconnect; applications to start a new business—including those which are likely to be an employer in the future—sharply increased during the pandemic and have remained nearly 40% above their pre-pandemic level.
+
+This surge in new business activity, as documented by Decker and Haltiwanger (2023), was especially remarkable in light of the economic context from where it emerged. 7 That is, the entrepreneurial boom developed as the economy was in the midst of the steepest recession in post-war history and was characterized by historically tight labor markets (suggesting that entrepreneurs had appealing options in the labor market).
+
+And, as Decker and Haltiwanger point out, the post-pandemic entrepreneurship acceleration was in sharp contrast to the muted activity in the wake of the Great Recession.
+
+Moreover, this elevated rate of entrepreneurship appears to continue to 2024, as the number of new business applications has averaged 430,000 per month this year—an increase of 50% relative to the year before the pandemic (Van Nostrand 2024b). 8 All told, this surge in new business activity suggests a notable optimism among the entrepreneurial community.
+
+[H3]Business investment
+
+As previously noted, households’ negative views about business conditions and the aggregate economy have been dragging down consumer sentiment.
+
+In theory, this could reflect a poor outlook for businesses, who would subsequently withhold investment—and ultimately, job creation—due to unfavorable future economic conditions.
+
+As discussed above, though, CEO confidence itself remains above its pre-pandemic level.
+
+Asecond test of business leader optimism is to examine the actual behavior of firms to evaluate their level of optimism around the economic outlook.
+
+In particular, business fixed investment—which represents expenditures to expand a company’s ability to produce in the future—can be a bellwether for business confidence in future growth.
+
+By this metric, businesses have been optimistic about the growth of the U.S. economy.
+
+Figure 11 shows that, contrary to pessimistic consumer views about business conditions, business fixed investment (which includes investment in equipment, structures, and intellectual property) has grown at atypical rates relative to past economic expansions.
+
+Published in Van Nostrand (2024a), the figure shows that business fixed investment has stayed mostly constant since the peak of the current business cycle, bucking a trend of declines and gradual recovery in this type of activity. 9 The constant stream of investment over the pandemic and subsequent recovery has meant, according to Treasury analysis, that business investment was a remarkable $430 billion higher relative to a scenario where businesses invested at historical rates.
+
+[H2]III.
+
+Possible explanations
+
+If economic conditions are strong, and people are behaving in a way that reveals some optimism about the economic environment, why is sentiment so weak?
+
+Analysts have advanced an array of possible explanations.
+
+One possible explanation, offered by Greg Ip of the Wall Street Journal, is that peoples’ views about the general state of the world and country spill over into their views about the economy.
+
+Ip refers to this as “referred pain,” and notes that events like “intensifying political and cultural conflict and intolerance, the pandemic, the border, mass shootings, crime, war in Ukraine, and now the war in the Middle East” may be negatively affecting views of the economy, even if national aggregates tell a brighter story. 10 Such an explanation is certainly possible, although difficult to test since the non-economic factors that may be causing referred pain are difficult to identify.
+
+Moreover, several of the factors identified by Ip are actually improving over the period of interest.
+
+For example, in the first half of 2024 most violent crimes occurred at or below pre-pandemic levels, with less frequency than in the preceding 4 years, 11  and the U.S. withdrawal from Afghanistan in 2021 means our nation is not at war for the first time in two decades.
+
+Another plausible explanation, advanced by economist Jason Furman at a Brookings Institution event in January 2024, 12 is that the pace of cumulative wage gains in the post-pandemic era is markedly slower than the years immediately preceding the pandemic (i. e., 2014–2019).
+
+Indeed, relatively slower real wage gains could plausibly be a factor behind the sentiment puzzle.
+
+However, several caveats are warranted.
+
+One, discrepancies in cumulative real wage gains are highly sensitive to the measure of wages, the inflation deflator, and the periods of comparisons.
+
+And two, it is unclear whether real wages or, say, real disposable income are the appropriate measure of comparison—and real disposable income saw an unprecedented spike from the onset of the pandemic through spring 2021 when government support was surging.
+
+Three, if cumulative real wages drove sentiment, it is not clear why older households—with sharply lower rates of employment—would have reported a concomitant drop in sentiment.
+
+These plausible explanations aside, in this section we examine what we regard as the most likely explanations: the lasting impact of inflation, media bias and misinformation, and the asymmetric role of partisanship.
+
+[H3]The lasting impact of inflation
+
+Acommonly posited explanation for depressed sentiment is that, despite the fact wages have outpaced inflation since 2020, consumers dislike inflation per se.
+
+For instance, Shiller (1997) and Stantcheva (2024) present survey data showing that in an inflationary environment, people believe that wage growth will not keep up with price increases. 13, 14 Specifically, people believe that companies have discretion in setting wages and will not raise them fast enough to keep up with prices, eroding consumers’ purchasing power and forcing them to make hard choices about their budget.
+
+However, while this argument can explain why people dislike inflation, it does not explain why sentiment has dropped below the levels that we would predict based on the historical relationship between inflation and sentiment.
+
+It also does not explain why sentiment has remained low despite inflation receding to an annual rate of 2.6% as of August 2024.
+
+Two pieces of evidence provide some clues on this issue.
+
+The first is that people’s perceptions of current and future inflation, as expressed in surveys, are often unmoored from the facts.
+
+For instance, Stantcheva (2024) found in her survey that the average reported rate of annual inflation was 7.1%, more than twice the 3.4% actual number during this period; further, survey respondents expected it to be 6.3% in the year ahead, much higher than predicted by markets or forecasters.
+
+If perceptions are more out of line now than in the past, this could explain the gap between sentiment and the economic fundamentals.
+
+Asecond explanation is that consumers care, to some extent, about the level of prices, rather than change in prices over the last year that economists focus on.
+
+That is, while prices have only increased by 2.6% in the last year, consumers may be reacting to the fact that prices have cumulatively increased by 22% since 2020 and are still facing sticker shock when they go into the store.
+
+Of course, consumers eventually adjust to the price level; most people have adjusted to the fact that a Coke costs more than a nickel, despite costing 5 cents a bottle from 1886 to the late 1950s. 15 The question is how quickly consumers acclimate to the new level of prices.
+
+Cummings and Mahoney (2023b), two coauthors of this piece, examine this question using data on the historical relationship between inflation and sentiment.
+
+They find that the effect of inflation “decays” at a rate of about 50% per year, meaning that an inflationary shock’s impact on sentiment will be roughly half the size after one year, one-quarter the size after two years, and one-eighth the size the year after.
+
+An implication is that the post-COVID-19 inflation surge, which peaked in July 2022, should just now be passing through the system. 16
+
+[H3]Media bias and misinformation
+
+Another proposed explanation for the disconnect between sentiment and fundamentals is that people are receiving more negative news about the economy despite the underlying fundamentals.
+
+Part of this explanation may be that local news sources are gradually becoming more negative over time.
+
+In a recent working paper, economist Jules van Binsbergen and his coauthors examined economic sentiment in newspapers over nearly 200 years.
+
+The authors find that economic news has largely been getting increasingly more negative since 1960, with a sharp decline over the past 25 years. 17
+In a 2024 note, one of this essay’s coauthors (Harris) and Brookings colleague Aaron Sojourner examine this dynamic in the context of predicted news sentiment conditional on the state of the macroeconomy.
+
+The authors use an economic news sentiment index constructed by the Federal Reserve Bank of San Francisco to estimate how economic news changes with the economic fundamentals and then measure whether this relationship has changed as of late.
+
+Indeed, as shown in Figure 14, for much of the pandemic economic news was substantially more negative than what would be expected given the hard economic data. 18
+
+Relatedly, Cummings, Mahoney, and Fraccaroli (2024) examine how television news reports on gasoline prices, which are linked closely to consumer sentiment.
+
+Using the universe of TV news transcripts from six major outlets over the 2004-2023 period, the authors find that gasoline prices are largely unmentioned when the national average gas price is low, but when the price rises above $3.50 per gallon, media mentions of gasoline prices increase linearly (and are always negative in tone).
+
+Importantly, this inflection point has remained constant at a nominal $3.50 over the last two decades, meaning that the real price at which media negatively mentions gas prices has decreased over time, potentially contributing to declining consumer sentiment. 19
+
+Arelated question is the extent to which misinformation—potentially driven by more widespread interactions with social media—influence consumer sentiment.
+
+Academic research has established a correlation between the sentiment and economic views expressed by social media influencers on apps like Instagram. 20 Meanwhile, research by Brookings scholar Carol Graham established a link between misinformation and despair, noting a connection between declines in access to local newspapers and a host of negative economic outcomes. 21
+Similarly, high rates of macroeconomic mischaracterization may color the interpretation of surveys consumer sentiment.
+
+For example, in November 2022, despite the US economy continuing to expand with ultra-low unemployment, only 22% of respondents in a POLITICO/Morning Consult Poll correctly reported the U.S. was “not in a recession.” 22 That same month, the University of Michigan’s “current economic index”—which measures respondents’ current assessment of the U.S. economy—fell to approximately the nadir in sentiment reported during the Great Recession when the economy was contracting and unemployment was rampant.
+
+On a related note, there appears to a disconnect between consumers’ awareness of inflation and the actual rate of inflation beginning around the turn of the century.
+
+As shown in Figure 16, the share of consumers mentioning inflation (as measured by the University of Michigan) tended to track the observed inflation rate (chart below, different scales) from 1960 until around 2000.
+
+After 2000, small increases in inflation tended to result in sharp increases in consumer awareness, as exhibited with the mid-2000s increase in inflation leading up to the Great Recession and the most current episode.
+
+We note that this coincides with the period when news sentiment became substantially more negative, emphasizing that this relationship is not shown to be causal.
+
+[H3]Political biases
+
+Another frequent hypothesis for the divergence in consumer sentiment is that survey responses are skewed by partisan sentiment.
+
+For example, Republican sentiment was nearly 20 points lower the month after Joe Biden’s election compared to the month before (October to December 2020), while Democratic sentiment increased about 13 points over the same period.
+
+Unless Republicans and Democrats respond in an equal and opposite manner around shifts in political control, this type of partisan bias can bias the overall sentiment measure.
+
+In a 2023 study, Cummings and Mahoney find that while both sides do indeed exhibit political biases, the magnitude of these biases are not equal.
+
+Specifically, after controlling for economic fundamentals, Republicans feel about 15 index points better than predicted about the economy when a Republican is president, whereas Democrats feel around 6 index points worse.
+
+When a Democrat is president, Republicans feel about 15 index points worse than the economy, but Democrats only feel around 6 index points better.
+
+Put differently, Republicans exhibit a political bias in sentiment that is 2.5x stronger than Democrats, or as the authors write, “Republicans cheer louder and boo harder.” 23
+
+[H2]IV.
+
+Conclusion
+
+We have documented a disconnect between consumer sentiment and economic fundamentals that emerged during the pandemic and has persisted over the past three years.
+
+Despite consumers and firms behaving in a way that is historically consistent with positive views about the economy, individual views about the economy remain largely negative.
+
+Of the many theories offered, analysis by us and others leaves us with the following estimation: The causes of the gap between sentiment and fundamentals can be split into three components.
+
+The first part is the residual impact of inflation; indeed, we estimate that inflation over the past three years is still generating a drag of 8.8 points on sentiment.
+
+The second part is the impact of partisanship; here, we estimate that asymmetric Republican partisanship is skewing sentiment downward by roughly 3.6 index points.
+
+This leaves with us with a final, admittedly unexplained, third part.
+
+We believe this is a mix of the other theories posited.
+
+Amedia bias towards bad news is likely skewing individuals’ attitudes about the economy; “referred pain” is causing projection of displeasure about other global and national issues onto the broader economy; and the aging of the population and the correlation between age and low sentiment may be driving down perceptions as well.
+
+[H2]Appendix
+
+Acknowledgements and disclosures
+
+The Brookings Institution is financed through the support of a diverse array of foundations, corporations, governments, individuals, as well as an endowment.
+
+Alist of donors can be found in our annual reports published online  here.
+
+The findings, interpretations, and conclusions in this report are solely those of its author(s) and are not influenced by any donation.
+
+Footnotes
+
+Beginning in May 2021, the Conference Board began conducting the Consumer Confidence Survey online rather than by mail.
+
+The Board attributed this change to a decline in mail survey response rates, as well as improved online survey quality.
+
+While the survey kept the same set of questions, it had to account for factors unique to online surveys, such as positive sentiment biases.
+
+After these adjustments, the new survey produced results consistent with the previous survey method.
+
+Our model extends back to 2005 as this is roughly when the University of Michigan’s Consumer Sentiment survey began tracking partisanship on a regular basis.
+
+The results are similar if the model is extended back to 1978, when sentiment first was measured on a monthly basis.
+
+For example, Yale University researcher Ernie Tedeschi has documented that from 1979–1997, a worker in the bottom 25% of the income distribution earned the same weekly real wage—roughly $450/week in 2023 dollars—over the entire period.
+
+While low-wage workers have seen meaningful gains since the pandemic, it is unsurprising that some of their economic stresses persist. https://www. briefingbook. info/p/introducing-the-low-wage-index-a.
+
+The questions are: 1) “We are interested in how people are getting along financially these days.
+
+Would you say that you (and your family living there) are better off or worse off financially than you were a year ago?,” 2) “Now looking ahead–do you think that a year from now you (and your family living there) will be better off financially, or worse off, or just about the same as now?,” 3) “Now turning to business conditions in the country as a whole–do you think that during the next twelve months we’ll have good times financially, or bad times, or what?,” 4) “Looking ahead, which would you say is more likely–that in the country as a whole we’ll have continuous good times during the next five years or so, or that we will have periods of widespread unemployment or depression, or what?,” 5) “About the big things people buy for their homes–such as furniture, a refrigerator, stove, television, and things like that.
+
+Generally speaking, do you think now is a good or bad time for people to buy major household items?”
+
+According to the 2022 Survey of Consumer Finances, older Americans experienced the largest increases in mean wealth between 2019 and 2022, with progressively larger gains in mean net worth for the oldest groups.
+
+Individuals 55 to 64 years old experienced an increase of $200,250 in mean net worth, while the mean net worth of individuals 65 to 74 years old grew by $371,220.
+
+Individuals 75 or older were the greatest beneficiaries, with an increase of $509,060 in mean net worth.
+
+Blanchflower, David G., Alex Bryson, and Xiaowei Xu. 2024. “The Declining Mental Health of The Young And The Global Disappearance Of The Hump Shape In Age In Unhappiness.” Working Paper Series.
+
+National Bureau of Economic Research. https://doi. org/10.3386/w32337.
+
+Decker, Ryan A., and John Haltiwanger. 2023. “Surging Business Formation in the Pandemic: Causes and Consequences?” Brookings Papers on Economic Activity 2023 (2): 249–316. https://doi. org/10.1353/eca.2023. a935424.
+
+Van Nostrand, Eric. 2024b. “Small Business and Entrepreneurship in the Post-COVID Expansion.” U.S.
+
+Department of the Treasury. https://home. treasury. gov/news/featured-stories/small-business-and-entrepreneurship-in-the-post-covid-expansion.
+
+Van Nostrand, Eric. 2024a. “U.S.
+
+Business Investment in the Post-COVID Expansion.” U.S.
+
+Department of the Treasury. https://home. treasury. gov/news/featured-stories/us-business-investment-in-the-post-covid-expansion.
+
+Ip, Greg. 2023. “The Economy Is Great.
+
+Why Are Americans in Such a Rotten Mood?” Wall Street Journal.
+
+November 1, 2023. https://www. wsj. com/economy/the-economy-is-great-why-are-americans-in-such-a-rotten-mood-6e1044d8.
+
+Lopez, Ernesto, and Bobby Boxerman. 2024. “Crime Trends in U.S.
+
+Cities: Mid-Year 2024 Update – Council on Criminal Justice.” Council on Criminal Justice. https://counciloncj. org/crime-trends-in-u-s-cities-mid-year-2024-update/.
+
+“Why Are Americans down on the Economy despite Its Apparent Strength?” 2024.
+
+Brookings Institution.
+
+January 10, 2024. https://www. brookings. edu/events/why-are-americans-down-on-the-economy-despite-its-apparent-strength/
+
+Shiller, Robert J. 1997. “Why Do People Dislike Inflation?” In Reducing Inflation: Motivation and Strategy, edited by Christina D.
+
+Romer and David H.
+
+Romer, 13–70.
+
+University of Chicago Press. https://www. nber. org/books-and-chapters/reducing-inflation-motivation-and-strategy/why-do-people-dislike-inflation.
+
+Stantcheva, Stefanie. 2024. “Why Do We Dislike Inflation?” BPEA Conference Draft, Spring.
+
+March 14, 2024. https://www. brookings. edu/articles/why-do-we-dislike-inflation/.
+
+Arcuri, Bronson. 2018. “The Price Of Coke Stayed The Same For 70 Years — Why?” NPR, March 28, 2018.
+
+Planet Money Shorts. https://www. npr. org/sections/money/2018/03/28/597302023/the-price-of-coke-stayed-the-same-for-70-years-why.
+
+Cummings, Ryan, and Neale Mahoney. 2023b. “Digesting Inflation.” Briefing Book.
+
+December 4, 2023. https://www. briefingbook. info/p/digesting-inflation.
+
+Binsbergen, Jules H. van, Svetlana Bryzgalova, Mayukh Mukhopadhyay, and Varun Sharma. 2024. “(Almost) 200 Years of News-Based Economic Sentiment.” Working Paper.
+
+Working Paper Series.
+
+National Bureau of Economic Research. https://doi. org/10.3386/w32026.
+
+Harris, Ben, and Aaron Sojourner. 2024. “Is the Economic News Becoming More Negative, and Does It Matter for Consumers?” Brookings Institution.
+
+March 6, 2024. https://www. brookings. edu/articles/is-the-economic-news-becoming-more-negative-and-does-it-matter-for-consumers/.
+
+Cummings, Ryan, Giacomo Fraccaroli, and Neale Mahoney. 2024. “Bad News Bias in Gasoline Price Coverage.” Briefing Book.
+
+May 6, 2024. https://www. briefingbook. info/p/bad-news-bias-in-gasoline-price-coverage.
+
+Zhang, Zhengfa, Kevin Keasey, Costas Lambrinoudakis, and Danilo V.
+
+Mascia. 2024. “Consumer Sentiment: The Influence of Social Media.” Economics Letters 237 (April): 111638. https://doi. org/10.1016/j. econlet.2024.111638.
+
+Graham, Carol. 2024. “Our Twin Crises of Despair and Misinformation.” Brookings Institution.
+
+July 22, 2024. https://www. brookings. edu/articles/our-twin-crises-of-despair-and-misinformation/.
+
+“National Tracking Poll.” Poll.
+
+Morning Consult and Politico, November 2022. https://www. politico. com/f/? id=00000184-a2ea-d1d1-ad8d-affbe2e40000.
+
+Cummings, Ryan, and Neale Mahoney. 2023a. “Asymmetric Amplification and the Consumer Sentiment Gap.” Briefing Book.
+
+November 13, 2023. https://www. briefingbook. info/p/asymmetric-amplification-and-the
+
+Beginning in May 2021, the Conference Board began conducting the Consumer Confidence Survey online rather than by mail.
+
+The Board attributed this change to a decline in mail survey response rates, as well as improved online survey quality.
+
+While the survey kept the same set of questions, it had to account for factors unique to online surveys, such as positive sentiment biases.
+
+After these adjustments, the new survey produced results consistent with the previous survey method.
+
+Our model extends back to 2005 as this is roughly when the University of Michigan’s Consumer Sentiment survey began tracking partisanship on a regular basis.
+
+The results are similar if the model is extended back to 1978, when sentiment first was measured on a monthly basis.
+
+For example, Yale University researcher Ernie Tedeschi has documented that from 1979–1997, a worker in the bottom 25% of the income distribution earned the same weekly real wage—roughly $450/week in 2023 dollars—over the entire period.
+
+While low-wage workers have seen meaningful gains since the pandemic, it is unsurprising that some of their economic stresses persist. https://www. briefingbook. info/p/introducing-the-low-wage-index-a.
+
+The questions are: 1) “We are interested in how people are getting along financially these days.
+
+Would you say that you (and your family living there) are better off or worse off financially than you were a year ago?,” 2) “Now looking ahead–do you think that a year from now you (and your family living there) will be better off financially, or worse off, or just about the same as now?,” 3) “Now turning to business conditions in the country as a whole–do you think that during the next twelve months we’ll have good times financially, or bad times, or what?,” 4) “Looking ahead, which would you say is more likely–that in the country as a whole we’ll have continuous good times during the next five years or so, or that we will have periods of widespread unemployment or depression, or what?,” 5) “About the big things people buy for their homes–such as furniture, a refrigerator, stove, television, and things like that.
+
+Generally speaking, do you think now is a good or bad time for people to buy major household items?”
+
+According to the 2022 Survey of Consumer Finances, older Americans experienced the largest increases in mean wealth between 2019 and 2022, with progressively larger gains in mean net worth for the oldest groups.
+
+Individuals 55 to 64 years old experienced an increase of $200,250 in mean net worth, while the mean net worth of individuals 65 to 74 years old grew by $371,220.
+
+Individuals 75 or older were the greatest beneficiaries, with an increase of $509,060 in mean net worth.
+
+Blanchflower, David G., Alex Bryson, and Xiaowei Xu. 2024. “The Declining Mental Health of The Young And The Global Disappearance Of The Hump Shape In Age In Unhappiness.” Working Paper Series.
+
+National Bureau of Economic Research. https://doi. org/10.3386/w32337.
+
+Decker, Ryan A., and John Haltiwanger. 2023. “Surging Business Formation in the Pandemic: Causes and Consequences?” Brookings Papers on Economic Activity 2023 (2): 249–316. https://doi. org/10.1353/eca.2023. a935424.
+
+Van Nostrand, Eric. 2024b. “Small Business and Entrepreneurship in the Post-COVID Expansion.” U.S.
+
+Department of the Treasury. https://home. treasury. gov/news/featured-stories/small-business-and-entrepreneurship-in-the-post-covid-expansion.
+
+Van Nostrand, Eric. 2024a. “U.S.
+
+Business Investment in the Post-COVID Expansion.” U.S.
+
+Department of the Treasury. https://home. treasury. gov/news/featured-stories/us-business-investment-in-the-post-covid-expansion.
+
+Ip, Greg. 2023. “The Economy Is Great.
+
+Why Are Americans in Such a Rotten Mood?” Wall Street Journal.
+
+November 1, 2023. https://www. wsj. com/economy/the-economy-is-great-why-are-americans-in-such-a-rotten-mood-6e1044d8.
+
+Lopez, Ernesto, and Bobby Boxerman. 2024. “Crime Trends in U.S.
+
+Cities: Mid-Year 2024 Update – Council on Criminal Justice.” Council on Criminal Justice. https://counciloncj. org/crime-trends-in-u-s-cities-mid-year-2024-update/.
+
+“Why Are Americans down on the Economy despite Its Apparent Strength?” 2024.
+
+Brookings Institution.
+
+January 10, 2024. https://www. brookings. edu/events/why-are-americans-down-on-the-economy-despite-its-apparent-strength/
+
+Shiller, Robert J. 1997. “Why Do People Dislike Inflation?” In Reducing Inflation: Motivation and Strategy, edited by Christina D.
+
+Romer and David H.
+
+Romer, 13–70.
+
+University of Chicago Press. https://www. nber. org/books-and-chapters/reducing-inflation-motivation-and-strategy/why-do-people-dislike-inflation.
+
+Stantcheva, Stefanie. 2024. “Why Do We Dislike Inflation?” BPEA Conference Draft, Spring.
+
+March 14, 2024. https://www. brookings. edu/articles/why-do-we-dislike-inflation/.
+
+Arcuri, Bronson. 2018. “The Price Of Coke Stayed The Same For 70 Years — Why?” NPR, March 28, 2018.
+
+Planet Money Shorts. https://www. npr. org/sections/money/2018/03/28/597302023/the-price-of-coke-stayed-the-same-for-70-years-why.
+
+Cummings, Ryan, and Neale Mahoney. 2023b. “Digesting Inflation.” Briefing Book.
+
+December 4, 2023. https://www. briefingbook. info/p/digesting-inflation.
+
+Binsbergen, Jules H. van, Svetlana Bryzgalova, Mayukh Mukhopadhyay, and Varun Sharma. 2024. “(Almost) 200 Years of News-Based Economic Sentiment.” Working Paper.
+
+Working Paper Series.
+
+National Bureau of Economic Research. https://doi. org/10.3386/w32026.
+
+Harris, Ben, and Aaron Sojourner. 2024. “Is the Economic News Becoming More Negative, and Does It Matter for Consumers?” Brookings Institution.
+
+March 6, 2024. https://www. brookings. edu/articles/is-the-economic-news-becoming-more-negative-and-does-it-matter-for-consumers/.
+
+Cummings, Ryan, Giacomo Fraccaroli, and Neale Mahoney. 2024. “Bad News Bias in Gasoline Price Coverage.” Briefing Book.
+
+May 6, 2024. https://www. briefingbook. info/p/bad-news-bias-in-gasoline-price-coverage.
+
+Zhang, Zhengfa, Kevin Keasey, Costas Lambrinoudakis, and Danilo V.
+
+Mascia. 2024. “Consumer Sentiment: The Influence of Social Media.” Economics Letters 237 (April): 111638. https://doi. org/10.1016/j. econlet.2024.111638.
+
+Graham, Carol. 2024. “Our Twin Crises of Despair and Misinformation.” Brookings Institution.
+
+July 22, 2024. https://www. brookings. edu/articles/our-twin-crises-of-despair-and-misinformation/.
+
+“National Tracking Poll.” Poll.
+
+Morning Consult and Politico, November 2022. https://www. politico. com/f/? id=00000184-a2ea-d1d1-ad8d-affbe2e40000.
+
+Cummings, Ryan, and Neale Mahoney. 2023a. “Asymmetric Amplification and the Consumer Sentiment Gap.” Briefing Book.
+
+November 13, 2023. https://www. briefingbook. info/p/asymmetric-amplification-and-the
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

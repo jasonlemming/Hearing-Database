@@ -1,0 +1,408 @@
+Editor's note:
+These comments were prepared as a petition for rulemaking to the Consumer Financial Protection Bureau (CFPB) and the Federal Reserve to shorten payment hold times for checks and funds deposited by consumers, with this letter addressed to the Federal Reserve and a similar one available for download for the CFPB.
+
+Ladies and Gentlemen:
+Iwrite as an interested person 1 to petition the Board of Governors of the Federal Reserve System (Fed) under Section 553 (e) of the Administrative Procedures Act to engage and solicit public comments on a rulemaking process to shorten maximum permissible hold times for checks and funds deposited by customers, as required under the Expedited Funds Availability Act.
+
+This request is being submitted to the Consumer Financial Protection Bureau (CFPB) as under current law, the Fed and the Director of the CFPB are jointly responsible for this regulation. 2
+
+[H2]The Federal Reserve has an obligation to act
+
+Section 4002 (d) (1) of the Expedited Funds Availability Act (EFAA) states that the Federal Reserve jointly with the Director of the CFPB:
+“shall, by regulation, reduce the time periods established under subsections (b), (c) and (e) to as short a time as possible and equal to the period of time achievable under the improved check clearing system for a receiving depository institution to reasonably expect to learn of the nonpayment of most items for each category of checks.” 3
+In effect, the EFAA requires the Fed and the CFPB to set maximum time periods that depository institutions may hold consumer funds and to make those time periods as short as possible.
+
+The EFAA requires the Fed and the CFPB to reduce time periods in correspondence to the improvement of the check clearing system, and the law is clear with the term “shall” that there is an affirmative requirement to act.
+
+This petition asks the Federal Reserve and the director of the CFPB to modernize Regulation CC in compliance with the law.
+
+The payment and check system has significantly improved since the last time the Fed shortened holding periods under the EFAA.
+
+Much of this improvement was due to passage of the Check Clearing for the 21 st Century Act (Check 21 Act), a law the Fed originally proposed to Congress. 4 While working on the Senate Banking, Housing and Urban Affairs Committee on this legislation, 5 Ivividly remember Federal Reserve Vice Chairman Roger Ferguson testifying to Congress that adoption of the Check 21 Act would “spur the use of new technologies to improve the efficiency of the nation’s check collection system.” 6
+Congress highlighted the importance of faster funds availability for consumers.
+
+One of the explicit purposes of the Check 21 Act was “to reduce costs, improve efficiency in check collections, and expedite funds availability for customers.” 7 The law required the Fed to conduct a study on funds availability and the appropriateness of the time periods and amount limits applicable under the EFAA. 8 In fulfilling this requirement, the Fed released a report in 2007 saying that it did “not believe that changes to the maximum permissible hold periods for banks are warranted at this time,” 9   and that “much broader adoption of new technologies and processes by the banking industry must occur before check return times can decline appreciably.” 10 However, the Fed noted in the report that the Check 21 Act “is acting as an important catalyst for potential longer-term improvements in the nation’s check-collection system.” 11
+Broader adoption of new technologies and processes occurred quickly thereafter.
+
+According to research published by the Federal Reserve Bank of Philadelphia, almost all checks were being collected electronically by 2010. 12 That same study found that “payment collection times and associated float fell dramatically for collecting banks.” 13  The Federal Reserve Board acknowledged these changes, stating that “Check 21 has enabled banks to send checks electronically (rather than in paper form) to banks with which they have agreements to do so. … As a result, the nation’s interbank check-collection processes have become almost entirely electronic. … In response to the growth in electronic processing, the Reserve Banks reduced the number of their paper check-processing offices from 45 in 2003 to a single office in 2010.
+
+The consolation resulted in all checks being considered ‘local checks’ under Regulation CC.”
+However, despite the rapid reduction in collection times and float that have made for a faster check clearing system, the Fed has not updated Regulation CC hold times.
+
+It is true that by reducing the number of local check processing offices to a single one, thus making all checks local, funds availability was enhanced.
+
+However, the Fed has not reduced hold times for local checks at any point since Congress enacted the Check 21 Act, nor for many years before.
+
+The Fed must acknowledge that in the years since, the banking industry and their customers have widely adopted technologies and processes that made implementing faster payments much easier.
+
+Check truncation is one of these, but so is the shift of bank customers to electronic and mobile transactions.
+
+Moreover, real-time payment systems already exist in numerous countries and also in the United States, including The Clearing House’s Real Time Payments, Zelle, and of course the Federal Reserve’s own FedNow.
+
+Clearly, technology has improved considerably, as the Federal Reserve Bank of Philadelphia’s data show. 14
+
+[H2]Delayed payments exacerbate inequality
+
+Basic financial services suffer from a “reverse Robin Hood” problem in which lower-income Americans effectively pay tens of billions of dollars for services that middle- and upper-income Americans receive free of charge. 15 This is especially true for underbanked Americans, who constitute about one in seven U.S. households according to the FDIC. 16
+Many American families live consistently close to running out of money in their bank accounts.
+
+Such a shortfall of household reserves can result from an unplanned expense like a car or home repair, but it can also come about due to a shortfall in earnings or having to wait longer to get access to those earnings than expected.
+
+A JPMorgan Institute study found that about two-thirds of JPMorgan Chase customers’ families lack sufficient cash to weather a typical and simultaneous income dip and expenditure spike 17 and that “those with the median level of volatility, on average, experienced a 36% change in income month-to-month during the prior year.” 18 Additional research by the Center for Responsible Lending, the Financial Diaries Project, and others highlights that variance in earnings is a source of financial distress, particularly for those near the zero lower bound of their bank account who face expenses that are mostly fixed, such as for rent, mortgage, child care, and car payments. 19
+Slow payment processing presents a particular risk to those with higher earnings variance, as it exacerbates problems whereby Americans have earned enough money to cover their needs but are unable to access some of those funds due to delays in the payments system.
+
+The costs to consumers of reaching the zero lower bound of their bank accounts are substantial.
+
+Check cashing services cost Americans $0.7 billion, 20 and a larger share of that is spent by people with bank accounts than many realize.
+
+My research has found that 70% of those who use check cashers have bank accounts. 21 Why would someone with a bank account use a check casher, who charges high fees when a bank deposits a check at usually zero cost?
+
+Because the check casher provides something the bank does not: immediate funds availability.
+
+The benefits of immediate funds are substantial to people who frequently live close to zero bank balances.
+
+Consider a person who wants to deposit their paycheck into their bank account but cannot wait up to several days to access those funds in order to pay their bills.
+
+This person could deposit the cash they receive from a check cashing outlet into their bank account and have it clear instantly.
+
+The check cashing fee may be less expensive than the overdraft fees they would otherwise incur for a check that would clear in between one and five days or even longer.
+
+Research by Professor Lisa Servon of the University of Pennsylvania said of consumers who use check cashers, “if they made one mistake at their bank, that resulted in an overdraft, it would easily be more than [what they paid in check cashing fees.]” 22
+The reliance on paper checks and the cost of slow payments was evident during the COVID-19 pandemic when the federal government sent out paper stimulus checks to 22% of all American taxpayers.
+
+Estimates are that over 3 million checks were cashed at check cashers, incurring $66 million in total fees. 23
+Banks understand the demand for immediate funds availability and many provide it—for a hefty fee.
+
+Multiple large banks charges 2% of the amount of a deposit for immediate funds availability. 24 Banks provide this service because there is customer demand and because it is profitable, much like overdraft has been for many banks.
+
+Aconsumer paying $20 for immediate access to $1,000 deposited is logical if the alternative is to wait and incur overdraft fees at $35 per incident.
+
+The CFPB has found that some banks have grouped transactions for customers so as to intentionally process the largest transactions first, thus maximizing the number of transactions that will trigger an overdraft fee. 25 The harms consumers suffered because of this resulted in a large class-action legal settlement. 26 Such a scheme would not work in a real-time payments system where transactions are processed as they happen.
+
+In addition, banks make money on the “float” created by the delay in processing checks, money that would otherwise accrue to consumers.
+
+The Philadelphia Fed study referenced earlier calculated that as a result of the Check 21 Act, “payment collection times and associated float fell dramatically for collecting banks and payees with consequent additional savings in firm working capital costs of perhaps $1.37 billion.” 27 That study was conducted during a period of low interest rates.
+
+While it was once possible that the float could benefit consumers, this has grown more unrealistic with widespread adoption of debit cards and mobile and online banking that allow 24x7x365 access to funds.
+
+Uncertainty about payment timing, particularly the timing of crediting of deposits, creates difficulty for consumers living paycheck-to-paycheck to manage their money.
+
+Such uncertainty should not apply to knowing how much money is in your bank account and when.
+
+It is also important to note that the slow payments system harms non-white Americans the most.
+
+According the FDIC, 14% of Americans were underbanked in 2021.
+
+However, the underbanked rate rose to nearly 25% among those who identified as Black, Hispanic, and  American Indian or Alaska Native, compared with under 10% for white Americans. 28 The unbanked are most likely to use alternative financial services with higher fees.
+
+[H2]The benefits of shortening hold times
+
+Giving consumers faster access to their funds provides multiple benefits and addresses several problems lower-income Americans face when they use the financial system.
+
+Federal Reserve Chairman Jerome Powell has lamented the stagnation of income growth at lower tiers of income, going so far as to state that is holding back overall economic growth. 29 While Iapplaud Chairman Powell and the Federal Reserve for their contributions to understanding the importance and the drivers of inequality and how they might integrate with monetary policy tools, the Federal Reserve has ignored a significant source of inequality rooted in the payment regulatory function assigned to it by Congress.
+
+Implementing real-time payments is the most important policy that the Federal Reserve could use to directly reduce income inequality in America.
+
+And not only does the Federal Reserve have the authority to move the U.S. banking system to real-time payments, it has the statutory obligation to do so jointly with the director of the CFPB.
+
+[H2]Real-time payments are the right solution
+
+Real-time payments address these concerns in important ways.
+
+Former Vice Chair Lael Brainard made this point when she stated that instant payments “could be especially important for households on fixed incomes or living paycheck to paycheck, when waiting days for the funds to be available to pay a bill can mean overdraft fees or late fees than can compound, or reliance on costly sources of credit.” 30
+We have seen the power of changing the timing of funds availability when many of America’s largest banks made significant changes to their overdraft policies.
+
+One of these changes was to provide a grace period, sometimes up to 48 hours or more for consumers to rectify the problem that had caused an overdraft.
+
+As Itestified to Congress in 2022, “The reason people go negative in their bank account temporarily has a lot to do with the mismatch in time between when they have access to their money and when their payments are debited from their account.
+
+They are often minutes, hours, or days away from having the money necessary to cover the overage.” In that testimony Ilooked at PNC Bank’s new grace period and found that “63% of PNC customers who end the day with a negative balance are able to fix the problem and avoid an overdraft.
+
+The average time to cure is only 13 hours, evidence that the majority of their customers’ problems are very short-term mismatches.” 31 These findings have been similar at other large banks that made overdraft reforms, which now cumulatively transfer $5 billion a year from bank profits to Americans who are running out of money. 32 This addresses the problems Chairman Powell identified  as income inequality and the need for greater disposable income for those on the bottom end of the wealth distribution.
+
+As Iwrote to the Federal Reserve Board in 2018, “had the United States adopted real-time payments when the United Kingdom did in [2008], middle- and lower-income Americans could have experienced cumulative savings potentially in excess of $100 billion.” 33 And since slow payments affect lower-income and non-white people the most, people in these groups would be disproportionately likely to benefit from a real-time payment system that would better allow them to avoid the high costs charged by the non-traditional financial services Idescribe above.
+
+Ashift to real-time payments will also foster innovations that rely on such a platform.
+
+When lawmakers debated the Electronic Funds Transfer Act in the 1970s, they never imagined a world in which debit and credit cards would be required to use on-demand transportation services like Uber and Lyft, much less than most Americans would primarily rely on their mobile devices or computers to access banking services.
+
+Even when the Fed was promoting electronic check imaging in 2001, few contemplated that it would be feasible on a mobile phone (generally flip phones at the time) from anywhere in seven years, but it happened nonetheless.
+
+[H2]America is a global outlier
+
+The rest of the world has moved significantly while the Federal Reserve fails to update its regulation.
+
+The United Kingdom launched its Faster Payments System in 2008.
+
+The European Union launched its TARGET Instant Payment Settlement system in 2018 and in February 2024, the European Council adopted a regulation that will require payment service providers to offer instant euro payments to customers around the clock. 34 In India, the UPI payment system processes three-quarters of the country’s retail digital payments, making up more than 14 billion transactions in May 2024. 35 Brazil’s central bank introduced PIX, a real-time payment system that rapidly gained dominance, partly as a result of strong requirements and regulations from the Brazilian central bank. 36
+The United States is losing ground to other countries in terms of payment speed despite the Fed having clear regulatory authority and a Congressional mandate that it is not using.
+
+Research has questioned whether the Fed’s failure to update payment speed is due to structural conflicts in its role as regulator of the entire payment system and operator of its own payment system.
+
+As Conti-Brown and Wishnick argued, correctly Ibelieve, pushing “supervised entities toward faster payments could fit well within several of [the Fed’s] supervisory categories, including management, liquidity, susceptibility to market risk, and especially whether each firms’ management is staying current with advances in information technology.” 37 In my research comparing the Federal Reserve’s payment regulatory actions with those of other countries, Iconcluded that “The Federal Reserve is structurally conflicted, serving multiple roles as regulator of payments, operator of a payment system, and regulator of banks.
+
+Faster payments, particularly from the private sector, threaten the Fed’s role as operator of a payment system that would lose market share.
+
+Faster payments threaten bank profitability, particularly as overdraft became a major source of revenue especially for a handful of small banks.
+
+Faster payments would help achieve the Fed’s stated goals of greater economic prosperity, reducing inequality, and enhancing efficiency.” 38
+
+[H2]Conclusion
+
+Technology has changed drastically since the EFAA was enacted in the 1980s.
+
+In fact, the speed of payments has changed substantially since Congress enacted the Check 21 Act 20 years ago.
+
+This is true for checks, which have decreased in volume but remain a substantial share of non-cash payments.
+
+According to the Fed’s own study, check payments are over $27 trillion a year, more than 20% of all noncash payments.
+
+That same study found the average check’s value to be only $2,430, meaning a immediate funds availability of the first $5,000 would cover the totality of checks draw up to roughly double the average amount of all checks. 39 It defies logic that Amazon can ship almost anything to almost anyone’s door faster than a check deposited on August 30 (a Friday) can be made available to a consumer (particularly given Monday Sept 2 was a federal holiday).
+
+After all, Amazon is moving physical objects, banks are simply transferring electronic funds over electronic systems.
+
+In the absence of regulatory action, legislation has been introduced in both the Senate by Senators Van Hollen and Warren and in the House by Representatives Pressley and Garcia, with others, to improve funds availability.
+
+The introduction of this legislation does not change the obligation the Federal Reserve and the director of the CFPB have to act under the law.
+
+The consequences of the Fed’s failure to act has been a massive transfer of wealth from the lowest-income Americans to high-cost financial services providers.
+
+The question is why the Federal Reserve has not then acted to reduce hold times to better reflect current technologies and processes.
+
+Congress made its intention clear that the Federal Reserve— jointly with the Director of the CFPB— shall shorten these times as much as is possible.
+
+And for good reason because, as Ihave established above, implementing real-time payments will save lower-income Americans who live paycheck-to-paycheck billions of dollars per year.
+
+It is time for the Federal Reserve to fulfill its statutory requirement by instituting the rulemaking described in this petition.
+
+Acknowledgements and disclosures
+
+The Brookings Institution is financed through the support of a diverse array of foundations, corporations, governments, individuals, as well as an endowment.
+
+Alist of donors can be found in our annual reports published online  here.
+
+The findings, interpretations, and conclusions in this report are solely those of its author(s) and are not influenced by any donation.
+
+Footnotes
+
+My interests, and those of the public, would be directly affected by the proposed rulemaking.
+
+Iwrite as a citizen who has experienced the consequences of delayed payments, and as a scholar at the Brookings Institution, seeking to inform policy so that it might more effectively serve and protect the public interest.
+
+Expedited Funds Availability Act, 12 U.S.
+
+C. § 4002.
+
+12 U.S.
+
+C. § 4002(d)(1)
+
+The proposed Check Clearing for the 21st Century Act, Before the Subcommittee on Financial Institutions and Consumer Credit of the Committee on Financial Services, 107 th Cong. (2002) (statement of Roger W.
+
+Ferguson, Jr., Vice Chairman of the Federal Reserve), https://www. federalreserve. gov/boarddocs/testimony/2002/20020925/default. htm.
+
+Senator Paul Sarbanes, speaking on HR 1474, 108 th Cong., 1st sess., Congressional Record 149 (October 15, 2003): S 12633 https://www. congress. gov/congressional-record/volume-149/issue-144/senate-section/article/S12632-4.
+
+Ferguson Jr., testimony on the proposed Check Clearing for the 21st Century Act
+
+Check Clearing for the 21st Century Act, 12 U.S.
+
+C. § 5001(a)(3).
+
+Check Clearing for the 21st Century Act, 12 U.S.
+
+C. § 5015.
+
+“Report to the Congress on the Check Clearing for the 21st Century Act of 2003” (Board of Governors of the Federal Reserve System, April 2007), 3, https://www. federalreserve. gov/boarddocs/RptCongress/check21/check21. pdf.
+
+“Report to the Congress on the Check Clearing for the 21st Century Act of 2003,” 17.
+
+“Report to the Congress on the Check Clearing for the 21st Century Act of 2003,” 3.
+
+David B.
+
+Humphrey and Robert M.
+
+Hunt, “Getting Rid of Paper: Savings from Check 21,” SSRN Electronic Journal, 2012, 2, https://doi. org/10.2139/ssrn.2079034.
+
+Humphrey and Hunt, “Getting Rid of Paper,” 1.
+
+Humphrey and Hunt, “Getting Rid of Paper.”
+
+Aaron Klein, “Opinion: How Credit Card Companies Reward the Rich and Punish the Rest of Us,” Los Angeles Times, December 20, 2019, https://www. latimes. com/opinion/story/2019-12-20/opinion-how-credit-card-companies-reward-the-rich-and-punish-the-rest-of-us.
+
+“2021 FDIC National Survey of Unbanked and Underbanked Households” (Federal Deposit Insurance Corporation, n. d.), https://www. fdic. gov/sites/default/files/2024-03/2021report. pdf.
+
+Diana Farrell, Fiona Greig, and Chenxi Yu, “Weathering Volatility 2.0: A Monthly Stress Test to Guide Savings” (JPMorgan Chase Institute, October 2019), 9, https://www. jpmorganchase. com/content/dam/jpmc/jpmorgan-chase-and-co/institute/pdf/institute-volatility-cash-buffer-report. pdf.
+
+Farrell, Greig, and Yu, “Weathering Volatility 2.0: A Monthly Stress Test to Guide Savings,” 22.
+
+Center for Responsible Lending, Consumer Federation of America, and National Consumer Law Center, “Comments to the Consumer Financial Protection Bureau Proposed Rule on Payday, Vehicle Title, and Certain High-Cost Installment Loans 12 CFR Part 104, Docket No.
+
+CFPB 2016-0025, RIN 3170-AA40” (October 7, 2016), https://www. responsiblelending. org/sites/default/files/nodes/files/research-publication/crl_payday_comment_oct2016. pdf.
+
+Hannah Gdalman et al., “FinHealth Spend Report 2024: Record Spending on Credit Services Puts Pressure on Vulnerable Households” (Financial Health Network, August 2024), 5, https://finhealthnetwork. org/wp-content/uploads/2024/08/FinHealth-Spend-Report-2024-FHN. pdf.
+
+Aaron Klein, “Can Fintech Improve Health?” (Washington, D.
+
+C.: Brookings Institution, September 24, 2021), https://www. brookings. edu/articles/can-fintech-improve-health/.
+
+Dave Davies, What is Driving the ‘Unbanking of America’?, Fresh Air, podcast audio, January 10, 2017, https://www. npr. org/2017/01/10/509126878/what-is-driving-the-unbanking-of-america.
+
+Dan Murphy, “Economic Impact Payments: Uses, Payment, Methods, and Costs to Recipients” (Washington, D.
+
+C.: Brookings Institution, February 17, 2021), https://www. brookings. edu/articles/economic-impact-payments-uses-payment-methods-and-costs-to-recipients/.
+
+See “Mobile Check Deposit,” Key Bank, https://www. key. com/small-business/access-anywhere/mobile/check-deposit. html; “Mobile Check Deposit & Express Funds,” PNC Bank, https://www. pnc. com/en/personal-banking/banking/online-and-mobile-banking/mobile-deposit. html; “TD Fastfunds,” TD Bank, https://www. td. com/us/en/personal-banking/fastfunds.
+
+“CFPB Launches Inquiry into Overdraft Practices,” Consumer Financial Protection Bureau, February 22, 2012, https://www. consumerfinance. gov/about-us/newsroom/consumer-financial-protection-bureau-launches-inquiry-into-overdraft-practices/.
+
+David Migoya, “Customers Challenge the Way Banks Reorder Debits in Order to Rack up Overdraft Fees – The Denver Post,” The Denver Post, May 6, 2016, https://www. denverpost. com/2010/08/20/customers-challenge-the-way-banks-reorder-debits-in-order-to-rack-up-overdraft-fees/.
+
+Humphrey and Hunt, “Getting Rid of Paper.”
+
+“2021 FDIC National Survey of Unbanked and Underbanked Households,” 76.
+
+“At Banking Hearing, Fed Chair Powell Agrees with Senator Warren That Inequality Stunts Our Economic Growth,” Press Release, U.S.
+
+Senator Elizabeth Warren of Massachusetts, February 23, 2021, https://www. warren. senate. gov/newsroom/press-releases/at-banking-hearing-fed-chair-powell-agrees-with-senator-warren-that-inequality-stunts-our-economic-growth.
+
+Lael Brainard, “The Future of Retail Payments in the United States” (FedNow Service Webinar, Washington, D.
+
+C., August 6, 2020), https://www. federalreserve. gov/newsevents/speech/brainard20200806a. htm.
+
+Aaron Klein, “Examining Overdraft Fees and Their Effects on Working Families,” Brookings, https://www. brookings. edu/articles/examining-overdraft-fees-and-their-effects-on-working-families/.
+
+Aaron Klein, “Getting Over Overdraft,” Milken Institute Review, accessed August 29, 2024, https://www. milkenreview. org/articles/getting-over-overdraft.
+
+Aaron Klein, Comment on Potential Reserve Actions to Support Interbank Settlement of Faster Payments, Docket No.
+
+OP-1625 (December 14, 2018), https://www. federalreserve. gov/SECRS/2018/December/20181221/OP-1625/OP-1625_121418_133277_428769914666_1. pdf.
+
+“Council Adopts Regulation on Instant Payments,” Council of the European Union, February 26, 2024, https://www. consilium. europa. eu/en/press/press-releases/2024/02/26/council-adopts-regulation-on-instant-payments/.
+
+Ritesh Shukla, “UPI: Revolutionising Real-Time Digital Payments in India,” European Payments Council, June 26, 2024, https://www. europeanpaymentscouncil. eu/news-insights/insight/upi-revolutionising-real-time-digital-payments-india.
+
+Aaron Klein, “Structural Conflicts in Central Banking: Regulator or Operator of a Payment System?” (The Wharton Initiative on Financial Policy and Regulation, October 2023), https://wifpr. wharton. upenn. edu/wp-content/uploads/2023/09/Structural-Conflicts-in-Central-Banking. pdf.
+
+Peter Conti-Brown and David A.
+
+Wishnick, “Private Markets, Public Options, and the Payment System,” Yale Journal on Regulation 37, no. 2 (April 17, 2020), 426, https://www. yalejreg. com/print/private-markets-public-options-and-the-payment-system/.
+
+Klein, “Structural Conflicts in Central Banking: Regulator or Operator of a Payment System?” 22.
+
+“Federal Reserve Payments Study (FRPS),” Board of Governors of the Federal Reserve System, June 24, 2024, https://www. federalreserve. gov/paymentsystems/fr-payments-study. htm.
+
+My interests, and those of the public, would be directly affected by the proposed rulemaking.
+
+Iwrite as a citizen who has experienced the consequences of delayed payments, and as a scholar at the Brookings Institution, seeking to inform policy so that it might more effectively serve and protect the public interest.
+
+Expedited Funds Availability Act, 12 U.S.
+
+C. § 4002.
+
+12 U.S.
+
+C. § 4002(d)(1)
+
+The proposed Check Clearing for the 21st Century Act, Before the Subcommittee on Financial Institutions and Consumer Credit of the Committee on Financial Services, 107 th Cong. (2002) (statement of Roger W.
+
+Ferguson, Jr., Vice Chairman of the Federal Reserve), https://www. federalreserve. gov/boarddocs/testimony/2002/20020925/default. htm.
+
+Senator Paul Sarbanes, speaking on HR 1474, 108 th Cong., 1st sess., Congressional Record 149 (October 15, 2003): S 12633 https://www. congress. gov/congressional-record/volume-149/issue-144/senate-section/article/S12632-4.
+
+Ferguson Jr., testimony on the proposed Check Clearing for the 21st Century Act
+
+Check Clearing for the 21st Century Act, 12 U.S.
+
+C. § 5001(a)(3).
+
+Check Clearing for the 21st Century Act, 12 U.S.
+
+C. § 5015.
+
+“Report to the Congress on the Check Clearing for the 21st Century Act of 2003” (Board of Governors of the Federal Reserve System, April 2007), 3, https://www. federalreserve. gov/boarddocs/RptCongress/check21/check21. pdf.
+
+“Report to the Congress on the Check Clearing for the 21st Century Act of 2003,” 17.
+
+“Report to the Congress on the Check Clearing for the 21st Century Act of 2003,” 3.
+
+David B.
+
+Humphrey and Robert M.
+
+Hunt, “Getting Rid of Paper: Savings from Check 21,” SSRN Electronic Journal, 2012, 2, https://doi. org/10.2139/ssrn.2079034.
+
+Humphrey and Hunt, “Getting Rid of Paper,” 1.
+
+Humphrey and Hunt, “Getting Rid of Paper.”
+
+Aaron Klein, “Opinion: How Credit Card Companies Reward the Rich and Punish the Rest of Us,” Los Angeles Times, December 20, 2019, https://www. latimes. com/opinion/story/2019-12-20/opinion-how-credit-card-companies-reward-the-rich-and-punish-the-rest-of-us.
+
+“2021 FDIC National Survey of Unbanked and Underbanked Households” (Federal Deposit Insurance Corporation, n. d.), https://www. fdic. gov/sites/default/files/2024-03/2021report. pdf.
+
+Diana Farrell, Fiona Greig, and Chenxi Yu, “Weathering Volatility 2.0: A Monthly Stress Test to Guide Savings” (JPMorgan Chase Institute, October 2019), 9, https://www. jpmorganchase. com/content/dam/jpmc/jpmorgan-chase-and-co/institute/pdf/institute-volatility-cash-buffer-report. pdf.
+
+Farrell, Greig, and Yu, “Weathering Volatility 2.0: A Monthly Stress Test to Guide Savings,” 22.
+
+Center for Responsible Lending, Consumer Federation of America, and National Consumer Law Center, “Comments to the Consumer Financial Protection Bureau Proposed Rule on Payday, Vehicle Title, and Certain High-Cost Installment Loans 12 CFR Part 104, Docket No.
+
+CFPB 2016-0025, RIN 3170-AA40” (October 7, 2016), https://www. responsiblelending. org/sites/default/files/nodes/files/research-publication/crl_payday_comment_oct2016. pdf.
+
+Hannah Gdalman et al., “FinHealth Spend Report 2024: Record Spending on Credit Services Puts Pressure on Vulnerable Households” (Financial Health Network, August 2024), 5, https://finhealthnetwork. org/wp-content/uploads/2024/08/FinHealth-Spend-Report-2024-FHN. pdf.
+
+Aaron Klein, “Can Fintech Improve Health?” (Washington, D.
+
+C.: Brookings Institution, September 24, 2021), https://www. brookings. edu/articles/can-fintech-improve-health/.
+
+Dave Davies, What is Driving the ‘Unbanking of America’?, Fresh Air, podcast audio, January 10, 2017, https://www. npr. org/2017/01/10/509126878/what-is-driving-the-unbanking-of-america.
+
+Dan Murphy, “Economic Impact Payments: Uses, Payment, Methods, and Costs to Recipients” (Washington, D.
+
+C.: Brookings Institution, February 17, 2021), https://www. brookings. edu/articles/economic-impact-payments-uses-payment-methods-and-costs-to-recipients/.
+
+See “Mobile Check Deposit,” Key Bank, https://www. key. com/small-business/access-anywhere/mobile/check-deposit. html; “Mobile Check Deposit & Express Funds,” PNC Bank, https://www. pnc. com/en/personal-banking/banking/online-and-mobile-banking/mobile-deposit. html; “TD Fastfunds,” TD Bank, https://www. td. com/us/en/personal-banking/fastfunds.
+
+“CFPB Launches Inquiry into Overdraft Practices,” Consumer Financial Protection Bureau, February 22, 2012, https://www. consumerfinance. gov/about-us/newsroom/consumer-financial-protection-bureau-launches-inquiry-into-overdraft-practices/.
+
+David Migoya, “Customers Challenge the Way Banks Reorder Debits in Order to Rack up Overdraft Fees – The Denver Post,” The Denver Post, May 6, 2016, https://www. denverpost. com/2010/08/20/customers-challenge-the-way-banks-reorder-debits-in-order-to-rack-up-overdraft-fees/.
+
+Humphrey and Hunt, “Getting Rid of Paper.”
+
+“2021 FDIC National Survey of Unbanked and Underbanked Households,” 76.
+
+“At Banking Hearing, Fed Chair Powell Agrees with Senator Warren That Inequality Stunts Our Economic Growth,” Press Release, U.S.
+
+Senator Elizabeth Warren of Massachusetts, February 23, 2021, https://www. warren. senate. gov/newsroom/press-releases/at-banking-hearing-fed-chair-powell-agrees-with-senator-warren-that-inequality-stunts-our-economic-growth.
+
+Lael Brainard, “The Future of Retail Payments in the United States” (FedNow Service Webinar, Washington, D.
+
+C., August 6, 2020), https://www. federalreserve. gov/newsevents/speech/brainard20200806a. htm.
+
+Aaron Klein, “Examining Overdraft Fees and Their Effects on Working Families,” Brookings, https://www. brookings. edu/articles/examining-overdraft-fees-and-their-effects-on-working-families/.
+
+Aaron Klein, “Getting Over Overdraft,” Milken Institute Review, accessed August 29, 2024, https://www. milkenreview. org/articles/getting-over-overdraft.
+
+Aaron Klein, Comment on Potential Reserve Actions to Support Interbank Settlement of Faster Payments, Docket No.
+
+OP-1625 (December 14, 2018), https://www. federalreserve. gov/SECRS/2018/December/20181221/OP-1625/OP-1625_121418_133277_428769914666_1. pdf.
+
+“Council Adopts Regulation on Instant Payments,” Council of the European Union, February 26, 2024, https://www. consilium. europa. eu/en/press/press-releases/2024/02/26/council-adopts-regulation-on-instant-payments/.
+
+Ritesh Shukla, “UPI: Revolutionising Real-Time Digital Payments in India,” European Payments Council, June 26, 2024, https://www. europeanpaymentscouncil. eu/news-insights/insight/upi-revolutionising-real-time-digital-payments-india.
+
+Aaron Klein, “Structural Conflicts in Central Banking: Regulator or Operator of a Payment System?” (The Wharton Initiative on Financial Policy and Regulation, October 2023), https://wifpr. wharton. upenn. edu/wp-content/uploads/2023/09/Structural-Conflicts-in-Central-Banking. pdf.
+
+Peter Conti-Brown and David A.
+
+Wishnick, “Private Markets, Public Options, and the Payment System,” Yale Journal on Regulation 37, no. 2 (April 17, 2020), 426, https://www. yalejreg. com/print/private-markets-public-options-and-the-payment-system/.
+
+Klein, “Structural Conflicts in Central Banking: Regulator or Operator of a Payment System?” 22.
+
+“Federal Reserve Payments Study (FRPS),” Board of Governors of the Federal Reserve System, June 24, 2024, https://www. federalreserve. gov/paymentsystems/fr-payments-study. htm.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

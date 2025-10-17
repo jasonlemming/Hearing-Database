@@ -1,0 +1,287 @@
+Editor's note:
+This piece is part of a series titled “ The future of U.S.-China policy: Recommendations for the incoming administration ” from Brookings’s John L.
+
+Thornton China Center.
+
+[H2]Executive summary
+
+Overcapacity is one among a range of problematic issues linked to China’s increasingly mercantilist approach to trade.
+
+These issues arise out of a complex Chinese policymaking system that tolerates weak domestic demand while continuing to emphasize investment in manufacturing capacity.
+
+The next administration should focus on what aspect of the U.S. economic relationship with China must be restricted for either national or economic security reasons.
+
+At the same time, the United States should rebuild a global rules-based trading system that is fit for purpose for a world in which the largest exporter is mercantilist in orientation and a geopolitical competitor.
+
+Given the extent of China’s trade relationship with the United States as well as many other countries, severing trade with China is neither realistic nor desirable.
+
+Instead, developing a principled risk-based approach can help move the United States toward a new trading equilibrium with China that addresses key risks from ongoing trade while allowing trade in other lower-risk products to continue.
+
+Success here can also underpin a renewed global trading system.
+
+[H2]Introduction
+
+Chinese overcapacity joins a range of other issues in the U.S.-China trade space, highlighting overarching concerns with Chinese mercantilist behavior.
+
+This memo first examines the issue of overcapacity from two perspectives: the causes and origins of overcapacity in Chinese production, and the differences within one important sector—green technology—deemed to reflect overcapacity.
+
+As each segment of the green technology industry differs, so too do the risks from increased imports from China vary.
+
+We propose a principled risk-based framework for evaluating policy responses to the challenges stemming from China’s overcapacity in various industries.
+
+The United States also needs to lead the development of a renewed international rules-based trading system that is fit for purpose in a world where China—the world’s largest exporter—pursues mercantilist trade policies and is a geopolitical competitor.
+
+[H2]Defining the overcapacity problem
+
+China’s export of manufacturing overcapacity globally has negatively impacted U.S. industry and jobs.
+
+U.S.
+
+Treasury Secretary Janet Yellen raised this issue during her trip to China in April 2024 with a particular focus on overcapacity in electric vehicles (EVs), although China’s overcapacity in solar panels and steel have been ongoing concerns.
+
+Despite the attention it has drawn, “overcapacity” is not an established term in economics, nor has it been defined by the World Trade Organization.
+
+At its simplest, the term may be understood as product capacity that cannot be absorbed by domestic demand; supply outstrips demand at home, leading to surging exports of subsidized goods.
+
+The flipside of overcapacity is low levels of domestic demand.
+
+Another metric for assessing overcapacity is the utilization rates of industrial production capacity.
+
+Utilization rates vary by industry and over time, and low utilization rates can also be a function of normal business cycles.
+
+Acommon standard for “normal” utilization is 80% capacity utilized. (For example, electric vehicles have high utilization rates, whereas internal combustion engines have low rates—under 50%.)
+China’s surging trade surplus is another indicator of overcapacity and, more broadly, of China’s economic model, which relies on a mercantilist trade policy of suppressing domestic consumption and subsidizing exports.
+
+According to the International Monetary Fund, China’s trade surplus as a share of world GDP has surpassed China’s previous peak trade surplus from 2008-2009. 1 And despite U.S. tariffs on imports from China, the bilateral trade deficit has grown.
+
+This fact underscores that China’s underlying economic model is driving its surplus and limiting U.S. efforts to address this through bilateral tariffs.
+
+At the same time, the growth in the U.S. budget deficit has also driven the growing U.S.-China trade deficit.
+
+The impact of China’s overcapacity on the United States also has had particular salience in electoral politics, as Americans worry that it will lead to a “second China shock” that undermines or displaces key U.S. manufacturing sectors.
+
+Subsidies and, more generally, industrial policy are framed as having given China an “unfair” competitive advantage.
+
+The Biden administration has also identified various strategic sectors where reliance on China for key products is deemed a national security threat.
+
+The U.S.-China trade relationship raises many issues—concerns about the deficit, the impact of China’s subsidized exports on U.S. industry and jobs, and risks to economic and national security.
+
+The Trump and Biden administrations’ responses have been a combination of tariffs on Chinese goods and targeted support to expand domestic manufacturing capacity in strategic industries such as semiconductors, batteries, and clean energy production.
+
+Indeed, the United States’ turn toward industrial policy and de-risking its economic relationship with China have been partly in response to Chinese overcapacity and rising geopolitical tensions.
+
+At the same time, U.S. investment in these key sectors has further reduced U.S. tolerance of Chinese imports in the same sectors, particularly when these imports are coming from industries exhibiting overcapacity due to Chinese government subsidies.
+
+[H2]Domestic patterns of Chinese overcapacity
+
+The causes of overcapacity in Chinese manufacturing are complex and long-standing, and they are understood by Chinese economists—and often People’s Republic of China (PRC) officials—to cause problems in the domestic economy.
+
+Chinese industrial investment cycles are typified by the rapid entry of numerous firms, both state and private, and often with no sector experience, into a new industry.
+
+The rapid entry of many firms predictably leads to hyper-competition and extremely thin margins, and sometimes produces poor products.
+
+Moreover, market exit can be very slow, especially when local governments have invested in nascent, failing firms and wish to protect them.
+
+Often, the opportunities firms pursue are purely commercial, but central and local government subsidies or investments are also important drivers of overcapacity.
+
+Together, these phenomena can lead to overcapacity, i. e., investment in capacity beyond what the market can absorb.
+
+These dynamics often produce considerable inefficiencies and destabilizing boom and bust cycles.
+
+PRC officials have often dubbed this dynamic as producing “wasteful” competition.
+
+Yet these dynamics also can generate rapid product innovation, driving forward an emerging, low-cost industry.
+
+When supply outstrips domestic demand, Chinese firms have a strong incentive to export.
+
+Overcapacity in China has occurred in many industries, including internal combustion automobiles, iron and steel, cement, phone handsets, legacy semiconductor chips, solar panels, and EVs.
+
+In each industry, the types of Chinese government policy that lead to overcapacity vary.
+
+The economic and national security risks from China exporting its overcapacity also vary by sector.
+
+The following provides snapshots of overcapacity in the solar, lithium-ion battery, and EV sectors.
+
+Solar photovoltaic (PV) panels: China’s government nurtured and subsidized the development of the PV panel industry, which now controls an estimated 80% of the solar panel production supply chain globally.
+
+China’s overcapacity has had a mixed impact on the U.S. solar industry.
+
+On the one hand, the burgeoning U.S.-based PV solar panel industry has been largely wiped out—first by Japan, then by Germany, and by the 2000s, by imported Chinese solar panels.
+
+Yet, on the other hand, a broader look at the economic impact of subsidized imports of PV panels reveals that cheaper Chinese PV panels underpinned growth in the use of solar energy in the United States, creating U.S. jobs across a range of skill levels in PV installation that significantly outpace jobs in panel manufacturing.
+
+For example, a combination of subsidies and innovation in China reduced the price of solar panels by 88% in the last decade.
+
+Low-priced solar panels from China-dominated supply chains have also reduced the cost of the U.S. clean energy transition.
+
+At the same time, rising U.S.-China geopolitical tension has made the United States increasingly concerned about relying on China as the main or sole supplier of products deemed critical from an economic or national security perspective.
+
+This example highlights the various trade-offs that trade policy must engage with when it comes to addressing China’s overcapacity and the approach to subsidized exports.
+
+To make this point starker, to what extent can or should the United States seek to benefit from China’s prior investments in PV manufacturing, and when is it prudent and cost-effective to develop a stronger indigenous solar manufacturing sector?
+
+Electric vehicles: China’s Ministry of Science and Technology (MOST) pushed hard for the development of “new energy vehicles” starting in 2007.
+
+EV industrial policy reflected PRC planners’ frustration with inefficiencies and resulting overcapacity in the internal combustion engine (ICE) industry, the dominance of the ICE industry by Chinese-foreign joint ventures, and difficulties in gaining access to intellectual property for hybrid vehicles.
+
+Among other benefits, such as addressing domestic criticism about air pollution, China has identified EVs as a sector where it could become a global leader.
+
+EVs have been subject to several iterations of Chinese industrial policy, most recently as one of the “new three” industries (along with solar panels and lithium-ion batteries).
+
+Officials in Beijing as well as in local governments have employed a wide range of consumer and producer supports, including consumer purchase subsidies, waivers of fees and queues for ICE autos, and building out infrastructure such as charging stations.
+
+One study calculates that Chinese government support cumulatively totaled $230.9 billion from 2009 to 2023.
+
+As with solar panels, many legacy auto companies, as well as many without prior experience, have flooded into the EV production market.
+
+China’s top brands in this sector—e. g., private firms BYD and Geely and state-owned SAIC—operate at full capacity, and others have many prior orders for new brands, reflecting no overcapacity in some companies.
+
+It is generally agreed that many smaller brands will be swept out in a coming consolidation.
+
+Of China’s exports of autos, most are ICE autos, though exports of EVs are growing in the Global South, Russia, and Europe. (Exports of Chinese-owned brands to the United States are minimal, totaling $388 million in 2023, or an estimated 13,000 vehicles.) At present, Chinese companies are not the only producers of EVs exported from China (Tesla exported 39% of the EVs made in China in the first half of 2023, for example).
+
+In addition to Tesla, other international (East Asian and European brands) and U.S. automakers produce EVs, but Chinese EV producers consistently have the lowest relative costs and arguably the most innovative products.
+
+Electric vehicles are not only important to the climate transition but also to the future of the United States’ legacy auto sector, which supports workers and communities.
+
+Some of these communities are in U.S. “swing states,” giving the issue electoral salience.
+
+Indeed, the economic and political impact in the United States of importing EVs from China is potentially far beyond that of the solar panel sector.
+
+Sustaining a strong domestic auto industry is a primary U.S. economic security concern.
+
+Moreover, the U.S. government’s significant investment in EV and battery development under the Inflation Reduction Act underscores the economic and political importance of establishing a domestic EV industry, even if this means tolerating higher-priced EVs for some period.
+
+Allowing Chinese-made EVs into the United States is also increasingly seen as a national security issue due to the capacity of EVs to collect private or sensitive information.
+
+Lithium-ion batteries: China has also been at the forefront of producing batteries, which are used for multiple products ranging from laptops and cell phones to energy storage in EVs.
+
+Finding appropriate and cost-effective batteries was a core goal of Chinese industrial policy for EVs.
+
+In contrast to EVs, where leading Chinese firms are producing at capacity, battery sales are slowing and there is a risk of overcapacity prior to expected domestic consolidation.
+
+China today accounts for roughly three-quarters of worldwide production capacity for lithium-ion batteries.
+
+CATL provides more than 40% of the global battery market, with BYD a close second, though many of those sales are in China.
+
+The United States lags China when it comes to batteries, which also impedes the development of a U.S.-based EV ecosystem.
+
+Worldwide battery production is dependent on China, as the country has realized vertical consolidation of value chains for critical minerals and minerals processing.
+
+Reliance on critical minerals from China is also seen as risky.
+
+The United States is actively seeking alternative sources of supply, a move that has gained even greater urgency with China’s export restrictions on several critical minerals.
+
+With regard to national security, supply chain disruptions could affect American producers’ capacity to manufacture batteries that have high-performance military applications.
+
+[H2]Responses to China overcapacity: Aprincipled risk-based approach
+
+The United States needs a systemic principles-based approach to identifying when trade with China creates risks and calibrating its response.
+
+For instance, the United States should be able to identify the different risks presented by trade with China and have a toolkit of trade responses that are attuned to those risks.
+
+Identifying overcapacity according to capacity utilization rates and the presence of consistent trade surpluses provides a baseline for assessing when overcapacity exists.
+
+But overcapacity, while important, cannot be the only metric that drives trade policy toward China.
+
+Tariffs should not automatically be placed on all Chinese exports in industries where there is overcapacity.
+
+One reason for this is that there are some areas where the United States doesn’t compete and where the economic and national security risks are low.
+
+In these cases, overcapacity—which leads to subsidized exports—means U.S. industry and consumers gain access to cheaper products.
+
+This is one way of stating the broader need to identify where trade with China should be restricted, and where trade can flow freely.
+
+Another consideration for the United States when using tariffs to respond to Chinese overcapacity is the implications for third countries.
+
+For one, the United States’ turn to industrial policy to support specific sectors creates risk that U.S. exports from these sectors will be subjected to tariffs in third countries.
+
+The U.S. ability to push back on this will in part require the United States itself to have developed a calibrated and defensible approach to its own tariffs on subsidized goods from China.
+
+For this reason, the United States should start by developing principles that can guide when and how it will restrict trade with China.
+
+This can help provide greater business certainty and guide how third countries respond to Chinese imports.
+
+The following is an initial outline of what a principles-based approach could look like.
+
+We formulate the approach by posing four sets of questions that can be answered empirically.
+
+Do we assess that overcapacity is present?
+
+What is the economic importance of the industry, including for U.S. innovation and job creation?
+
+Is China the or a dominant supplier of the product?
+
+To what extent are there alternative sources of supply, from which countries, and how sustainable and trustworthy are these alternative sources?
+
+Would importing the product from China raise national security issues?
+
+This could include issues related to the products themselves collecting data (e. g., TikTok or EVs), the products being connected to parts of the economy (e. g., critical infrastructure), or the industry being important for the overall defense industrial base (e. g., steel and aluminum).
+
+Once we have principles, then imports can be categorized by levels of risk—high, medium, and low.
+
+Assessments of high risk could arise when all elements are present: goods where there is overcapacity, it is a significant industry, China is the only source of supply, and there are national security concerns.
+
+These criteria are present for critical minerals and large Chinese technology platforms, for example.
+
+In such cases, the appropriate response should aim to reduce U.S. dependence on these imports and develop alternative sources of supply.
+
+Policy levers for achieving these goals could include tariffs but would also require investing in alternative suppliers.
+
+Chinese imports categorized as medium risk could have some but not all the elements such as overcapacity but no national security issue.
+
+Lithium-ion batteries and solar PV cells might both fall into this category.
+
+In these cases, the United States might tolerate ongoing trade with China so long as there are trusted alternative suppliers.
+
+In this scenario, the U.S. policy response might still include tariffs, but lower tariffs than those applied to high-risk imports.
+
+This might also be an area where engaging with China to test alternative responses—such as voluntary export restraints or restrictive licensing agreements—might be productive, as well as working with allies to ensure alternative sources of supply.
+
+Finally, imports classified as low risk would be judged to have no overcapacity or economic or national security concerns.
+
+In these sectors or products, trade should be allowed to flow unimpeded but kept under review.
+
+This would not include trade in any of the products outlined in the memo but could include, for instance, trade in some electrical equipment, machinery, commodities, textiles, and chemicals.
+
+[H2]Rebuilding the rules-based trading system
+
+In addition to a principled risk-based approach to applying trade restrictions to Chinese imports, the United States needs to lead the development of an international rules-based trading system that is responsive to a world where the largest exporter has an economic system that relies on significant government support, exports overproduction, and restricts imports—an essentially mercantilist approach to trade.
+
+In essence, this will require the United States to pursue a couple of key goals:
+
+Anticipating reduced market access to China, the United States needs to ensure increased access to other markets, including large developing countries such as India and countries in Africa.
+
+Close cooperation with allies and partners in responding to China’s overcapacity.
+
+The United States should avoid responding to China in ways that alienate allies and close opportunities to expand new market access opportunities.
+
+Other countries are also dealing with surges in Chinese exports.
+
+This provides an opening for the United States to show global leadership on an important international trade issue.
+
+Where the United States can develop a globally aligned approach to China, this will be more effective in addressing the impact of subsidized Chinese exports and could be the basis for expanding trade and investment among this coalition of countries.
+
+Where the United States does impose trade and investment restrictions on trade with China, it needs confidence that Chinese exports aren’t circumventing these trade and investment restrictions by entering the U.S. market through other countries where the United States has lower trade barriers.
+
+Akey focus initially should be with Mexico and Canada given the role of the U.S.-Mexico-Canada Agreement and the already integrated markets across North America.
+
+There has already been some progress here as Canada has aligned its tariffs on EVs with the United States, and Mexico and the US are cooperating on addressing the transshipment of steel.
+
+However, a broader range of cooperation with Mexico, Canada, and other partners will be needed to respond to the full range of concerns about circumvention.
+
+Acknowledgements and disclosures
+
+The authors would like to thank Joyce Yang for research assistance.
+
+Footnotes
+
+This study also points to the impact of China’s post-pandemic sluggish domestic demand and contracting investment.
+
+This study also points to the impact of China’s post-pandemic sluggish domestic demand and contracting investment.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

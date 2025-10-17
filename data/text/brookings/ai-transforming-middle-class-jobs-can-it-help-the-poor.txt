@@ -1,0 +1,76 @@
+[H3]Generative AI: The new workplace currency
+
+The AI revolution isn’t following the usual playbook.
+
+Unlike the gradual adoption of computers and the internet, generative artificial intelligence (GenAI) use has skyrocketed—and not just in Silicon Valley.
+
+Surprisingly, middle-income countries now account for more than half of all GenAI-web traffic.
+
+The workplace transformation is already evident.
+
+In the U.S., 39% of the working age population has embraced this new technology.
+
+According to a survey of skilled workers covering 31 countries, 66% of leaders say that they would not hire someone without AI skills.
+
+In Latin America, work experience is taking a backseat to AI expertise— 66% of executives would choose AI-savvy candidates over more experienced professionals who lack these skills.
+
+This surging demand for AI-related skills is firmly rooted in real-world benefits.
+
+Experimental studies focused on specific occupations such as writers, programmers, and customer support agents reveal large productivity gains from GenAI use.
+
+There is also an unexpected twist: The biggest winners within such occupations are often workers with relatively lower levels of skills and experience.
+
+This helps explain why executives are increasingly favoring AI-skills over traditional work experience.
+
+[H3]Digital disparity andautomation risks: Barriers to GenAI’s reach
+
+Yet here is the catch: GenAI-friendly jobs are rather rare in the developing world.
+
+According to a recent paper by the International Labour Organization and the World Bank, only 7 to 14% of workers across Latin America and the Caribbean (LAC) can benefit from GenAI use by delegating tasks to this technology.
+
+In most LAC countries, such jobs are disproportionately concentrated in the formal sector and urban areas, and are held by higher-educated and higher-income workers.
+
+In other words, these are typical middle-class jobs.
+
+Two other factors further limit GenAI’s reach.
+
+First, there are stark disparities in access to the digital technologies—such as computers, high-speed internet, and smartphones—needed to use these tools.
+
+In Brazil and Mexico, workers in the richest income quintile are at least twice as likely to have jobs that would benefit from GenAI use than their poorest counterparts.
+
+When adjusting for access to digital technologies, those gaps become starker: In Mexico, workers in the richest quintile are 5.6 times more likely than their poorest counterparts to have jobs both exposed to GenAI augmentation and use computers.
+
+The scale of this digital exclusion is massive: Across LAC, 17 million jobs could theoretically benefit from GenAI but lack the basic digital tools to do so—a missed opportunity that hits poorer countries and workers hardest.
+
+[FIGURE 1: Interactive or visual content]
+[Interactive chart: https://flo.uri.sh/visualisation/20765160/embed?auto=1]
+
+Second, between 1 to 6% of jobs across LAC countries face a high risk of GenAI automation and job loss.
+
+The sectors more exposed to these risks include banking and finance, the public sector, and customer support services.
+
+While these are also middle-class positions, they are disproportionately held by women and youth—groups already struggling to gain a foothold in the labor market.
+
+[H3]The path forward: Mind the structural challenges
+
+But there is hope for spreading GenAI’s benefits beyond the global middle class, particularly in two sectors that are critical for the poorest segments of the population.
+
+In education, GenAI could revolutionize learning by personalizing instruction and amplifying teacher effectiveness.
+
+In healthcare, it could enhance clinical decisionmaking among less-skilled staff and expand telemedicine services.
+
+If GenAI can improve access to these fundamental services, it could become a powerful tool for strengthening human capital and lifting millions out of poverty.
+
+However, we cannot ignore the structural challenges.
+
+While the digital divide blocks GenAI adoption by the poor in LAC, lower income regions face even more basic hurdles—more than one billion people in the developing world lack reliable access to electricity.
+
+And while strong foundational skills are crucial for workers to benefit from GenAI, the learning gaps between rich and poor countries remain vast and persistent.
+
+The path forward is clear: Without immediate policy action to address infrastructure gaps and strengthen education systems, the AI revolution risks becoming yet another force widening global inequalities rather than narrowing them.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

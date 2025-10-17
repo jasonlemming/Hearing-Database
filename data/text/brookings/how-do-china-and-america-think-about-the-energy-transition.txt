@@ -1,0 +1,305 @@
+Editor's note:
+This piece is part of a series titled “ The future of U.S.-China policy: Recommendations for the incoming administration ” from Brookings’s John L.
+
+Thornton China Center.
+
+China and the United States are the world’s first- and second-largest emitters of greenhouse gases (GHGs), respectively.
+
+Both countries are huge with vast, but different, resource bases, leading them to have very different energy systems and respective advantages and disadvantages in the clean energy transition.
+
+This paper intends to explain those differences to foster a better understanding of how the two countries behave economically and geopolitically.
+
+[H2]The United States relies on domestic fossil fuels, China on imports
+
+The United States and China differ considerably in how they currently power their economies.
+
+Coal is by far China’s largest energy source, while the United States has a more balanced energy system, running on roughly one-third oil, one-third natural gas, and one-third other sources, including coal, nuclear, hydroelectricity, and other renewables.
+
+In 2023, the Chinese economy also used 81% more energy than the U.S. economy.
+
+With a population roughly one-fourth that of China’s, the United States consumes more than twice as much energy per person.
+
+However, China uses roughly 20% more energy per unit of GDP than the United States.
+
+Resource availability is a key reason for the differences between the two countries’ energy systems.
+
+The United States is a powerhouse of fossil fuel production: It is the world’s largest producer of both oil and natural gas and exports both of these fuels.
+
+The United States is a small net importer of oil, but a large net exporter of natural gas, becoming the world’s largest exporter of liquified natural gas (LNG) in 2023.
+
+Coal makes up only about 8% of the U.S. energy supply, as inexpensive natural gas and environmental concerns have largely pushed coal out of U.S. electricity generation.
+
+Unlike the United States, China is a net importer of all forms of fossil fuels.
+
+China is the world’s largest producer of coal, producing nearly five times as much as the next country, India.
+
+This explains coal’s huge role in China’s energy system.
+
+But despite its mammoth production, in 2022 China imported nearly 7% of its coal supply.
+
+China is the world’s fifth-largest producer of crude oil, but its demand far outstrips domestic supply, making China the world’s largest oil importer.
+
+Natural gas plays a much smaller role in China’s economy than in the U.S. economy.
+
+China’s domestic natural gas production has been rising, but it still imported 42% of its supply in 2023—roughly 40% of this total came through pipelines and 60% came in as LNG.
+
+In 2023, China was the world’s largest LNG importer.
+
+The differences in the two countries’ energy supplies carry over to their electricity generation systems.
+
+The primary fuel for electricity generation in the United States is natural gas, while coal dominates electricity generation in China.
+
+In fact, China generates much more electricity from coal than the United States generates from all sources combined.
+
+The United States’ enormous domestic supply of natural gas and the resulting reliance on natural gas for electricity generation mean that the United States has much lower GHG emissions per unit of electricity generated, with an average of 369 grams per kilowatt hour (g/kWh) in the United States compared to 582 g/kWh in China in 2023.
+
+China is very reliant on coal, the fossil fuel with the largest greenhouse gas emissions per unit of energy.
+
+But an opposing trend is also in play—China is investing heavily in renewable electricity generation to reduce its dependence on fossil fuel imports.
+
+China is broadly similar to the United States in terms of its share of energy from zero-carbon sources.
+
+In 2023, 18% of China’s primary energy supply and 36% of its electricity generation came from zero-carbon sources, compared to 19% and 41% in the United States.
+
+However, this overall trend masks China’s lead in renewable energy, including wind, solar, hydroelectricity, and geothermal.
+
+China produces 31% of its electricity from these renewable sources, compared to 22% in the United States.
+
+The difference here is that nuclear plays a small role in China’s electricity system, whereas the U.S. electricity system is nearly 19% nuclear.
+
+China has been a large leader in renewable energy deployment in recent years.
+
+China was the main driver in the 50% increase in global renewable installations that occurred in 2023.
+
+In 2022, China installed as much solar generation capacity as the rest of the world combined, then went on in 2023 to double that level of solar installations.
+
+[H2]China’s investments have made it a leader in new energy products
+
+Along with its leadership in renewable energy deployment, China is also a leader in renewable energy products.
+
+The Chinese government has made significant investments in the sector, including critical minerals, electric vehicles (EVs) and EV batteries, and the manufacturing of renewable energy equipment like photovoltaic panels.
+
+The previous section reveals one motivation for these investments: given its reliance on energy imports, China is very concerned about the security of its imported energy supply.
+
+Additionally, China’s energy demand has been growing rapidly in recent years along with its economic growth.
+
+Recurring blackouts have demonstrated the challenge of ensuring reliable, affordable energy to fuel the economy.
+
+In 2010, electricity demand levels in China and the United States were very similar, slightly greater than 4 million gigawatt hours (GWh).
+
+Since that time, electricity demand in China has more than doubled while demand in the United States has been flat (although data centers and artificial intelligence are causing U.S. electricity demand to grow again).
+
+Primary energy demand has followed a similar but less dramatic trajectory over the same time period, growing 50% in China while shrinking about 2% in the United States.
+
+This demand growth makes homegrown renewable energy supply particularly attractive to Chinese leadership.
+
+Another reason why China is investing in new energy industries is to establish technical and market leadership in these sectors.
+
+The Strategic Emerging Industries initiative of 2010 identified seven industries as priorities for investment and development: new-generation internet technology, biotechnology, high-end equipment, new materials, new energy, new energy vehicles, and energy conservation and environmental protection.
+
+An eighth sector, innovative digital technology, was added in 2016.
+
+In China’s subsequent five-year plans, Beijing focused on strategic investments in all aspects of renewable technologies, from solar and wind capacity, green hydrogen, and geothermal projects to research and investment in battery storage and its supply chains.
+
+For example, the 12th Five-Year Plan, covering 2011-2015, stated a goal to “Promote the deep fusion of rising technologies and industries based on major technological breakthroughs and development needs, and develop new strategic industries into leading and pillar industries while continuing to strengthen and enlarge high-tech industries.” China’s 14th Five-Year Plan, covering 2021-2025, aims to produce 25% of China’s energy from non-fossil sources by 2030.
+
+It also states that at least half of electricity demand growth should be met by renewable generation.
+
+Renewables now account for half of China’s installed electricity generation capacity (but a lower share of generation because fossil plants can run constantly, unlike intermittent renewables).
+
+China’s investments in the clean energy sector have been costly.
+
+Arecent study by the Kiel Institute for the World Economy estimated that China’s subsidies to green industries are three to nine times larger than those in the large countries of the Organization for Economic Cooperation and Development and were (in a conservative estimate) nearly 2% of Chinese GDP in 2019.
+
+They have also been economically inefficient, resulting in overcapacity in key industries.
+
+On a trip to China in April 2024, U.S.
+
+Treasury Secretary Janet Yellen asserted that China’s clean energy manufacturing capacity is flooding global markets with cheap exports from subsidized firms that are losing money.
+
+She later told the Group of Seven finance ministers that Chinese industrial policy threatened American and European firms, saying that “if we do not respond strategically and in a united way, the viability of businesses in both our countries and around the world could be at risk.”
+Although the program may have been expensive and economically inefficient, maximizing efficiency was likely not China’s goal.
+
+China succeeded in establishing dominant shares in several important new energy sectors.
+
+As Yellen pointed out, the rest of the world, including the United States, is now figuring out how to respond to China’s head start in several important industries.
+
+[H3]China dominates the global critical mineral industry, especially refining
+
+China controls important parts of the global market for critical minerals.
+
+Chinese companies are the largest global producer of 29 commodities, including 22 metals and seven industrial minerals.
+
+China’s domestic production leads in graphite and rare earth elements and is an important producer of lithium as well.
+
+Lithium production in China more than doubled in the four years from 2020 through 2023.
+
+Yet China’s dominance in minerals really shows in the mineral refining sector, which transforms raw ores from mines into useful materials.
+
+China is the world-leading refiner of copper, lithium, graphite, cobalt, and rare earth elements, and it is the only country that refines all five of these critical minerals.
+
+For each of these materials, China refines a larger share of material than it produces domestically.
+
+This is particularly prominent for cobalt, where China has no domestic production but refines more than three-quarters of the global supply.
+
+In many cases, this produces a near-monopsony situation, where global mineral producers have one dominant purchaser for their products—Chinese refining facilities.
+
+This creates risk, as China could use its dominating position to coerce suppliers or control prices.
+
+The United States barely appears on any of these graphs as a leading producer or refiner of critical minerals.
+
+Of this list, it is only an appreciable player in copper and rare earth elements.
+
+China uses its dominance in global critical minerals supply chains for strategic ends, justifying concern from the United States and other buyers.
+
+In December 2024, China banned exports to the United States of gallium, germanium, and antimony and restricted exports of graphite.
+
+China increased restrictions on its critical minerals exports nine times between 2009 and 2020, more than any other supplier.
+
+China has also threatened U.S. defense contractors’ supply chains and lost a World Trade Organization case when it attempted to coerce Japan by cutting off its critical minerals supply.
+
+[H3]China manufactures low-price and high-quality electric vehicles
+
+Electric vehicles are another area in which China has made aggressive investments.
+
+EVs can reduce China’s dependence on oil imports while also reducing problematic air pollution in China’s cities.
+
+Policy incentives include direct government investment and low-cost loans for manufacturers, tax breaks and incentives for EV buyers, and government funding for charging infrastructure.
+
+These investments have resulted in the rapid growth of EV companies’ market share in China, with EVs making up 38% of new car sales in 2023.
+
+Nearly 60% of global EV sales in 2023 were in China.
+
+One reason for the very high level of EV penetration in China is price.
+
+The average price of EVs in China (before the purchase subsidy) is lower than that of cars running on liquid fuels.
+
+Chinese automakers offer EVs at very low prices.
+
+For example, the BYD Seagull, seating five passengers with a range of 252 miles, sells for the equivalent of $12,000 in China.
+
+China is not only the world’s largest market for EVs, but it is also the world’s largest EV exporter, at nearly 1.6 million EVs in 2023.
+
+According to a 2024 report by the U.S.
+
+International Trade Commission, as the quality of Chinese EVs has steadily improved, the share of exports to high-income countries increased from about 5% in 2018 to 60% in 2023.
+
+Part of this increase is due to a change in Chinese policy allowing foreign manufacturers to produce EVs in China without an equal-share Chinese partner.
+
+Tesla, BMW, and Renault took advantage of this new policy and began exporting EVs from China.
+
+As China’s exports of electric vehicles are rapidly increasing, Western governments and automakers are concerned about being undercut on EV prices and the potential damage to their domestic auto industries.
+
+U.S.
+
+Ambassador to China Nicholas Burns stated, “The government of China and the provincial governments are subsidizing the Chinese EV manufacturers so there’s no level playing field, and they take the cars, they sell them below the cost of production into Europe or Brazil or the U.S.” In a February 2024 report, the Alliance for American Manufacturing described the introduction of inexpensive Chinese cars to the U.S. market as a potential “extinction-level event for the U.S. auto sector.” These are strong statements, but U.S. policymakers are responding to concerns about Chinese competition.
+
+In May 2024, President Joe Biden announced a tariff increase from 25% to 100% on Chinese electric vehicles.
+
+In October 2024, the European Union followed suit, enacting manufacturer-specific tariffs on Chinese electric vehicles ranging from 7.8% for Tesla to 35.3% for state-owned manufacturer SAIC.
+
+These policies represent different approaches, with the United States aiming to exclude Chinese EVs from the market while the European Union attempts to level the playing field with tariffs equal to the Chinese government subsidy.
+
+[H3]China dominates global supply of PV panels, with vast overcapacity
+
+The photovoltaic (PV) industry exemplifies the pros and cons of China’s large investments in the new energy sector.
+
+China has more than 80% of the world’s manufacturing capacity for PV panels.
+
+But incentives have led to vast overcapacity; China’s manufacturing capacity in 2023 was more than double global PV panel demand.
+
+Oversupply pushed the prices of finished solar panels in China down 42% in 2023, and some PV manufacturers are taking orders at negative margins to preserve market share.
+
+In this market, investments outside China in PV panel production make little sense unless they are subsidized for economic or security reasons, and multiple factories in Europe have announced plans to close because they cannot compete with Chinese imports.
+
+In a sense, China successfully used industry subsidies to dominate the market and push out competition.
+
+However, fierce competition among Chinese manufacturers, plunging factory utilization rates, and intense pressure for companies to consolidate suggest that the subsidies have been economically inefficient and overly generous.
+
+[H2]China’s investments in clean energy products have impacted U.S. policy
+
+The U.S.
+
+Inflation Reduction Act (IRA), passed in 2022, is the largest climate legislation in U.S. history.
+
+It was designed with two goals in mind: revitalizing U.S. manufacturing and furthering the energy transition in the United States.
+
+In that respect, the IRA has similarities to China’s policies that encourage green energy manufacturing and development.
+
+China’s policies certainly influenced the direction of U.S. policy; if the United States’ biggest geopolitical competitor is striving to lead the world in clean energy technology and manufacturing through industrial policy, the United States can’t afford to be left behind.
+
+But China’s head start in certain industries raises questions about where and how to apply industrial policy to the best effect.
+
+PV panels are an area where Chinese dominance is likely to continue, given the vast overcapacity.
+
+Tariffs on Chinese products and tax credits for production in the United States will matter, but the United States is unlikely to become a low-cost producer of today’s PV panel technology.
+
+China leads not just in PV manufacturing, but in innovation as well, with Chinese firms setting records for PV cell efficiency.
+
+The United States is investing in the next generation of solar panel development and in innovative solar applications, but has a great deal of catching up to do.
+
+Electric vehicles and battery manufacturing are areas where policy responses can be more effective, as the global market is at an earlier stage of development and China has not achieved the level of dominance it enjoys in PVs.
+
+Both the United States and Europe are working to protect their markets while their own manufacturers play catch-up on technology and costs, but they will likely face difficulties in the lowest-cost segment of the market.
+
+Tariffs can protect domestic markets, but U.S. and European EV manufacturers will certainly face competition in the global marketplace, where both are significant players.
+
+In critical minerals too, the IRA is focused on domestic content and sourcing from friends and allies, but developing new supply chains requires time and money.
+
+The market for certain materials is likely to grow rapidly enough to create space for new entrants.
+
+The question is how long these new entrants will take to achieve commercial scale.
+
+Finding ways to accelerate the process of mining development will be key.
+
+The average lead time for a mine, from mineral discovery to production, has been growing and today is nearly 18 years.
+
+Permitting and obtaining financing are particularly time-consuming.
+
+Additionally, once the markets for new energy products mature, recycling and the circular economy become more viable.
+
+Today, not enough batteries, solar panels, or wind turbines have reached the ends of their lives for recycled materials to make up a significant share of the market, but that will change over time, opening opportunities for new entrants.
+
+[H2]To compete, the Trump administration should continue supporting clean energy
+
+On the campaign trail, Donald Trump focused on fossil fuel dominance and leveraging U.S. fossil fuel production to strategic advantage.
+
+As president, he would do well to also think about competition in the renewable energy space.
+
+The United States benefits greatly from its fossil fuel production, in terms of economic activity and energy security.
+
+Access to low-cost domestic natural gas is a particular advantage.
+
+But the world is changing, and the United States risks being left behind if its policy focuses solely on fossil fuels.
+
+Even if President Trump himself does not take climate change and the energy transition seriously, the fact that the rest of the world does is a business opportunity the United States should not pass up.
+
+The IRA passed without a single Republican vote in Congress and on the campaign trail, Trump said he would claw back unspent IRA funds.
+
+This is not only a bad idea in terms of U.S. competitiveness in the clean energy market but also is politically unlikely.
+
+Nearly 60% of announced IRA projects, representing 85% of funds and 68% of jobs, are congressional districts represented by Republicans.
+
+These widespread economic benefits make the IRA more durable as political winds change, a key element of effective policy.
+
+Trump plans to use tariffs, or the threat of tariffs, to achieve policy goals, including increasing exports of U.S. fossil fuels.
+
+Tariffs can protect domestic markets, but they do little to encourage innovation or make U.S. products more competitive in the global marketplace—which are both important goals of the IRA.
+
+Tariffs would, however, likely increase prices for American consumers.
+
+More than 15 years of the Chinese government’s unwavering policy attention has been an important factor in China’s lead in many parts of the clean energy industry, especially in supply chains.
+
+If the United States is to compete effectively in the clean energy future, it will also need consistent, forward-looking policy.
+
+The IRA is structured to provide long-term incentives for clean energy investment and growth, similar to China’s long-term investment policy.
+
+Also, like China’s policy, the IRA may not be the most economically efficient policy to encourage the energy transition, but efficiency is not the only variable that matters.
+
+Political durability provides businesses with the confidence to invest, a factor even more important in the U.S. free market of capital and ideas.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

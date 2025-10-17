@@ -22,7 +22,7 @@ class ParsedContent:
     text_content: str
     structure: Dict[str, Any]
     title: str
-    authors: List[str]
+    authors: List[Dict[str, str]]  # List of author dicts with name, title, affiliation, etc.
     publication_date: Optional[str]
     summary: str
     subjects: List[str]
@@ -346,52 +346,152 @@ class BrookingsHTMLParser:
             logger.debug(f"Error extracting JSON-LD: {e}")
             return None
 
-    def _extract_authors(self, soup: BeautifulSoup) -> List[str]:
-        """Extract author names from Brookings pages"""
-        authors = []
+    def _extract_authors(self, soup: BeautifulSoup) -> List[Dict[str, str]]:
+        """
+        Extract author information from Brookings pages with full metadata
 
-        # Special handling for Brookings byo-block.authors format
-        authors_div = soup.select_one('div.byo-block.authors')
-        if authors_div:
-            # Look for author names in nested elements
-            # Authors are often in links or specific class elements
-            author_links = authors_div.select('a[href*="/experts/"]')
-            if author_links:
+        Extracts:
+        - name: Author's full name
+        - title: Job title (e.g., "Senior Fellow")
+        - affiliation: Department/program (e.g., "Global Economy and Development")
+        - profile_url: Brookings profile page URL
+        - linkedin_url: LinkedIn profile URL (if available)
+
+        Strategy:
+        1. Look for structured .people divs (most comprehensive metadata)
+        2. Fall back to byo-block.authors with profile links
+        3. Fall back to simple name-only extraction
+
+        Returns:
+            List of author dictionaries with metadata
+        """
+        authors = []
+        seen_names = set()  # Track to avoid duplicates
+
+        # STRATEGY 1: Find all .people divs (most reliable for Brookings - includes full metadata)
+        people_sections = soup.find_all('div', class_='people')
+        if people_sections:
+            for person_div in people_sections:
+                author_data = {}
+
+                # Extract name
+                name_elem = person_div.select_one('.name, span.name')
+                if not name_elem:
+                    continue
+
+                name = name_elem.get_text(strip=True)
+                if not name or len(name) < 3 or len(name) > 100:
+                    continue
+                if any(skip in name.lower() for skip in ['authors', 'participants', 'bluesky', 'streamline']):
+                    continue
+                if name in seen_names:
+                    continue
+
+                author_data['name'] = name
+                seen_names.add(name)
+
+                # Extract title (job title)
+                title_elem = person_div.select_one('.title')
+                if title_elem:
+                    title = title_elem.get_text(strip=True)
+                    if title and title.lower() not in ['authors', 'author']:
+                        author_data['title'] = title
+
+                # Extract affiliation (program/center)
+                # Check both .title-blurb (external affiliations) and .affiliation (Brookings programs)
+                affiliation_elem = person_div.select_one('.title-blurb, .affiliation, .program')
+                if affiliation_elem:
+                    affiliation = affiliation_elem.get_text(strip=True)
+                    # Remove leading dash if present
+                    affiliation = affiliation.lstrip('- ').strip()
+                    if affiliation:
+                        author_data['affiliation'] = affiliation
+
+                # Extract profile URL
+                profile_link = person_div.select_one('a[href*="/people/"], a[href*="/experts/"]')
+                if profile_link:
+                    profile_url = profile_link.get('href', '')
+                    if profile_url:
+                        # Make absolute URL
+                        if not profile_url.startswith('http'):
+                            profile_url = f"https://www.brookings.edu{profile_url if profile_url.startswith('/') else '/' + profile_url}"
+                        author_data['profile_url'] = profile_url
+
+                # Extract LinkedIn URL
+                linkedin_link = person_div.select_one('a[href*="linkedin.com"]')
+                if linkedin_link:
+                    linkedin_url = linkedin_link.get('href', '')
+                    if linkedin_url:
+                        author_data['linkedin_url'] = linkedin_url
+
+                authors.append(author_data)
+                logger.debug(f"✓ Found author with metadata: {name} ({author_data.get('title', 'N/A')})")
+
+        # STRATEGY 2: Look for byo-block.authors with profile links (less metadata)
+        if not authors:
+            authors_div = soup.select_one('div.byo-block.authors')
+            if authors_div:
+                author_links = authors_div.select('a[href*="/people/"], a[href*="/experts/"]')
                 for link in author_links:
                     name = link.get_text(strip=True)
-                    if name and name not in authors and not name.startswith('@'):
-                        authors.append(name)
-            else:
-                # Fallback: try to parse structured text
-                # Look for patterns like "Name\nTitle\nAffiliation"
-                text = authors_div.get_text('\n', strip=True)
-                lines = [l.strip() for l in text.split('\n') if l.strip()]
+                    if not name or len(name) < 3 or len(name) > 100:
+                        continue
+                    if any(skip in name.lower() for skip in ['@', 'bluesky', 'authors', 'http', '.com', 'linkedin']):
+                        continue
+                    if name in seen_names:
+                        continue
 
-                # Filter out common non-name patterns
-                for line in lines:
-                    # Skip if line contains common metadata patterns
-                    if any(x in line.lower() for x in ['fellow', 'director', 'professor', 'center', '@', 'bluesky', 'authors', 'http', '.com', 'senior', 'nonresident']):
-                        continue
-                    # Skip very short or very long strings
-                    if len(line) < 5 or len(line) > 50:
-                        continue
-                    # Skip if all caps or contains mostly punctuation
-                    if line.isupper() or line.count('.') > 2:
-                        continue
-                    # Likely an author name
-                    if line and line not in authors:
-                        authors.append(line)
+                    author_data = {'name': name}
+                    seen_names.add(name)
 
-        # Try other selectors if no authors found yet
+                    # Get profile URL
+                    profile_url = link.get('href', '')
+                    if profile_url:
+                        if not profile_url.startswith('http'):
+                            profile_url = f"https://www.brookings.edu{profile_url if profile_url.startswith('/') else '/' + profile_url}"
+                        author_data['profile_url'] = profile_url
+
+                    authors.append(author_data)
+                    logger.debug(f"✓ Found author via profile link: {name}")
+
+        # STRATEGY 3: Fallback to name-only extraction
         if not authors:
-            for selector in self.METADATA_SELECTORS['authors'][1:]:  # Skip first (already tried)
+            for selector in ['.author-name', '.byline a', 'span[itemprop="author"]', '.article-author']:
                 elements = soup.select(selector)
                 for elem in elements:
-                    author = elem.get_text(strip=True)
-                    if author and author not in authors and len(author) < 100:
-                        authors.append(author)
+                    name = elem.get_text(strip=True)
+                    if not name or len(name) < 3 or len(name) > 100:
+                        continue
+                    if any(skip in name.lower() for skip in ['@', 'authors', 'by ']):
+                        continue
+                    if name in seen_names:
+                        continue
 
-        return authors[:10]  # Limit to 10 authors max
+                    author_data = {'name': name}
+                    seen_names.add(name)
+
+                    # Try to get URL from anchor tag
+                    if elem.name == 'a':
+                        url = elem.get('href', '')
+                        if url and ('/people/' in url or '/experts/' in url):
+                            if not url.startswith('http'):
+                                url = f"https://www.brookings.edu{url if url.startswith('/') else '/' + url}"
+                            author_data['profile_url'] = url
+
+                    authors.append(author_data)
+                    logger.debug(f"✓ Found author via {selector}: {name}")
+
+        # Final cleanup: remove trailing punctuation from names
+        for author in authors:
+            if 'name' in author:
+                author['name'] = author['name'].rstrip(',-').strip()
+
+        if authors:
+            logger.info(f"Extracted {len(authors)} authors with metadata: {[a.get('name') for a in authors[:5]]}")
+        else:
+            logger.warning("No authors extracted from page")
+
+        return authors[:20]  # Limit to 20 authors max
 
     def _extract_date(self, soup: BeautifulSoup) -> Optional[str]:
         """

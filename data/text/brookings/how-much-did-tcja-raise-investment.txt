@@ -1,0 +1,121 @@
+The Tax Cut and Jobs Act (TCJA) of 2017 aimed to increase business investment by cutting costs for business.
+
+Indeed, the legislation has been routinely described as having created the largest business tax cut in the nation’s history.
+
+It cut the top corporate tax rate from 35% to 21%, cut the top rate for many non-corporate businesses from 37% to 29.6%, and temporarily allowed firms to deduct the entire cost of certain investments as a current expense rather than depreciating it over time.
+
+All these changes reduced the after-tax cost of business investment.
+
+But did these changes significantly boost investment?
+
+If they did not, the central raison d’etre for the corporate and business tax cuts disappears.
+
+Policymakers could then adjust these cuts and gain a viable revenue source to address historic and persistent federal deficits, all without unduly hurting the economy.
+
+Certainly, TCJA supporters have “ claimed victory ” on the investment front.
+
+And in fact, careful recent research finds that TCJA raised real corporate investment in equipment and structures by 8 to 14%.
+
+But such investment accounts for only about half (54% in 2016) of aggregate investment.
+
+The rest consists of investment in equipment and structure by non-corporate businesses and intellectual property (IP) by both corporate and non-corporate businesses.
+
+Perhaps surprisingly, several perspectives suggest that aggregate investment was not markedly influenced by the TCJA.
+
+First, the Act substantially reduced the cost of capital for investment in equipment and structures.
+
+But Figure 1 shows that aggregate real equipment investment rose only slightly as a share of real gross domestic product (GDP), from 5.9% in 2015-16 to just over 6.0% in 2018-19, and that investment in structures was the same share of GDP (3.1%) in those two periods. (After 2019, the COVID-19 pandemic and the massive fiscal and monetary response make it difficult to isolate the impact of TCJA on investment.) In addition, the International Monetary Fund found that investment growth after TCJA was smaller than would have been expected based on previous corporate tax cuts, instead explained by increases in aggregate demand.
+
+Investment in IP grew faster than in equipment and structures.
+
+But unlike equipment and structures, IP investment had risen steadily in the years before TCJA and that trend essentially continued after TCJA.
+
+Indeed, some provisions of TCJA raised the cost of IP investment, so the law is an unlikely source for growth in this area.
+
+Second, comparisons of Congressional Budget Office (CBO) investment projections with actual investment data show similar patterns.
+
+In early 2017, after President Trump took office and before TCJA was introduced, CBO projected that real investment in equipment and structures would rise by 8.3% from the first quarter of  2017 to the final quarter of 2019.
+
+The actual increase was only slightly higher than that estimate—8.6%.
+
+Third, comparisons of investment across countries similarly do not show significant impact of the Tax Cuts and Jobs Act.
+
+Figure 2 shows that, after 2017, the change in investment as a share of GDP in the United States was not exceptional compared to other Group of 7 countries (G-7 includes Canada, France, Germany, Italy, Japan, and United Kingdom).
+
+Although the U.S. economy had the second-highest growth rate in investment/GDP from 2013 to 2016, investment growth was not exceptional from 2016 to 2019.
+
+Indeed, the U.S. economy had only the fourth highest growth rate (essentially tied with Japan) in investment/GDP from 2016 to 2019, incorporating the period after the TCJA.
+
+Other than Japan, none of the other G-7 countries had major business tax reforms during this period.
+
+Likewise, growth in U.S. investment in real terms (rather than as a share of GDP, not shown) from 2015-16 to 2018-19 was also unexceptional relative to other G-7 economies.
+
+Real investment in the U.S. economy grew about the same rate as in the United Kingdom, faster than Japan and Canada, but slower than Italy, Germany, and France.
+
+There are two ways to make sense of the fact that, as a share of the economy, corporate investment in equipment and structure rose but aggregate investment did not: Either other factors reduced aggregate investment and offset the gains created by TCJA, or the TCJA reduced investment among non-corporate firms.
+
+Certainly, factors other than the TCJA reduced investment over this period.
+
+Rising trade tensions and tariffs slowed growth.
+
+Estimates suggest that tariffs reduced GDP by roughly 0.3 percentage points relative to baseline in the short run.
+
+Industry-specific factors also played a role, such as delayed deliveries of Boeing’s 737 MAX plane, which reduced investment growth by 0.5 percentage points in 2019.
+
+But fiscal policy was expansionary: Estimates find that the Bipartisan Budget Acts of 2018 and 2019 boosted GDP growth by between 0.75 and 1.75 percentage points.
+
+In addition, monetary policy was more accommodating in 2018 and 2019 than had been predicted pre-TCJA.
+
+When TCJA was enacted, Federal Reserve Officials projected a federal funds rate of 2.7% at the end of 2019, but it ended up being substantially lower at 1.625%.
+
+The net effect of all these non-TCJA changes on investment was probably positive.
+
+They cannot explain the divergence in investment results.
+
+That leaves the other possible explanation.
+
+The TCJA increased investment by firms with larger tax cuts, but those changes crowded out or came at the expense of investment by non-corporate businesses which received smaller or no tax cuts.
+
+In a nutshell: For a given investment project, the after-tax return increased by a greater amount for firms that received bigger tax cuts, so their ability to invest would have increased by more than firms with small or no tax cuts.
+
+They could expand at a lower cost and could have driven out the firms that got no or smaller tax cuts, since those firms faced a higher price of capital, material, and labor but no or smaller tax benefits.
+
+Under this interpretation, TCJA changed which firms did the investing but did not necessarily affect the overall level of investment.
+
+That is, TCJA reshuffled investment among firms.
+
+The data support this alternative explanation.
+
+Kennedy et al. (see Figure A-7, Panel D) show that the ratio of investment to lagged capital fell from about 5% in 2017 to just over 2% in 2019 for Scorporations, which received a smaller tax cut under TCJA.
+
+That ratio for similarly sized Ccorporations (who received a larger tax cut) followed the same trend through 2017, then rose to about 8.5% in 2019.
+
+These results imply a significant reallocation of investment from Scorporations to Ccorporations.
+
+Taken together, the available evidence suggests the TCJA largely failed in its major objective: It did not significantly boost aggregate investment.
+
+This also suggests that moderately raising the corporate tax rate would not adversely affect the economy, since business income in any year is largely the result of investments made in the past.
+
+In other words: Cutting the tax rate even more now would create substantial federal revenue losses that largely finance windfall gains to business owners who have already made investments.
+
+Policymakers could safely increase the rate and raise significant revenue.
+
+CBO estimates that raising the rate to 28% would raise $881 billion over the 2025-2034 period.
+
+No policy is perfect, but the TCJA experience indicates that adjusting the corporate and business tax cuts in TCJA would bolster federal finances without significant costs to the economy.
+
+It might even help it.
+
+Acknowledgements and disclosures
+
+The Brookings Institution is financed through the support of a diverse array of foundations, corporations, governments, individuals, as well as an endowment.
+
+Alist of donors can be found in our annual reports published online  here.
+
+The findings, interpretations, and conclusions in this report are solely those of its author(s) and are not influenced by any donation.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

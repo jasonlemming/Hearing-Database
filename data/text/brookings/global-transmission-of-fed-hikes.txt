@@ -1,0 +1,74 @@
+Editor's note:
+The paper summarized here is part of the Fall 2023 edition of the  Brookings Papers on Economic Activity (BPEA), the leading conference series and journal in economics for timely, cutting-edge research about real-world policy issues.
+
+The conference draft of this paper was presented at the  Fall 2023 BPEA Conference  (recordings and slides are available via the link).
+
+The final version was published in the Fall 2023 issue by Johns Hopkins University Press.
+
+Submit a proposal to present at a future BPEA conference  here.
+
+Download final paper with online appendix, discussion comments, and general discussion summary
+Download replication package
+Rapid Federal Reserve interest rate increases last year and earlier this year have not, at least so far, triggered financial crises in emerging markets and developing economies—in stark contrast to spillovers from U.S. interest rate hikes in the 1980s and 1990s, notes a paper discussed at the Brookings Papers on Economic Activity (BPEA) conference on September 28.
+
+The reason, according to the paper, “Global Transmission of Fed Hikes: The Role of Policy Credibility and Balance Sheets,” is that many emerging market countries have strengthened the credibility of their monetary policies; reduced the foreign debt of their non-financial corporations, governments, and household; and made sure their banks protected their balance sheets from a steep drop in the value of local currencies.
+
+“We show that, this time around … the improvement in monetary policy frameworks … combined with reduced levels of dollar-denominated debt helped emerging markets to weather the … Fed hikes,” write the authors, Şebnem Kalemli-Özcan of the University of Maryland and Filiz Unsal of the Organisation for Economic Co-operation and Development.
+
+U.S. inflation surged to a 40-year high of 9.1% in June 2022.
+
+To combat it, the Fed raised its short-term interest rate target from near zero at the start of 2022 to a range of 5-1/4-to-5-1/2%.
+
+Annual inflation has since fallen below 4%.
+
+In the past, when the Federal Reserve raised U.S. rates, central banks in emerging-market countries with high levels of dollar debt confronted an unpleasant trade-off.
+
+If they failed to match the Fed rate hikes, the value of their currencies would fall (since dollar-denominated assets would earn a higher rate than local-currency assets).
+
+And businesses and households that must swap local currencies for dollars to pay off their debts would face a crunch.
+
+However, when central banks matched the Fed hikes, it often triggered an economic downturn by slowing domestic investment and spending.
+
+According to the paper, if the central banks had had more policy credibility for keeping inflation low, which also would have helped limit the impact on the value of their currencies, they could have avoided mimicking the Fed’s policy path and set monetary policy based on local economic conditions.
+
+That, in fact, is what has happened most recently, the paper suggests.
+
+An index of monetary policy credibility in 50 countries, constructed by Unsal and the co-authors of a separate paper, shows emerging market policy credibility rose significantly from 2007 to 2021.
+
+The index evaluated monetary policy independence and accountability, policy and operational strategies, and communications.
+
+Likely not coincidentally, with increased policy credibility, the 25 largest emerging market and developing economy countries have all beaten the International Monetary Fund’s 2022 growth forecasts for them.
+“Emerging market central banks in the 2020s have learned the lessons of the ‘80s and ‘90s.
+
+They learned the importance not just of inflation targeting but of doing what they say they will do.
+
+The biggest Fed hike in decades didn’t cause a crisis because they improved their credibility, reducing global investors’ need to charge emerging markets sharply higher interest rates,” Kalemli-Özcan said in an interview with The Brookings Institution.
+
+The Fed’s most recent rate increases did tighten global financial conditions, slowing growth somewhat.
+“It is not that there is zero effect, but it is short of a crisis,” Kalemli-Özcan said.
+
+[H3]CITATION
+
+Kalemli-Özcan, Şebnem and Filiz Unsal. 2023. “Global Transmission of Fed Hikes: The Role of Policy Credibility and Balance Sheets.” Brookings Papers on Economic Activity, Fall. 169-225.
+
+Forbes, Kristin. 2023. “Comment on ‘Global Transmission of Fed Hikes: The Role of Policy Credibility and Balance Sheets’.” Brookings Papers on Economic Activity, Fall. 226-235.
+
+Milesi-Ferretti, Gian. 2023. “Comment on ‘Global Transmission of Fed Hikes: The Role of Policy Credibility and Balance Sheets’.” Brookings Papers on Economic Activity, Fall. 235-244.
+
+Acknowledgements and disclosures
+
+Şebnem Kalemli-Özcan holds unpaid advisory positions at the Federal Reserve Bank of New York and the Bank for International Settlements.
+
+The authors did not receive financial support from any firm or person for this paper or from any firm or person with a financial or political interest in this paper.
+
+Other than the aforementioned, the authors are not currently an officer, director, or board member of any organization with a financial or political interest in this paper.
+
+The Organisation for Economic Co-operation and Development (OECD), Filiz Unsal’s employer, had the right to review this work prior to publication.
+
+This paper should not be reported as representing the official views of the OECD or of its member countries.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

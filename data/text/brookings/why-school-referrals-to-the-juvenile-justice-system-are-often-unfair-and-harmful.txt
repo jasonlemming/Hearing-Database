@@ -1,0 +1,131 @@
+As students and teachers returned to classrooms in the aftermath of the COVID-19 pandemic, a raft of surveys and media reporting suggested an uptick in student behavioral disruptions.
+
+In response to these concerns, while some schools have adopted restorative justice frameworks, many others have reached for harsher school discipline measures to address student misbehavior.
+
+Policymakers in several states have even begun reinstituting zero-tolerance policies and/or requiring police officer presence in every school.
+
+Following a similar wave of school hardening measures adopted in the 1990s, advocates coined the term “ school-to-prison pipeline ” to describe how certain school environments and practices increase the likelihood that youth, particularly youth of color, become entangled in the criminal justice system.
+
+Some research shows that early encounters with school discipline, surveillance, and policing may have adverse psychological or social effects, leading to reduced school engagement and increased antisocial behavior.
+
+Another explanation for the pipeline is more direct: Schools themselves may initiate contact with the juvenile justice system for students.
+
+Nationally, juvenile crime charges increase by nearly 50% on school days in comparison to non-school days.
+
+Despite this evident connection between schools and the juvenile justice system, we lack a comprehensive understanding of how interactions between these systems unfold and their impact on students.
+
+Our study uses linked education and juvenile court records from North Carolina to address three questions:
+
+Do schools exhibit bias in their referrals of students to the juvenile justice system?
+
+How do juvenile referrals from schools impact student outcomes?
+
+What role do the decisions of school principals and police officers play in influencing juvenile justice contact?
+
+To answer these questions, we analyze school-based offenses from the 2007-08 to 2009-10 school years (the years of data made available to us by the North Carolina Department of Public Safety) for grades 3 through 10.
+
+Each incident in this disciplinary database is matched with juvenile complaint records from the Department of Public Safety.
+
+Approximately 1.6% of all school disciplinary offenses result in formal juvenile complaints.
+
+Our analysis employs statistical methods to compare similar students who committed the same type of offense with the same disciplinary history, but where one was referred to the juvenile justice system and the other was not.
+
+For instance, we compare two students with identical academic and behavioral records who were both caught with marijuana, but only one was referred to juvenile court.
+
+Our findings reveal that the decisions to report incidents to the police and refer them to court are largely discretionary, with similar offenses leading to different outcomes for different students.
+
+This led us to inquire about who gets referred to juvenile justice and how it affects their academic outcomes.
+
+[H2]Who is targeted by juvenile referrals for school-based offenses?
+
+We started by looking at whether schools make referrals to juvenile justice equitably along race, gender, and class lines.
+
+Although Black students make up less than 30% of the North Carolina student population, they receive 42% of school disciplinary consequences and 40% of school-based juvenile referrals—a substantial overrepresentation.
+
+These disparities could reflect a combination of factors, including differences in student behavior, interpretation of that behavior, and/or choice of punishment.
+
+We account for these potential confounding factors by adjusting for students’ disciplinary record and the type of offense they committed to ensure a more direct comparison of students who differ only by race, gender, or economic status.
+
+Beyond these adjustments, certain types of infractions may provide insight into whether schools handle more discretionary responses differently across groups of students.
+
+For instance, although some juvenile complaints from schools involve more serious incidents, such as fighting or weapon possession, a significant number stem from minor and subjective charges.
+
+For example, “disorderly conduct at school”—defined as actions that disrupt or interfere with teaching or that disturb school peace and order—represents over 11% of all school-based juvenile referrals in North Carolina.
+
+Below, we present our results after adjusting for student differences in both the likelihood of receiving a juvenile referral at all and the subset of students referred for “disorderly conduct.”  When comparing students committing the same type of offense (e. g., truancy), with the same disciplinary record, in the same school and grade level, any remaining differences likely indicate bias on the part of school leaders or police.
+
+We find differences across both gender and race.
+
+Specifically, Black female students are 15% more likely than average, and Hispanic and white female students nine percent more likely than average, to receive a juvenile complaint for a school-based offense.
+
+On the other hand, Black male students are six percent less likely, Hispanic male students four percent less likely, and white male students 10% less likely to receive a juvenile complaint than the average student in our data.
+
+These findings confirm prior qualitative evidence that school personnel can punish female students for “ failing to conform to traditional expectations of femininity.” They also suggest that, among female students, Black girls face the harshest disciplinary outcomes.
+
+We find that disparities in referrals for disorderly conduct are particularly pronounced: Black female students are 65% more likely and Hispanic female students 19% more likely to receive disorderly conduct complaints than the average student.
+
+This suggests that bias plays a more significant role in reporting decisions for subjective charges.
+
+In other states, such as South Carolina, federal appeals courts have deemed similar disorderly conduct statutes “ unconstitutionally vague.”
+
+[H2]What impact does a juvenile referral have on student outcomes?
+
+Our findings reflect a troubling inequity.
+
+Some students, particularly Black and Hispanic female students, find themselves referred to juvenile justice more often for minor offenses than their otherwise similar peers.
+
+This could widen gaps in academic achievement, even beyond the documented inequities caused by school actions like suspension and expulsion.
+
+With our unique opportunity to compare the outcomes of students who only differ in whether they were referred to juvenile justice, we examine the immediate effects of receiving a juvenile complaint on students’ educational outcomes.
+
+We find that students with identical academic backgrounds and disciplinary histories who receive a juvenile complaint experience:
+
+an additional 2.6 days of absence from school (in grades 4 through 10);
+a lower reading score (five percent of a standard deviation in grades 4 through 8); and
+a lower math score (six percent of a standard deviation in grades 4 through 8).
+
+The increased absences may result from necessary meetings with court counselors or court appearances, or they may reflect growing disengagement from school.
+
+The observed drops in test scores equate to an approximate 20% reduction in typical annual test score growth.
+
+Notably, we observe these decreases in achievement even relative to students already receiving other forms of school-based punishment such as detention and suspension and, consequently, likely falling behind academically themselves.
+
+Of course, school leaders may still believe these juvenile justice referrals are appropriate if they dissuade students from misbehaving in the future.
+
+We, therefore, assess the impact of receiving a juvenile complaint on the incidence of recorded disciplinary incidents or juvenile complaints later in the year.
+
+We find that, despite fewer disciplinary incidents following a juvenile complaint, students’ likelihood of receiving a subsequent juvenile complaint within the same school year nearly doubles.
+
+This suggests that schools and police increasingly monitor and penalize youth after their initial juvenile justice contact.
+
+[H2]What can be done to improve the situation?
+
+Our work suggests policymakers should exercise caution about creating more opportunities for contact between schools and the juvenile justice system.
+
+States should be wary of adding ambiguity to schools’ responsibility in managing student discipline.
+
+Our work underscores that such ambiguities provide opportunities for schools to engage in potentially biased punishment of students or, worse, biased escalation of punishment into criminal justice contacts.
+
+Any modest deterrent effects of such escalations are more than offset by the harms suffered by students exposed to the juvenile justice system.
+
+Based on our research, we propose several actions to improve outcomes for youth:
+
+Provide clearer guidance at the state and district levels on appropriate circumstances for reporting school-based incidents to the police.
+
+Repeal vague statutory language, such as “disorderly conduct,” that allows for biased referrals to juvenile justice.
+
+Reduce the use of police officers in schools, given that their presence often increases juvenile complaints for minor offenses.
+
+Invest in social and mental health resources in schools to proactively improve student behavior and reduce the need for reactive discipline and policing.
+
+Together, such changes could help enhance equity in schools and the criminal justice system.
+
+We also strongly encourage juvenile justice agencies to engage in more research collaborations to explore and assess the impacts of juvenile justice programs on youth outcomes more broadly.
+
+Such collaborations can help identify programs and practices that better respond to school-based infractions without destabilizing a student’s trajectory.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

@@ -1,0 +1,310 @@
+In a major breakthrough, many of the leading developers of artificial intelligence (AI) technology—companies that in their earlier iteration had been hardline opponents of regulation—have now embraced governmental oversight of their activities.
+
+Google CEO Sundar Pichai explained the conversion bluntly, “AI is too important not to regulate and too important not to regulate well.”
+The most headline-grabbing embrace of regulation was that of Sam Altman, CEO of OpenAI, the creator of ChatGPT.
+
+Mr.
+
+Altman called on Congress to create “a new agency that licenses any effort above a certain scale of capabilities and could take that license away and ensure compliance with safety standards.” Microsoft president Brad Smith echoed a similar message shortly thereafter.
+
+Licensing alone, however, is not the answer for the effective oversight of large language models (LLMs).
+
+It is especially insufficient if it is limited to “any effort above a certain scale of capabilities,” i. e., the activities of “Big AI” companies such as Microsoft, OpenAI, Google, Anthropic, and other foundation model developers.
+
+Beyond such insufficiency, a license is inherently an anti-competitive, anti-innovative vehicle for incumbent enrichment.
+
+Relying on licenses allocated to Big AI is a manifestation of H.
+
+L.
+
+Mencken’s classic admonition, “For every complex problem there is an answer that is clear, simple, and wrong.”
+Inherent in the Altman/Smith proposal, however, are two other concepts: the establishment of standards and a new federal agency to oversee their creation and enforcement.
+
+These two concepts hold the key to successful AI oversight and the key to an AI future governed in the public interest.
+
+Back to top
+
+What is a license?
+
+The term “license” derives from the Latin licet, licere meaning “it is allowed.” The concept traces as far back as the 1217 revision of the Magna Carta which required a license to transfer crown lands.
+
+Three hundred years later, in 1552, Parliament passed the Ale Houses Act requiring licenses for pubs as a means for controlling “abuses and disorders as are had and used in common ale-houses.”
+The first reality of a license is that it is an act of exclusion.
+
+Absent the permit to operate, parties are legally prevented from engaging in the undertaking.
+
+As legal scholar Charles Clark explained, the term “refers to a physical fact, an expression of consent by the licensor, which creates a legal privilege in the licensee.” In this regard, licensed control over operating a pub in 16 th century England is no different from the 21 st century ability to operate AI foundation models.
+
+Even more informative than entry control, however, are the expectations the licensing authority imposes on the recipient.
+
+Parliament’s use of licensing to address pub “abuses and disorders,” established the responsibility of the licensee, including expectations regarding the behavior of those using the approved establishment.
+
+Alicense is both a grant of privileges and the imposition of responsibilities.
+
+The grant of exclusion to protect against competitors is no doubt important to those proposing the licensing of AI foundation models.
+
+Of far greater importance to the public interest, however, is the determination of behavioral expectations for all—not just licensees—offering AI capabilities.
+
+Back to top
+
+The realities of federal licensing
+
+As the Chairman (2013-2017) of the Federal Communications Commission (FCC), Iwas once responsible for perhaps the largest federal licensing program.
+
+The FCC issues, oversees, and enforces more than three million licenses to use the electromagnetic spectrum.
+
+These range from using the airwaves for radio, television, mobile phones, and satellites, to amateur radio, and other non-commercial applications.
+
+Radio spectrum licenses were intended to protect from signals interfering with each other as well as establish enforceable standards for their use.
+
+As a regulatory tool, however, spectrum licensing turned out to be a blunt instrument that prioritized the rights of licensees, as opposed to providing a tool for meaningful oversight of their behavior.
+
+Broadcast licenses, for instance, were originally seen as a way to not only assure interference free operation, but also promote a diversity of voices, competition, and fairness.
+
+These expectations have gradually been eroded or even eliminated at the behest of the industry.
+
+Spectrum licenses have evolved from the principal purpose of protecting the public interest to protecting the business interests of those fortunate enough to have received the certificate.
+
+The federal licensing activity Iwitnessed was anti-competitive because only the chosen could participate, anti-innovative because of the lack of competition, and incumbent-enriching through the creation of quasi-monopolies.
+
+In practice, the authority to use the public asset of the airwaves created economic power resulting in political power that was exercised for the benefit of the licensee.
+
+There is, however, a certain simplicity to the concept of a license.
+
+For legislators it is an easy-to-define solution that assigns the ultimate responsibility elsewhere.
+
+For the companies fortunate to receive such a license, it offers the security of a golden ticket denied to others.
+
+As a tool to protect the public interest, however, the experience with commercial spectrum licenses demonstrates how licensing is insufficient as the primary solution to the broad-based AI challenges.
+
+Back to top
+
+Releasing the hounds of AI
+
+Intelligent computing is evolving into “Big AI” and “Small AI.” Big AI is the preserve of digital giants whose proprietary LLMs keep getting more powerful.
+
+Small AI is the multitude of others that rely on freely available open-source LLMs that are smaller and less powerful, but are still cheaper and “good enough” for a wide range of applications.
+
+Using licensing to regulate AI models “above a certain scale of activities” is made all the more impractical by of a plethora of other, albeit lesser capability, AI models that are freely available.
+
+These open-source AI models mean that AI algorithms are not a scarce commodity like the airwaves.
+
+There is a continually growing community of open-source LLMs readily available for free online.
+
+Meta Platforms, for instance, has built their corporate strategy around releasing their LLaMA model for open-source use (albeit with some restrictions on its use).
+
+France has embraced open-source AI as national policy.
+
+These, as well as the activities of multiple other open-source developers assure both ready availability and continual capability improvements.
+
+The experience with federal spectrum licenses is an example of how readily available technology allows for the non-licensed to engage in a licensed activity without permission.
+
+The FCC deals with the non-licensed use of otherwise licensed airwaves by employing sophisticated radio direction finding-equipped vehicles that prowl in search of unlicensed spectrum users operating in licensed parts of the airwaves.
+
+The most egregious of such unlicensed use are “ pirate radio ” stations made possible because setting up a radio station is easy and inexpensive.
+
+While pirate radio broadcasts do not have the power and reach of a licensed station, they are still powerful enough to reach a local community and interfere with licensed operations.
+
+When Iwas at the FCC, for instance, one of the pirate stations we shut down was nothing more than a commonly available laptop feeding an off-the-shelf radio transmitter hidden in a Brooklyn tenement attic.
+
+Within the last few weeks, the FCC has shut down five pirate radio broadcasters in Florida.
+
+Pirate AI is similarly possible in a licensed AI environment because of the proliferation of open-source AI models.
+
+Like pirate radio stations, open-source AI models may be smaller and less powerful, but still highly functional.
+
+Best of all, they are readily available for free, thus boosting their availability.
+
+The fact that these models are “open” also means a user not only benefits from the basic capabilities, but also can access and modify the underlying code for their own purposes.
+
+The reality of open-source AI was exemplified by a leaked internal Google email.
+
+Referring to the competitive threat of open-source models, the author warned, “We have no moat…The barrier to entry for training and experimentation has dropped from the total output of a major research organization to one person, an evening, and a beefy laptop.”
+An LLM model that is readily available for free, with source code that is easily manipulated for a specific purpose using a “beefy laptop” carves a huge hole into the protections that might be otherwise afforded by AI licensing.
+
+Open-source AI is a pro-competitive and pro-innovation workaround to the technology and marketplace dominance of Big AI.
+
+Releasing the hounds of AI this way, however, is a double-edge sword.
+
+Certainly, it is wonderful that open-source models are readily available at no cost to be modified for socially beneficial activities such as lowering the cost of medical research.
+
+Alternatively, it is frightening to consider how the same models can also be modified for nefarious purposes.
+
+The recent surge in fake video and audio are an example of what is possible in an open-source world.
+
+National security is also implicated; as Axios reported, “Top government officials are freaked out by the national security implications of having large open-source AI models in the hands of anyone who can code.”
+Ever-improving open-source models have created an AI Wild West.
+
+Licensing cutting edge models does not solve the short-term, real-world effects delivered by open-source models and the need for broad-based AI oversight.
+
+As an advertisement from the software company Salesforce asks, “If AI is the Wild West, who is the sheriff?”
+
+Back to top
+
+Establishing expectations
+
+Before there can be an “AI sheriff” there must be decisions about what constitutes appropriate behavior.
+
+When Mr.
+
+Altman told Congress, “Ithink if this technology goes wrong, it can go quite wrong,” he seemed to be using as a policy predicate the apocalyptic warnings of computers taking control. “We want to work with the government to prevent that from happening,” he told lawmakers.
+
+The issues associated with AI, however, will define our civilization long before the hypothetical apocalypse.
+
+As AI pioneer Mustafa Suleyman observed, “We should focus on the practical near-term capabilities which are going to arise in the next 10 years which Ibelieve are reasonably predictable.”
+Such practical capabilities begin with the use of AI to violate already well-established behavioral norms such as protecting against fraud and discrimination.
+
+The use of AI to commit fraud or discriminate does not require new policies.
+
+Such practices are against the law, regardless of how they are perpetrated.
+
+As Federal Trade Commission Chairwoman Lina Khan succinctly observed, “There is no AI exemption to the laws on the books.”
+But what about the non-traditional effects of AI?
+
+There are two pressing fears about AI, both of which revolve around the consequences of losing control of the technology.
+
+The first fear is the loss of control over the AI algorithms so that they can do bad things.
+
+The second fear is the loss of control of humans’ use of AI to do bad things.
+
+AI oversight must be directed to the mitigation of both these adverse consequences.
+
+Some of this can be accomplished by dictating operations of the most powerful models, such as requiring red teams to identify and address potential risks (which as President Biden’s AI Executive Order demonstrated, does not require licensing).
+
+But most of the regulatory activity should be focused on adverse results enabled by the technology writ large.
+
+Twenty-first century AI oversight must address “abuses and disorders” just as did 16 th century oversight of pubs.
+
+If the enumeration of behaviors is important enough to be a condition precedent for the grant of a license, then the establishment of such behavioral expectations should also be important to all AI.
+
+Regulating is intended to prevent fraudulent and discriminatory results, regardless of how they are perpetrated.
+
+AI oversight needs to be similarly outcomes-focused, whether the LLM is licensed or not.
+
+History has taught us the effects of technology are of greater significance than the breakthrough technology itself.
+
+It is seldom the primary technology that is transformational, but its secondary effects.
+
+In the 21 st century, it will be the consequences resulting from the application of AI technology that end up driving new social and economic realities.
+
+How we deal with these consequences begins with the establishment of outcomes-based behavioral expectations for all AI.
+
+Back to top
+
+Developing AI standards
+
+Thus far in the digital era, American legislators have largely avoided establishing behavioral ground rules for oversight of the new technology.
+
+This differs from the policy response to the last great technology-driven revolution—the Industrial Revolution—in which policymakers, confronted with never-before-seen challenges, developed never-before-contemplated solutions.
+
+As contrasted to the antitrust and consumer protection statutes of the late 19 th and early 20 th centuries, 21 st century practice has been to sweep under the policy rug the need for protections against digital effects such as the invasion of personal privacy, quashing of competition, and trammeling of truth and trust.
+
+These unsupervised effects have been expanded by AI with increased intrusion into private rights, the concentrated control of Big AI, and content invented from whole cloth.
+
+The failure to oversee the effects of the early digital era should be a warning as we consider the consequences of AI.
+
+As AI thought leaders Yuval Harari, Tristan Harris, and Aza Raskin wrote in the New York Times, “Social media was the first contact between AI and humans, and humanity lost.”
+
+Back to top
+
+The "Tickle Me Elmo"
+
+As a part of its spectrum oversight responsibility, the FCC establishes technical standards for any device that emits a radio frequency (RF) signal.
+
+The goal of such standards is to protect against the adverse effects the activity may have on spectrum uses.
+
+Look at virtually any electrical or battery-powered device in your home and you will see an FCC certification seal.
+
+My favorite was the battery-powered child’s toy Tickle Me Elmo, which would giggle and talk when touched.
+
+Because that capability emitted a low power RF signal, Elmo had to meet FCC criteria.
+
+Elmo had to operate under standards for the effects of the product, not the specific design of the product itself.
+
+Such effects-based regulation is common in many activities.
+
+Building code standards stipulate design effects such as energy efficiency or earthquake resilience.
+
+Food safety standards protect against effects such as contamination and other health threats.
+
+The financial industry operates under effects-based standards for accounting, reporting, and consumer protection.
+
+In none of these examples does the regulation dictate how to drive a nail, or the recipe for a food product, or an investment decision; but they all establish effects-based expectations for the consequences of those decisions.
+
+Establishing such effects-based standards requires someone or some entity to determine what those effects will be.
+
+In an environment in which the capabilities of AI are constantly expanding, such an effort requires ongoing and focused attention.
+
+Back to top
+
+Who sets the rules?
+
+Sam Altman told the 2024 Davos assembly of the World Economic Forum to expect an ongoing continuum of AI improvements, ultimately arriving at Artificial General Intelligence (AGI).
+
+He likened it to the evolution of the iPhone, whose first iteration, which seemed amazing 17 years ago, is now a relic bordering on junk.
+
+Today’s chatbots such as ChatGPT will ride a similar continuum, he explained, as the boundaries of AI technology continue their onward march.
+
+This notion—“we know it’s coming, but not what it is”—makes the development of standards difficult.
+
+Utilizing existing regulatory processes only increases the degree of that difficulty.
+
+Creating regulatory oversight is always a tightrope walk.
+
+Going too far in establishing rules and innovation and investment is discouraged.
+
+Fail to go far enough, and protections are insufficient to curb abuses.
+
+Again, looking back on my experience at the FCC, the existing statutes and regulatory structures that were developed for industrial age realities are too often insufficient for the challenges posed by the digital economy, and especially AI.
+
+It is time for regulatory oversight to become as innovative as those it seeks to oversee.
+
+AI should be the driving force behind such innovative thinking.
+
+Meaningful AI oversight begins with cloning the techniques that have made the digital revolution possible.
+
+At the heart of all digital technologies are industry developed common standards.
+
+The cloud computing that is essential for AI, for instance, is made possible by standards stipulating the construction and interoperability of its computers.
+
+AI has multiple standards developed by cooperative multistakeholder processes that cover issues as diverse as interoperability, transparency, data quality, and system reliability.
+
+Furthering the standards process, the Big AI companies have created the Frontier Model Forum to focus on common practices relating to safety, research, and addressing of major societal concerns.
+
+The advantage of such industry developed multistakeholder processes is that they are agile enough to produce outcomes that evolve with the latest technical developments.
+
+Noticeably missing from such standards, however, are policies regarding the effect of the standardized technology itself on individuals and society.
+
+The development of behavioral standards for the effects delivered by AI requires the coordinated effort of government, industry, and civil society.
+
+Oversight of this process requires a new federal agency with appropriate expertise of the both development and use of AI, the power to establish a multistakeholder effort for an identified purpose and approve its results, and teeth to enforce the new expectations.
+
+Back to top
+
+Two-thirds of the right idea
+
+Sam Altman’s proposal for “a new agency that licenses any effort above a certain scale of capabilities and could take that license away and ensure compliance with safety standards” is two-thirds of the right idea.
+
+Yes, there must be standards—not just technical but behavioral—establishing the acceptable effects and operation of AI.
+
+Yes, there must be a focused expert cop on the beat to oversee the creation of those standards and enforce their implementation.
+
+But, those oversight activities should not be constrained to handful of developers producing products “above a certain scale of capabilities” who are given the golden ticket of a federal license.
+
+The recent history of digital technology has demonstrated the adverse effects that result when those who write the software also make the rules for its implementation.
+
+The people affected by the new technology—acting through their government—must have a voice in establishing and enforcing broad public interest responsibilities for all providers of AI.
+
+Acknowledgements and disclosures
+
+The author wishes to thank John Leibovitz for his insights and input to this piece.
+
+Google, Meta, and Microsoft are general, unrestricted donors to the Brookings Institution.
+
+The findings, interpretations, and conclusions posted in this piece are solely those of the author and are not influenced by any donation.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

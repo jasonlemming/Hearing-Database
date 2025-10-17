@@ -1,0 +1,478 @@
+Back to top
+
+Introduction
+
+[H2]Why land use reforms are getting more scrutiny
+
+Local land use policies and decisionmaking approaches have long been contentious and high stakes.
+
+Though its contours vary from state to state, regulating land use is one of the most significant powers typically reserved for local governments as part of “home rule.” By shaping the built environment and the creation and distribution of wealth and access to well-being, land use policies and their impacts on development and ownership patterns often have generational effects on families, communities, and, in some cases, entire industries. 1 Because local government budgets in the U.S. are so dependent on property tax revenues and thus property values, land use policy also has important and much-debated fiscal effects.
+
+The latter reality has led some to warn that local development decisions will always be dominated by powerful real estate “growth machine” interests and coalitions—unless there are countervailing safeguards and mobilized interests to curb them. 2 While concerns about racial and economic equity are therefore nothing new in land use debates, recent years have sharply intensified conflicts over unaffordable housing, gentrification, and displacement pressure from new development (especially in communities of color and working-class neighborhoods), as well as the potential impacts of land use reforms such as “upzoning” or other rezoning, which are meant to encourage more real estate investment and permit bigger projects.
+
+In this context of sharper stakes, together with the mass protests and racial reckoning triggered by the on-camera murder of George Floyd in 2020, equity advocates both inside and outside of government have called for changes in the way governments make such high-stakes decisions.
+
+Some institutional changes focus on important procedural justice questions about how, when, and how much stakeholders get a say—classic participatory governance questions for city planning especially, which we turn to later in this report.
+
+But in the land use context, an important innovation called racial equity impact assessment (REIA) focuses primarily on how potential impacts of proposed policy changes and development projects get analyzed and presented substantively to decisionmakers and the public, before policy decisions are made.
+
+In this report, we begin by offering more context on the development of REIAs and their application to land use decisions, particularly in New York City and the Washington, D.
+
+C. area.
+
+Next, we review three broad land use REIA frameworks that inform our thinking on what a credible and useful REIA should include and accomplish.
+
+Third, we propose a new rubric for evaluating land use REIAs.
+
+Finally, we outline several key questions for discussion of our proposed framework and the content and use of land use REIAs generally.
+
+Afuture report will analyze specific cases and apply this rubric and a working model REIA to past New York City rezoning proposals and associated development outcomes.
+
+This report is part of a joint project on racial equity impact assessment (aka “equity scoring”) between the Brookings Center for Community Uplift and the Institute on Race, Power and Political Economy at the New School.
+
+To launch that project, in 2022, we did a state-of-practice landscape scan that identified early REIA applications across a range of government decision types and many parts of the country.
+
+This report more closely examines two early REIA practices the project documented in 2023 in a set of case studies: legislative scoring in Washington, D.
+
+C. and enhanced review of land use changes in New York City.
+
+While REIA scoring in the District of Columbia applies to most proposed legislation, for the purposes of this analysis we focus on the District’s application of REIAs to proposed land use decisions that require legislation, in order to generate insights by comparing and contrasting the District’s approach with that of New York City.
+
+In Washington, D.
+
+C., New York City, and other jurisdictions, required REIAs—like required fiscal and environmental impact statements or other pre-decisional forms of impact assessment—aim to offer decision support that illuminates starting points and tradeoffs in a reliable, credible, and useful way.
+
+Ideally, these reports act as tools to provide a shared set of facts and vocabulary so that different interest groups—many of whom would not have the resources to conduct their own in-depth analysis—can learn, debate, and influence land use decisions with important stakes.
+
+But as spatial planners and critics have long pointed out, impact assessments and other decision tools can also become a part of the public storytelling that plans and planning produce, framing core values and what’s at stake in different futures: the relentless march of the growth machine in the eyes of some, versus hard truths about what a competitive local economy and fiscal base demands, or the determination of advocates and elected allies to deliver on the promise of “a city that works for everyone,” perhaps even a city determined to heal harms of the past and reduce persistent inequality. 3 As such, when these assessments are conducted within a framework that includes broader development goals for a city and clear guidance on what information must be included, the equity impact assessment requirement may change the kinds of proposals that are offered in the first place by signaling clear goalposts, likely scrutiny, and political pressure.
+
+To be sure, capacity to develop and propose projects, access to project capital, and other factors will continue to matter for development outcomes too—and should be seen as key features of the context for using land use REIAs and debating their findings and implications.
+
+Back to top
+
+Section I.
+
+[H2]Land use REIAs in New York City and the Washington, DC region
+
+[H3]New York City
+
+As previewed above, last year, our New School colleagues produced a case study of how a new land use REIA requirement came to be law ( Local Law 78 of 2021 ) in New York City, and how the mandated “equitable development data explorer” tool was built to support it.
+
+The statute requires applicants to the city’s Uniform Land Use Review Procedure (ULURP)—typically either private developers advancing major project proposals or the city’s own Department of City Planning (DCP)—to complete a racial equity report (RER).
+
+Notably, public agencies with development proposals are required to complete the RER, just as private parties must do.
+
+The requirement applies to several types of land use decisions; for example, disposition of city-owned land, all zoning changes, and creating or removing roads.
+
+As local media highlighted, a primary goal of the RER requirement is to create a rigorous analysis of displacement risk in the neighborhoods a development proposal or proposed land use policy change targets, and to clearly report key features of development proposals or zoning changes.
+
+To those ends, the RERs include specifics on anticipated rents of proposed housing units, unit yields, projected job creation (for nonresidential uses), and some information about job quality and who typically gets the projected types of jobs (current average income, educational attainment, and racial composition of the industry).
+
+Though New York City does not have a comprehensive plan in place, it also applies the broad development goals and strategies the city previously adopted in its Where We Live NYC plan.
+
+Referencing that, the RERs include a narrative evaluating a proposal’s impact on “affirmatively furthering fair housing,” as defined by the federal Fair Housing Act and its implementing regulations (see below); i. e., advancing the integration of protected groups—including, but not only, racial groups—into previously segregated, majority-white neighborhoods or improving the conditions of neighborhoods where protected-characteristic groups are a majority.
+
+The RER requirement went into effect in New York in 2022, and early examples of completed RERs can be found in the city’s database of zoning applications.
+
+[H3]The Washington, DC region
+
+As part of our larger project on equity impact assessment, last year we produced a case study of how the DC Council implemented the landmark legislative REIA requirement it enacted in 2020.
+
+Around this time, in 2021, the neighboring jurisdiction of Montgomery County, Md.—an early adopter of inclusionary zoning, in 1974—adopted a requirement inclusive of both of kinds of decisionmaking covered in the New York and Washington, D.
+
+C.
+
+REIA laws.
+
+Montgomery County requires racial equity and social justice impact analysis of both legislation and zoning text amendments.
+
+In both the District and Montgomery County, these REIAs follow a similar form, offering a plain-language summary of the proposed legislation, definitions of key terms, background discussion or context, an analysis and discussion of the likely impacts of a proposal, a conclusion that offers an up or down assessment of the bill’s likely impact on racial equity, and notes about limitations or caveats.
+
+The District’s REIAs also include a “further considerations” section.
+
+Table 1 provides a summary and side-by-side comparison of these jurisdictions’ approaches, noting how they differ in several design features.
+
+As we show next, each of these approaches—and variations on these—offers pros, cons, and tradeoffs.
+
+Back to top
+
+Section II.
+
+[H2]Emerging issues regarding REIAs
+
+The specific goals, scope, and use of land use REIAs in the small but growing number of localities that require them vary.
+
+But to date, very little research has evaluated or compared them, or identified widely applicable lessons.
+
+It’s time to more closely assess such assessment.
+
+As the practice of land use REIAs develops, policymakers, community stakeholders, real estate developers, and other interested parties need to understand what it will take to achieve the intended outcomes feasibly and credibly.
+
+From a content perspective, what is essential to the scope and detail of a land use REIA?
+
+And from a governance perspective, what kinds of decisionmaking rules and support mechanisms are most likely to encourage productive use of REIAs, and how should public officials, community groups, and others engage constituents?
+
+Ascan of recent REIAs and commentaries flags several important emerging issues:  
+
+Power and power-building: Who is included in making decisions?
+
+Who has—or can gain—access to valuable information and influence thanks to REIA requirements and their use?
+
+Credibility and capacity: Who should prepare REIAs: government staff, project sponsors and their consultants, or some mix of the two?
+
+Who can or should assess the assessors over time?
+
+Scope of content: What elements are essential to a credible and useful land use REIA, and which might be tailored or supplemented to address concerns specific to a local context or land use reform and development decision?
+
+How should key elements be approached methodologically; e. g., how should displacement risk be defined and measured?
+
+Should land use REIAs attempt to weigh tradeoffs; for example, between tiers of affordability in housing?
+
+Use and scope of application: Whose job is it to ensure that REIAs are used in some meaningful way, and in what range of decisionmaking?
+
+How could or should REIA production and usage connect directly with members of impacted communities?
+
+What kinds of strategies could encourage and support such use without compromising analytic integrity or other public values?
+
+In addition to such questions, a number of risks are becoming more apparent: 
+
+Garbage in, garbage out: Weak data and assumptions can discredit REIAs.
+
+Their quality, credibility, and utility depend on the availability of trustworthy, relevant data and either clear standards for how the data are to be analyzed and interpreted or a credibly neutral framing that leaves interpretation to the reader-user. 4 The last point applies to REIAs of all kinds at every level of government, as highlighted in prior research by the Brookings Institution in collaboration with the Institute on Race, Power and Political Economy.
+
+Abuse and misuse: Observers have warned that land use REIAs could be easy prey for process abuse by bad-faith actors.
+
+In his discussion of New York’s new RER requirement, Lance Freeman of the University of Pennsylvania notes the encouraging potential of land use REIAs to serve as a sort of racial justice Lorax, speaking for those who are not represented in participatory planning processes that require lots of access to information and discretionary time.
+
+However, he also highlights the very real danger of elite capture of land use REIAs—a means to stymie progress by either hijacking the decisionmaking process or endlessly disputing it, producing a costly impasse. 5 In other words, land use REIAs raise some of the same concerns that have come to the fore over roughly half a century of requiring environmental impact statements for certain development proposals, and of gauging the intended as well as unintended effects of that important requirement.
+
+It is already quite easy for motivated plaintiffs with resources to sue a local government.
+
+The decisionmaking bodies that adopt REIAs need to be careful to structure REIA requirements in a way that does not unduly increase litigation risk or require elusive supermajorities for every significant land use change.
+
+False choices: Observers have highlighted that the conclusions of REIAs are very much a function of what questions are included or excluded in their scope.
+
+New York University’s Furman Center has noted that “any effort to study the racial impacts of rezonings must be careful to also consider the racial impacts of current zoning.
+
+Maintaining the status quo can also exacerbate racial disparities, and an analysis which only measures the harms from [proposed] action may incorrectly conclude that inaction is preferable.” In other words, the scope of a REIA should include analyzing a “no action” alternative which, for instance, might analyze the risk of disinvestment alongside the risk of displacement.
+
+Aproposed land use change should be evaluated not just on its own potential impacts but next to the impact of the existing land use regime.
+
+Back to top
+
+Section III.
+
+[H2]Tradeoffs in practice
+
+Different REIA approaches with different scopes, question sets, analytic requirements, logic, and standards can reach different conclusions.
+
+Acase in point is the recent proposal to establish the Friendship Heights Business Improvement District (BID) in an area straddling the District of Columbia and Montgomery County, Md.
+
+As outlined above, both jurisdictions have REIA requirements to evaluate proposed legislation, including land use changes.
+
+In this case, legislation was proposed separately in each jurisdiction to establish the shared BID.
+
+However, the two REIAs of this one proposal reached very different conclusions.
+
+Washington, D.
+
+C.’s REIA warned the “creation of a new BID will likely exacerbate racial inequity in the District of Columbia” by expanding an inequitable system (BIDs themselves, the REIA argues), while Montgomery County’s REIA “anticipates [the bill] will not impact racial equity and social justice” because both the costs and the benefits of the proposed BID were likely to be borne by the same group.
+
+These starkly different conclusions about the same proposal raise multiple flags for the credibility of current REIA practice: 
+
+The REIAs required in both localities analyze the likely impacts of proposed legislation by forecasting, in effect, based on past patterns.
+
+Both REIAs offer a top-line “yes or no” or “up or down” assessment and sections discussing “caveats” or “assessment limitations.” Whether and how to include these elements—not to mention the method of forecasting likely impacts—has important implications for the key messages a REIA conveys and, potentially, its impact on important land use decisions.
+
+The District’s REIA includes some discussion of opportunities for mitigation of racial inequities and a note that “we generally do not provide policy solutions or alternatives.” This is both a realistic acknowledgement of the cost of analyzing alternatives and a nod to the reductive nature of an “up or down” assessment.
+
+The two REIAs applied different scopes to define both the area of impact (within Friendship Heights versus city- or county-wide) and the potential impacts considered.
+
+It is not hard to imagine many land use change scenarios in which a proposal is moderately harmful or has mixed effects in the immediate area but offers a large benefit to a broader city or region, or vice versa.
+
+Therefore, to be credible and useful, REIAs must be consistent, specific, and transparent about the scope and limits of the analysis.
+
+New York City’s RER implementation differs from the REIA approach of these other jurisdictions in key ways, as summarized in Table 1 above.
+
+The differences may strategically balance RERs’ credibility and cost to complete.
+
+New York RERs do not offer a conclusion in the form of an “up or down” assessment, and they also avoid forecasting (with projected job creation a notable exception).
+
+Interpretation is largely left to the reader, which may enhance the credibility of the REIA as decision support, but also sets high expectations when it comes to understanding and engaging with the material.
+
+In addition, RERs in New York are, so far, typically produced by private, nongovernmental sources—the land use applicants or their consultants—using official, publicly available datasets the city itself develops and validates through a public process.
+
+This balance is an alternative to the Washington, D.
+
+C. and Montgomery County approaches, where in-house policy analysts produce REIAs as part of the local lawmaking process.
+
+The data sources provided and required for New York RERs enhance validity, rigor, and credibility by basing all RERs on a shared set of facts.
+
+Supplying these datasets also makes completing a RER relatively easy to do, which balances costs between government (the upfront cost to assemble and supply these data in a usable format) and developers (the transaction costs of producing RERs).
+
+However, even with a basis in public data, New York RERs may have limited credibility with skeptical stakeholders because they are authored by self-interested applicants: those seeking the policy change and project approval.
+
+The Washington, D.
+
+C. and Montgomery County approach retains the cost and effort of REIA analysis in government, which avoids that particular issue but leaves REIA credibility limited by both stakeholder trust in government and the challenges of adequately staffing a complex analytic function.
+
+Either approach can leave the analysis open to scrutiny, of course, and raise questions about analysts’ expertise and potential bias as well as the completeness of the analysis.
+
+There is likely no perfect approach, but rather a need to strive for balance and process improvements over time, both in resourcing REIAs and holding them to rigorous standards of excellence and integrity.
+
+Both would be key, say, to auditing or otherwise subjecting REIAs to quality review.
+
+Which brings us to how REIAs might be evaluated—how to assess the assessments and, by extension, the assessors, whomever they are.
+
+Back to top
+
+Section IV.
+
+[H2]Frameworks for evaluating land use REIAs
+
+Our review of prior analyses and of REIA approaches in use highlights three useful, overlapping frameworks from which to develop a rubric for effective, fair, and defensible land use REIAs.
+
+First, in testimony for the Washington, D.
+
+C.
+
+Zoning Commission, Owen Noble of the Urban Institute offers a three-part framework of factors to center.
+
+Crucially, Noble includes such governance questions as representation in decisionmaking—not just material or other impacts of change: 
+
+Thinking about how neighborhoods are “targeted” by land use policy; e. g., are specific quantities or types of land uses—including typically unwanted ones such as landfills, casinos, and homeless shelters—disproportionately assigned to specific places?
+
+Representation in land use decisionmaking, given a well-documented pattern of civic engagement in which non-Hispanic white people and homeowners are dramatically overrepresented relative to people of color and renters among participants at public meetings.
+
+Understanding who benefits from change.
+
+Second, Lance Freeman, building on his work in New York as the RER concept was developed, proposed this framework of factors to focus on: 
+
+Likely costs and benefits of proposed policy action, by racial group.
+
+Risks of displacement, by racial group.
+
+Likely impact on segregation patterns.
+
+Third and finally (and looking beyond Washington, D.
+
+C. and New York), the city of Boston requires each project seeking approval to describe how it “affirmatively furthers fair housing.” This is not limited to considering projects’ likely impacts on racial equity.
+
+As previewed earlier, this “AFFH” analysis, based on the federal Fair Housing Act of 1968, is also a requirement for recipients of U.S.
+
+Department of Housing and Urban Development (HUD) funding—mostly cities and counties.
+
+HUD offers the following definition and framework: 
+The obligation to affirmatively further fair housing requires recipients of HUD funds to take meaningful actions, in addition to combating discrimination, that overcome patterns of segregation and foster inclusive communities [emphasis added] free from barriers that restrict access to opportunity based on protected characteristics, which are: race, color, national origin, religion, sex (including gender identity and sexual orientation), familial status [e. g., being a parent with children], and disability.
+
+Generally, in administering housing and community development programs, the federal government (HUD) and its recipients must: 
+
+“Determine who lacks access to opportunity and address any inequity among protected class groups.” 
+“Promote integration and reduce [spatial] segregation.” 
+“Transform racially or ethnically concentrated areas of poverty into areas of opportunity.” 
+
+These AFFH provisions, focused on the consequences of discrimination and segregation, especially in the nation’s housing market, have been fiercely debated —challenged both from the political right, which considers AFFH wrongheaded social engineering, and an ambivalent left concerned with stigmatizing communities of color and questioning the value and legitimacy of the “integrationist ideal” itself.
+
+Nonetheless, drawing on these three frameworks, we posit a minimum set of steps for conducting a land use REIA effectively: 
+
+Clarify baseline conditions; for example, the demographic makeup and economic trends of some defined geographic area the proposed policy action targets.
+
+Identify the groups, any protected characteristics (under law), and risks that are most relevant to the proposal.
+
+Analyze likely costs and likely benefits of both: 1) the status quo land use policy; and 2) the proposed change, according to how risks or likely benefits can be credibly measured.
+
+For example, while particulate matter (PM) exposure risk can be accurately measured within hundreds of meters—meaning two distinct development proposals in one neighborhood can pose differential PM risk—displacement risk is measured at the neighborhood level, and is typically not attributable to any one project unless it approaches the scale of the neighborhood.
+
+Specifically identify potential impacts related to affirmatively furthering fair housing by one or more of the following: 1) advancing integration in areas with low displacement risk; 2) reducing risk of displacement when expanding opportunity in areas with high displacement risk; or 3) a sufficiency and consistency analysis with an adopted fair housing plan.
+
+For the latter, the REIA should provide enough information to the reader to make an informed decision about both the baseline context of the plan and the proposed changes, as well as an evaluation of how the proposed changes relate to the objectives articulated in the plan.
+
+In order to ensure quality across REIAs and establish a shared set of facts, the land use REIA process should be guided by formally adopted citywide guidance, measurement, and datasets.
+
+The guidance should establish which groups and protected characteristics, as well as which risks with known racialized impacts, are in scope.
+
+For example, New York City provides the Equitable Development Data Explorer (EDDE), which provides a “Displacement Risk” classification for each neighborhood.
+
+The city requires each RER to use the data explorer to provide both a community profile that includes displacement risk and a narrative statement that relates the project to the city’s fair housing plan.
+
+However, the explorer also includes data disaggregated by Asian American, Black, Latino or Hispanic, and white racial groups for select health outcomes, broadband access, open space access, and traffic safety.
+
+Helpfully, these data could either be brought in scope to RERs in the future or used by others to further interpret RERs to identify both additional impacts with racial equity implications and helpful mitigations.
+
+Many of these categories could also be expanded.
+
+For example, the EDDE includes one measure of climate risk—heat vulnerability—but this could be expanded to identify other risks, such as flooding.
+
+Similarly, the EDDE includes one addiction risk—overdose deaths—but could include others, such as gambling, if relevant to a given proposal.
+
+Finally, the EDDE’s definition of displacement risk employs multiple measures that are validated by a large body of empirical evidence, but this could be further strengthened by including, say, low-income housing tax credit income-restriction rolloffs—essentially, rental units exiting the affordable supply after a legally required number of years—as an indicator of upward market pressure on housing prices.
+
+[H2]Box 1.
+
+Measuring displacement risk
+
+Garbage in, garbage out: REIAs can only be as good as the data and evidence available to the analyst or reader—and suited to the context.
+
+In the case of New York City’s RERs, the development of a citywide tool for estimating displacement risk based on a rigorous methodology was critical to creating an RER process that is feasible and potentially credible.
+
+The three categories of data points in New York’s EDDE displacement risk index are: 
+
+Population vulnerability:  This category refers to the demographic and socioeconomic characteristics of a neighborhood’s residents that may make them more susceptible to displacement.
+
+It includes data points such as race and ethnicity, income, and the share of a household’s income spent on rent.
+
+Housing conditions:  This category refers to the characteristics of housing in a neighborhood that can either help stabilize households or lead to greater instability.
+
+It includes data points such as housing stock condition, whether a household rents or owns, and the applicability of various programs or regulations limiting rent increases.
+
+Market pressure:  This category refers to the broader conditions affecting neighborhoods that tend to make it harder for lower-income residents to remain or find new housing in the area.
+
+It includes data points related to changes in the housing market, characteristics of adjacent neighborhoods, and the demographic composition of a neighborhood, among others.
+
+However, New York’s specific measures and standards do not represent a one-size-fits-all formula that can translate to other jurisdictions.
+
+For example, appropriate to the New York context, the index composition includes a measure of the share of the population that is nonwhite and non-Hispanic.
+
+However, there are other geographic contexts in the United States in which there are significant populations of color that are at low risk of displacement (as documented for some relatively affluent Asian American subgroups in the Bay Area, for example).
+
+Furthermore, scholars have noted the need to distinguish the displacement risk of low-income households versus low-wealth households.
+
+As REIA develops as a policy practice, in order to achieve the intended impact, these decision support tools will need robust datasets and conventions that are tailored to local realities and are publicly defensible.
+
+Back to top
+
+Section V.
+
+[H2]Arubric for evaluating land use REIAs
+
+Summing up, we propose this rubric to guide the evaluation of proposed REIA requirements or refine those already in official use: 
+
+Core concepts: Is risk well defined?
+
+Are the data and methods used specific and credible?
+
+Reference groups: Are the groups and protected characteristics that the REIA analyzes appropriate to the proposal?
+
+Is the evidence used in the REIA applicable to these groups?
+
+For example, does the analysis cross-reference data by both race and class so that the reader can understand if benefits will accrue only to the wealthiest of a particular racial group or if a risk related to economic disadvantage is not equally distributed across racial groups?
+
+Framing of the policy choice and benchmark: Does the REIA analyze the “no action” alternative in addition to the proposed policy change?
+
+Evidence: How strong is the evidence base the REIA relies upon?
+
+Are there multiple sources of analytic evidence, grounded in valid, reliable, and reasonably current data?
+
+Are these data available for independent re-analysis?
+
+How well does the geography of the data correspond to the geography of the study area?
+
+Analysis and interpretation: Are the conclusions of the REIA clearly supported by data?
+
+Are limitations, including unknowns, spelled out?
+
+Back to top
+
+Section VI.
+
+[H2]Opportunities for strengthening practice
+
+Quantifying risk via better data and analyses: Across frameworks, quantifying risk is a key concept, and estimating it well is foundational.
+
+However, jurisdictions currently conducting racial equity impact assessments have very limited tools and data available to analysts to estimate risks at the hyperlocal level, where land use decisions apply and tend to have their most significant effects.
+
+This is a challenge that limits the potential of REIA practice, as noted in REIA reports themselves.
+
+But overcoming this challenge is a planning exercise of finite scope that New York City, through the EDDE, has demonstrated can be completed at a base scope that is manageable, with the potential to expand over time.
+
+Understanding equity stakes and stakeholders: While research has shown that racial minority groups are uniquely vulnerable to displacement risk, equity is multidimensional and sometimes highly intersectional. 6 Displacement and other forms of risk often reflect the interaction of race, ethnicity, income level, housing tenure, and other traits of households or defined “communities” in a shared place.
+
+What is the appropriate consideration of race versus income level or other traits in gauging risk of displacement?
+
+How different are the risks high-income versus low-income immigrant groups face in a town or region?
+
+When and where do education levels or source of livelihood matter most?
+
+Many equity debates understandably center on marginalized, historically underrepresented groups, such as low-income tenants and low-wage workers.
+
+But as we saw in the case of Friendship Heights, risks and potential benefits also apply to business owners, property owners, and other stakeholders—each of whom could represent an important part of racial equity impacts depending on the context (for example, an immigrant restauranteur).
+
+The data challenges of expanding REIA practice to credibly consider more stakeholders are significant, but worth considering, especially for some high threshold of significant land use decisions, such as a citywide proposal.
+
+Advancing governance innovations and recognizing limitations: The fact that a decision support document is produced does not guarantee it will be used, or used well—or even that stakeholders in decisionmaking have some agreement on what “good use” means.
+
+How best can land use REIAs be embedded into decisionmaking processes and practices to engage community residents and groups in addition to local legislators, chief executives, educational and civic institutions, business, and other interests?
+
+Since the conflicts of the 1960s over urban renewal and other development programs, advocacy planning has emphasized the importance of going “from protest to proposal”—i. e.,  structuring space and supports, especially for historically marginalized groups, to develop and propose alternatives, not just react to proposals made by those with more resources and institutional capacity. 7 Indeed, a large body of analysis and process design recommendations emphasizes the importance of early-stage, “empowered” participation in decisionmaking, recently with a call for “collaborative governance” and problem solving, not just the opportunity to have a say (think, for example, a typical public hearing). 8 But REIAs typically get produced only after land use policy reforms and development proposals are well defined (“baked”).
+
+This is a problem that the design and use of land use REIAs, as well as complementary tools (such as project predevelopment support) and governance changes, should address.
+
+Back to top
+
+Section VII.
+
+[H2]Looking ahead
+
+Racial equity impact assessment—systematic, pre-decisional equity impact assessment of any kind and scope—represents an important and demanding evolution in land use planning and development.
+
+This is a critical, high-stakes, and often contested government function, especially at the local level.
+
+But are these assessments likely to matter in practice?
+
+In our next report, a “road test,” we will apply the rubric outlined and discussed above, and a model REIA based on it, to a handful of significant land use proposals.
+
+Acknowledgements and disclosures
+
+Generous support of the Robin Hood Foundation makes this research, and our larger collaborative initiative with the New School’s Institute on Race, Power and Political Economy, possible.
+
+For helpful comments on a draft of this report, the authors gratefully acknowledge Lisa Bates, Alan Berube, Lance Freeman, John Mangin, Senchel Matthews, Richard McGahey, Andre Perry, Rasheedah Phillips, John Shapiro, Sarah Treuhaft, and Barika Williams.
+
+The authors also thank Hannah Stephens for research assistance and Anthony Fiano for guidance and administrative support.
+
+Footnotes
+
+Mindy Fullilove, Root Shock: How Tearing Up City Neighborhoods Hurts America, and What We Can Do About It (New York: One World/Ballantine, 2004); Andre Perry, Know Your Price: Valuing Black Lives and Property in America’s Black Cities (Washington, DC: Brookings Institution Press, 2020); and Richard Rothstein, The Color of Law: A Forgotten History of How Government Segregated America (New York: Liveright, 2017).
+
+John Logan and Harvey Molotch, Urban Fortunes: The Political Economy of Place (Berkeley, CA: University of California Press, 1987); P.
+
+E.
+
+Moskowitz, How to Kill a City: Gentrification, Inequality and the Fight for the Neighborhood (New York: Bold Type, 2018); and see  The Urban Displacement Project.
+
+James Throgmorton, Planning as Persuasive Storytelling (Chicago: University of Chicago Press, 1996); Howell Baum, The Organization of Hope: Communities Planning Themselves (Albany, NY: SUNY Press, 1997).
+
+Paul Mogush, “Advancing Racial Equity Through Land Use Planning,” American Planning Association, PAS Memo (May/June 2021); Lance Freeman, “The Promise and Perils of Racial Equity Planning,” Federal Reserve Bank of New York, Economic Policy Review 29, 2, pp.75-87 (October 2023); Eleanor Noble, “ Understanding Historic Exclusion, Current Evidence, and Recent Zoning and Land Use Reforms and Processes,” Testimony before the DC Zoning Commission, Washington, DC (September 22, 2022).
+
+Lawrence Susskind and Jeffrey Cruikshank, Breaking the Impasse: Consensual Approaches to Resolving Public Disputes (New York: Basic Books, 1987).
+
+E. g., Jackelyn Hwang and Lei Ding, “Unequal Displacement: Gentrification, Racial Stratification, and Residential Destinations in Philadelphia,” American Journal of Sociology, 126, 2, pp.354-406.
+
+Paul Davidoff, “Advocacy and Pluralism in Planning,” Journal of the American Institute of Planners 31, 4, pp.331-338 (1965).
+
+Sherry Arnstein, “A Ladder of Citizen Participation,” Journal of the American Institute of Planners 35,4, pp.216-224 (1969); Xavier de Souza Briggs, “ Planning Together: How (and How Not) to Engage Stakeholders in Charting a Course,” Strategy Tool, The Community Problem Solving Project @ MIT (Cambridge, MA: Massachusetts Institute of Technology, 2003): Judith Innes and David Booher, “Reframing Public Participation: Strategies for the 21st Century,” Planning Theory and Practice 5,4, pp.419-436 (2004); Archon Fung, Empowered Participation (Princeton, NJ: Princeton University Press, 2004); Hollie Russon Gilman, Lizbeth Lucero and Mark Schmitt,  Revitalizing Civic Engagement Through Collaborative Governance  (Washington, DC: New America, 2022).
+
+Mindy Fullilove, Root Shock: How Tearing Up City Neighborhoods Hurts America, and What We Can Do About It (New York: One World/Ballantine, 2004); Andre Perry, Know Your Price: Valuing Black Lives and Property in America’s Black Cities (Washington, DC: Brookings Institution Press, 2020); and Richard Rothstein, The Color of Law: A Forgotten History of How Government Segregated America (New York: Liveright, 2017).
+
+John Logan and Harvey Molotch, Urban Fortunes: The Political Economy of Place (Berkeley, CA: University of California Press, 1987); P.
+
+E.
+
+Moskowitz, How to Kill a City: Gentrification, Inequality and the Fight for the Neighborhood (New York: Bold Type, 2018); and see  The Urban Displacement Project.
+
+James Throgmorton, Planning as Persuasive Storytelling (Chicago: University of Chicago Press, 1996); Howell Baum, The Organization of Hope: Communities Planning Themselves (Albany, NY: SUNY Press, 1997).
+
+Paul Mogush, “Advancing Racial Equity Through Land Use Planning,” American Planning Association, PAS Memo (May/June 2021); Lance Freeman, “The Promise and Perils of Racial Equity Planning,” Federal Reserve Bank of New York, Economic Policy Review 29, 2, pp.75-87 (October 2023); Eleanor Noble, “ Understanding Historic Exclusion, Current Evidence, and Recent Zoning and Land Use Reforms and Processes,” Testimony before the DC Zoning Commission, Washington, DC (September 22, 2022).
+
+Lawrence Susskind and Jeffrey Cruikshank, Breaking the Impasse: Consensual Approaches to Resolving Public Disputes (New York: Basic Books, 1987).
+
+E. g., Jackelyn Hwang and Lei Ding, “Unequal Displacement: Gentrification, Racial Stratification, and Residential Destinations in Philadelphia,” American Journal of Sociology, 126, 2, pp.354-406.
+
+Paul Davidoff, “Advocacy and Pluralism in Planning,” Journal of the American Institute of Planners 31, 4, pp.331-338 (1965).
+
+Sherry Arnstein, “A Ladder of Citizen Participation,” Journal of the American Institute of Planners 35,4, pp.216-224 (1969); Xavier de Souza Briggs, “ Planning Together: How (and How Not) to Engage Stakeholders in Charting a Course,” Strategy Tool, The Community Problem Solving Project @ MIT (Cambridge, MA: Massachusetts Institute of Technology, 2003): Judith Innes and David Booher, “Reframing Public Participation: Strategies for the 21st Century,” Planning Theory and Practice 5,4, pp.419-436 (2004); Archon Fung, Empowered Participation (Princeton, NJ: Princeton University Press, 2004); Hollie Russon Gilman, Lizbeth Lucero and Mark Schmitt,  Revitalizing Civic Engagement Through Collaborative Governance  (Washington, DC: New America, 2022).
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

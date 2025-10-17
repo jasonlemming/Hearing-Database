@@ -1,0 +1,127 @@
+[H1]Big Tech’s AI Power Grab
+
+COMMENTARY Big Tech
+
+[H1]Big Tech’s AI Power Grab
+
+Mar 11, 2024 5 min read
+
+As these tech giants amass unprecedented control over the algorithms that shape our lives, they threaten to undermine the very foundations of our country.
+
+Isara Methong / Getty Images
+
+[H3]Key Takeaways
+
+Will the transformative power of artificial intelligence be harnessed through open collaboration and shared access, or will it be controlled by a few tech giants?
+
+As AI grows more sophisticated and influential, the risks posed by opaque, unaccountable systems will only multiply.
+
+Bias, censorship, and other hazards will fester.
+
+Closed-source AI further concentrates Big Tech’s power, giving it the ability to define our future.
+
+Copied
+
+Elon Musk’s lawsuit against OpenAI, filed at the end of February, comes at a pivotal moment in the battle for the soul of Silicon Valley.
+
+The suit argues that the firm betrayed its founding mission when it restructured from a nonprofit champion of open source into a for-profit company beholden to corporate interests.
+
+But this legal challenge isn’t just about one company’s alleged breach of contract, but about the nature of innovation itself.
+
+Will the transformative power of artificial intelligence be harnessed through open collaboration and shared access, or will it be controlled by a select few tech giants operating in secrecy?
+
+Open sourcing, the practice of publicly sharing source code, has long defined Silicon Valley’s ethos of collaborative innovation and propelled the success of Linux, Firefox, and Android, among many other popular platforms.
+
+Yet this paradigm confronts a major challenge as we enter the age of AI.
+
+By locking down transformative tools within opaque models answerable only to themselves, Big Tech firms are overriding open collaboration in favor of centralized control.
+
+OpenAI was founded on the ethos of open collaboration.
+
+Its original mission was to democratize AI development, ensuring that the technology’s potential would be realized through the combined efforts of researchers and developers worldwide.
+
+But along the way, that vision was lost.
+
+In 2019, OpenAI restructured and became a closed-off entity with for-profit priorities.
+
+Fast-forward to 2023, and Microsoft’s staggering $10 billion investment has transformed the once-humble research lab into a corporate juggernaut valued at more than $80 billion.
+
+This shift represents a betrayal not only of OpenAI’s founding principles, but of the very spirit that has driven some of the most important Silicon Valley innovation.
+>>>  Rules of the Road: Governing Big Tech
+The dangers of closed-source AI development are already becoming apparent.
+
+Soon after the release of Google’s chatbot Gemini, users found its output displayed an aggressively woke bias, as evident in its inability to produce images of white people, defenses of pedophilia, and arguments that Musk is worse than Hitler.
+
+Without transparency around the model’s training data, algorithms, and decision-making process, there is no way to understand where these biases came from or how a company like Google will address them.
+
+As AI grows more sophisticated and influential, the risks posed by opaque, unaccountable systems will only multiply.
+
+Bias, censorship, and other hazards will fester in the dark, erupting into public view only after the damage has been done.
+
+The effects of Big Tech’s capture of artificial intelligence won’t take long to be widely felt.
+
+A 2023 McKinsey study revealed that a third of surveyed organizations are already using generative AI, and 40 percent of those reporting AI adoption in the study expect to invest more in generative tools.
+
+According to a 2023 study from the Conference Board, at the employee level, a staggering 56 percent of workers are using generative AI on the job.
+
+This means AI technologies already influence the content and practices of many companies, often without adequate oversight.
+
+When companies adopt closed-source generative-AI solutions like GPT or Gemini, they aren’t merely acquiring a tool; they are surrendering their autonomy to the whims of Big Tech oligarchs.
+
+By relying on these opaque systems to shape the content they produce, businesses are allowing the likes of Microsoft and Google to colonize their operations from within.
+
+Every decision made by these AI models—from determining what content is acceptable to generate to shaping the very contours of internal discourse —becomes an extension of Big Tech power, imposed on companies through AI proxies cloaked in algorithmic secrecy.
+
+In short, adopting closed-source generative AI is tantamount to inviting a trojan horse into the heart of one’s organization.
+
+Once embedded, these systems can shape a company’s practices, values, and public image in ways that are virtually impossible to detect, much less resist.
+
+The result is a creeping annexation of the business world by a few Big Tech firms. 
+>>>  The U.S., Not China, Should Take the Lead on AI
+Musk’s suit quotes Microsoft CEO Satya Nadella saying exactly this: Even “if OpenAI disappeared tomorrow,” Nadella declared, Microsoft has “all the IP rights and all the capability.
+
+We have the people, we have the compute, we have the data, we have everything … We are below them, above them, around them.” This brazen statement reveals the true motives behind the embrace of closed-source AI: the consolidation of power and control in the hands of a few corporate giants, regardless of the consequences for the many.
+
+It is becoming increasingly clear that the real existential threat posed by AI isn’t, as is often claimed, the speculative risk of a sentient superintelligence, but the all-too-immediate danger of unaccountable tech giants wielding society’s most transformative tools as their own proprietary assets.
+
+Closed-source AI further concentrates Big Tech’s power, giving it the ability to define our future, and as seen in the troubling case of Google’s Gemini, even rewrite our past.
+
+There is a fundamental misalignment of incentives between the interests of Big Tech and those of the nation.
+
+As these tech giants amass unprecedented control over the algorithms that shape our lives, they threaten to undermine the very foundations of our country.
+
+This isn’t a struggle we can afford to sit out.
+
+Lawmakers, business leaders, and concerned citizens alike must step forward to support open, transparent AI development and to resist the corporate overlords who seek to monopolize control over this transformative technology.
+
+The stakes couldn’t be higher: The future of our economy, our society, and our country hangs in the balance.
+
+[H2]Heritage Offers
+
+[H4]Activate your 2025 Membership
+
+By activating your membership you'll become part of a committed group of fellow patriots who stand for America's Founding principles.
+
+[H4]The Heritage Guide to the Constitution
+
+Receive a clause-by-clause analysis of the Constitution with input from more than 100 scholars and legal experts.
+
+[H4]American Founders
+
+In this FREE, extensive eBook, you will learn about how our Founders used intellect, prudence, and courage to create the greatest nation in the world.
+
+More on This Issue
+
+[H2]Big Tech
+
+COMMENTARY 3 min read
+
+Good Luck Trying To Leave TikTok
+
+COMMENTARY 3 min read
+
+AI Companions Are Harming Your Children
+
+COMMENTARY 3 min read
+
+A Federalist Approach to AI Policy

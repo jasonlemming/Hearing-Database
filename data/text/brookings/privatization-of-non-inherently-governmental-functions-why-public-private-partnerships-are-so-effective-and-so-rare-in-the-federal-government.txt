@@ -1,0 +1,341 @@
+Editor's note:
+This paper is the first in our “ Inherently governmental ” series that explores the U.S. federal government today.
+
+Over the past 80 or so years, federal spending has increased exponentially.
+
+Yet, the number of civil servants has remained more or less constant.
+
+The gap is explained by a large workforce of contractors.
+
+Opinions differ on the impact they are having on governance—is it bringing private sector efficiency to government or is it hollowing out the government?
+
+This series explores questions around what we define as “inherently governmental” work.
+
+Public management experts are increasingly concerned that the federal government has outsourced too much of what it does to private contractors.
+
+One worry is that critical capabilities such as information technology have been hollowed out, rendering the federal government less effective at doing its job.
+
+Some experts believe federal agencies have gone so far as to contract out functions that are “inherently governmental”—i. e., functions which require judgments that only public sector actors are incentivized to make properly.
+
+Although some concerns with outsourcing may well be valid, they ought not obscure the value of deep partnerships between the government and the private sector to carry out non-inherently governmental functions that are highly commercial in nature.
+
+Like the public-private partnerships (PPPs) that state and local governments in the United States and elsewhere increasingly use to procure large infrastructure projects, federal PPPs entail a genuine shift in investment, risk, and control to the private sector—a process that, in effect, privatizes a business-like function and frees the federal agency to focus on its core mission.
+
+This paper, first, describes two successful examples of PPP-style privatization by the Department of Defense (DoD).
+
+Beginning in the late 1990s, DoD utilized this approach to transform the provision of family housing and utilities on U.S. military bases.
+
+Second, the paper looks at how federal budget accounting, or “scoring,” rules restrict the use of this proven approach.
+
+[H2]Successful examples of PPP-style privatization
+
+[H3]Military housing privatization initiative
+
+The Armed Services traditionally provided government-owned and -managed housing to military families that chose to live on base, while families that opted to live off base received a basic allowance for private housing, or BAH.
+
+However, the Services chronically underfunded the construction and maintenance of on-base housing so as to direct more funding to ships, tanks, and other warfighting priorities.
+
+By the 1980s, the shortage and substandard quality of family housing had become an impediment to recruitment and retention of service members in the all-volunteer military.
+
+By the mid-1990s, with a maintenance backlog of $20 billion, 180,000 of the 200,000 units were deemed “inadequate” —i. e., in dire need of replacement or renovation.
+
+In 1996, Congress enacted the Military Housing Privatization Initiative (MHPI) to enable DoD to attract private capital and expertise to address the massive family housing problem.
+
+Most significant, Congress authorized DoD to provide housing allowances, or BAH, to all families, not just those living off base.
+
+By creating a stream of payments for families that opted to live on base, policymakers hoped to entice private firms to partner with DoD to tackle the shortage and poor condition of the housing. (Although Congress must appropriate the funds for BAH on an annual basis, private firms apparently viewed the continued availability of BAH as a given.)
+In addition, through MHPI, Congress gave DoD a “toolbox” of real estate authorities, some of which had been used in previous family housing construction programs.
+
+Among other things, the MHPI legislation authorized DoD to make or guarantee loans to a housing company for a specific project; take an equity stake in a project; and include ancillary facilities such as child care centers that would make the housing more attractive.
+
+Congress also authorized the replacement of cumbersome military specifications with market-driven standards (e. g., more storage space and better plumbing fixtures) and provided limited guarantees to cover the possibility that a military base would be closed or downsized.
+
+Although the Clinton administration had pushed for the MHPI legislation, the Office of Management & Budget (OMB) initially threatened to record (“score”) the full life cycle cost of each privatized housing project up front in DoD’s budget.
+
+For example, a 50-year project for which the housing company would receive $20 million per year would be recorded as a $1 billion “cost” to DoD in year one.
+
+This budget accounting, which would have made MHPI unaffordable, reflected OMB’s generic approach to scoring as well as its view that the federal government would bear almost all of the risk of MHPI and the housing companies almost none.
+
+OMB was eventually persuaded that the housing companies would face genuine risk, because military families could choose to spend their BAH either on base or off base.
+
+Stated differently, MHPI housing providers would have to compete with off-base private housing to attract and retain tenants.
+
+Based on that construct, OMB agreed to exempt MHPI projects from the standard scoring treatment, which allowed the initiative to move forward.
+
+Over the next two decades, the Services entered into public-private partnerships at 150 bases with housing companies that were competitively selected for their ability to finance, design, build or renovate, and operate the family housing.
+
+At each base, DoD conveyed the existing housing to the partner company through a long-term lease (typically 50 years) while maintaining control over the underlying land.
+
+Unlike traditional government contractors, the MHPI housing companies saw themselves as long-term partners with the Services.
+
+MHPI achieved exceptional results during its first 20 years.
+
+The housing companies invested more than $30 billion of private capital, leveraging DoD’s investment by an eight-to-one ratio, to generate 140,000 units of new and renovated family housing built and maintained to market standards.
+
+The housing companies were not allowed to charge a rent that exceeded the individual service member’s BAH; thus, some of the projects required a loan, loan guarantee, or other sweetener from DoD to pencil out.
+
+In many cases, however, the stream of BAH payments was sufficient for companies to cover renovation and new construction, operating expenses, and long-term sustainment of the housing.
+
+Base commanders were able to exit the day-to-day management of family housing—a complex business in which the military has no core competency.
+
+Privatized housing proved highly popular with military families.
+
+As one spouse put it, “This is not only a house Iam proud to call my home, it shows that our nation respects the sacrifices [we] have made for our country.” Three- and four-star admirals and generals—some of whom had been skeptical of MHPI initially—came to see it as the single most effective initiative DoD had undertaken to improve military families’ quality of life.
+
+MHPI was more than just attractive homes designed to appeal to young families.
+
+The housing companies pioneered mixed-use projects that combined residential and retail facilities; built beautiful community centers and offered popular social programs; and incorporated special-purpose homes for Wounded Warriors.
+
+Another MHPI innovation was the introduction of walkable neighborhoods that emulated the traditional look and feel of 18th and 19th century military posts such as Fort Riley, Kansas, and Fort Sam Houston, Texas.
+
+Army MHPI projects have won scores of awards, including the Urban Land Institute’s prestigious Award for Excellence.
+
+The success of MHPI led the Army to privatize its lodging—the 19,000 hotel rooms on U.S. bases that the Army owned and operated at a cost of about $220 million annually.
+
+Like family housing, lodging, which the Army uses for conferences, training, and family relocations, suffered from chronic underfunding; more than 80% of the rooms needed to be renovated or replaced, which would have cost $1 billion and taken more than 20 years to complete using traditional procurement methods and military-construction funding.
+
+Under its privatization program, the Army competitively selected hospitality companies to renovate and replace the inadequate facilities and operate them day-to-day.
+
+The Army also allowed its corporate hospitality partners to expand into conference centers and related services.
+
+Army hospitality partners agreed to assume all of the business risk.
+
+[H4]Aperfect storm of adversity
+
+Fifteen years into its existence, MHPI began to encounter adversity.
+
+Most significant, following the Budget Control Act of 2011, DoD was forced to reduce the BAH allocations to military service members, and in 2014 OMB reverted to its original budget treatment of MHPI, which made the initiative more costly for DoD.
+
+In response, MHPI housing companies had to reduce their rents, which could not exceed the tenant’s BAH.
+
+The firms also shrunk their capital investment plans and cut their maintenance staff at the same time the Services were reducing what they spent to maintain the land and oversee MHPI.
+
+Another blow was the retirement of hundreds of DoD officials who had experienced the pre-MHPI housing conditions firsthand and were committed to making the partnerships work.
+
+As a result of this perfect storm of changes to the MHPI environment, around 2018, MHPI residents began to experience serious problems, including mold, pest infestations, poor workmanship, and unresponsive management.
+
+While the reported incidents of neglect affected only about two percent of the MHPI portfolio, the extensive press coverage led to a perception of widespread programmatic failure. 1
+Tellingly, despite the negative press coverage, no one in Congress or DoD seriously argued that MHPI should be undone.
+
+In fact, senior officials in the Trump and the Biden administrations sent the same message to Congress: MHPI is still the right approach, and we can fix its shortcomings.
+
+Toward that end, Congress provided additional funding to the MHPI companies to offset the earlier BAH reductions, and DoD established an 18-point Tenant Bill of Rights that incorporated significant reforms.
+
+For example, families can report inadequate housing conditions to the landlord, the chain of command, and the housing management office without fear of reprisal.
+
+In short, its very real problems notwithstanding, MHPI has been a transformative program—one that has significantly improved the quality of life for military families while allowing base commanders to focus on their core mission. (As discussed below, military barracks, which are still government owned and managed, face problems similar to those of military family housing in the 1990s, and PPP-style privatization is one option DoD and Congress are examining.) If DoD devotes the resources and leadership attention needed to fix the program, MHPI can continue to be a model for improved federal infrastructure provision.
+
+[H3]DoD utilities privatization
+
+Another example of a transformative PPP is utilities privatization (UP).
+
+UP refers to the process by which a military Service transfers the ownership and operation of the utility system located on a military base (electricity, natural gas, water, and wastewater) to a commercial utility provider—typically the local provider—and enters into a long-term contract to purchase the electricity or other utility as a service.
+
+As with MHPI, DoD retains ownership of the underlying land.
+
+Although the pace of UP has slowed, the Services have succeeded in privatizing more than 600 utility systems, resulting in improved reliability, reduced risk, and avoided costs.
+
+As background, military bases were at one time “vertically integrated.” Many bases had their own power-generation plants, and some bases drew water from natural sources on the site.
+
+This emphasis on self-sufficiency wasn’t limited to utilities.
+
+The U.S.
+
+Naval Academy in Annapolis, Maryland famously operated its own dairy farm to supply fresh milk to the midshipmen.
+
+Vertical integration made sense in the distant past, when most military bases were sited in remote locations with little surrounding civilian infrastructure on which to draw.
+
+As that pattern changed over time, military bases opted to rely on commercial providers to bring electricity and other commodity utilities to the perimeter of the base.
+
+However, at most bases, the Services continued to own and operate the utility infrastructure inside the perimeter up until the late 1980s.
+
+In contrast to MHPI, UP came about almost by happenstance.
+
+Faced with mounting budget pressure, the Army in 1988 began asking Congress to authorize one-off UP transactions, and the Air Force sought to follow suit.
+
+In 1997, in response to lobbying by multiple organizations including the energy company Enron, Congress gave DoD the authority to privatize its utilities more broadly.
+
+The legislation covered electric, natural gas, water, wastewater, and telecommunications utilities.
+
+Although the 1997 legislation was permissive, the Office of the Secretary of Defense (OSD) subsequently issued a document that directed the Services to privatize every government-owned electric, water, wastewater, and natural gas utility system—a total of 1,500 separate systems—except where security concerns required continued federal ownership or privatization was shown to be uneconomical.
+
+OSD guidance issued at the time (2000 to 2001) summarized the rationale:
+Privatization allows installation commanders to focus on core defense missions and functions by relieving them of activities that can be done more efficiently and effectively by others….
+
+Historically, military installations have been unable to upgrade and maintain reliable utility systems fully due to inadequate funding and competing installation management priorities.
+
+Utilities privatization is the preferred method for improving utility systems and services by allowing military installations to benefit from private sector financing and efficiencies. 2
+Over the next two decades, the Services privatized more than 600 utility systems, or 40% of the 1,500 government-owned systems covered by OSD’s directive.
+
+The Army accounted for most of the transactions (369), followed by the Air Force (169).
+
+The Navy, which exempted most of its systems from privatization on security and/or economic grounds, was a distant third (58).
+
+UP transactions are complex—a typical one takes 3 to 4 years to complete—because they combine the sale of the utility system itself with the award of a long-term contract for the purchase of the utility as a service.
+
+The utility systems selected for privatization are generally in poor repair.
+
+While the service contract does not specify the investments the utility provider will need to make in the system, it sets reliability requirements that the provider presumably can meet only if it makes the needed investments.
+
+A UP service contract often extends for 50 years (the statutory limit), so that the military base-customer can afford the amortized cost of the investments.
+
+UP has become even more complex as the perceived threats to military bases’ energy and water security have grown.
+
+In 2008, the Defense Science Board warned that bases were vulnerable to disruptions from a fragile electricity grid.
+
+More recently, cyberattacks on commercial utility systems have made cybersecurity a high priority.
+
+In addition, bases have begun to experience climate-related threats in the form of sea-level rise and drought.
+
+The Services have updated and, in some cases, renegotiated UP contracts to take account of energy resilience and cybersecurity concerns, even as they engage in self-help measures, including the deployment of solar farms, advanced microgrids and energy storage systems.
+
+Another significant development has been the emergence of alternative financing mechanisms other than UP.
+
+Energy Savings Performance Contracts (ESPCs) and Utility Energy Service Contracts (UESCs) allow a contractor to install energy-conserving technology in a federal facility at no up-front cost to the federal agency in exchange for a share of the resulting utility savings.
+
+Although ESPCs/UESCs and UP are not mutually exclusive, these newer mechanisms allow a military base to finance selective utility repairs and upgrades without making the 50-year commitment that UP can entail. 3
+In 2019, OSD issued revised guidance indicating that UP would henceforth be an option rather than a requirement.
+
+Although the pace of UP has slowed, the Services have continued to privatize a small number of their utility systems each year.
+
+In 2017, the Army’s UP program manager, Curt Wexel, told a federal audience that the benefit-to-cost ratio of Army UP was 18-to-one—a remarkable result if true.
+
+Wexel quantified benefits from two sources.
+
+One was the reduced use of water, electricity, and oil and gas on UP bases.
+
+The other source of benefits was “should-cost” avoidance—i. e., what the Army would have had to spend on utility upgrades to achieve industry standards as an owner-operator versus what it actually spent as a utility customer.
+
+Unquantified benefits included increased energy security and resilience, and reduced risk and liability (Wexel recalled the 1990 natural gas explosion at Fort Benjamin Harrison, Indiana, that killed two people and injured 27, presumably because of poorly maintained utility infrastructure).
+
+The Army’s data on UP impact may be less compelling than it appears: The General Accountability Office has repeatedly criticized DoD for not doing more rigorous evaluation of UP.
+
+Nevertheless, the results are consistent with anecdotal evidence.
+
+For example, the Air Force documented a significant drop in water consumption at bases that had recently privatized their water utility, presumably because the utility provider had spent money to identify and fix the leaks.
+
+And when Dominion Power took over the electric utility at Fort Belvoir, Virginia, it had to replace all of the diesel backup generators it inherited because of their poor performance. 4
+
+[H2]The impediment to privatization of other federal facility functions: budget scoring
+
+PPPs and partnership-style privatization could help address other federal needs, as agencies face daunting recapitalization challenges and severe budget constraints.
+
+Mahlon (Sandy) Apgar, a real estate management expert who, as the Assistant Secretary of the Army for Installations and Environment, led the Army’s implementation of MHPI, in 2016 proposed a new doctrine for defense infrastructure:
+Any defense function, facility or service that is mirrored by an active private market with at least three major competitors is assumed to be a candidate for privatization, outsourcing or public-private partnerships.
+
+Only ‘inherently governmental functions’ that are not mirrored in, and actively competed in, the private sector should be exempt from this doctrine.
+
+The burden of proof will be on the Military Services and Defense Agencies to justify why they should not outsource, privatize or partner existing business functions that meet this basic private market test to support the American warfighter.
+
+Sadly, despite repeated attempts, neither DoD nor any other agency has been able to pursue an MHPI-type initiative, even on a smaller scale.
+
+The key impediment is an arcane set of budget rules that serve to limit federal agencies use of outside financing and debt.
+
+To elaborate, OMB and the Congressional Budget Office (CBO) view third-party (private) financing of federal projects as federal borrowing by another name.
+
+Federal borrowing (other than to finance the federal deficit as a whole) is at odds with basic principles of federal budgeting, which with few exceptions require agencies to record the costs of government investments when they are made.
+
+In accounting terms, a federal asset must be fully expensed during the year the agency commits to acquire it.
+
+The asset is not depreciated, nor does the federal budget reflect long-term improvements in its value.
+
+The specific scoring rules governing federal real property were put in place in 1991 to eliminate agencies’ use of long-term leases to buy real property such as buildings and physical property such as non-tactical military ships and aircraft.
+
+These “lease purchases” were thought to hide the government’s long-term cost commitment, leading to suboptimal decision-making in the annual budget process.
+
+The other historic rationale for the scoring rules is cost: CBO and OMB have long argued that it is less expensive for the federal government to buy or renovate a building directly than to finance it privately, because of the lower rate at which the U.S.
+
+Treasury can borrow. 5
+The cost argument in particular falls short.
+
+The government’s interest-rate advantage is often swamped by other cost factors, such as the longer completion time for federally funded projects compared to those that are privately financed and managed.
+
+That issue aside, the premise underlying the scoring rules—that federal agencies would be able cover the large funding spikes that direct purchases of new buildings and building renovations entail—has proved false over a 33-year period of unrelenting budget pressure.
+
+The result has been a textbook example of unintended consequences: Lacking the resources to meet genuine facility requirements, federal agencies have resorted to practices more costly—and no more transparent—than the ones the scoring rules were designed to combat.
+
+The General Services Administration (GSA) has been forced to use expensive short-term operating leases to meet what amount to long-term space needs, and DoD’s military bases are a case study in the high cost of deferred maintenance.
+
+An emerging infrastructure crisis is the state of the facilities that house unmarried service members on U.S. military bases—known as unaccompanied housing or barracks.
+
+In contrast to family housing and (some) lodging, military barracks are still government owned and managed.
+
+In 2023, GAO released a detailed investigation that found extensive mold, non-functioning HVAC and fire detection systems, and exposed raw sewage in a number of barracks. 6 GAO concluded that the poor conditions were a threat to unit readiness not to mention quality of life of the military’s most junior members, who typically have no choice but to live in barracks.
+
+At a subsequent congressional hearing, Army officials said that at least 300 of the Service’s 6,700 barracks buildings are in poor or failing condition and that the Army would need to spend at least $6.5 billion in the coming years to improve barracks conditions.
+
+DoD’s current barracks crisis is in many respects a repeat of its 1990s family housing crisis, and DoD policymakers have floated the idea of privatizing some or all of the department’s barracks.
+
+There is precedent for this: the Army and Navy used MHPI authority and special pilot authority to privatize a small number of barracks, and the results have been positive.
+
+While many in Congress appear supportive, the House Armed Services Committee (HASC) is proceeding cautiously: HASC’s recently released draft defense authorization bill directs DoD to further study the “complexities” of barracks privatization.
+
+One of the “complexities” is no doubt budgetary scoring.
+
+As it stands, CBO likely would score any draft bill to authorize barracks privatization in such a way as to make the bill unaffordable.
+
+Moreover, if Congress ultimately enacted such a bill, OMB likely would score individual projects proposed by the Services in the equivalent way.
+
+Scoring need not be a showstopper, however, given the importance of addressing the barracks crisis.
+
+Congress could address CBO’s budget accounting issue through “directed scoring,” and the administration could direct OMB to provide an exception to the scoring rules.
+
+Directed scoring and exceptions to OMB scoring rules are extremely rare, but they are not unprecedented.
+
+In short, MHPI provides an effective model for addressing DoD’s barracks crisis.
+
+The private sector is better equipped and incentivized to build and operate military barracks, leaving the Services to focus on their warfighting mission.
+
+As the chair of HASC’s readiness panel said at a recent hearing, “Iwant Marines focused on bullets and bad guys, not managing HVAC systems.”  CBO/OMB scoring represents a major impediment; but given the stakes, Congress and the administration ought not let it be a showstopper.
+
+Footnotes
+
+Sandy Apgar, “The Way Forward in Military Housing Privatization,” Draft oped, 2019.
+
+Office of the Secretary of Defense, “Department of Defense Guidance for Privatizing Defense Utility Systems,” 2000-2001.
+
+For more detail on ESPCs and UESCs, see Dorothy Robyn, “Mission, Money, and Process Makeover: How Federal Procurement Can Catalyze Clean Energy Investment and Innovation,” Information Technology & Innovation Foundation, August 2022, pp. 18-19; https://itif. org/publications/2022/08/15/mission-money-and-process-makeover-how-federal-procurement-can-catalyze-clean-energy-investment-and-innovation/
+
+Jeffrey Marqusee, Craig Schultz and Dorothy Robyn, “Power Begins at Home: Assured Energy for U.S.
+
+Military Bases,” Commissioned by The Pew Charitable Trusts, January 2017; https://www. pewtrusts. org/~/media/assets/2017/01/ce_power_begins_at_home_assured_energy_for_us_military_bases. pdf.
+
+Despite their flaws, backup generators are a lifeline for military bases when they experience electricity outages, and the poor performance of the generators at Fort Belvoir was an indication of lack of maintenance, inspections and testing prior to UP.
+
+Dorothy Robyn, “Reforming Federal Property Procurement: The Case for Sensible Scoring,” Brookings Institution, April 24, 2014; https://www. csis. org/events/implementing-innovation-series-look-using-public-private-partnerships-invest-defense.
+
+See also Dorothy Robyn, “To Keep the FBI Headquarters Project on Track, Make an Exception to the Scoring Rules,” Brookings Institution, July 20, 2017; https://www. brookings. edu/articles/fbi-headquarters-project-and-scoring-rules/
+
+General Accountability Office, “Military Barracks: Poor Living Conditions Undermine Quality of Life and Readiness,” September 2023; https://www. gao. gov/products/gao-23-105797.
+
+See also, “U.S.
+
+Military Barracks Are in Shambles: Will the Government Take Action,” WBUR’s On Point podcast with Meghna Chakrabarti, February 29, 2024; https://www. wbur. org/onpoint/2024/02/29/military-barracks-gao-government-department-of-defense
+
+Sandy Apgar, “The Way Forward in Military Housing Privatization,” Draft oped, 2019.
+
+Office of the Secretary of Defense, “Department of Defense Guidance for Privatizing Defense Utility Systems,” 2000-2001.
+
+For more detail on ESPCs and UESCs, see Dorothy Robyn, “Mission, Money, and Process Makeover: How Federal Procurement Can Catalyze Clean Energy Investment and Innovation,” Information Technology & Innovation Foundation, August 2022, pp. 18-19; https://itif. org/publications/2022/08/15/mission-money-and-process-makeover-how-federal-procurement-can-catalyze-clean-energy-investment-and-innovation/
+
+Jeffrey Marqusee, Craig Schultz and Dorothy Robyn, “Power Begins at Home: Assured Energy for U.S.
+
+Military Bases,” Commissioned by The Pew Charitable Trusts, January 2017; https://www. pewtrusts. org/~/media/assets/2017/01/ce_power_begins_at_home_assured_energy_for_us_military_bases. pdf.
+
+Despite their flaws, backup generators are a lifeline for military bases when they experience electricity outages, and the poor performance of the generators at Fort Belvoir was an indication of lack of maintenance, inspections and testing prior to UP.
+
+Dorothy Robyn, “Reforming Federal Property Procurement: The Case for Sensible Scoring,” Brookings Institution, April 24, 2014; https://www. csis. org/events/implementing-innovation-series-look-using-public-private-partnerships-invest-defense.
+
+See also Dorothy Robyn, “To Keep the FBI Headquarters Project on Track, Make an Exception to the Scoring Rules,” Brookings Institution, July 20, 2017; https://www. brookings. edu/articles/fbi-headquarters-project-and-scoring-rules/
+
+General Accountability Office, “Military Barracks: Poor Living Conditions Undermine Quality of Life and Readiness,” September 2023; https://www. gao. gov/products/gao-23-105797.
+
+See also, “U.S.
+
+Military Barracks Are in Shambles: Will the Government Take Action,” WBUR’s On Point podcast with Meghna Chakrabarti, February 29, 2024; https://www. wbur. org/onpoint/2024/02/29/military-barracks-gao-government-department-of-defense
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

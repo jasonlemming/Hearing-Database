@@ -1,0 +1,175 @@
+Adopting a federal carbon price to reduce domestic greenhouse gas emissions has been an ongoing topic of American climate policy for decades.
+
+Thus far, the political hurdles have remained insurmountable, leaving the United States the lone G7 member without a national carbon tax or cap-and-trade system.
+
+Twelve states, however, continue to operate carbon cap-and-trade programs.
+
+Federal policies to reduce carbon dioxide emissions have instead focused primarily on financial incentives to accelerate production and use of clean energy and regulation through the Clean Air Act.
+
+But what about putting a price on carbon emissions attributable to products imported into the United States from nations that release greater emissions per unit of production?
+
+Would the American public support this?
+
+These could take the form of tariffs linked to climate policy such as a carbon price or emission records from exporting nations, paid by importers upon American arrival with most costs likely passed along to consumers.
+
+In recent years, members of Congress from both parties have begun to explore some version of this option.
+
+Legislation currently in play includes bills that would establish a federal measurement system for carbon emissions across industries and among international trade partners; impose carbon tariffs on imports; or combine such tariffs with a domestic carbon price.
+
+Another major greenhouse gas, methane, has begun to receive some legislative attention as a possible tariff candidate in Congress, although this would be linked to a legislated American fee on domestic emissions from the oil and gas sectors  that was designed to go into effect in 2024.
+
+None of these bills can plausibly pass before the January inauguration of Donald Trump, but they could be part of a future agenda examining climate, energy, and trade policy.
+
+Aself-described “ tariff man,” Trump might decide to act unilaterally on some form of this.
+
+As Douglas Irwin has noted in his magisterial study of American tariff history, this policy tool has been frequently employed throughout the life of the republic for varied political and economic purposes.
+
+However, it has never before been linked with environmental or climate concerns as is now being considered.
+
+Carbon tariffs are also being actively explored or implemented abroad, most notably in the European Union (EU), which has a very robust continental carbon pricing system and a sustained history of achieving substantial carbon emission reductions.
+
+The EU is currently gathering data from trade partners, intending to use this to launch its own “ carbon border adjustment mechanism ” in 2026 on nations with weaker climate records.
+
+Other nations including Australia, Canada, Taiwan, and the United Kingdom are following suit with exploration of their own border pricing initiatives.
+
+The Summer 2024 round of the National Surveys on Energy and Environment (NSEE) has included for the first time a short battery of questions addressing this trade-climate nexus.
+
+Based at the Muhlenberg College Institute of Public Opinion (MCIPO), the NSEE has examined American attitudes, beliefs, and policy preferences regarding climate and energy matters since 2008 through probability-based survey methodologies.
+
+This latest round is designed to begin filling a general research gap on public opinion concerning climate related trade issues in the United States and internationally.
+
+It is based on the responses of 715 American adults who were interviewed by phone in early July, using a probability-based sampling procedure that is designed to produce a representative sample of adult Americans.
+
+The 2024 NSEE wave was funded exclusively by the MCIPO.
+
+[H2]American support for a tariff targeting greenhouse gas emissions of other countries
+
+The survey indicates considerable support for the proposition that “the United States should place a tariff on goods manufactured in other countries that are produced with more greenhouse gas emissions than in the United States, even if it raises the cost of buying those goods in the United States.” Sixty-eight percent of respondents agreed, either strongly or somewhat, versus only 30% who somewhat or strongly disagreed.
+
+This support level is far greater than for a domestic carbon price involving either a carbon tax or carbon cap-and-trade system, questions which have been addressed regularly in previous NSEE surveys.
+
+For example, in the 2022 NSEE wave only 41% of Americans supported the adoption of a domestic carbon tax to reduce the emissions of greenhouse gases and address climate change.
+
+There is considerable consistency in support for a tariff targeting foreign greenhouse gas emissions, cutting across such major individual characteristics as partisan affiliation, age, gender, or educational attainment.
+
+The striking similarities across partisan affiliation shown in Figure 1 are most notable because of the contrast with the deep partisan divides that are usually present in American opinions regarding climate change and climate policy.
+
+[H2]American views on following international trade agreements
+
+The issue of carbon tariffs is nested in a larger discussion about the future of American trade policy.
+
+Long-standing support from both political parties for sustaining existing trade agreements and pursuing new ones has declined markedly in the last decade.
+
+Donald Trump’s hostility to trade pacts is well known, although he did preside over renegotiation of North American trade terms, leading to the 2020 United States-Mexico-Canada Trade Agreement.
+
+Joe Biden will leave office next January as the first President in the modern era who did not complete a single new trade deal.
+
+His signature Inflation Reduction Act is designed to accelerate American production and use of clean energy technology through a wide array of financial incentives.
+
+It is widely seen abroad as an effort to discourage American imports of such products as batteries, solar panels, and electric vehicles.
+
+How do Americans view global trade given these major political and policy shifts, both in general terms and given possible future linkages between trade and climate performance?
+
+As evident in Figures 2 and 3, strong majorities support propositions that “it is important that the United States follow international trade agreements” and that “when negotiating a trade agreement with other countries, the United States should prioritize the reduction of greenhouse gas emissions.”  Once again, we find fairly limited differences in views on this proposition in terms of partisan affiliation, although Democrats are somewhat more likely to respond affirmatively to both questions than Republicans and Independents.
+
+These findings suggest that Americans do not take commitments to international trade regimes lightly and support efforts to address climate change through trade policy.
+
+[H2]Do Americans perceive a superior U.S. carbon emissions record to trade partners?
+
+The idea of linking climate change with trade tariffs inevitably raises the question of how one credibly measures climate performance in a world in which no common metric has been established.
+
+Much economic analysis of potential carbon border adjustments has presumed that each national carbon price would serve as a central, straightforward measure for that nation.
+
+This idea has animated the EU’s development of its emerging border adjustment program, linked to its long-term support for carbon pricing and a continental price through its multi-sectoral Emissions Trading System that has ranged from 60 to 100 Euros per ton of emissions for most of the period between January 2022 and the present.
+
+Sustained American aversion to any domestic price has prompted a shift from using pricing as a metric for climate performance toward measures of carbon emissions intensity that assess emission levels per unit of production.
+
+This is often linked to assertions that America has achieved less carbon-intensive production than its major trade partners.
+
+A 2023 Niskanen Center study of emission patterns across 19 major industrial sectors indicates that the United States maintains a significant carbon performance advantage over some trade partners, including China, India, and Russia.
+
+However, it also finds that the United States lags behind other nations in this regard, including the EU, Japan, and the United Kingdom, while ranking quite closely to others such as Canada, Mexico, and South Korea.
+
+A 2020 study by the Climate Leadership Council examined emissions patterns across 20 major sectors and found a significant American “carbon advantage” in direct comparison with China, Russia, India, and Mexico.
+
+Any American advantages over Brazil or Canada were more modest, and it ranked behind the EU in 14 sectors.
+
+This study did not include Japan, South Korea, or the United Kingdom in its comparative analysis, while the Niskanen study did not include Brazil.
+
+Both studies also attempted to compare American emission averages across industrial sectors with those of other nations, finding comparatively stronger American records.
+
+There is currently no official American governmental source that makes such comparisons.
+
+In the latest NSEE, we did not ask respondents to delve into these methodological issues but rather sought their understanding of whether “goods manufactured in the United States produce more, less, or about the same amount of greenhouse gas emissions as goods manufactured” in other nations.
+
+By decisive margins, respondents believe that American manufacturing is cleaner than in China and “most other countries,” as seen in Table 4 (Aand C).
+
+Republicans are more decisive than Democrats in assuming American superiority, although differences across other demographic categories are fairly modest.
+
+At the same time, respondents also believe that American manufacturing outperforms European countries in terms of lesser climate impact, albeit by less decisive margins than in the other national comparisons.
+
+Party affiliation leads to substantial differences on this question, with a 58-to-11% affirmation of United States’ carbon superiority over European countries by Republicans compared with a 37-to-31% margin among Democrats and a 41-to-28% margin among Independents.
+
+This contrasts with findings from both the Niskanen Center and Climate Leadership Council studies that the EU has a superior carbon emissions intensity record to the United States in most examined industrial sectors.
+
+[H2]Conclusion
+
+These findings suggest considerable support across partisan divides for placing American carbon tariffs on imports (68% in agreement), American prioritization of greenhouse gas emissions in trade negotiations (78% in agreement), and American fealty to international trade pacts (79% in agreement).
+
+Most notably, the reticence Republicans have traditionally demonstrated regarding domestic carbon pricing mechanisms such as carbon taxes and cap and trade systems is significantly absent in these findings, with over six out of ten Republicans supporting a tariff targeting greenhouse gas emissions from manufacturing abroad.
+
+It also offers perspective on how Americans view the carbon emissions performance of its national industries in comparison with those of major trade partners.
+
+This survey does not address public views on the particulars of any proposed American trade-climate policy legislation and did not have capacity to include a larger suite of questions linked to potential policy alternatives.
+
+We intend to revisit these broader issues in future iterations of the NSEE.
+
+Nonetheless, we believe that this analysis provides some important initial views on public sentiments at the intersection of trade and climate policy at the very moment that it gains saliency on policy agendas in the United States and around the world.
+
+We hope that this preliminary work encourages expanded study of trade-climate issues through survey research as well as other policy science methods.
+
+[H2]Methods
+
+This report contains the results of a telephone survey of 715 adult residents of the United States between May 30, and July 11, 2024.
+
+Respondents were interviewed in English on both landlines (206) and cell phones (509).
+
+With a randomly selected sample of respondents, the margin of error for the surveys is +/- 5% at a 95% level of confidence.
+
+Margins of error for questions with smaller sample size will be larger.
+
+In addition to sampling error, one should consider that question wording and other fielding issues could introduce error or bias into survey results.
+
+The sample data has been weighted by gender, race, age, income and educational attainment to reflect national population characteristics as reported by the United States Census Bureau in 2024.
+
+The calculation of sampling error takes into account design effects due to the weighting identified above.
+
+In order to reach a representative sample of adult residents of the United States, both landlines and cell phones are called up to 5 times.
+
+The sample for the project was generated by the Marketing Systems Group in Horsham, Pennsylvania.
+
+The response rate for this survey as calculated using the American Association of Public Opinion Research (AAPOR) RRII formula is approximately 3.5%.
+
+Due to rounding, the totals provided in the frequency report may not total 100%.
+
+The survey instrument, presented in its entirety in the following section, was designed by Dr.
+
+Christopher P.
+
+Borick, Director of the Muhlenberg College Institute of Public Opinion (MCIPO), and Professor of Political Science, in conjunction with Dr.
+
+Barry Rabe of the University of Michigan.
+
+The survey was funded exclusively by Muhlenberg College.
+
+For more detailed information on the methods employed, please contact the MCIPO at 484-664-3444 or email Dr.
+
+Borick at christopherborick@muhlenberg. edu.
+
+[H2]Appendix
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

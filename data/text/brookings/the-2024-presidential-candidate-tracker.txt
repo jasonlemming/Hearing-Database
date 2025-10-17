@@ -1,0 +1,59 @@
+Welcome to the 2024 Presidential Candidate Tracker.
+
+To track the public’s interest in presidential candidates, we collect and update data weekly, monthly, and quarterly based on three measures:
+
+How the candidates are doing on social media
+How they are doing in the mainstream press
+How they are doing when it comes to raising and spending money
+
+The list of presidential candidates included in this tracker is based on those listed in AP News,  The Washington Post,  The New York Times, and  Politico ’s descriptions of the 2024 field.
+
+To read more about our findings throughout the presidential primary season, check out our series: “Tracking the 2024 presidential primaries” To read more about our findings throughout the campaign period known as the “invisible primary,” check out our series: “Tracking the invisible primary”
+
+Back to top
+
+Media mentions
+
+The media mentions data represents the approximate number of times a candidate is mentioned in Google News across 114 different news sources in the past 24 hours.
+
+The list of news sources encompasses a variety of national and higher-circulation local news sources, including newspapers, magazines, TV networks’ websites, and web-based outlets.
+
+The list also includes major newspapers in Republican early primary states—New Hampshire, Iowa, and South Carolina.
+
+The data is collected from Google News headlines at the same time every day.
+
+Back to top
+
+Finances and ad spending
+
+Finance data is collected following the release of FEC quarterly reports and the release of ad spending from AdImpact. org.
+
+Data represents each candidate’s current campaign finance from the start of their campaign–or from 2021 for candidates who also ran in 2020–through the end of the given quarter.
+
+It is divided up into quarterly data and cumulative data, both consisting of funds raised, spent, and cash on hand for their respective periods.
+
+Data points are also further divided into funds gained from authorized committees and joint fundraising committees, the former of which is the primary source for gathering intel on current campaign finance data.
+
+Back to top
+
+Social media
+
+Social media data is collected by tracking followers or subscribers for each candidate on a weekly basis.
+
+Data is collected at the start of the workweek at approximately 4pm EDT.
+
+This tracker includes data from three major platforms: Facebook, Twitter, and Instagram.
+
+Acknowledgements and disclosures
+
+Thanks to Cambron Wade, Anna Heetderks, Jordan Muchnick, Owen Averill, Annabel Hazrati, Valerie Wirtschafter, and Adelle Patten for their work on data collection and data visualization.
+
+Google and Meta are general, unrestricted donors to the Brookings Institution.
+
+The findings, interpretations, and conclusions posted in this piece are solely those of the author and are not influenced by any donation.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

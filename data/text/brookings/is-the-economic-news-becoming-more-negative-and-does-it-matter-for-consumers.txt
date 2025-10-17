@@ -1,0 +1,73 @@
+The apparent disconnect between the state of the economy and Americans’ reported perceptions about the economy and their own finances is an enduring conundrum of the post-pandemic economic expansion.
+
+And in this election year, it is confounding what many election analysts know about incumbent presidents and their reelection chances.
+
+Commentators have advanced a series of explanations, ranging from the lingering effects of sharply elevated inflation to discontent with the trajectory of societal trends to misperceptions about the actual state of the economy.
+
+In January, to add to this debate, we published an essay showing that U.S. economic news coverage has, after accounting for changes in the economy, become systemically more negative over time.
+
+In this blog, we update our analysis to include more recent data and to discuss possible implications.
+
+Our initial analysis showed that the tone of economic news has become more negative since 2018, with a marked increase in negativity since 2021.
+
+Using the San Francisco Fed’s Index of News Sentiment, our central approach was to first estimate the extent to which economic news sentiment historically varied based on economic fundamentals (GDP change, inflation change, unemployment, and stock price change).
+
+We found that from 1988 through 2016 these variables could accurately explain changes in the sentiment of economic news stories from major media outlets.
+
+We then measured whether news sentiment had, after 2016, become more negative than predicted based on the post 2016 fundamentals and the historical relationships to news sentiment.
+
+Our analysis showed that economic news sentiment grew more unmoored from fundamentals and was consistently in a negative direction.
+
+We recently updated the model to include new data and found that the gap has closed in the past quarter.
+
+That is, while predicted sentiment was more positive than measured sentiment in every year since 2017 and (every quarter from Q1: 2022 through Q2: 2023), we have seen a slight reversal over the past two quarters whereby the national economic news was actually slightly more positive than would be predicted (see chart below).
+
+It is too soon to determine whether the systemic negativity bias has ended.
+
+To understand the magnitude of these negativity gaps, consider how much economic fundamentals would need to deteriorate to close them.
+
+Looking at the average gap in 2018 through 2023, the economy would have to be in substantially worse shape for the news sentiment to match the state of the economy.
+
+Specifically, we would need to see inflation be consistently two percentage points higher than it was or GDP growth three percentage points lower for the sentiment gap to dissipate.
+
+An important additional question is how systematically negative news sentiment impacts consumer attitudes.
+
+Agrowing body of literature suggests a link between the news sentiment and consumer sentiment.
+
+For example, Shapiro et al. (2022) found that news sentiment is highly predictive of survey-based releases such as the Michigan Consumer Sentiment Index and the Conference Board’s Consumer Confidence Index.
+
+Macaulay and Song (2023) demonstrated that social media users become more pessimistic when exposed to news articles that advance the narrative that a recession is imminent, and that this pessimism can spread to exposed users’ followers.
+
+There are several complexities in interpreting the growing negativity bias in the news and its impact on consumer attitudes.
+
+One is that the direction of the causation is not entirely clear.
+
+That is, are consumers more negative about the economy because of the news, or is the news reporting more negative stories to match consumers’ beliefs?
+
+Asecond complexity concerns the role of inaccurate household perceptions of the economy.
+
+Most surveys of consumer sentiment ask respondents normative questions relating to how they feel about the economy.
+
+For example, the Michigan Index of Consumer Sentiment asks exclusively normative statements like “About the big things people buy for their homes—such as furniture, a refrigerator, stove, television, and things like that, generally speaking, do you think now is a good or bad time for people to buy major household items?” The rarer surveys that instead ask positive questions about the economy can reveal severe inaccuracies in respondents’ macroeconomic perceptions.
+
+For example, a Morning Consult survey conducted in March 2023 revealed that 46% of Americans reported that the U.S. was currently in an economic recession, despite the U.S. economy being in the midst of a third consecutive quarter of healthy growth and the last recession ending almost three years prior.
+
+Afinal complexity involves the distinction between how news bias impacts household financial decisions differently from perceptions of the national economy.
+
+One hypothesis is that news tone might have more of an impact on how people feel about the macroeconomy and direction of the economy but a more limited influence on how Americans perceive their own finances.
+
+Indeed, in the quarter in which nearly half of Americans reported to Morning Consult that the U.S. was in a recession, consumer spending rose by 3.8%—hardly the predicted response by a population that fears an economic contraction.
+
+If true, this hypothesis suggests that news bias may have more salience to political considerations than economic ones.
+
+In conclusion, our analysis shows a recent and systemic negative news bias when reporting on the state of the economy.
+
+What’s less clear is why this negative bias arose and how it impacts both consumer sentiment and consumer activity.
+
+Understanding these linkages has important implications for understanding future consumer behavior, political sentiment, and perceptions about societal progress.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

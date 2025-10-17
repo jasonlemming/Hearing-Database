@@ -1,0 +1,115 @@
+Skills-based hiring is gaining momentum as a strategy to open up hiring processes.
+
+This is driven by a laudable goal: to create more economic opportunities for Americans without college degrees, who represent roughly two-thirds of the population over age 25.
+
+States, in particular, are taking the lead in these “skills-first” hiring practices, and much of the early focus has been on removing degree requirements—again, a welcome development given that degrees are overused as a proxy for skills.
+
+So far, more than 20 governors have committed to eliminating degree requirements for public sector jobs.
+
+Yet removing degree requirements is just a first step in skills-based hiring, and probably the easiest one.
+
+If states do nothing more than eliminate degree requirements, the status quo is likely to continue.
+
+For this reason, some call skills-based hiring a “dead-end policy,” and a recent report from the Burning Glass Institute and Harvard Business School suggests it has yet to significantly impact hiring outcomes in practice.
+
+One major stumbling block to the success of skills-first policies is a lack of detailed and trustworthy information about candidates’ qualifications, which makes those policies hard to put into practice.
+
+Hiring managers have inflated their use of degree requirements because they are an efficient (though blunt and arguably unfair) instrument to narrow down an applicant pool.
+
+To reduce reliance on degrees, employers need an equally efficient way to cull a large pool of applicants.
+
+Table 1 breaks down this initial culling process into four missing elements and emerging solutions.
+
+Ultimately, these changes go beyond the realm of individual employers and their hiring decisions.
+
+States are facilitating and governing the development of skills-based data infrastructure and processes across multiple systems, programs, and end users, which are involved in learning, the labor market, and career navigation.
+
+This means building a multifaceted ecosystem with a broad set of actors implementing skills-first hiring effectively and equitably, including employers, human resources system vendors, credentialing organizations, data standards organizations, learners and earners, policymakers, and more.
+
+[H2]The role of state governments in a shift to skills-first practices
+
+Knowing that a shift to skills-based practices would require more than just eliminating degree requirements, the National Governors Association’s (NGA) Center for Best Practices and Jobs for the Future launched the Skills-Driven State Community of Practice, which supported states that were starting to design and build these LER ecosystems to advance skills-based hiring.
+
+Brookings Metro researchers joined NGA on site visits to six states in 2023: Alabama, Arkansas, Colorado, North Dakota, Virginia, and Washington.
+
+Below are some highlights from what we learned. 1  
+State governments are well positioned to play a broader role in building the infrastructure needed for skills-based hiring, rather than just eliminating degree requirements for public sector jobs.
+
+But exactly what that is—and what to emphasize—are still not clear.
+
+Despite that lack of clarity, the one area where all of the states were playing a leadership role was in coordinating partners and LER stakeholders, both within government (across agencies) and externally.
+
+States, which each have unique institutional and governance setups, had to reach consensus with the partners they were engaging about what to prioritize first in their LER initiative, and generally there was a long learning curve to understand the complexities of what they sought to build, who to engage, and how to implement.
+
+States were trying to balance multiple priorities and leverage this interest in developing skills-based data ecosystems for LERs to modernize, connect, and enhance their data capacity more broadly across domains that are typically clunky and siloed, such as higher education, wage reporting, career navigation, and technology procurement.
+
+[H2]Key takeaways for states initiating skills-based hiring practices
+
+The states that were building LER infrastructure for skills-based hiring shared several insights and observations about how it was going, as well as the questions and trade-offs they were struggling to balance.
+
+Below are the most common themes: 
+Technology is the easy part.
+
+Several state leaders observed an overwhelming focus on the technology side of the work, but they struggled more with other aspects, such as changing mindsets about the superiority of a degree over skills and credentials among hiring managers.
+
+Several state leaders also recognized the need to provide one-on-one career counseling to complement the tech tools as a way to help individuals navigate their options and use the tools effectively.
+
+Inherited quality control systems need to be reimagined.
+
+Leaders in multiple states struggled with how to make sense of a diverse array of learning records and other credentials due to the lack of consensus about how to define credential quality and establish equivalencies for different forms of learning.
+
+For example, employers often consider the quality of someone’s degree in hiring decisions based on rankings and reputation, but it is much harder to assess quality if someone has a bundle of different credentials and other qualifications without a systematic way to interpret their value.
+
+States struggle to obtain data on education and employment outcomes from credential providers, and reported that it is challenging to define “quality” the same way for different populations.
+
+As part of the Virginia Skills Initiative, Virginia has set up a data trust to track career outcomes of academic (for-credit) and non-credit program completers, including outcomes in other states through multistate collaboratives.
+
+Virginia, Colorado, and Alabama (like other states ) have established processes to track outcomes in order to identify “credentials of value,” which helps prioritize pubic investments in non-degree programs.
+
+The chaotic maze of non-formal credentials makes it harder for employers to understand what skills someone has and for learners and earners to figure out what set of credentials to pursue to be more employable.
+
+Employer engagement and support is uneven.
+
+Several states reported struggles in engaging employers in their LER design efforts.
+
+Leaders reported that small and medium-sized employers were particularly challenging to engage.
+
+The project in Washington stood apart from other states in that it started at the regional level in Spokane, with collaboration from a regional health care employer facing a talent crisis.
+
+Nevertheless, building systems with heavy engagement from one employer can lead to challenges as well if that employer suddenly changes course and stops engaging.
+
+Most states struggled to identify an existing employer intermediary from one or more sectors who could represent the shared voice of employers in LER design, which could lead to difficulty with implementation down the road.
+
+Interoperability and privacy/data ethics need more attention.
+
+Although each of the states we visited acknowledged that data governance and interoperability were important, progress was limited in terms of actually establishing and enforcing policies around interoperability, verifiable credentials, data privacy, data ownership, and mitigating risks such as racial or gender bias in artificial intelligence algorithms.
+
+Several states were pursuing a single vendor to set up a digital wallet for LERs, which introduces the risk of lock-in (a dependency on one vendor) and reduces competition and the level of customization possible for learners from different populations.
+
+Arkansas was taking the most proactive steps to build an interoperable ecosystem with multiple vendors, avoiding a single vendor where possible.
+
+With respect to privacy and safety concerns, Arkansas Governor Sarah Huckabee Sanders launched the Artificial Intelligence and Analytics Center of Excellence in an attempt to implement data-driven strategies in state data systems safely, but these conversations are still in the early stages.
+
+[H2]Many challenges to skills-based hiring remain
+
+As states continue to lead the way to a skills-based labor market through their efforts to co-design LER ecosystems, they face significant challenges.
+
+Right now, the applicant tracking systems that employers use generally don’t have a way to capture digital records of learning or work experience, so they fall into a void.
+
+Addressing some of these information and technology barriers is necessary, but not sufficient to implement skills-based hiring—there are cultural and awareness challenges that may ultimately be the hardest to solve.
+
+The stakes are high: Success could lead to a more equitable, efficient, and accessible job market that better serves both employers and job seekers.
+
+Failure to make hiring more inclusive could result in an ever-shrinking pool of talent from traditional sources, continued reliance on outdated hiring practices that screen out qualified candidates, and missed opportunities for economic growth and individual advancement.
+
+Footnotes
+
+Strada Education Foundation’s  State Opportunity Index  also has information about  other states and their progress  on giving individuals the ability to manage their own learning and employment records.
+
+Strada Education Foundation’s  State Opportunity Index  also has information about  other states and their progress  on giving individuals the ability to manage their own learning and employment records.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

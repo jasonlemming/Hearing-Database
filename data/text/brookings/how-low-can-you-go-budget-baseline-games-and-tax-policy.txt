@@ -1,0 +1,154 @@
+President Trump and the Republican-led Congress are expected to use a legislative process called reconciliation to pass major tax legislation next year.
+
+This process allows legislation to pass with only 50 votes in the Senate (side-stepping the 60-vote filibuster), but it comes with several caveats.
+
+First, Congress must agree on a target for the maximum allowable budget deficit.
+
+Second, the mix of tax cuts or spending changes in the reconciliation bill must hit that target.
+
+Third, deficit increases cannot extend beyond the ten-year budget window.
+
+If Congress selects a conservative target with a smaller deficit, it would impose real constraints on the policies pursued by Congress and require them to grapple with challenging tradeoffs, like how to pay for tax cuts with reductions in spending.
+
+Or, if the target is absurdly generous, and allows for large and widening deficits, then there will be little constraint on the choices Congress makes.
+
+So the major question is, “How low will the deficit target be?”
+In this report, we explore a range of plausible options for a deficit target based on analyses from the Congressional Budget Office (CBO), ranging from egregiously low to aspirationally strict.
+
+Our scenarios are based on a tradition in which Congress chooses a budget deficit forecast that assumes some mix of provisions legislated to expire are, in fact, allowed to expire (an assumption that policy will follow “current law”) and some are, instead, assumed to be renewed (“current policy”).
+
+To be clear, Congress need not be constrained by these conventions, but they usually provide a good guide for Congressional intentions because they embody legislative elements enacted by prior Congressional votes.
+
+In short, Congress faces an enormous range of possible deficit options between the current law and current policy deficit baselines, and none of those deficit paths is anywhere close to sustainable.
+
+For example, under the most fiscally-conservative version of a current-law baseline, in which all tax cuts expire and strict spending caps remain in effect over the next decade, deficits still average over $2 trillion per year over the next decade.
+
+Under an egregious version of current-policy—in which all expiring tax cuts are instead renewed and spending grows with inflation—then deficits approach $3 trillion annually, rising to $3.6 trillion by 2034.
+
+For a chilling perspective, a deficit target required to stabilize the debt/GDP is about $1.2 trillion—far below even the most optimistic projections.
+
+[H2]Reconciliation basics and budget baselines
+
+The development of the federal budget follows an annual cycle that begins with an advisory budget submitted by the president to Congress in early February and ends with a series of appropriations and other tax and spending bills that meet the directives laid out by the congressional budget resolution.
+
+Following the regular course of order, these bills need to garner 60 votes in the Senate in order to avoid the filibuster—a tall order in the tightly divided government.
+
+If, instead, a reconciliation bill is included in the budget resolution—which could, for example, direct the House and Senate budget committees to draft tax legislation that increases the deficit by no more than a certain threshold—then the reconciliation bill can be passed by a more manageable simple majority in the Senate.
+
+Federal budgeting relies on a ten-year projection of federal spending and revenues, known as the budget baseline, that is prepared by the CBO.
+
+By law, the CBO must follow specific rules when making these projections.
+
+In general, the CBO assumes a current law baseline in which the laws proceed as written.
+
+For example, if tax cuts are set to expire, the CBO baseline assumes revenues increase after their expiration.
+
+However, for appropriated spending—typically enacted for only a few years at a time—the baseline assumes that this funding not only continues beyond its expiration but that it grows with inflation.
+
+The effect of new legislation on federal budget projections is evaluated, or “scored,” relative to the budget baseline by the CBO—and the Joint Committee on Taxation (JCT) in the case of tax legislation.
+
+When tax policy or other budget bills are developed through the reconciliation process—as was done with the 2001 and 2003 Bush tax cuts and with the 2017 Tax Cuts and Jobs Act (TCJA)—the Senate’s Byrd Rule requires that these laws cannot increase the deficit beyond the 10-year window.
+
+Legislators weigh this cost against the benefit of passing reconciliation legislation by simple majority, avoiding the threat of filibuster.
+
+However, it remains to be seen whether the Senate parliamentarian —the nonpartisan referee with regards to Congressional rules, precedents, and procedures—will permit the use of a current policy as opposed to current law baseline in the context of a reconciliation bill.
+
+While the conventional current law baseline provides a transparent, rational, and consistent methodology, it also leaves a lot of room for disagreement.
+
+For example, the assumption that discretionary spending rises with inflation rather than, say, population growth or growth of the economy, implies that these spending programs are projected to shrink on a per-person basis or as a share of the economy.
+
+Some policymakers might disagree with this assumption for normative reasons.
+
+Moreover, discretionary spending as a share of GDP has remained relatively steady since the 1990s, which suggests that this assumption may not reflect recent historical patterns.
+
+Likewise, Republicans in Congress and President Trump surely intended for the TCJA to be permanent when they enacted it into law in 2017, but the Byrd rule required that these tax cuts expire after ten years.
+
+Given this context, some might reasonably argue that the appropriate baseline should assume that these changes will be renewed.
+
+If permitted, evaluating tax legislation against a current policy baseline may make it easier for a reconciliation bill to propose a seemingly low-cost tax bill.
+
+For example, using the conventional current law baseline, a full extension of the TCJA is estimated to reduce federal revenues by nearly $5 trillion over ten years—a hefty price tag in the face of an already bleak fiscal outlook.
+
+It’s hard to imagine that Congress could agree to pay for $5 trillion of tax cuts by cutting spending programs, and the effort would be certain to tie them in knots, derailing the entire legislative agenda.
+
+But, if a TCJA extension is instead scored against a current policy baseline then its cost suddenly disappears because the cost would be already baked into projections.
+
+The challenge is that any plausible concoction of current law and current policy budget baselines produces a horrific deficit outlook.
+
+[H2]Budget baseline options
+
+The CBO’s baseline projects that federal debt will grow from 99% in 2024 to 122% in 2034, surpassing its previous high of 106% in 1946.
+
+However, this is a baseline that few members of Congress would like to adopt because it follows assumptions about future spending and tax policies on which politicians disagree.
+
+To illustrate the range of more plausible deficit paths, we’ve constructed some alternative scenarios, shown in Figure 1.
+
+We benchmark all scenarios against a common definition of budget sustainability—a deficit that holds the amount of debt held by the public constant as a share of GDP, shown in orange.
+
+Although the federal government would still run arguably large annual deficits under this scenario, this would at least ensure that our ability to service the national debt out of national income is held fixed after 2024.
+
+Another useful benchmark is the current law CBO projections for annual federal deficits, shown in dark blue.
+
+As previously described, baseline assumes that all spending and revenue provisions scheduled to expire will do so, including the TCJA, and appropriated spending will grow with inflation.
+
+The strictest alternative fiscal scenario constructed from among the CBO alternatives is one in which all tax cuts expire, discretionary spending is capped at 2025 levels (such that spending falls in real terms), and temporary spending is not renewed.
+
+This is reflected by the light blue line (“current law plus budget caps”).
+
+Clearly budget caps “work” in the sense that the deficit would be smaller than those projected by current law (the dark blue line).
+
+However, even under this scenario, federal deficits would be roughly 60% larger than those that hold debt-to-GDP constant.
+
+In other words, there is currently no remotely realistic current policy scenario that would stabilize our fiscal outlook, let alone return the U.S. federal budget to a more sustainable path.
+
+Another plausible baseline is one that includes extension of the TCJA (in red); against this baseline the full extension of the TCJA would be “costless” in the sense that it would appear not to worsen the budget outlook.
+
+Of course, this is a semantic argument—the full TCJA extension obviously increases the deficit to $3.4 trillion by 2034.
+
+The broadest definition of a current policy baseline could assume that all temporary tax provisions are extended (yellow), further expanding the deficit to $3.6 trillion by 2034.
+
+Finally, there is an even worse—and potentially more likely—scenario we did not include, which assumes that spending rises with GDP (as opposed to inflation) and all the tax cuts expire.
+
+This have-your-cake-and-eat-it-too scenario really blows up the budget.
+
+Perhaps the most striking feature of this chart, however, is that none of these scenarios comes anywhere close to holding debt-to-GDP constant—in fact all options are several trillion dollars below this benchmark by the early 2030s.
+
+Moreover, we choose to hold debt-to-GDP constant at 2024 levels (99%), which is already higher than at any point since 1947.
+
+Many might argue that this benchmark is itself not conservative enough and that the U.S. fiscal trajectory should be put on a path to reduce this ratio.
+
+Our scenarios make it clear just how difficult it would be to imagine this happening in the current political environment.
+
+What will Congress choose?
+
+If we’re betting, they’ll pick one of the more egregious current policy scenarios that assume large and growing budget deficits.
+
+Why?
+
+Because it makes passing legislation much easier.
+
+However, choosing this path warrants extreme caution.
+
+While a current policy baseline may be a politically convenient approach to TCJA extension, there is a reason that it is rarely used.
+
+This baseline concept is neither transparent nor fiscally responsible.
+
+Assuming that certain expiring provisions will continue indefinitely hides the true legislative costs of extension.
+
+Moreover, decisions about what is included in the current policy baseline are subjective, introducing the potential for biases and reducing the value of these forecasts.
+
+[H2]Conclusion
+
+The choice between a current law and current policy baseline introduces a wide range of possible fiscal trajectories, from fiscally conservative to alarmingly permissive.
+
+While playing these budget games make it easier for Congress to appear to achieve strict deficit targets, all paths lead to a continued deterioration of the U.S. fiscal outlook.
+
+As Congressional leaders approach the upcoming expiration of the TCJA, they should not be distracted by the appearance of fiscal frugality through a carefully crafted current policy baseline.
+
+Instead, the public needs thoughtful policymaking that transparently acknowledges how legislation affects the nation’s fiscal and economic trajectory for the years to come.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

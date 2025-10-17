@@ -1,0 +1,170 @@
+Editor's note:
+The analyses below are based on data released by the National Student Clearinghouse (NSC) in October 2024.
+
+In January 2025, NSC announced a methodological error in their data calculations that resulted in an undercount of fall 2024 freshmen and an overcount of fall 2024 dual enrolled students.
+
+As a result, many of the analyses in this post are incorrect.
+
+Meyer will publish another post reflecting on fall 2024 enrollment once NSC makes the corrected data available.
+
+Anyone who tried to apply for financial aid using the Free Application for Federal Student Aid (FAFSA) for the 2024-25 academic year knows how challenging this year was for prospective college students.
+
+The U.S.
+
+Department of Education Federal Student Aid office badly fumbled the rollout of the “Better FAFSA,” a major revamp of the form intended to simplify the application process and expand the number of students eligible for a Pell Grant.
+
+The Government Accountability Office (GAO) warned the Department wasn’t on track to deliver the form as early as June 2023, and their recent post-mortem investigations highlighted numerous failures in implementing the reform.
+
+To highlight a few—the Department launched the form 90 days late, about 74% of calls to the Department’s customer service center went unanswered, students with parents who do not have a Social Security number couldn’t start an application until early March (three months after other students), and the form still frequently deletes FAFSA drafts or removes signatures.
+
+To the Department’s credit, the revamped FAFSA and underlying aid eligibility calculations have met an important goal—increasing financial aid for lower income students.
+
+Overall, colleges are “originating” (the step before sending money to students) more Pell grants than this time last year, with a 10% increase overall and 2.9% increase for first-time freshmen.
+
+Increasing the number of Pell recipients and the amount that Pell recipients receive was an explicit goal of the recent FAFSA overhaul, and this early report indicates that, on average, students who were able to complete the form are benefiting from more financial aid to support their studies.
+
+Still, it’s clear that the FAFSA rollout significantly depressed FAFSA filings this past cycle.
+
+GAO estimates overall applications are down three percent overall compared to last year, with large variation by student type.
+
+Filing is down nine percent for first-time applicants (such as high school seniors) but only one percent for continuing college students.
+
+These are sobering declines but significantly smaller than the gap was just a few months ago, when filings among high school seniors were down 24% compared to the high school class of 2023.
+
+This is due to the incredible resilience of high school counselors, state governments, college access networks, and colleges working overtime all summer to support students’ FAFSA filing.
+
+Did the decline in FAFSA filings portend a decline in college enrollment?
+
+And if it did, by how much did enrollment decline and for whom?
+
+[H2]Freshman enrollment declined, with larger drops for four-year institutions
+
+The National Student Clearinghouse (NSC) recently released a “ First Look ” at fall 2024 enrollment for about half of the colleges they collect data on (with final numbers coming in January).
+
+While these preliminary numbers should be interpreted with caution, they give the first national estimate on how enrollment fared after the FAFSA rollout.
+
+It’s not good.
+
+Freshman enrollment is down five percent this year compared to fall 2023, with a 5.8% decline for 18-year-olds and an 8.6% decline for those aged 19 to 20.
+
+This is the group most impacted by the failed FAFSA rollout (and the demographic with the largest declines in FAFSA filing).
+
+For context, the COVID-19 pandemic resulted in a 10% decline in fall 2020 freshman enrollment.
+
+While college enrollment was already slightly declining pre-pandemic, this year’s five percent drop is outside the typical year-to-year fluctuations.
+
+The largest declines were for white freshmen—an 11.4% drop—as well as for Black (6.1% decline) and multiracial (a 6.6% drop) students.
+
+Declines were similar for male (down 6.4%) and female (down six percent) students.
+
+Enrollment declined the most for students from middle-income neighborhoods (eight percent), though it was still down for the highest- and lowest-income areas (down 7.2% and 4.6%, respectively).
+
+Figure 1 shows how freshman enrollment declined at both public four-year colleges and private, nonprofit four-year colleges—by 8.5% and 6.5% respectively.
+
+Within each sector, declines were largest for schools that have historically enrolled a higher share of Pell-eligible students.
+
+This offers further suggestive evidence that the decline in FAFSA filing—and the delays in getting financial aid data back to the low-income students who did complete the form—may have resulted in those lower-income students being less likely to enroll in a four-year institution.
+
+Enrollment at two-year programs was mixed.
+
+At purely two-year public colleges, freshmen enrollment declined 1.1%, but it was up 2.2% at two-year colleges that primarily award associate degrees but also award some bachelor’s degrees.
+
+There was a small 1.2% jump in enrollment at two-year colleges that historically enroll a higher share of lower-income students.
+
+Contrasted with the large declines at four-year institutions serving more lower income students, this suggests some—but certainly not all—of the decline in enrollment at four-year institutions may have been students shifting to community colleges.
+
+The NSC data also show slight increases in part-time enrollment (and declines in full-time enrollment) at two-year colleges relative to last year.
+
+Students might be taking fewer credits (and potentially working more ) because of uncertainty around their receipt of financial aid, though more data are needed to explore that hypothesis.
+
+[H2]Overall college enrollment is up—though where students enroll matters
+
+There are some bright notes in the latest report.
+
+Despite significant declines in freshman enrollment, overall college enrollment is up three percent compared to last year, bolstered by a 4.7% increase in community college enrollment.
+
+Of note, much of that growth is driven by a tremendous increase in dual enrollment students—enrollment for students 17 and younger is up 7.2% compared to last year.
+
+In 2022, high school students comprised about one-fifth of all community college enrollment.
+
+Increased dual enrollment numbers today may translate to higher credential-seeking enrollment in future years, given high college-going rates among dual enrollment students.
+
+Though NSC coverage is limited, early signs also point to a continued growth in HBCU enrollment—up 5.9% this year, with a cumulative 12.6% growth in HBCU enrollment between fall 2022 and fall 2024.
+
+Research shows HBCU enrollment significantly increases the likelihood a student will earn a degree and their household income in their 30s.
+
+At the same time, a 4.9% increase in for-profit college enrollment is troubling given the suite of negative outcomes those students experience on average—including higher student loan default rates, lower graduation rates, and poor employment outcomes.
+
+While some for-profit programs provide a positive return on investment, the average returns are much lower than in the nonprofit four-year sector, which experienced smaller growth this fall (up 2.2% at public and 1.4% at private nonprofits).
+
+Even within freshmen enrollment, there were some areas of encouragement.
+
+First-time enrollment for students aged 21 to 24—many of whom graduated high school during the pandemic—is up 10.5% compared to last year.
+
+This is suggestive that the missing cohorts of students who didn’t immediately enroll in college after high school mid-pandemic are now turning to postsecondary education.
+
+Students still see a positive, though smaller, return on college when they enroll later in life, and states are increasingly targeting financial aid to older adults to “ reconnect ” students with postsecondary training programs.
+
+[H2]Untangling the FAFSA rollout from other higher education policy shifts
+
+While the rollout of the FAFSA was one of the largest shifts in how high school seniors applied for and paid for college last year, it wasn’t the only major change in the path to college.
+
+To what extent could those other trends explain the decline in freshman enrollment?
+
+The high school class of 2024 was the first cohort impacted by the Supreme Court’s ruling in June 2023 that the direct consideration of race in college admissions was unconstitutional.
+
+However, the Court’s decision is unlikely to explain much of the freshman enrollment decline observed in the NSC data.
+
+As my Brookings colleague Sarah Reber found, very few colleges were using affirmative action prior to the Court’s ruling (most students attend colleges that are not selective and even among the most selective institutions, only 76% reported considering race in admissions).
+
+The ban on race-based affirmative action was expected to influence the composition of enrollment at the most selective institutions by changing where students enrolled, but was not necessarily expected to affect whether students enrolled in college.
+
+Further, as Figure 2 illustrates, some of the largest declines in freshman enrollment this year were at institutions in the “very competitive” and “competitive” selectivity tier.
+
+Since relatively few of these institutions ( about 27% and eight percent, respectively ) have historically used race-based affirmative action, admissions practices at those colleges were generally unaffected by the Court’s decision, and thus it seems unlikely the Court’s ruling is a major driver of those schools’ enrollment declines.
+
+These policy shifts have been taking place amid ongoing discourse around the value of higher education (despite evidence that the financial returns to more education have increased over time ).
+
+It’s true that 56% of adults are now skeptical that college is “worth the cost,” up from 47% in 2017 and 40% in 2013.
+
+Only 36% of the public has high confidence in higher education, with a wide partisan split in confidence between 19% of Republicans and 59% of Democrats.
+
+However, 62% of parents would still prefer their child enroll in college after high school, with a smaller partisan divide (81% of Democrats vs. 53% of Republicans).
+
+Furthermore, 78% of high school juniors expect to complete some type of postsecondary credential.
+
+It’s important to have critical conversations about when and how higher education is serving or failing students.
+
+However, even if the heightened conversation around degree value is affecting enrollment, it seems unlikely that the gradual declines in confidence in higher education over many years explains the sharp decline in freshman enrollment this year.
+
+Finally, population trends provide important context for understanding college enrollment declines.
+
+The number of 12th graders is projected to decline in the coming years, reflecting dips in fertility since the Great Recession.
+
+However, multiple sources predicted that the class of 2024 would be larger than the class of 2023, with enrollment declines not expected until the high school class of 2026.
+
+The decline in freshman college enrollment is not reflecting a decline in the number of 18-year-olds this year.
+
+[H2]Looking ahead to the class of 2025
+
+All these data come with caveats.
+
+This is a very preliminary report and only shares recent year-over-year percentage changes.
+
+We can generate hypotheses about what might be driving different enrollment shifts, but it will take more data to get the complete picture of how enrollment this fall fits into longer trends of college enrollment and pandemic-era recovery.
+
+For now, it’s clear that the biggest concern with the rollout of the FAFSA last year has come true— declines in FAFSA filing this year were followed by sharp declines in freshman enrollment that are unlikely to be explained by other higher education trends alone.
+
+Still, many higher education experts, myself included, worried about more significant declines in college enrollment.
+
+Improvements to the form’s functionality throughout the spring and additional resources supporting students through the college transition this summer boosted FAFSA completions and likely staved off a starker enrollment drop off.
+
+Come December, this year’s FAFSA form will be available for high school seniors.
+
+Let’s all hope the Department has taken GAO recommendations to heart and after the current beta testing phase will deliver a fully functional form, so the enrollment declines this year don’t repeat for the high school class of 2025.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

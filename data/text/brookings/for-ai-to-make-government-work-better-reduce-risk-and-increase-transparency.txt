@@ -1,0 +1,121 @@
+Democracies around the world face a fundamental challenge: their citizens do not believe they can deliver results.
+
+Recent surveys of the countries that are members of the Organization for Economic Cooperation and Development  show declining trust in government, driven in part by the perception that public institutions are neither responsive nor transparent.
+
+And a series of Pew Research Center polls show a clear decline in satisfaction with democracy across 12 advanced economies, including in the United States.
+
+To improve perceptions of the U.S. government among a subset of voters, the incoming Trump administration has promised to rein in waste and promote greater efficiency.
+
+What that means in practice is unclear, but the goal of making government better serve the people—while not new—is important across democracies.
+
+With a new wave of government advisers, many of whom come from the “techno-optimist” space, it seems inevitable that technological advances, including the deployment of artificial intelligence (AI), will be part of any proposed solution.
+
+Agrowing body of research highlights the benefits of using AI in the workplace.
+
+Examples from recent federal deployments of AI-enabled tools and other technological solutions show clear promise.
+
+For so-called “ high impact service providers ”—public-facing departments of federal agencies, such as the Internal Revenue Service or Customs and Border Protection—any AI-backed performance gains could improve Americans’ perceptions of the U.S. government’s overall competence.
+
+However, a “ move fast and break things ” approach that leverages technology to improve government efficiency could also have significant consequences.
+
+With the existence of broad mistrust in AI systems across the political spectrum and some well-documented missteps around the world, the harmful deployment of these tools—whether by governments or in the private sector—could alienate citizens, lead to deeper skepticism of their potential benefits, or even slow the development of transformative solutions.
+
+It may also further erode public trust in government writ large.
+
+Human interactions and judgment, as well as continued attention toward mitigating risks, remain crucial even as the next administration explores avenues for technology to improve how government serves its citizens.
+
+[H2]The potential of AI in government
+
+Recent experimental evidence highlights AI’s potential to transform the workforce.
+
+From college-educated professionals, programmers, and aspiring lawyers to customer support agents, creative writers, and consultants, AI assistance can improve output quality, save workers time, decrease disparities in performance, and raise job satisfaction.
+
+These gains are undoubtedly portable to the public sector workforce worldwide.
+
+One study, for example, found that the U.K.’s National Health Service professionals estimated they could save one day of work a week by leveraging generative AI to assist with more mundane bureaucratic tasks.
+
+Recognition of this potential has sparked rapid experimentation across a range of U.S. federal agencies, despite continued challenges related to data quality and conflicting or unclear regulations and standards, among other issues.
+
+In 2023, the federal government disclosed 710 AI use cases across agencies.
+
+By 2024, that number had more than doubled to 1,757.
+
+For example, the U.S.
+
+Patent and Trademark Office has deployed AI tools to improve patent classification and search processes, reducing application processing times.
+
+The State Department has leveraged AI to help its employees use their time more efficiently, deploying tools that can use open-source and U.S. government data to draft emails, translate documents, brainstorm ideas, look up departmental policies, and summarize articles, freeing up time for other tasks.
+
+Using a “ crawl, walk, run ” approach, the Transportation Security Administration (TSA) has also begun to integrate AI-enabled technologies into its operations to speed up airport screening processes and improve customer service, although data security questions remain.
+
+In high-impact areas like airport security, streamlining access could make once cumbersome processes more efficient, strengthen the quality of citizens’ day-to-day interactions with government, and help ensure that the gains from AI are more equally distributed.
+
+Over time, these technological investments could theoretically help to improve perceptions of government too.
+
+[H2]The risks of over-reliance on technological solutions
+
+Despite these benefits, technologies that use AI to improve decisionmaking and modernize operations have a sullied history.
+
+For example, in 2015, the Robodebt scandal in Australia involving an automated debt recovery system incorrectly calculated the debts of social welfare recipients, leading to significant financial and psychological distress.
+
+In 2019, a child care benefits scandal involving a self-learning algorithm to identify benefits fraud early on engulfed the Netherlands.
+
+The system, known as SyRI, used indicators like dual nationality, low income, or “a non-Western appearance” as signals of potential fraud.
+
+The results were disastrous: the separation of children from their families, poverty, and even suicide.
+
+Similar issues emerged in the U.K.’s visa application system, where an algorithm designed to streamline visa processing was alleged to contain “entrenched racism,” leading to its suspension in 2020.
+
+These cases underscore the important role of data quality and systems oversight when deploying AI-enabled tools to modernize government functions.
+
+Without proper supervision, and if the underlying data is flawed or biased, these issues will be replicated—or even compounded—in subsequent outputs.
+
+This can lead to unintended adverse consequences, particularly in areas such as law enforcement or social services.
+
+Flawed AI applications could create doubts about other viable technology-based solutions and potentially undermine trust in government altogether.
+
+It is also possible that we may overrate the importance of “efficiency” as a driver of satisfaction.
+
+For example, although perceptions of the airport security experience have improved in the United States, a survey of more than 13,000 TSA customers found that this shift had less to do with perceived wait time—which facial recognition technology has helped to reduce—and more to do with improved “interpersonal communication” like “professionalism, respect, and understanding of security procedures.” In short, friendly TSA agents may make more of a difference to travelers’ experiences than a quicker wait in line.
+
+In this case, technology can certainly play a role in shaping positive experiences but may not be a main driver of shifting perceptions.
+
+[H2]Striking a balance between efficiency and trust
+
+The Trump administration’s previous AI executive order —which mandated an imperfect but useful executive agency inventory of AI use cases—recognized that poorly implemented systems could delegitimize technological solutions deployed across the federal government.
+
+However, as the second Trump administration takes shape, a push to dismantle guidelines designed to mitigate risk or streamline procurement processes could do more harm than good.
+
+Undoubtedly, many of these areas could benefit from improvements (such as data standardization practices across agencies or FedRAMP modernization efforts ).
+
+However, an approach that moves too quickly or fails to adequately identify, account for, and communicate the potential risks of these systems may backfire.
+
+Recent polling data illustrates the need for an incremental and deliberate process.
+
+As awareness of AI has increased, so too has concern about its misuse.
+
+In the United States, the vast majority of respondents support higher testing and safety standards for a range of AI-enabled systems, though there is variation by party as to whether this should be self-regulation or enforceable government oversight.
+
+To address Americans’ growing skepticism about AI, it remains critical to focus on reducing risks before deploying technological solutions.
+
+We should develop clear guidelines around AI use, clarify when humans are interacting with or subject to the decisions of an AI system and why, and develop ways to engage the public and encourage independent oversight.
+
+We should also make it easy for people to opt out of the technology if desired.
+
+In tandem, policymakers should continue to streamline and deconflict bureaucratic processes around data access and procurement that make the deployment of promising AI solutions overly complicated or burdensome.
+
+It is increasingly clear that human-AI collaboration can improve productivity and quality.
+
+Yet, without public buy-in, it will be difficult to build trust in these systems.
+
+Despite a major push by the federal government, AI continues to primarily be shaped by private sector investments and market forces.
+
+Technological innovations undoubtedly can improve government efficiency.
+
+However, if governments are to harness the transformative potential of AI, they must prioritize transparency, mitigate risk, and preserve a vital role for human decisionmaking.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

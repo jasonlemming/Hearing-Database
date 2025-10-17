@@ -1,0 +1,223 @@
+It’s been over a year since the release of OpenAI’s ChatGPT launched an international conversation about how generative artificial intelligence—i. e., AI capable of producing text, images, video, and more—could transform our lives.
+
+This past October, President Joe Biden signed an executive order outlining the government’s priorities for regulating artificial intelligence, which included initiatives to protect national security and privacy, advance equity and civil rights, and promote innovation and competition.
+
+Sen.
+
+Chuck Schumer has also led a series of roundtable discussions with AI executives, business leaders, and other experts to inform policymakers’ legislative approach.
+
+Aparticularly fraught area of discussion is the extent to which AI will impact American elections.
+
+Two camps have emerged.
+
+One warns of AI leading to a deluge of misinformation, especially on social media, and especially in the many elections coming in 2024.
+
+The other finds the fears understandable but largely overblown, pointing to social science research indicating that AI may lead to more misinformation during elections, but with little effect.
+
+Which is correct?
+
+Drawing on the past decade of research on the relationship between social media, misinformation, and elections, we argue that the answer may be both—many fears are indeed overblown, and yet AI may alter the media landscape in unprecedented ways that could result in real harms.
+
+To this end, we review the academic literature to explain why online misinformation has been less impactful than the coverage it receives in the media would suggest.
+
+However, it’s clear that generative AI will change the production and diffusion of misinformation, potentially in profound ways.
+
+Given this context, we attempt to move away from general fears about a new technology and focus our collective attention on what precisely could be different about AI—as well as what lawmakers could do about it.
+
+[H3]Has online misinformation mattered less than we think?
+
+Media have been sounding the alarm about the coming surge of misinformation in the 2024 election.
+
+While misinformation has always been a feature of politics, reports say, the relatively easy-to-use AI technologies risk increasing the scale and quality of false content that might circulate online.
+
+Biden’s nominee to the National Security Agency (NSA) and Cyber Command agreed, warning of AI-related election threats to the Senate Armed Services Committee.
+
+The United Nations chief echoed these concerns.
+
+However, the recent academic research on online misinformation suggests multiple reasons why we might want to be cautious about overhyping the future impact of AI-generated misinformation.
+
+First, despite the widespread perception that misinformation is rampant, false news actually constitutes a minority of the average person’s information diet.
+
+To start, news makes up a small minority of our media consumption.
+
+A 2020 study found that for the average American, of the roughly 7.5 hours of media per day consumed, about 14% was related to news, and most of that came via television.
+
+Another recent study estimated that for the average adult American Facebook user, less than 7% of the content that they saw was related to news even in the months leading up to the 2020 U.S. elections.
+
+And when Americans do read news, most of it comes from credible sources.
+
+A 2021 study from our center ( New York University’s Center on Social Media and Politics ) found that 89% of news URLs viewed on Facebook were from credible sources.
+
+Similarly, other research from our Center, examining Russia’s 2016 disinformation campaign on Twitter, found that online users saw 25 times more posts from national news and media than those from Russian accounts.
+
+Second, for the misinformation that does exist, research indicates it is heavily concentrated among a small minority of Americans.
+
+For example, during 2016, one study examining misinformation on Twitter found just “1% of users were exposed to 80% of fake news, and 0.1% of users were responsible for sharing 80% of fake news.” Another study from our center looking at Facebook found that over 90% of respondents didn’t share a single link from a fake news website during the election period.
+
+While this concentration of misinformation might impact polarization or extremism, these studies also show that misinformation is often not reaching most of the online public.
+
+Third, most American voters have generally made up their minds long before election day in partisan elections in our heavily polarized environment—it is not a stretch to say that 90% of Americans probably already know the party of the candidate for whom they will vote for President in 2024 without evening knowing who that candidate is—and seeing misinformation likely won’t change most people’s vote choices or beliefs.
+
+One recent study from our center found that exposure to Russia’s foreign influence campaign on Twitter in 2016 wasn’t linked to changes in attitudes, polarization, or voting behavior.
+
+Why?
+
+Likely in part because this content primarily reached a small subset of the electorate, most of whom were highly partisan Republicans.
+
+Similarly, recent studies examining Facebook in 2020 found that modifying the platform’s algorithm—tweaking the type of content people see and in what order—also had no effect on their political attitudes or beliefs.
+
+Taken together, society likely originally overestimated the impact of online misinformation, and we want to be alert to the possibility that we could be making the same mistake with AI-generated misinformation. 1 But this doesn’t negate the ability for AI to change the equation and potentially undermine elections.
+
+Indeed, it should orient us toward understanding how the future might be different.
+
+[H3]How could generative AI change the online misinformation landscape?
+
+We need rigorous research to help assess whether and how AI could be different in terms of misinforming the public.
+
+There are three main areas to consider.
+
+First, AI could make misinformation more pervasive and persuasive.
+
+We know the vast majority of misinformation stories just aren’t seen by more than a handful of people unless they “win the lottery” and break through to reverberate across the media landscape.
+
+But with each additional false story, image, and video, that scenario becomes more likely.
+
+And the math is brutally simple—if you buy enough lottery tickets, you’re going to win eventually.
+
+In addition, what the public sees could be more tailored and harder to spot.
+
+In the past, content from foreign influence campaigns were riddled with grammatical errors, and convincing photos and videos were hard to make at scale.
+
+Increased scale and quality from generative AI, as well as more multimedia content, could make misinformation more harmful to elections.
+
+While both of these assumptions (pervasiveness and persuasiveness) have intuitive appeal, they need to be rigorously tested.
+
+Second, AI and TikTok could change the dynamics of misinformation, enabling it to reach more persuadable people.
+
+Platforms like Facebook, Instagram, and Twitter are structured around a social graph in which users follow and are followed by other users.
+
+In turn, the content we see depends on what’s shared in our network.
+
+Given that we tend to follow people who are like us, we are likely to see content with which we are more likely to agree.
+
+This means that if we are exposed to false content, it tends to confirm our worldview.
+
+TikTok is different—and in ways that go beyond the fact that it is owned by a company based in a country that is a geo-strategic rival of the United States and an autocratic regime.
+
+Like other social networks, consumers primarily visit TikTok as its own unique venue and consume content based on an algorithmically ranked queue.
+
+However, the “For You” Page on TikTok surfaces videos based on algorithmic recommendations from outside of one’s social network.
+
+With generative AI making fabricated videos easier to produce, we could see political misinformation reaching users on TikTok that it wouldn’t reach on other social graph-based platforms.
+
+TikTok users are also younger and, unlike Twitter users, may be less interested in news and politics.
+
+While research indicates older voters are more likely to share misinformation, studies show young people are more likely to believe it.
+
+Could these two network features—algorithmic recommendations and a younger user base—potentially make misinformation more effective on this platform?
+
+Moreover, the more successful TikTok becomes, the more legacy platforms like Twitter/X, Facebook, and Instagram, seem to be inclined to emulate it by surfacing more content that does not come from one’s social graph.
+
+Third, worry over AI-generated misinformation could further erode trust.
+
+Even if AI-generated misinformation doesn’t reach or persuade voters, media coverage might lead the public to believe that it is.
+
+One study found news coverage around fake news has lowered trust in the media, and there is evidence this is already occurring with AI.
+
+Arecent poll, for example, found that 53% of Americans believe that misinformation spread by AI “will have an impact on who wins the upcoming 2024 U.S. presidential election”, despite the fact that there is no evidence at all yet to suggest this is the case.
+
+More research in this area is urgently needed—and quickly—so that it can be referenced alongside reports of AI’s potentially pernicious impact on elections, at least in part to inform how journalists cover the topic.
+
+These fears could also contribute to the so-called “ liar’s dividend ”—claiming true information is false by relying on the belief that the information environment is saturated with misinformation.
+
+We’ve already seen this from Elon Musk and January 6th rioters, who raised questions in court about whether video evidence against them was AI-generated.
+
+This strategy has been transparently employed by political operatives like Steve Bannon, who often accuses traditional media of publishing “Fake News,” while at the same time “flooding the zone with shit ( misinformation). ” It’s not hard to imagine a candidate in 2024, perhaps caught in a hot-mic video, simply claiming the footage was fake.
+
+While the courts have developed complex procedures to validate evidence and reveal forgeries over hundreds of years, public opinion is another matter entirely.
+
+We should not forget how quickly “fake news” went from an actual description of websites that were masquerading as news organizations in order to monetize clicks—leading to the memorable Denver Post headline “ There’s no Such Thing as the Denver Guardian, Despite that Facebook Post You Saw ”—to a rallying cry of politicians who didn’t agree with their media coverage.
+
+[H3]What can be done to identify and defend against AI’s risks to elections?
+
+Both the executive and legislative branches have marked AI regulation as a top priority.
+
+Any potential regulations should support research on how these tools impact society and elections.
+
+They could do so in several ways.
+
+First, lawmakers could support research on the social and behavioral effects of generative AI.
+
+This risk of either over- or underestimating the impact of AI is greatest without rigorous research, as conventional wisdom will define how we talk about and perceive the threat of AI.
+
+While there’s a lot of research on technical solutions (e. g., watermarking ) and red teaming, there’s been far less on social and behavioral questions.
+
+It’s not too late to prioritize that research by, for example, earmarking more National Science Foundation grants focused on AI.
+
+Each of the areas identified here have questions that research can help us better understand.
+
+Is generative AI misinformation indeed more persuasive when it’s highly personalized or presented in the form of video evidence?
+
+Will TikTok serve generative AI content to users across the demographic spectrum?
+
+Does media coverage of generative AI impact people’s trust in the information environment?
+
+Without rigorous research, we risk making the same mistakes we made previously with social media.
+
+Second, agencies—including the Department of Education, Health and Human Services, and the White House Office of Science and Technology Policy—could also invest in tested methods for improving public resilience to AI-generated misinformation.
+
+Recent years have brought substantial research on evidence-based interventions carried out by academics, community groups, and civil society organizations.
+
+While some interventions have proven to be ineffective, others show promise.
+
+For example, recent research has suggested that we may be able to pre-emptively build resilience against misinformation.
+
+Similarly, lateral reading, or evaluating the credibility of the source, can help people assess information quality.
+
+However, some interventions like asking people to ‘google the article’ can actually increase belief in misinformation.
+
+Further research is therefore needed to assess if these approaches can be effective at protecting the public against AI-driven misinformation, especially in non-text mediums.
+
+Third, Congress could pass legislation, such as the Platform Accountability and Transparency Act, that would require social media platforms to share data with independent researchers.
+
+Research has started to correct the record on social media’s impact on democracy.
+
+But one reason it took so long is because we didn’t—and still don’t—have robust access to social media data.
+
+Data access, from both social media platforms and AI companies, is critical to analyze the impact of platforms and AI at scale.
+
+Data access alone will not be enough—the fundamental questions with policy relevance are causal in nature, thus researchers need to be able to run experiments with causal identification, as they did in the U.S. 2020 Facebook and Instagram Election Study collaboration with Meta, which one of us co-led.
+
+But data access must be the starting point of any regulatory conversations involving research and AI.
+
+There’s no doubt that the emergence of AI has tremendous implications across our society.
+
+While AI could undermine democratic elections, these new technologies could also introduce substantial pro-democracy benefits by, for example, helping social media companies better moderate content at scale or lowering the cost of smaller campaigns to hone and produce their message.
+
+In the end, how the public and policymakers perceive AI—both the good and the bad—will largely be determined by how the media covers it.
+
+That conversation should be driven by facts and research.
+
+Otherwise, belief in AI’s impact could be more detrimental than the actual effects.
+
+Acknowledgements and disclosures
+
+Messing previously founded data science research teams at Pew Research Center, Acronym, and Twitter.
+
+Tucker is one of the co-academic leads of the U.S. 2020 Facebook & Instagram Election Study.
+
+The authors did not receive financial support from any firm or person for this article or from any firm or person with a financial or political interest in this article.
+
+The authors are not currently an officer, director, or board member of any organization with a financial or political interest in this article.
+
+Footnotes
+
+To be clear, in an evenly split electorate, even factors that have no impact on the vast majority of people could still turn out to be consequential if they have an impact on enough of the electorate to tip a very close election in one direction or another.
+
+To be clear, in an evenly split electorate, even factors that have no impact on the vast majority of people could still turn out to be consequential if they have an impact on enough of the electorate to tip a very close election in one direction or another.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

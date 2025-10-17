@@ -1,0 +1,143 @@
+[H2]Introduction
+
+Homeowners’ insurance markets are facing some significant challenges.
+
+Across the country, average homeowners insurance premiums have increased by more than 30% between 2020 and 2023 (13% adjusted for inflation).
+
+Some insurance companies have stopped writing policies in some areas.
+
+And an increasing number of households that cannot find insurance in the private market are resorting to more limited “last resort” insurance plans that are intended to fill temporary gaps in the private property insurance market.
+
+Policyholder numbers for last resort plans doubled from 2018-2023 in Florida, California, and Louisiana, and Florida’s insurer of last resort became one of the top 10 largest homeowner insurers in 2023.
+
+These developments raise cause for concern.
+
+Homeowners’ insurance is a pre-condition for most home loans, so most American homeowners are obligated to hold this coverage for the duration of their mortgage.
+
+As premiums rise, homeowners have no choice but to pay these higher prices.
+
+Given these requirements, rising premiums and limited availability of insurance can have significant ripple effects across housing markets, reducing demand (and housing values) for homes in high-risk areas.
+
+Given the far-reaching impacts of property insurance market instability, there is a sense of urgency around mounting a policy response, and public pressure to intervene with policies that can keep insurance affordable and available for all homeowners.
+
+However, keeping property insurance costs artificially low in risky areas would leave property markets and financial markets increasingly over-exposed to climate risk.
+
+In this explainer, we investigate why homeowners’ insurance premiums are rising, what role climate change is playing, and how policymakers might respond.
+
+[H2]What explains the increase in homeowner’s insurance premiums?
+
+[H3]Rising insurer costs
+
+The primary drivers of rising home insurance premiums are rising insurer costs.
+
+The costs of construction materials and skilled labor have increased in recent years, alongside interest rates.
+
+The Insurance Information Institute, a trade organization of insurance companies, estimates that cumulative replacement costs for home repair increased 55% between 2020 and 2022, significantly outpacing the general rate of inflation over this time period.
+
+These cost increases are being passed through to households in the form of higher premiums.
+
+[H3]Climate change
+
+Climate change is also an important factor, putting upward pressure on insurance premiums through a number of channels.
+
+First, insured losses—and thus insurance claims—from climate-related disasters are increasing.
+
+This is partly due to significant increases in building and development in high-risk areas and partly due to increasing frequency and intensity of natural disasters as the climate changes.
+
+Wind and hail, water damage and freezing, and fire and lightning have long been leading causes of property damage, which helps to explain why Florida, Louisiana, Oklahoma, and Texas are perennially the four highest-price states for homeowner’s insurance according to the Insurance Information Institute.
+
+Recent increases in wildfire losses in Western states have also started to put pressure on insurance premiums.
+
+Second, catastrophic weather events are becoming more frequent and more damaging as the climate changes.
+
+To stand ready to pay out claims in these worst-case scenarios, insurers must increase their capital reserves and/or purchase more reinsurance to safeguard their solvency.
+
+These risk load management strategies increase insurers’ costs and thus the insurance premiums they charge.
+
+Third, as damages from extreme weather events become more salient, insurers are investing in better climate risk modeling.
+
+The risk of damages from hurricanes or wildfires are challenging to assess as compared to other insurable risks such as health outcomes or car accidents.
+
+The rarity of these catastrophic events means there is limited historical data to support more traditional actuarial analysis that insurers use to assess and manage risks.
+
+Moreover, a changing climate means that analysis based on historical data can underestimate future climate risk exposure.
+
+Catastrophe models, which simulates plausible catastrophic event scenarios, are changing how insurance companies assess and price natural disaster risks.
+
+The adoption of more sophisticated risk modeling will drive prices up if insurers learn that they have been underestimating climate risk exposure.
+
+Finally, new risk modeling tools can support more granular pricing of climate risk which brings the premium that a customer pays more in line with the best available assessment of their individual risk.
+
+This more customized pricing will imply higher pricing for those high-risk homeowners who were previously pooled together with low-risk homes under coarser pricing structures.
+
+[H2]Climate change presents challenges for insurance market regulation
+
+Homeowners insurance is regulated at the state level.
+
+While regulatory regimes vary across states, all are guided by objectives of rate adequacy (i. e., insurers should charge prices that are high enough to keep them solvent) and fairness (i. e., prices should not result in exorbitant profits).
+
+Insurance affordability, availability, and rate transparency are additional imperatives guiding regulations in many states.
+
+In pursuit of these objectives, state regulators have adopted various methods of regulating insurance rates.
+
+In “prior approval” states, regulators review insurance prices before they are offered in the market.
+
+Other states rely on market forces to keep insurance rates in line with costs, subject to some regulatory oversight.
+
+Regulations that are designed to limit insurance price increases can have unintended impacts on insurance market outcomes.
+
+Intuitively, limiting insurers’ ability to charge prices that are commensurate with costs can reduce insurers’ willingness to provide insurance in high-cost areas.
+
+Thus, as costs rise, it becomes challenging for regulators to negotiate competing policy objectives of insurer solvency, availability of insurance, and fair insurance pricing.
+
+[H2]What lies ahead, and what are the possible policy interventions?
+
+As private insurers retreat from high-risk areas, it may be tempting for state and federal insurance entities to take on more of the climate risks going forward.
+
+But an increased reliance on publicly funded climate risk insurance does not address the fundamental challenges that are destabilizing private property insurance markets.
+
+Public insurers would face many of the same challenges as the private market in terms of managing rising costs and increasing climate risk exposure, plus the added complexity of political pressure to keep premiums artificially low.
+
+Subsidizing insurance in high-risk areas would burden households in less risky areas and dampen the price signal that potential homebuyers should receive about the true costs of living in harm’s way.
+
+Instead, state regulators can take proactive steps to encourage private insurers to write policies in high-risk areas.
+
+This includes initiatives that make more sophisticated catastrophe modeling tools and re-insurance more accessible to all insurers.
+
+Promising new technologies such as virtual home inspection tools and fire safety certification programs could help insurers offer premium discounts for more resilient properties by lowering the cost of monitoring and verification for insurers.
+
+Beyond insurance price regulation, federal and state governments can implement policies that more effectively promote risk-reducing investments.
+
+There is mounting evidence that wind-resistant roofing, fire-resistant siding, hail-resistant shingles, and other investments can cost-effectively reduce losses during extreme weather events.
+
+Achieving broad take-up of risk mitigation investments could limit increases in insurance premiums by decreasing vulnerability to climate catastrophes.
+
+Carefully crafted building code mandates like California’s wildfire building codes or Florida’s hurricane wind codes have been successful in overcoming these barriers for recently-built homes.
+
+Whereas regulatory reforms, risk modeling innovations, and building codes all hold promise, the inconvenient truth is that property insurance premiums will need to increase in high hazard areas to reflect climate risk exposure.
+
+Property insurance markets have a crucial role in providing financial assistance to households and their communities when disaster strikes.
+
+To fulfill this role, insurance prices must increase to adequately reflect the real and rising costs of climate change.
+
+Acknowledgements and disclosures
+
+Richter is a part-time employee of the Pricing Carbon Initiative, a nonprofit organization.
+
+Fowlie is Chair of the Independent Emissions Market Advisory Committee of California.
+
+The authors did not receive financial support from any firm or person for this article, or, other than the aforementioned, from any firm or person with a financial or political interest in this article.
+
+The authors are not currently an officer, director, or board member of any organization with a financial or political interest in this article.
+
+The Brookings Institution is financed through the support of a diverse array of foundations, corporations, governments, individuals, as well as an endowment.
+
+Alist of donors can be found in our annual reports published online  here.
+
+The findings, interpretations, and conclusions in this report are solely those of its author(s) and are not influenced by any donation.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

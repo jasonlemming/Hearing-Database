@@ -173,6 +173,9 @@ class BrookingsIngester(BaseIngester):
         """
         Discover documents via sitemap.xml
 
+        Brookings uses a sitemap index with multiple article sitemaps.
+        This method parses the index and follows article sitemap links.
+
         Args:
             since_date: Start date (YYYY-MM-DD)
             limit: Maximum documents
@@ -183,46 +186,96 @@ class BrookingsIngester(BaseIngester):
         documents = []
 
         try:
-            logger.info("Discovering via sitemap")
+            logger.info("Discovering via sitemap index...")
 
             self._rate_limit()
             response = self.session.get(config.BROOKINGS_SITEMAP, timeout=config.REQUEST_TIMEOUT)
             response.raise_for_status()
 
-            # Parse sitemap XML
+            # Parse sitemap index XML
             root = ET.fromstring(response.content)
 
             # Namespace for sitemap
             ns = {'ns': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
 
-            # Extract URLs
-            for url_elem in root.findall('ns:url', ns):
-                loc = url_elem.find('ns:loc', ns)
-                lastmod = url_elem.find('ns:lastmod', ns)
+            # Check if this is a sitemap index (contains <sitemap> elements)
+            sitemap_elements = root.findall('ns:sitemap', ns)
 
-                if loc is not None:
-                    url = loc.text
+            if sitemap_elements:
+                # This is a sitemap index - find article sitemaps
+                logger.info(f"Found sitemap index with {len(sitemap_elements)} sub-sitemaps")
 
-                    # Filter by date
-                    if lastmod is not None:
-                        mod_date = lastmod.text[:10]  # YYYY-MM-DD
-                        if mod_date < since_date:
-                            continue
+                article_sitemaps = []
+                for sitemap_elem in sitemap_elements:
+                    loc = sitemap_elem.find('ns:loc', ns)
+                    if loc is not None and 'article-sitemap' in loc.text:
+                        article_sitemaps.append(loc.text)
 
-                    # Filter by URL pattern (only research content)
-                    if '/research/' not in url and '/essay/' not in url and '/report/' not in url:
-                        continue
+                logger.info(f"Found {len(article_sitemaps)} article sitemaps")
 
-                    doc = {
-                        'document_identifier': self._extract_slug(url),
-                        'url': url,
-                        'title': None,  # Will be extracted from HTML
-                        'publication_date': lastmod.text[:10] if lastmod is not None else None
-                    }
-                    documents.append(doc)
-
+                # Parse each article sitemap
+                for article_sitemap_url in article_sitemaps:
                     if limit and len(documents) >= limit:
                         break
+
+                    logger.info(f"Parsing {article_sitemap_url}")
+                    self._rate_limit()
+
+                    sitemap_response = self.session.get(article_sitemap_url, timeout=config.REQUEST_TIMEOUT)
+                    sitemap_response.raise_for_status()
+
+                    sitemap_root = ET.fromstring(sitemap_response.content)
+
+                    # Extract URLs from article sitemap
+                    for url_elem in sitemap_root.findall('ns:url', ns):
+                        loc = url_elem.find('ns:loc', ns)
+                        lastmod = url_elem.find('ns:lastmod', ns)
+
+                        if loc is not None:
+                            url = loc.text
+
+                            # Filter by date
+                            if lastmod is not None:
+                                mod_date = lastmod.text[:10]  # YYYY-MM-DD
+                                if mod_date < since_date:
+                                    continue
+
+                            doc = {
+                                'document_identifier': self._extract_slug(url),
+                                'url': url,
+                                'title': None,  # Will be extracted from HTML
+                                'publication_date': lastmod.text[:10] if lastmod is not None else None
+                            }
+                            documents.append(doc)
+
+                            if limit and len(documents) >= limit:
+                                break
+
+            else:
+                # Regular sitemap (single file)
+                for url_elem in root.findall('ns:url', ns):
+                    loc = url_elem.find('ns:loc', ns)
+                    lastmod = url_elem.find('ns:lastmod', ns)
+
+                    if loc is not None:
+                        url = loc.text
+
+                        # Filter by date
+                        if lastmod is not None:
+                            mod_date = lastmod.text[:10]  # YYYY-MM-DD
+                            if mod_date < since_date:
+                                continue
+
+                        doc = {
+                            'document_identifier': self._extract_slug(url),
+                            'url': url,
+                            'title': None,  # Will be extracted from HTML
+                            'publication_date': lastmod.text[:10] if lastmod is not None else None
+                        }
+                        documents.append(doc)
+
+                        if limit and len(documents) >= limit:
+                            break
 
             logger.info(f"Found {len(documents)} documents via sitemap")
 

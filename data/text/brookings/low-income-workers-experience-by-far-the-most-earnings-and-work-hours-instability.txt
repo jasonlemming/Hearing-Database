@@ -1,0 +1,380 @@
+To assess the compensation of workers, it matters not only how much money they earn, but also the manner in which their pay is earned.
+
+That is to say, to earn $25,000, one worker may have reliable and consistent earnings and hours from a single employer, while another may have multiple employers, inconsistent work hours, and variable wages.
+
+While workers may desire some amount of flexibility in their work schedule and earnings, volatility itself can also be troublesome.
+
+In this piece, we document how volatile earnings and work hours are month-over-month for workers, and how this varies by workers’ income.
+
+We explore the financial consequences of volatility and several potential causes of volatility—whether the volatility is the worker’s own choice or driven by factors beyond the worker’s control, such as employers setting unpredictable work schedules.
+
+We document that instability is a defining characteristic of low-income workers’ earnings and hours.
+
+This is true regardless of whether the low-income worker is the only earner in the household, lives in a household with other earners, or is the primary or secondary earner.
+
+Further, the current amount of earnings and hours volatility for low-income workers is not simply a reflection of preferences for more irregular work, but rather a reflection of the nature of the labor market they work in.
+
+Furthermore, compared to high-income workers with volatile income, low-income workers with volatile income are 3.5 times more likely to report their volatile income leads to trouble paying their bills, 1.4 times more likely to report their employer requires they work an irregular schedule, and nearly twice as likely to want to work more hours.
+
+[H2]Perceptions of volatility and volatility’s relationship with financial distress
+
+Figure 1 shows the share of households in 2023 who report that their income is volatile month-to-month.
+
+Overall, almost a third of all households in the U.S. report that their income varies occasionally (22 percent) or often (9 percent).
+
+More than half of households earning less than $25,000 a year in 2023 reported experiencing income that varies month-to-month occasionally or often.
+
+Only about a quarter of households earning over $100,000 a year report that their month-to-month income is volatile.
+
+Perhaps surprisingly, we find little difference in income volatility by household structure among the lowest-earning households: 55 percent of single households and 57 percent of two-adult households report volatile month-to-month income (not shown).
+
+Figure 2 shows perceptions of financial stability by household income and whether the household reported that their income was volatile (either occasionally or often).
+
+Households that self-report volatile month-to-month income report being less financially comfortable (75 percent) than those who report more stability in income (63 percent).
+
+More than a third of all households who self-report that their income is volatile say they have difficulty paying bills because of this volatility.
+
+In contrast, about two-thirds of low-income households with volatile income report this causes them difficulty when paying bills.
+
+[H2]Assessing volatility in earnings
+
+Recently, there has been increasing attention on month-to-month volatility, which better reflects within-job earnings shocks that are hidden when income is totaled up at the end of the year.
+
+Bania and Leete (2009) determined monthly income volatility increased at the turn of the century, most likely due to the shift from sources of income like public assistance toward earnings.
+
+In other words, earnings as a source of income may drive volatility trends over time.
+
+In 2013, the U.S.
+
+Financial Diaries project tracked household finances in four U.S. areas ( Hannagan and Morduch 2015 ).
+
+Albeit not nationally representative, this study proved that month-to-month income volatility is substantial, particularly for low-income households.
+
+At the time of the Financial Diaries project, its authors recognized the Survey of Income and Program Participation (SIPP) was the best nationally representative survey to study volatility, but they worried about recall and seam biases.
+
+Since the mid-2010s, researchers redesigned the SIPP to address these concerns.
+
+Using the most recent SIPP panel, we analyze changes in month-to-month earnings for 2021 and 2022.
+
+The redesigned SIPP allows us to analyze instability after the pandemic recession, and its oversample of low-income households enables us to track lower earners better than prior volatility studies, such as a 2019 JP Morgan Chase analysis.
+
+Our primary sample includes those who earned at least $300 during at least one month of 2021, and worked at least 40 hours during at least one month of 2021.
+
+We total their earnings from all jobs, not just their primary job, as well as cash income from other sources.
+
+We add the individual’s income across all months in 2021 and categorize people into five evenly sized quintiles among workers.
+
+The maximum annual earnings from the first to the fifth quintile are roughly as follows: $29,000; $47,000; $72,000; $118,000; and $2.4 million.
+
+We measure volatility through multiple lenses: large shocks to earnings, known as spikes and dips, and overall earnings and work hour instability (regardless of whether the change is positive or negative).
+
+To construct these measures, we look at monthly changes relative to the two-year average in 2021–22.
+
+The advantage of comparing changes to this two-year average is that it gives a better sense of an individual’s permanent income and work hours.
+
+The tradeoff is that it can introduce volatility, for example, if someone receives a year-end raise.
+
+[H2]Monthly spikes and dips in earnings
+
+First, we look at spikes and dips in monthly earnings, defined as a change in earnings of more than 120 percent (spike) or less than 80 percent (dip) relative to individual’s average monthly earnings over the two-year 2021–22 period.
+
+There are several potential causes of earnings spikes, for example, if the individual gets a new job, a second job, a raise, more hours, or bonuses or extra commissions.
+
+Job losses, a worker unpaid leave, or fewer hours worked can cause dips.
+
+Seasonal work will appear in the data as both spikes, at work initiation, and dips, at work conclusion.
+
+Past work suggests that those in lower-wage occupations experience more job volatility through no fault of their own—for example because of involuntary job losses—than middle-wage occupations do.
+
+Figure 3 shows the frequency of spikes and dips overall and by personal income quintile; the vertical axis indicates the number of months during 2022 that the individual experienced a dip (dark purple) or spike (light purple).
+
+On average, those who had earnings in 2021 experienced 2.7 months of spikes and 3.2 months of dips in their earnings in 2022.
+
+The lowest income quintile had the highest frequency of spikes and the second highest frequency of dips; on average, workers in this quintile exp erienced 3.8 months of dips and 5.6 months of spikes.
+
+The highest income quintile experienced the highest rate of dips at about 4.3 months per year but reported lower rates of spikes (1.4 spikes).
+
+The middle three income quintiles had lower rates of dips than either the first or fifth quintile.
+
+Overall, given everyone in the sample earned at least $300 and worked at least 10 hours in one month in 2021, people experienced 2.3 months of no earnings across 2021 and 2022 on average.
+
+The lowest income quintile experienced 5.5 months with no earnings on average, compared to the highest quintile who experienced just 1.2 months with no earnings.
+
+The second, third, and fourth quintiles reported 2.2, 1.4, and 1.1 months with no earnings, respectively.
+
+Figure 4 shows the magnitude of the changes in earnings during spikes (light purple bars) and dips (dark purple bars) in 2022 by quintile —so the average percent change in earnings from the long-term mean — among people who experience at least one spike or dip, respectively.
+
+For example, a month when a person earns an amount equivalent to their long-term average earnings would be 100 percent of their long-term average earnings and thus a 0 percent magnitude change.
+
+We find that the magnitude of earnings spikes is largest for the highest income quintile and the magnitude of earnings dips is largest for the lowest income quintile.
+
+Although we find that the highest income quintiles experience dips more frequently than lower income groups, low-income quintile dips are more severe.
+
+The average dip for an individual in the lowest income quintile who reported at least one dip was an 80 percent reduction from average monthly earnings.
+
+There is a 13 percentage point difference between the first and second quintile dip magnitudes.
+
+This finding is consistent with the self-perceptions of volatility described above: lower-income households not only reported experiencing greater volatility, but they were also over three times more likely to report difficulties paying bills because of their volatile incomes than households with high and volatile income.
+
+Alternatively, the highest income quintile experienced the largest spike magnitudes.
+
+In fact, on average, months where their incomes spike were typically over double their long-term average income (106 percent change).
+
+The lowest income quintile reports slightly lower spike magnitudes.
+
+The middle quintiles report the lowest magnitude spikes (68 percent change, 61 percent change, and 75 percent change).
+
+[H2]Instabilityin earnings
+
+We next look at a measure of instability in earnings using the coefficient of variation (CV).
+
+The CV is a statistic that shows the changes in a person’s monthly income relative to their average long-term income. 1 The CV is a ratio of the standard deviation in earnings to the mean of earnings; a higher CV value means more instability.
+
+For example, someone who earned $2,000 per month and someone who earned $10,000 per month, for all 24 months, would both have a CV of 0 percent because neither experienced any earnings deviation from their average.
+
+The average earnings CV for the whole sample is 47 percent.
+
+To get to that number, for example, an individual can earn between around $1,440 and $1,600 every month between January 2021 and August 2021, earn nothing for the rest of the year, and then earn between around $1,500 and $1,680 for the first 11 months of 2022, when they earn about $900 (see appendix b for illustration).
+
+Their mean earnings would be $1,284, their standard deviation would be around $600, and consequently, their CV would be about 47 percent.
+
+Figure 5 shows the CV for earnings overall and by personal income quintile.
+
+Like the spikes/dips analysis, we also find higher earnings instability for the highest income quintile relative to the middle: 41 percent on average for the highest income quintile compared to an average of 34 percent for the middle 60 percent of households.
+
+Those in the lowest income quintile experience by far the greatest earnings instability (84 percent).
+
+To have an earnings CV of 84 percent, a low-income individual, for example, could earn between around $500 and $600 for the first two months of 2021, earn nothing for the next four months, earn between $400 and $550 between July 2021 and June 2022, earn $130 in July 2022, and then earn nothing for the remaining months in 2022.
+
+Their mean earnings would be about $290, with an earnings standard deviation of $243, and an earnings CV of 84 percent (see appendix b, figure 2).
+
+Next, we look at individual earnings instability by household structure in addition to income (figure 6).
+
+One possibility is that income is more volatile among low-income households because they have a less stable household structure (e. g., if dissolution of cohabitating relationships is more common among low-income households).
+
+This analysis allows us to see if some of the instability we document above is driven by changes in the number of earners and whether households with multiple earners can smooth out instability within the household. 2
+
+As expected, individuals in households that experienced at least one change in the number of earners in 2021 also experienced the greatest earnings instability in 2022 on average (77 percent, compared to about 30 percent for both single and consistently multi-earner households).
+
+Most striking, the lowest income quintile experienced a 104 percent earnings CV if they lived in a household with a variable number of earners in 2021.
+
+Put differently, these households reported that their earnings are around 100 percent different from their long-term earnings for most months, on average.
+
+However, across all household structures, the lowest income quintile workers had the most earnings instability, so differences in household structure do not explain the differences in earnings instability we find by personal income quintiles.
+
+Figure 7 looks at earnings instability among primary and secondary earners, conditional on being a household with two consistent earners or a variable number of earners.
+
+For primary earners in consistent multi-earner households, the lowest and highest quintiles report the most earnings instability (54 and 38 percent, respectively).
+
+Secondary earners in consistent multi-earner households have relatively similar earnings instability for the top four income quintiles, but the earnings CV for secondary earners in the lowest quintile (52 percent) is substantially higher.
+
+Households with a variable number of earners are defined by having periods of no earnings for one or both earners, so it is not surprising to see that instability is higher across the board among this group.
+
+Notably, low-income primary and secondary earners in households with variable number of earners are almost equally highly unstable: their typical monthly earnings are more than 100 percent different than their long-run average.
+
+At the top of the income distribution, secondary earners have higher earnings instability compared to primary earners, which may indicate that these secondary earners intermittently supplement the comparatively more stable primary earner’s earnings.
+
+[H2]Instability in work hours
+
+Work hour instability is a feature of job quality and may be an important determinant of earnings instability.
+
+Cai (2023) and Cai (2024) highlight the unequal distribution of work hour volatility between demographic groups.
+
+Low-income service and health jobs have less predictable scheduling, and low-income service jobs experience a greater incidence of on-demand contract work compared to higher-income jobs.
+
+This is concerning because healthcare and social assistance, and leisure and hospitality make up a growing portion of new jobs.
+
+We show instability in work hours using the coefficient of variation (CV).
+
+Here, the CV indicates the dispersion of a person’s monthly work hours relative to their long-term average work hours, i. e., the ratio of the standard deviation in work hours to the mean of work hours.
+
+Monthly work hours are the number of average weekly work hours multiplied by the number of weeks that month.
+
+If someone works a 40-hour week every week of every month over the sample period, they will have a CV of 0 percent.
+
+In our sample, average work hour instability is 37 percent.
+
+Let’s say an individual works on average 30 weekly hours between January 2021 and May 2022, apart from July and August 2021, when they worked 0 and 15 hours, respectively.
+
+In June, July, and August of 2022 they worked 24, 0, and 12 hours weekly, on average.
+
+They work 30 hours weekly on average for the rest of 2022.
+
+We then multiply their average weekly earnings by the number of weeks in each month.
+
+From 2021–2022, they work on average 113 monthly hours with a standard deviation of 41 monthly hours, resulting in a work hour CV of 37 (see appendix b, figure 3).
+
+Figure 8 shows that while the average work hour instability was a little less than 40 percent, it was 70 percent among the lowest-income households.
+
+What kind of schedule could produce a work hour CV of about 70 percent?
+
+An individual could work between 32 and 40 weekly hours for all of 2021, apart from March, April, and May, when they don’t work at all, and August, when they work 10 hours per week on average.
+
+In 2022, they don’t work for the first three months and December, and they work between 32 and 40 weekly hours on average for the middle eight months.
+
+On average, they work about 114 hours monthly, with a standard deviation of 79 hours and a work hour CV of 70 percent (see appendix b, figure 4).
+
+Hours instability is so disproportionately high among the lowest-income households that average hours instability for the next 80 percent of households is below the average for the full population.
+
+Figure 9 reenforces that work hour instability is a defining characteristic of the lowest-income households, regardless of their household structure.
+
+There was little difference in work hours instability for the top 80 percent of households by income if the number of earners was consistent.
+
+But for those in the lowest income quintile, work hour instability was 10 percentage points (always single-earner) and 13 percentage points (always multi-earner) higher than the total.
+
+Even among households with a variable number of earners, which again, by definition, include a least one person with no earnings for a time, the CV for the lowest income workers (90 percent) was almost 39 percentage points higher than the CV (51 percent) for variable earning households in the next highest mean work hour instability, the second quintile.
+
+Looking at primary and secondary earners (figure 10), we see that secondary earners in the highest income quintile who live in households with a variable number of earners had a higher work hour CV (64 percent) than the primary earner (41 percent).
+
+But, for lower quintiles in households with variable earners, primary and secondary earners have remarkably similar CVs to each other.
+
+Again, the most instability in hours is seen among those with the lowest incomes, particularly those in households where the number of earners varies.
+
+[H2]Assessing the causes of volatility in work hours
+
+Figure 11 shows the share of employees who work for an employer 3 and who reported having irregular schedules, split by household income and the same self-reported volatility measure from above.
+
+More than half of low-income households who reported that their income is volatile also reported an irregular schedule, compared to a quarter of those with stable income who also reported having irregular schedules.
+
+Workplace flexibility can benefit workers, for example, offering the ability to take sick leave or vacation days.
+
+However, high levels of instability in hours that are beyond workers’ control is generally not to their benefit.
+
+This can happen when employers limit advance notice of scheduling, employ on-call scheduling, shift cancellation and changes in schedules week to week.
+
+For example, more than 60 percent of food and retail workers in the U.S. have less than two weeks’ notice for their work schedule, and about 70 percent experienced at least one last-minute shift change in the past month.
+
+Workers with variable schedules report higher rates of material hardship and have more difficulty securing childcare than workers with the same wages but stable schedules.
+
+The SHED survey also asked respondents whether their irregular schedules were at their request or their employer’s.
+
+Overall, almost 40 percent of low-income households reported having irregular schedules, two-thirds of which were driven by the employer.
+
+In other words, for most low-income households, hours volatility is not voluntary.
+
+For high-income households, the patterns are the same, but the values are much lower: 23 percent reported an irregular schedule, 48 percent of which are at the employer’s request.
+
+Forty percent of high-income households with volatile income reported an irregular schedule, 60 percent of whom said this schedule was because of their employer’s request.
+
+Among households that reported stable income, there were still 20 percent who report irregular work schedules.
+
+This is even more severe for low-income households—27 percent of low-income households with stable income report that they have irregular schedules, most of whom reported that the irregular schedule is at the employer’s request.
+
+Just as irregular schedules largely result from employer decisions, gaps in work hours are not necessarily a function of not wanting to work.
+
+Figure 12 shows the share of respondents who were interested in working more hours, by income and self-reported income volatility.
+
+About a third of households overall reported wanting to work more in the past month, and almost half of households reporting income volatility did.
+
+Among low-income households, somewhat more (64 percent) households reporting volatility wanted to work more hours than those with self-reported stable income (56 percent).
+
+Adding work requirements to Medicaid, expanding the population subject to SNAP time limits, and limiting the ability of states to apply for waivers from SNAP work requirements for distressed labor markets are on the agenda for 2025.
+
+It is critical to understand both the financial position and the earnings and hours dynamics of low-income workers because recently proposed changes to work requirements in certain U.S. safety net programs assume that workers are in control of meeting designated work hour thresholds.
+
+In this analysis, we find that earnings and hours volatility for low-income workers are not due to their preferences but rather reflect the nature of the low-wage labor market.
+
+As we documented in this primer on work requirements in safety net programs, there are rigid rules about how many work hours are needed to count as sufficient work activity in order to satisfy work requirements.
+
+For example, in SNAP, otherwise eligible so-called able-bodied adults without dependents are required to prove that they work or do a qualifying activity for 80 hours a month or risk losing access to the program.
+
+And, in Georgia, adults with income below 100 percent of the poverty line can receive Medicaid if they successfully prove that they work or volunteer for 80 hours a month.
+
+Social insurance programs like SNAP and Medicaid are intended to help people maintain a baseline level of food and health care consumption when they have a decrease in household resources.
+
+Making these programs strictly conditional on work does not acknowledge the reality of the volatile labor market for low-income workers.
+
+Rigid hours- or earnings-based work requirements rule would restrict benefits from low-wage workers who experience volatility, low-wage workers who are subject to employer-driven decisions that affect workers’ schedules, and at times and in places with low labor demand.
+
+[H4]References
+
+Federal Reserve Board. 2024. “Survey of Household Economics and Decisionmaking.” Board of Governors of the Federal Reserve System, Washington, DC.
+
+U.S.
+
+Census Bureau. 2023. “2022 Survey of Income and Program Participation.” U.S.
+
+Department of Labor, Washington, DC.
+
+U.S.
+
+Census Bureau. 2024. “2023 Survey of Income and Program Participation.” U.S.
+
+Department of Labor, Washington, DC.
+
+[H2]Appendix a: An alternative measure of instability (standarddeviationof arc percent change)
+
+[H2]Appendix b: Examples of mean coefficients of variations
+
+Acknowledgements and disclosures
+
+Acknowledgements  
+The authors are grateful to Wendy Edelberg for her insightful comments and Bradley Hardy for helpful conversations on this and earlier work.
+
+Noadia Steinmetz-Silber and Eileen Powell provided excellent research assistance.
+
+The Brookings Institution is financed through the support of a diverse array of foundations, corporations, governments, individuals, as well as an endowment.
+
+Alist of donors can be found in our annual reports published online here.
+
+The findings, interpretations, and conclusions in this report are solely those of its author(s) and are not influenced by any donation.
+
+Footnotes
+
+We repeat our analysis using a different measure of instability, the standard deviation of the arc percent change, in appendix a and generally find similar patterns (see appendix a).
+
+We explored a few methodological changes that may have influenced our results.
+
+All households in Wave 1, defined as an original sampling units in 2021, have the same number of people in each sampling unit across 2021 and 2022 after we remove individuals not in the sample for all 24 months.
+
+This makes sense, since one’s sampling unit identification doesn’t change across waves, even if their address does.
+
+Further, only 2.3 percent of observations broke off from their original sampling unit to live in another household or had an individual break off from their sampling unit after Wave 1.
+
+We tested this effect by excluding these individuals  from an analysis run.
+
+Our results did not substantially change.
+
+The SIPP also features so-called “Type 2” individuals.
+
+Type 2 individuals are individuals who are not present at the time of the interview but who lived with the respondent at some point during the reference period.
+
+These individuals do not have their own records in the SIPP, but the SIPP reports limited information about them under the primary respondent’s record.
+
+To assess the degree to which type 2 individuals affected the earning and work behavior of the sample individuals, we ran our analysis again excluding sample units that reported having a type 2 person in their household who worked for pay for any month in 2021–22 (approximately 7 percent of our sample).
+
+Again, our results are robust against this exclusion, which didn’t change our qualitative results and only changed the majority of our quantitative results by a few percentage points.
+
+This scheduling question omits anyone who doesn’t work for an employer, including those who are self-employed, unemployed, and not in the labor force, most likely underestimating low-income gig workers.
+
+We repeat our analysis using a different measure of instability, the standard deviation of the arc percent change, in appendix a and generally find similar patterns (see appendix a).
+
+We explored a few methodological changes that may have influenced our results.
+
+All households in Wave 1, defined as an original sampling units in 2021, have the same number of people in each sampling unit across 2021 and 2022 after we remove individuals not in the sample for all 24 months.
+
+This makes sense, since one’s sampling unit identification doesn’t change across waves, even if their address does.
+
+Further, only 2.3 percent of observations broke off from their original sampling unit to live in another household or had an individual break off from their sampling unit after Wave 1.
+
+We tested this effect by excluding these individuals  from an analysis run.
+
+Our results did not substantially change.
+
+The SIPP also features so-called “Type 2” individuals.
+
+Type 2 individuals are individuals who are not present at the time of the interview but who lived with the respondent at some point during the reference period.
+
+These individuals do not have their own records in the SIPP, but the SIPP reports limited information about them under the primary respondent’s record.
+
+To assess the degree to which type 2 individuals affected the earning and work behavior of the sample individuals, we ran our analysis again excluding sample units that reported having a type 2 person in their household who worked for pay for any month in 2021–22 (approximately 7 percent of our sample).
+
+Again, our results are robust against this exclusion, which didn’t change our qualitative results and only changed the majority of our quantitative results by a few percentage points.
+
+This scheduling question omits anyone who doesn’t work for an employer, including those who are self-employed, unemployed, and not in the labor force, most likely underestimating low-income gig workers.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

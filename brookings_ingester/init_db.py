@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 def seed_sources(session):
-    """Seed sources table with CRS, Brookings, GAO, Substack"""
+    """Seed sources table with CRS, Brookings, GAO, Substack, Heritage"""
     sources_data = [
         {
             'source_code': 'CRS',
@@ -34,6 +34,14 @@ def seed_sources(session):
             'short_name': 'Brookings',
             'description': 'The Brookings Institution is a nonprofit public policy organization based in Washington, DC.',
             'url': 'https://www.brookings.edu',
+            'is_active': True
+        },
+        {
+            'source_code': 'HERITAGE',
+            'name': 'Heritage Foundation',
+            'short_name': 'Heritage',
+            'description': 'The Heritage Foundation is a conservative research and educational institution focused on public policy.',
+            'url': 'https://www.heritage.org',
             'is_active': True
         },
         {
@@ -76,6 +84,12 @@ def seed_organizations(session):
             'short_name': 'Brookings',
             'organization_type': 'Think Tank',
             'url': 'https://www.brookings.edu'
+        },
+        {
+            'name': 'Heritage Foundation',
+            'short_name': 'Heritage',
+            'organization_type': 'Think Tank',
+            'url': 'https://www.heritage.org'
         },
         {
             'name': 'Congressional Research Service',

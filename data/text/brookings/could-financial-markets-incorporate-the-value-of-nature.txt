@@ -1,0 +1,169 @@
+In 2024, the Global Footprint Network estimated “ humans use as much ecological resources as if we lived on 1.7 Earths. ” This overuse of resources highlights how the global economy has developed at the cost of continuous environmental degradation.
+
+The 2021 Dasgupta Review —a comprehensive report on the economics of biodiversity— estimated that, between 1992 and 2014, human capital per person, defined as labor, skills, and knowledge, increased by around 13% and produced capital per person such as roads, buildings, and factories doubled.
+
+Meanwhile, natural capital per person, defined as “the stock of renewable and non-renewable natural assets that yield a flow of benefits to people,” fell by 40%.
+
+As we grapple with challenges arising from climate change and loss of biodiversity, there is a growing need to incorporate environmental considerations in economic decisionmaking.
+
+This explainer explores why financial markets struggle to incorporate the value of nature and the potential solutions that have been proposed.
+
+[H2]What challenges do we face when incorporating the value of nature in economic decisions?
+
+Environmental degradation arises from what economists refer to as the externality problem: The failure of individuals directly involved in a transaction to account for the indirect costs borne by society.
+
+An example of this would be a landowner cutting down a forest without considering its role in absorbing greenhouse gasses.
+
+In addition, quantifying the value of clean air or unpolluted rivers using traditional economic metrics is challenging in the absence of a formal market.
+
+As a result, humanity has treated the services provided by nature (“ ecosystem services ”)— such as oxygen from trees, pollination of crops by bees, and mitigation of flooding from wetlands— largely as if they were free, without considering the depletion of these resources caused by their actions.
+
+Addressing externalities involves incorporating societal costs into the price of goods and services created in the economy.
+
+Ideally, we would estimate and price the carbon emitted during production, the loss of biodiversity caused by water pollution, the depletion of oxygen from deforestation, and so forth.
+
+The underlying idea is to value forests, lakes, and other natural resources not only for the goods they can be turned into but also for the value they provide to society when they remain in their original natural form.
+
+For instance, plants absorb the CO 2 in the atmosphere and release oxygen through photosynthesis.
+
+So, in principle, it is possible to calculate the price of CO 2 emissions by estimating the cost of planting trees to offset them.
+
+However, valuing other environmental externalities is more complex.
+
+Assigning a monetary value to biodiversity loss—such as the extinction of animal species due to climate change—is particularly challenging because it involves factors that are not easily quantifiable, like the intrinsic value of different animal species and the long-term impacts on ecosystems.
+
+[H2]What are some examples of attempts to incorporate nature into financial markets?
+
+Despite the difficulties in assigning a monetary value to environmental externalities and ecosystem services, financial markets could offer tools and mechanisms to address these challenges by accounting for businesses’ environmental impact and channeling investments toward sustainable initiatives.
+
+By developing financial instruments that recognize the value of natural resources, we could incentivize companies to prioritize the preservation of the environment.
+
+This approach could help quantify the value of nature and direct funds towards ventures with positive environmental impact.
+
+In the following sections, we examine how financial markets are attempting to incorporate the value of nature and assess the effectiveness of these efforts.
+
+[H3]Sustainable investments
+
+Sustainable investments aim to generate financial returns while promoting environmental or social value.
+
+Often labeled “ESG”—which refers to environmental, social, and governance—these investments encompass a wide variety of instruments.
+
+These range from green bonds —debt securities issued to finance projects with positive environmental impacts—to ESG-focused exchange-traded funds (ETFs) that select stocks or bonds based on ESG criteria.
+
+Despite recent backlash, demand for ESG investments has increased in recent years and is expected to continue growing in the U.S.
+
+Arecent study shows that, in the year following the publication of sustainability ratings by a well-known rating agency in 2016, “high-sustainability” funds experienced $24 billion in net inflows while “low-sustainability” funds instead experienced $12 billion in net outflows.
+
+This occurred despite a lack of evidence that high-sustainability funds outperform low-sustainability funds.
+
+Yet significant concerns remain regarding the effectiveness and transparency of ESG labels.
+
+An analysis of self-labeled ESG mutual funds in the U.S. has found that these funds held a portfolio of firms with “ worse track records for compliance with labor and environmental laws ” compared to those held by non-ESG funds within the same financial institutions between 2010 and 2018.
+
+The authors found that, despite the ESG funds holding portfolios of firms with higher ESG scores, these scores were correlated with the quantity of voluntary ESG-related disclosures rather than actual compliance records or levels of carbon emissions.
+
+Another study that analyzed emissions data from over 3,000 companies between 2002 and 2020 suggests that sustainable investment strategies involving divestment from “brown” firms in favor of “green” ones may be counterproductive.
+
+The authors found that when “green” firms experience a lower cost of capital, their emissions do not change much, but when “brown” firms experience a higher cost of capital, their emissions increase significantly.
+
+This is because divesting from “brown” firms increases their cost of capital and forces them to continue using their current high-pollution production methods rather than investing in new green technologies that could reduce emissions.
+
+Finally, an analysis of biodiversity finance deals from 2020 to 2022 found that approximately 60% were financed solely by private capital, while the remaining 40% involved “blended finance”—private capital combined with public or philanthropic funding.
+
+The study also revealed that pure private capital tended to finance smaller-scale deals with higher expected financial returns but less ambitious biodiversity impacts.
+
+In contrast, blended finance was used for larger-scale projects with lower profitability but more ambitious biodiversity impacts.
+
+The authors suggest that blended finance is a useful tool for attracting private investors by reducing their risk and bridging the profitability gap.
+
+[H3]Credits
+
+Environmental credits are financial instruments that allow purchasers to support specific environmental actions indirectly.
+
+For example, by buying carbon credits, an investor pays another company to reduce its greenhouse gas (GHG) emissions.
+
+Compared to other types of emerging credits, the carbon credit market is well-established: In 2022, the voluntary carbon market had a market size of around $2 billion covering 1.7 gigatons of carbon, and the compliance markets had a market size of around $850 billion covering just under 20% of global GHG emissions in 2021.
+
+Other types of nature-related credits, such as biodiversity credits, have been proposed to create financial rewards for conservation.
+
+Under this model, a company devises a plan for improving biodiversity and implements it with regular monitoring, either by the company itself or a third party.
+
+Abiodiversity credit is generated when the monitoring confirms that specific biodiversity goals have been met.
+
+The credit can then be sold, with the revenue shared between the landowner and the biodiversity credit developer.
+
+Afew companies have begun selling biodiversity credits, and the United Nations is currently facilitating a voluntary international alliance on biodiversity credits.
+
+The EU is also exploring biodiversity credits and biodiversity-linked carbon credits through its Climate Biodiversity Nexus project.
+
+Challenges facing these nature-based credits include ensuring that the revenues from the credits are used towards their intended goals and accurately measuring the environmental impact.
+
+[H3]Nature preserving companies
+
+Another approach to internalizing environmental externalities in financial markets is the creation of nature-preserving companies.
+
+These companies’ primary purpose is to purchase or lease land and manage it to generate ecosystem services.
+
+Landowners may donate or sell conservation easements, which results in the landowner forfeiting certain rights, such as the right to develop or subdivide the land.
+
+There are 221,256 conservation easements covering approximately 38 million acres of land in the U.S.
+
+While conservation easements are associated with tax benefits for landowners, the Internal Revenue Service has observed abuses of these tax advantages.
+
+In some cases, these companies are envisioned to be publicly traded and listed on exchanges, with the idea that the price-discovery process associated with trading would reflect the value of protecting natural assets.
+
+This model was being considered by the Securities and Exchange Commission when the New York Stock Exchange proposed listing “ natural asset companies ” to be publicly traded.
+
+While the proposal was withdrawn in January 2024, the New York Times notes that there are prototypes of this model underway in private markets.
+
+Nature-preserving companies aim to generate economic returns alongside their conservation efforts.
+
+These returns are typically achieved through the sale of carbon credits or economic activities such as sustainable agriculture, property rental, renewable energy production, and ecotourism.
+
+Proceeds from these activities may be applied to repay loans used to purchase the land.
+
+Integrating the value of nature into nature-preserving companies is challenging for several reasons.
+
+First, basic finance valuation formulas imply that a company’s stock price is the discounted value of all the future cash flows investors expect it to generate.
+
+In competitive markets, nature-based companies would need to offer competitive returns to their investors to secure the financing they need to operate successfully.
+
+However, to generate such profits, companies may be forced to monetize the ecosystem services or extract values from the natural resources they oversee rather than preserve them.
+
+If this extraction of value is necessary to attract investors, economic activities should be conducted in a sustainable, transparent way—for example, through sustainable agriculture or ecotourism.
+
+Another challenge relates to ensuring transparency and rigorous oversight of the activities of nature-preserving companies.
+
+These companies must demonstrate that their operations genuinely benefit the environment, but measuring biodiversity, for example, is inherently difficult due to its complex nature.
+
+Implementing the auditing and reporting frameworks necessary to monitor these activities is also a complex task, often requiring significant resources and expertise.
+
+The lack of standardized metrics for biodiversity further hampers investors’ ability to evaluate the true impact of their investments.
+
+Despite these challenges, nature-preserving companies embody the powerful idea that assigning value to nature’s intrinsic benefits is essential for its preservation.
+
+By attracting private capital into conservation efforts, they can address funding needs that government and philanthropy alone cannot meet.
+
+Given the significant funding gap to prevent biodiversity loss­—estimated at over $700 billion annually —the hope is that, with proper safeguards and transparent operations, nature-preserving companies can meaningfully contribute to environmental preservation while offering investors the prospect of long-term returns.
+
+[H2]Conclusions
+
+Valuing nature within financial markets is an essential yet complex task that requires innovative approaches and careful considerations.
+
+While the current state of sustainable investment and nature-preserving companies offers some promise, significant challenges remain in ensuring that nature is adequately valued and protected.
+
+By addressing these challenges, we can create financial institutions that support economic development while promoting environmental sustainability.
+
+Acknowledgements and disclosures
+
+The Brookings Institution is financed through the support of a diverse array of foundations, corporations, governments, individuals, as well as an endowment.
+
+Alist of donors can be found in our annual reports published online  here.
+
+The findings, interpretations, and conclusions in this report are solely those of its author(s) and are not influenced by any donation.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

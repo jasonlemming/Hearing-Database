@@ -1,0 +1,177 @@
+By some metrics, the U.S. labor market recovery has been the envy of the world, with unemployment rates at record lows and workers’ earnings rising at a substantial clip.
+
+But these glowing figures mask harsh realities.
+
+The low unemployment levels are partially attributable to low labor force participation rates, and even with the income gains, the U.S. has the third-highest share of workers earning low pay among 26 countries in the Organisation for Economic Co-operation and Development (OECD).
+
+This prevalence of low-paying work stifles upward economic mobility; nearly 60% of U.S. adults who were socioeconomically disadvantaged in their teens continue to struggle economically at age 30.
+
+For decades, policymakers have turned to job training programs to address these challenges, with mixed results.
+
+But among the most successful programs are “sector-based” training initiatives.
+
+These partnerships focus on training for high-demand occupations in growing sectors, recognizing that aligning training programs across groups of businesses with similar skills needs can aggregate demand and justify investment in resources to train workers.
+
+For these reasons, sector-based training can be a useful tool within broader place-based economic strategies that seek to enhance local economic prosperity.
+
+To better understand how regions are designing training programs that support industry competitiveness and worker mobility, this analysis provides a detailed programmatic review of these training efforts within one federal place-based program: the Economic Development Administration’s (EDA) $1 billion Build Back Better Regional Challenge (BBBRC).
+
+We examine how BBBRC proposals incorporate the design elements of previous successful sector-based training initiatives.
+
+[H2]The BBBRC makes a significant down payment on sector-based training
+
+The BBBRC asked 60 regional coalitions—each comprised of businesses, governments, universities, and community-based organizations—to design comprehensive, place-based, multi-project strategies that develop nationally critical industry clusters in ways that deliver economic opportunity to historically excluded people and communities.
+
+In September 2022, 21 of those regions received implementation grants ranging from $25 million to $65 million.
+
+Sector-based training programs have a “dual customer” model that aligns closely with the BBBRC’s objectives and design.
+
+Employers are one customer, with programs offering opportunities to develop a more skilled, productive workforce that is less vulnerable to disruptions from coming technological innovations.
+
+For example, these programs can train manufacturing workers in advanced manufacturing or “Industry 4.0” approaches; upskill biopharmaceutical workers to harness automated technologies; and prepare agricultural workers to deploy smart technologies that also build climate resilience.
+
+Workers are the second customer.
+
+Sector-based training programs are often designed for people without college degrees, which can expand employers’ reach to unemployed and underemployed populations—especially valuable in today’s tight labor market.
+
+The programs can also help workers advance into higher-wage jobs in higher-earning industries and occupations.
+
+In the context of the BBBRC, we define sector-based training programs as industry-focused workforce training programs that are designed to be completed in less than two years.
+
+These can include short-term trainings, certificate programs, and on-the-job incumbent worker trainings, up to but not including two-year degrees.
+
+The 60 regional coalitions that applied for BBBRC implementation grants requested $706 million for sector-based job training project proposals.
+
+This represents roughly 16% of the total funding requested from the EDA.
+
+As part of the implementation grants awarded to 21 winning coalitions, 30 projects received nearly $227 million to execute sector-based training and related expenses.
+
+The BBBRC marks a large and much-needed federal investment in workforce development.
+
+The Workforce Innovation and Opportunity Act (WIOA) provides the architecture for the public workforce development system, but it is significantly underfunded: Overall WIOA funding has declined in real terms since its passage in 2014, and less than one-third of people exiting WIOA adult and dislocated worker programs in Program Year 2021 had actually received training.
+
+This underinvestment is particularly damaging to the nation’s middle- and lower-wage workers, as higher-paid workers are more likely to receive employer-provided training (the most common form of job training in the U.S.).
+
+Thus, public investments in workforce development fill important gaps—training workers that might not otherwise have access—and the BBBRC provides a substantial boost to those investments.
+
+[H2]BBBRC sector-based training program proposals vary in cost, design, duration, and structure
+
+The EDA allowed the 60 regional coalitions considerable flexibility to design programs that meet their diverse local needs, assets, and priorities.
+
+Some project proposals are built on existing course offerings, while others support the development of entirely new training programs.
+
+Accordingly, there was considerable variation in many details of the BBBRC’s sector-based training program proposals, such as:
+
+Duration.
+
+The proposed programs range from being as short as two-and-a-half days to completion (as in the case of the Accelerate North Carolina coalition’s manufacturing prep program) to over a year, such as the 18-month artificial intelligence training for veterans through Bidwell Training Center and supported by the Southwestern Pennsylvania New Economy Collaborative.
+
+On-the-job options.
+
+Some programs offer opportunities for employees to receive training and take courses while they hold full- or part-time jobs.
+
+Other programs offer off-the-job learning opportunities with different levels of hands-on engagement.
+
+Sectors.
+
+The 83 project proposals are led by institutions spanning diverse sectors: 45% led by higher education institutions, 29% by private industry, 18% by community organizations, and 8% by government entities.
+
+Target populations.
+
+Some projects gear their trainings toward current high school students, while others serve incumbent workers, including those without degrees.
+
+Some projects further define specific target populations, such as women or members of Indigenous tribes.
+
+Additionally, across the 83 project proposals, 42 articulate quantitative goals for reaching participants of historically excluded communities and demographics.
+
+Cost.
+
+Project costs vary across the 83 proposals we analyzed, with a median training cost per person of approximately $14,600 (25th percentile: $5,600; 75th percentile: $33,800).
+
+For each project, training cost per person was calculated by dividing the total project budget by the number of people expected to participate in the training over the BBBRC grant period.
+
+By comparison, the average training cost per person served through WIOA was less than $2,000.
+
+The comparatively high per capita cost in BBBRC proposals reflects the resources necessary for operating a quality sectoral training program: intensive wraparound services and employer engagement staff, in addition to equipment and other training materials.
+
+BBBRC proposal costs are aligned with the per person costs of other strong sectoral programs.
+
+[H2]BBBRC sector-based training programs catalyze cross-sector partnerships and demonstrate strong employer engagement, wraparound supports, and experiential learning opportunities
+
+There is often wide variation in the quality and impact of sector-based training models.
+
+Some have been shown to advance worker earnings, while others have not.
+
+Prior evidence suggests that job training programs are most likely to deliver tangible benefits to workers if they have three key design elements:
+
+Strong employer engagement.
+
+Regional employers and other industry representatives should be involved in the design and/or development of the sector-based training program, in collaboration with regional higher education institutions and training providers through the cross-sector BBBRC coalitions.
+
+Representatives can be involved in various ways, including but not limited to: engaging directly and consistently in curriculum development; responding to surveys that shape curriculum and program development; and participating in ongoing programs reviews.
+
+Research has shown that employer engagement is critical for ensuring programs are aligned with local labor market needs.
+
+In turn, the more aligned programs are with labor market needs, the more they are associated with better economic opportunities and outcomes.
+
+Wraparound supports.
+
+Program participants should be provided with resources that reduce barriers to accessing training and job opportunities, including but not limited to: career coaching/counseling, transportation, child care, mental health services, financial education, language education, and legal services.
+
+Research reviewing a variety of workforce training programs has identified wraparound supports as critical to success.
+
+While they may be challenging to scale up due to resource needs, wraparounds ensure that participants from the most hard-to-reach, under-resourced communities can access and complete these training programs and realize their full potential.
+
+As a path forward, employers may partner with community-based organizations that offer locally tailored wraparound services.
+
+Experiential learning opportunities.
+
+Program participants should receive training for applied occupational skills in practical, hands-on settings in addition to combinations of in-person and virtual learning in classroom settings from academic, industry, and workforce training experts.
+
+Broader research on job training has found that the best programs offer opportunities for students to gain practical skills.
+
+Hands-on, experiential trainings have been shown to positively impact earnings and employment, and these opportunities are especially important for young people who experience disproportionately high levels of unemployment, are more likely to be working in low-wage jobs, and were more likely to be displaced by the pandemic than other age groups.
+
+Below, we spotlight three examples of funded BBBRC projects that demonstrate all three core design elements of good workforce training programs as well as a diversity of program designs and structures.
+
+These investments in sector-based training programs promise both short- and long-term returns.
+
+In their project proposal, for example, the St.
+
+Louis Tech Triangle coalition estimated that their project, highlighted above, would cut new hire training by 50% and boost employee retention.
+
+By providing students with opportunities for hands-on training for in-demand skills, these sector-based training initiatives can prepare workers to fill higher-quality jobs that meet employers’ needs, and on shorter timelines than associate degree programs.
+
+[H2]BBBRC coalitions must now put sector-based training plans into practice
+
+Our detailed review of the BBBRC’s sector-based training efforts reveals a significant investment in these programs, with the EDA investing $227 million in winning sector-based training projects across the 21 coalitions.
+
+And as these coalitions dive into implementation, they will be tested on their abilities to put plans into practice.
+
+It is relatively easy to implement more diluted sector-based efforts that deliver mediocre results—but implementing initiatives that deliver meaningful outcomes requires robust frameworks, evidence-based standards, and strong cross-sector collaborations.
+
+For employer engagement, whether a strategy taps into pre-existing relationships between employers and intermediaries or cultivates new cross-sector partnerships, all BBBRC coalitions will need to strategically convene stakeholders and maintain alignment toward regional objectives.
+
+And to offer appropriate wraparound supports and meaningful experiential learning opportunities, regional coalitions will need to continuously assess workers’ and employers’ needs, effectively deploy resources, and seek opportunities to secure capital to scale and ensure the sustainability of programs beyond the BBBRC grant period.
+
+The BBBRC’s commitment to sector-based training signifies a promising step toward addressing the challenges of low-wage work and stagnant economic mobility in the U.S.
+
+As the country continues its journey toward economic recovery and prosperity, it is vital to recognize the potential of these training programs in fostering a skilled and adaptable workforce, supporting industry growth, and ultimately facilitating greater economic mobility for all.
+
+To achieve this, it is crucial that future initiatives continue to emphasize the core design elements that have proven to be the bedrock of successful sector-based training programs.
+
+Acknowledgements and disclosures
+
+This report was prepared by Brookings Metro using federal funds under award ED22HDQ3070081 from the Economic Development Administration, U.S.
+
+Department of Commerce.
+
+The statements, findings, conclusions, and recommendations are those of the author(s) and do not necessarily reflect the views of the Economic Development Administration or the U.S.
+
+Department of Commerce.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

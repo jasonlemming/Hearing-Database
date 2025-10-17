@@ -1,0 +1,284 @@
+Matt Stoller recently made the case that Google’s antitrust troubles mean that the company might be broken up.
+
+He is enthusiastic about the prospects for innovation if a shrunken Google were confined to a narrow market such as general search.
+
+But he wonders whether our current institutions are up to the task of supervising such a radical restructuring of a tech giant.
+
+He notes that, “in a year, we might have three different judges overseeing antitrust consent decrees and/or break-ups over different parts of Google’s business.” He notes that Google has lost a case involving its app store, another on its search monopoly, and that it faces a third challenge from the Department of Justice on its ad tech business.
+
+It might be even more complicated than Stoller makes out, as another case against Google on ad tech, led by Texas and a group of state attorneys general, is set to begin in March 2025.
+
+He asks the right questions: “Are those judges going to collaborate?
+
+What if they disagree?
+
+Will they de facto serve as regulators of Google going forward?
+
+What if they set up technical committees to carry out consent decrees?
+
+Wouldn’t these simply become an administrative state fostered by the judiciary?
+
+Such an institutional set-up could eventually become the basis for a new regulatory regime.” He doesn’t pursue these questions, perhaps because he thinks that a quest for a digital regulator in today’s legislative climate is hopelessly quixotic.
+
+But policymakers seeking to instill competition in technology markets might be disappointed in the results of antitrust efforts without a new regulatory structure.
+
+Regardless of who wins the upcoming presidential election, congressional leaders, public interest advocates, and tech industry companies and trade associations planning next year’s legislative agenda might want to revisit some of the antitrust proposals that were under consideration several years ago.
+
+They could possibly be tweaked to establish a regulatory regime that stands a better chance of establishing and maintaining competitive market structures in tech than the current administrative arrangements.
+
+[H2]Antitrust challenges to Google in the U.S.
+
+In December 2023, Google lost an app store antitrust case launched by Epic Games.
+
+Ajury found that Google had “willfully acquired or maintained monopoly power” in the Android app distribution market.
+
+After concluding a series of hearings on the topic in August, Judge James Donato can now determine appropriate remedies.
+
+He seems prepared to “tear the barriers down” that prevent rival app stores from emerging to challenge Google’s stranglehold over Android app distribution.
+
+In August of this year, Google lost a search monopoly case brought by the Department of Justice.
+
+In his decision, Federal District Court Judge Amit Mehta found that “Google is a monopolist, and it has acted as one to maintain its monopoly” in the general search services market.
+
+According to the decision, Google maintained its monopoly not by providing the best search engine, but by purchasing favorable positions on all the relevant distribution platforms through which consumers could access search engines, most notably through $20 billion in payments to Apple in 2022 for default positions on its Safari browsers.
+
+These exclusive contracts enabled Google to manipulate text ad auctions to raise prices for text ads without any meaningful competitive restraint.
+
+Judge Mehta has asked for comments by the end of the year from the Department of Justice and state attorneys general on remedies, and he plans to decide by August 2025.
+
+Anew case against Google, focused on ad tech markets, began in September 2024.
+
+The Department of Justice and several state attorneys general allege that Google uses its ownership of dominant companies in each sector of the ad tech infrastructure to thwart the development of competition and impose monopoly prices on online publishers and advertisers.
+
+Google owns a major provider of advertising services to publishers and another dominant company providing services on the other side of the market to advertisers.
+
+In addition, it controls the dominant marketplace where publishers and advertisers interact to determine prices for the ads that are displayed on websites.
+
+In its separate complaint on the same issue, a group of state attorneys general said that this interlocking set of monopolies would never be tolerated in other markets: “Imagine if the financial markets are controlled by one monopoly company, say Goldman Sachs, and that company then owns the NYSE, which is the largest financial exchange, that then trades on that exchange to advantage itself, eliminate competition, and charge a monopoly tax on billions of daily transactions.”
+Rather than attempt a behavioral remedy to protect ad tech competitors in each of these market segments, the Department of Justice asked the court to “order the divestiture” of Google’s publisher ad server, which it acquired from DoubleClick in 2008, and its dominant ad exchange, in addition to “any additional structural relief as needed to cure any anticompetitive harm.”
+
+[H2]Types of remedies under current antitrust law
+
+While most attention in antitrust cases is on the decision of whether a company violated antitrust laws, the real effect of these cases comes only with strong and effective remedies.
+
+Once a court has determined that a company has achieved or maintained a monopoly using unlawful means, it must then structure a remedy to instill competition into the monopolized market.
+
+Behavioral remedies are ongoing injunctions ordering the company to either avoid certain anticompetitive conduct or provide business customers or competitors with services they need to compete fairly.
+
+Meanwhile, structural remedies constrain corporate structure through measures like requiring separate subsidiaries or divestiture.
+
+They can also constrain corporate operations through line of business restrictions.
+
+Behavioral remedies are unpopular because they are hard to enforce.
+
+They deal with day-to-day business operations, where the companies involved have an overwhelming information advantage.
+
+Any hope of enforcing business conduct constraints would require courts and antitrust agencies to assume an ongoing supervisory role, which they are ill-equipped to do.
+
+While preferable in theory, structural remedies are rarely imposed.
+
+The most famous examples are long in the past and are separated from each other by 70 years.
+
+The Standard Oil Trust was broken up into geographically separate units in 1911.
+
+In 1982, a modified consent decree broke the unified Bell Telephone System into separate companies providing long distance service, local service, and telecommunications equipment manufacturing.
+
+[H2]The remedies in the current Google cases
+
+Awide range of remedies has been suggested to instill competition in Android app distribution, the general search market, and online ad tech.
+
+In its Digital Markets Act (DMA), the European Union has imposed pro-competitive requirements on companies operating digital lines of business in which they both have a dominant position and act as intermediaries between businesses and consumers.
+
+To provide for contestability and fairness under the DMA, app stores, for instance, must allow their customers to use independent payment mechanisms and to obtain apps through rival app stores.
+
+The Open App Markets bill that passed out of the Senate Judiciary Committee in 2022 and was ready for floor action took a similar approach.
+
+But more might be needed.
+
+Former Biden administration official and antitrust scholar Tim Wu has suggested a divestiture in which Google would own neither the most popular web browser, Chrome, nor the Android operating system for mobile devices.
+
+The separation of Google from both the Chrome web browser and the Android operating system would help promote app store competition.
+
+It would also open up competition in the general search market, since Google makes its own search engine the default in the most popular web browser.
+
+Anew owner of the browser might make a different search engine the default or install a clear and conspicuous easy-to-use choice screen.
+
+To be effective, the divestiture of the browser would have to be accompanied by restrictions on buying access to popular distribution points.
+
+Otherwise, Google could simply restore the anticompetitive tie through contract with the new owner, as it did with Apple, rather than through internal administrative arrangements.
+
+In addition, it might still be worthwhile to mandate choice mechanisms to give rival search engines public exposure, even though Europe’s experience with these choice remedies suggests that they are ineffective by themselves when operated by a monopolist.
+
+Divestiture is a natural remedy in the ad tech market, since the anticompetitive problems there stem from Google’s control of the infrastructure—ad buying services, ad selling services, and the exchange on which these transactions take place—and these lines of business are easily separable.
+
+But, once again, behavioral restrictions would be needed to prevent Google from recreating the anticompetitive arrangements by contract rather than through ownership.
+
+One forward-looking remedy would be to require Google to provide free access to user data it has acquired, while doing business in its various markets.
+
+Despite potential privacy issues from this uncontrolled data sharing, this measure could jump-start competitive entry into search by undermining the network effects that allow the largest search engine to improve itself more rapidly than its smaller rivals.
+
+It could also ensure contestability in the emerging market for AI products, as companies other than Google would have access to these data for training large language models and other frontier AI systems.
+
+[H2]The limits of antitrust remedies
+
+While these remedies have been widely discussed, it is not clear that they can be implemented under current antitrust jurisprudence.
+
+One doctrinal limitation is that antitrust law, as currently conceived and practiced, countenances durable monopolies and does not, in general, find antitrust liability for a company that refuses to deal with competitors to preserve or even extend its entrenched monopoly position.
+
+One famous Supreme Court case upheld congressional authority to require a duty to deal with competitors in the telecommunications industry but rejected it as a general duty for monopolists under antitrust law.
+
+It even endorsed the lure of monopoly profits unconstrained by a duty to aid competitors as the engine of innovation, a theme that has become established in antitrust literature.
+
+In a 2021 decision involving the Federal Trade Commission’s (FTC) challenge to the alleged monopoly of Facebook (now Meta) in social media, a district court reaffirmed this rejection of antitrust liability for a monopolist’s refusal to deal with competitors.
+
+These decisions display a deep suspicion on the part of antitrust courts of a general duty to deal and make it hard to imagine that remedies such as access to data or interoperability could be imposed by courts seeking to install competitive conditions in tech markets.
+
+Nevertheless, it is theoretically possible for a court to impose a duty to deal as a remedy once it has found liability for anticompetitive conduct, as discussed in detail by antitrust scholar Herbert Hovenkamp.
+
+Judge Mehta has already found Google liable for monopolizing the search market not by refusing to deal with competitors, but by buying up distribution outlets and manipulating text ad bidding markets.
+
+In principle, he could impose a duty to deal by requiring Google to share access to its search database as a remedy for this anticompetitive conduct.
+
+But even if the courts were not limited in what remedies they could impose, they are ill-equipped to enforce the detailed structural and behavioral restrictions that would be necessary to jump-start and maintain competition.
+
+Without a large supervisory staff, how would a generalist court know if Google provided all its data to competitors?
+
+How would it also know whether Google had recreated anticompetitive arrangements through contracts?
+
+As Iargued in an earlier commentary, creating conditions of contestability and fairness in the app market will inevitably involve extensive industry supervision and even price regulation—capacities that are beyond the institutional competence of generalist judges.
+
+Nor is it possible to say that the antitrust agencies will do the supervisory work.
+
+If they are to fulfill their statutory mandate of protecting competition throughout the economy, these agencies must move on to other issues and industries once they have won their court cases.
+
+Moreover, even if they were inclined to perform this role, they do not have the institutional expertise to function as industry regulators over time.
+
+Invoking the possibility of a “technical committee” to do all the supervisory and enforcement work, as Matt Stoller did in his recent piece, is just handwaving.
+
+Would such a committee have the authority to examine books and records, without which it would be unable to play a supervisory role?
+
+Even if the presiding judge could grant such inspection powers to a committee, it could not be effective as an ad hoc temporary arrangement.
+
+Effective supervision would require substantial resources and long-term institutional commitment to do the job.
+
+These are not likely to be forthcoming outside the context of a regulatory agency.
+
+Beyond these issues, there are administrative difficulties in having different courts supervising the same tech giant for compliance with different antitrust remedies.
+
+Tensions are possible, such as where a remedy to aid ad tech competition could solidify Google’s hold over search.
+
+Even if they could be crafted to emphasize synergies—for instance, by arranging a divestiture of Chrome and Android so that it benefits both app store competition and search competition—supervision would inevitably be splintered without an explicit, and unprecedented, cooperative arrangement among courts.
+
+These difficulties of finding remedies for Google’s violations are not unique to the company: They are emblematic of the difficulties of establishing and maintaining competition in tech more broadly.
+
+In addition to Google, antitrust enforcers have brought cases against Facebook, Amazon, and Apple.
+
+In 2021, the FTC sued Facebook, alleging that its mergers with WhatsApp and Instagram, in addition to its anticompetitive conditions on software developers, allowed it to monopolize the social media market.
+
+In 2023, the FTC brought a case against Amazon, alleging that it had used anticompetitive methods to harm both consumers and merchants in its dominant online store.
+
+In 2024, the Department of Justice and a group of state attorneys general sued Apple for monopolizing the smart phone market through anticompetitive practices, such as by blocking the growth of apps that would have made switching phones easier.
+
+Even if these cases result in victory for the antitrust agencies, they all leave the key questions of remedies to be resolved.
+
+Should there be divestiture?
+
+Line of business restrictions?
+
+Data sharing rules?
+
+Interoperability and access requirements?
+
+[H2]The Bell breakup illustrates the role of a digital regulator
+
+The breakup of the Bell Telephone System provides useful guidance on remedies for creating and maintaining a competitive market structure.
+
+One lesson from this breakup is the need for both structural and behavioral remedies.
+
+The consent decree mandated not just a breakup, but also ongoing constraints and requirements.
+
+To ensure competitive equity, local telephone companies were required to give all long-distance companies access to their local distribution facilities under equal terms and conditions.
+
+And the spun-off local telephone companies were put under line of business restrictions that prevented them from doing anything other than providing local telephone service and local access service as regulated monopolies.
+
+For tech industries, the message is clear: Simply ordering a breakup of a tech giant and walking away is not sufficient.
+
+Another lesson from the Bell System breakup is the need for regulatory supervision to maintain competitive conditions.
+
+The classical view was that regulation was an alternative to antitrust.
+
+For deregulatory czar Alfred Khan, who rejected regulation as the enemy of competition, “the antitrust laws are not just another form of regulation but an alternative to it—indeed, its very opposite.” The lesson from the telecommunications industry, however, is that efforts to promote competition work through regulation.
+
+Antitrust scholars Joseph Kearney and Thomas Merrill describe this reversal as the great transformation of regulated industries law.
+
+Tim Wu generalizes the approach beyond telecommunications, calling it “antitrust via rulemaking.” The key is that regulators are assigned the task not of preserving  industry monopoly, but of implementing regulations designed to establish and maintain competitive conditions.
+
+In 2024, the FTC used this “antitrust through rulemaking” approach through its now suspended noncompete rule, which would have banned companies throughout the economy from enforcing contracts that prevent former employees from working for different companies.
+
+In the past, the Federal Communications Commission attempted to maintain competition through decades of managing the activity of the telecommunications companies it regulated.
+
+In 2003, for instance, it adopted a number portability rule that allowed people to take their old phone numbers with them when they switched carriers, thereby enhancing rivalry in the industry.
+
+None of the methods of introducing competition and protecting dependent businesses in telecommunications were self-enforcing decisions that could be made once by an antitrust court and then never revisited: They were tools that had to be used on an ongoing basis through supervision of the industry.
+
+Even the consent decree that broke up the Bell System, which apparently relied on non-regulatory structural separation mandates and line of business restrictions, had to have ongoing court supervision which would have been impractical without the backdrop of a regulatory agency.
+
+As antitrust scholar Al Kramer put it, “[b]oth a sector-specific regulator and antitrust enforcers were needed” for telecommunications competition to be possible.
+
+For policymakers looking for guidance on what to do about tech monopolies, the lesson is clear: Aproject to instill competition into the tech industry will need to rely on a strong role for an industry-specific regulatory agency.
+
+Thus, as a first order of business, they should create a sectoral regulator that can manage this process of seeking to introduce competition in tech industries.
+
+[H2]The way forward in the next Congress
+
+As a first step, that sectoral regulator will be the FTC.
+
+It is the only existing agency that has antitrust expertise and some experience in establishing and enforcing industry rules.
+
+The FTC certainly has consumer protection rulemaking authority under existing law and might have it for its antitrust mandate.
+
+This, in turn, might enable it to play an active role as a pro-competition rule maker.
+
+However, it would be better, if possible, to solidify that authority through congressional action.
+
+In 2021 and 2022, bills establishing pro-competitive conditions, such as the American Innovation and Choice Online Act, all assigned implementation, rulemaking, and enforcement duties to the FTC.
+
+It is worth remembering that the Senate version of this bill had passed out of the Senate Judiciary Committee and was ready for floor action and that the House version had passed out of the House Judiciary Committee, indicating broad congressional approval of granting the FTC this supervisory role.
+
+As Iargue in my book, “Regulating Digital Industries,” providing the FTC with these duties is not ideal.
+
+The FTC is essentially an economy-wide law enforcement agency, not a sectoral regulator.
+
+Eventually, its limitations would become clear, and Congress would have to transfer digital regulation to a new agency.
+
+It would be better if Congress could move in a single step to a new agency with a pro-competition mission.
+
+In 2023, Senators Michael Bennet (D-Colo.) and Peter Welch (D-Vt.) introduced a bill to create a new Digital Platform Commission with the authority to promote digital competition and protect consumers from unjust and unreasonable practices.
+
+Later in 2023, Senators Elizabeth Warren (D-Mass.) and Lindsey Graham (R-S.
+
+C.) proposed a bill that would establish a new Digital Consumer Protection Commission to regulate digital platforms with respect to competition, transparency, privacy, and national security.
+
+Either approach would overcome the doctrinal limitations in current antitrust law by empowering regulators to impose pro-competitive requirements even in the absence of demonstrable anticompetitive conduct, as is required under current law.
+
+The proposed regulators would do this by imposing rules for interoperability, non-discrimination, and access to data as necessary to foster and sustain competition, regardless of whether these measures are permitted under current antitrust law.
+
+These bills also provide for ongoing oversight and rule enforcement through agency supervision of the business practices of tech companies and the ability to issue injunctions to halt anticompetitive conduct that violates agency regulations.
+
+As policymakers think about their tech agenda for next year, moving forward with legislation to instill competitive vigor into tech markets should be near the top of the list.
+
+The fate of competition in tech industries should not rest with generalist judges, no matter how well intentioned.
+
+Experienced regulators should take the lead in this vital task, and Congress should establish a regulatory agency to oversee the introduction and maintenance of tech industry competition.
+
+Acknowledgements and disclosures
+
+Google, Amazon, and Meta are general, unrestricted donors to the Brookings Institution.
+
+The findings, interpretations, and conclusions posted in this piece are solely those of the authors and are not influenced by any donation.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

@@ -1,0 +1,293 @@
+The Inflation Reduction Act of 2022 (IRA) promised billions in investments towards clean energy and climate-related projects.
+
+While the implementation and delivery of the IRA is ongoing, it has also faced persistent efforts to roll it back from many Republican lawmakers since its enactment.
+
+With the impending shift to a Republican-controlled White House and Congress, the fate of the IRA and its estimated $1.045 trillion worth of climate and energy provisions is uncertain.
+
+In this explainer, we examine the possible trajectories of the IRA under a Republican White House, Senate, and House.
+
+[H2]What is the IRA?
+
+The IRA focuses on clean energy technology, manufacturing, and innovation, with $370 billion in investments aimed at incentivizing private investments in clean energy, supply chains, job creation, and to reduce energy costs.
+
+The Biden administration intended for the IRA to support  its climate goals, which included achieving 100% carbon pollution-free electricity by 2035; a 50-52% reduction of economy-wide net greenhouse gas (GHG) pollution from 2005 levels in 2030; and net-zero emissions economy-wide by 2050.
+
+Findings from a comparison of nine models projecting the IRA’s impact on U.S.
+
+GHG emissions suggest that the maximum additional emissions reductions from the IRA (relative to a business-as-usual scenario without the IRA) could be up to 15 percentage points by 2030 as compared to 2005 emissions levels. 1
+On the cost side, the clean energy and climate portions of the IRA were estimated to cost $392 billion between 2022 and 2031, with tax credits estimated to cost $271 billion and direct spending estimated to cost $121 billion.
+
+Most of the tax credits are not capped, which means that the fiscal cost of the tax credits remains uncertain, as it depends on the behavior of firms and households (or more precisely, how many tax credits they claim).
+
+In April 2023, the University of Pennsylvania’s Wharton School updated their budget estimate of the IRA on climate and energy provisions, from $384.9 billion between 2022-2031 to $1,045 billion for the same period.
+
+Republican lawmakers have cited the cost of the IRA as one of the reasons to roll it back—for example, the House Committee on Ways and Means has highlighted the “exploding” cost of “green corporate welfare” under the IRA.
+
+The cost of IRA’s “green subsidies” was a part of the justification for introducing the Limit, Save, Grow Act of 2023, that sought to cut billions in funding from climate, environmental justice, and clean energy tax incentives from the IRA.
+
+[H2]The IRA under the incoming Republican White House and Congress
+
+Former President Trump, his campaign officials and advisors have expressed an intent to cut IRA spending and to roll back President Biden’s climate and energy policies.
+
+Republicans have voted 53 times in the House and once in the Senate, to repeal parts of the IRA as of October 15, 2024.
+
+The House has passed 20 bills that have attempted to repeal or constrain the IRA.
+
+[H3]IRA provisions likely to be rolled back
+
+Previous House attempts to roll back the IRA may provide an indication of the specific provisions that could be targeted under a Republican White House and Congress.
+
+According to Climate Power’s IRA repeal votes tracker, as of October 15, 2024, the attempts to roll back the IRA have repeatedly focused on preventing funding for Executive Order 14082 (which helps implement the IRA), repealing sections related to the Greenhouse Gas Reduction Fund, and repealing sections related to the Methane Emissions Reduction Program.
+
+Figure 1 illustrates the climate-related provisions of the IRA that have faced at least two attempts to repeal:
+
+[H3]Republican constituents are likely to benefit from the IRA
+
+While it is easier for the IRA to be repealed under a Republican trifecta, it may be difficult to build a sufficiently large coalition in Congress to repeal the full IRA, as Republican lawmakers may prefer to retain certain IRA incentives that benefit their constituents.
+
+In August 2024, 18 Republican House Representatives signed a letter to Speaker Mike Johnson (R-LA) that asked for the IRA’s energy tax credits to be “spared” from attempts to repeal the IRA.
+
+A Senior Tax Policy Advisor on the Senate Finance Committee also noted that a full repeal of clean energy tax incentives is unlikely regardless of the election results, as some parts of the IRA received bipartisan support before its enactment, which was expected to continue.
+
+Republican-held areas have benefitted from the IRA since its enactment, as more than half of announced clean energy and vehicle projects are located in Republican congressional districts.
+
+According to the Rhodium Group and MIT’s Clean Investment Monitor, Nevada and Wyoming had the highest level of actual clean investment as a percent of GDP between September 2023 and September 2024 – with 2.65% and 4.11% respectively.
+
+Nevada, Kentucky, and Georgia had the highest levels of actual clean manufacturing investment as a percent of GDP over the same period, with 1.1% for Georgia and Kentucky, and 1.2% for Nevada.
+
+In terms of federal investments, the most populous states, such as California and Texas, received the most dollars.
+
+However, Nevada and Wyoming received the most federal investments per capita, as well as relative to the size of their GDP.
+
+This includes federal tax credits, grants, and fiscal cost of loans and loan guarantees.
+
+The Political Economy Research Institute (University of Massachusetts Amherst) projected that the IRA could have an employment impact of creating 848,728 jobs annually, across industries.
+
+Clean Jobs America estimated that there has been an increase of 14% in clean energy workers since the enactment of the IRA in August 2022, 2 with 3.5 million workers in clean energy.
+
+Many of these jobs are in California (544,604 jobs), Texas (268,035 jobs), and New York (173,731 jobs).
+
+While it is true that the IRA does not appear to be well known by American voters—in July 2023, 71% of Americans said they have heard little or nothing about the IRA—industry players and investors who are direct beneficiaries of the IRA energy provisions may play an important role in influencing lawmakers to protect certain provisions of the IRA.
+
+[H2]How might the IRA be repealed or restricted?
+
+With a Republican President, an executive order could be used to hinder the implementation of the IRA, while a sufficiently large coalition in Congress could restrict the IRA through reversals of implementing regulations or repeal the IRA through legislative action.
+
+[H3]Executive action
+
+A President could make the implementation of the IRA more difficult via executive action that tightens limits on tax credits, by holding back some of its loans and grants, or by revising rules that have not yet been finalized.
+
+President Biden’s Executive Order 14082, which implements the IRA, could be reversed by a new executive order as well.
+
+This would dismantle the White House Office on Clean Energy Innovation and Implementation, which coordinates the implementation of the IRA.
+
+Apresidential administration could also direct agencies to refrain from publishing proposed or final rules or to delay the effective dates of finalized rules that have not yet taken effect.
+
+For example, the Biden administration issued a memorandum on January 20, 2021, which directed agencies to consider postponing the effective dates of rules that have been published but not yet in effect by 60 days.
+
+It also called for consideration of a 30-day comment period during the postponement, plus additional days beyond the 60-day period to review questions and comments, if needed.
+
+This delay may also apply to guidance documents, as evidenced by the Trump administration’s January 20, 2017 memorandum that directed a “regulatory freeze” which included guidance documents.
+
+[H3]Legislative repeal of the IRA
+
+Congress could partially or fully repeal the IRA through legislation.
+
+Congress may also look to repeal the IRA tax credits to help pay for a renewal of the 2017 tax cuts under President Trump.
+
+While a repeal could be achieved explicitly or implicitly, 3 courts are generally reluctant to construe implicit repeals of legislation—so it is likely that any legislation purporting to repeal the IRA would need to be clear and explicit about the provisions being repealed.
+
+The IRA was passed under a Budget Resolution, which means that only a simple majority vote in the House and Senate are needed to repeal it, with no opportunities for a filibuster to prevent the repeal.
+
+Since a sufficiently large congressional coalition across the House and Senate is needed to partially or fully repeal the IRA, the composition of Congress matters.
+
+With many Republican districts benefitting from investments that are incentivized by the IRA, a slim congressional majority is likely to present a challenge to a full repeal of the IRA, and only specific parts of the IRA may be targeted under this approach.
+
+Republicans are expected to hold a 53-47 majority in the Senate, and as of December 19, 2024, are also expected to hold a 220-215 majority in the House, further narrowed to 217-215 for some time due to President-elect Trump’s appointments.
+
+[H4]What elements of the IRA might survive?
+
+Aletter to Speaker Mike Johnson in August 2024, signed by 18 Republican House Representatives, highlighted the dangers of “prematurely repealing energy tax credits” that industry and constituents have relied on to make investments and create jobs.
+
+The Representatives who signed the letter represented districts from 13 states, including Nevada, Arizona, and Georgia—the states with the highest (2.4%), third highest (1.8%), and sixth highest (1.4%) amount of actual clean investment as a percentage of the state’s GDP from the enactment of the IRA to June 2024.
+
+The parts of the IRA that are likely to be targeted for a repeal, based on previous attempts by House Republicans, include the Greenhouse Gas Reduction Fund, Methane Emissions Reduction Program, and the energy efficiency rebate (Figure 1).
+
+The effectiveness of repealing the Greenhouse Gas Reduction Fund is unclear, as the Environmental Protection Agency (EPA) has already announced that it has awarded $27 billion from the Fund in August 2024, and that award recipients can begin accessing these funds.
+
+The Methane Emissions Reduction Program is likely to be at a higher risk of repeal: While it includes $1.36 billion in financial and technical assistance for methane reduction, it is unpopular in the oil industry as it would also levy a Waste Emissions Charge (WEC) on oil and gas facilities, beginning with methane emitted in 2024.
+
+The final rule for WEC was published in November 2024 to be effective from January 17, 2025, which means that this rule could be vulnerable to a Congressional Review Act (CRA) review, as well.
+
+Elements of the energy efficiency rebates, such as the home energy rebates, may survive as all states except South Dakota are participating as of November 26, 2024.
+
+Eleven out of the 18 Republican signatories of the August 2024 letter to Speaker Mike Johnson represent districts in states that have been approved to roll out the home energy rebates; the remaining Representatives represent districts in states that are preparing or have submitted applications to offer these rebates.
+
+While a full repeal of the IRA may be unlikely given political incentives, some scholars have called for a bipartisan full repeal of the IRA.
+
+While they acknowledge that this would be opposed by many, they see the IRA as an avenue for rent-seekers and argue that a complete repeal is preferable, as a partial repeal could leave room for a future Congress to build on the IRA.
+
+An additional consideration is the cost of repealing the IRA.
+
+The initial cost estimates of the IRA by the Congressional Budget Office (CBO) and staff of the Joint Committee on Taxation (JCT) have been updated by the CBO in their 2024-2034 Budget and Economic Outlook, published in February 2024: 4 While the initial cost estimates assumed that the clean vehicle credits had no effect on outlays and reduced tax revenues, in the 2024-2034 Outlook, the CBO increased the estimated outlay portion of the clean vehicle and energy-related tax credits by $124 billion over 2024-2033.
+
+The CBO also increased the estimated outlays for energy-related tax credits by $51 billion, to reflect the “increase in projected investment in battery manufacturing.” The February 2024 estimate for the cumulative deficit arising from the IRA’s energy-related tax credits were further revised in June 2024, as the CBO increased its 2025-2034 projection by $12 billion relative to the February 2024 projection.
+
+Similarly, Bistline, Mehrotra, and Wolfram (2022) estimate the total fiscal cost of the IRA’s climate provisions to be $901 billion through 2031, with IRA tax credits estimated to cost over $780 billion by 2031—a figure that the authors note is nearly three times that of CBO’s initial estimate in 2022.
+
+These updated cost estimates suggest that a bill to repeal the IRA could have a budget score with a larger magnitude compared to the IRA’s budget estimate in 2022.
+
+While the bill may reduce government expenditures, the IRA’s impact on the economy may make the cost of the bill more “expensive”—although this depends on how the CBO scores the bill.
+
+[H3]Restricting funding
+
+A Republican-controlled House could facilitate budget cuts for the EPA and other relevant agencies, which is likely to slow down or restrict the implementation of the IRA.
+
+The House has also attempted 17 times (as of October 15, 2024) to prevent funds from being used for President Biden’s Executive Order 14082, which helps implement the IRA.
+
+[H3]Reversing regulations
+
+The IRA relies on regulations for implementation.
+
+As of November 29, 2024, the Internal Revenue Service (IRS) currently lists 20 Notices of Proposed Rules and as of December 6, 2024, 11 final regulations that relate to the implementation of the IRA, and other agencies have published at least four final rules, one interim rule, and one proposed rule on the Federal Register. 5 The final regulations are on clean vehicle credits, transfer of certain credits, advanced manufacturing investment credit, and elective payment of applicable credits.
+
+If a rule has not been finalized, a President can prevent the rule from being issued by imposing moratoriums on regulations or withdrawing the rule.
+
+If a rule has been finalized, then a President must go through the rulemaking process set forth in the Administrative Procedures Act to repeal the finalized rule.
+
+This involves:
+
+Agencies publishing a notice of proposed rulemaking, allowing for public comment, and publishing a final rule; or
+Congressional action under the Congressional Review Act.
+
+Former President Trump’s previous administration was successful at preventing proposed rules from being finalized and overturning finalized rules through both the rulemaking process and the Congressional Review Act.
+
+[H3]Congressional Review Act
+
+A Republican controlled White House and Congress could use the Congressional Review Act (CRA) to review and potentially overturn regulations issued by federal agencies.
+
+The CRA applies to the broadest definition of “rules,” including final rules and may include agency actions that are not subject to traditional notice-and-comment rulemaking, such as guidance and policy memoranda.
+
+The CRA was used under the previous Trump administration to overturn regulations: There were 16 successful CRA resolutions in 2017, the year former President Trump first took office. 6
+If a CRA joint resolution passes and is signed by the President, then the rule would be deemed ineffective.
+
+The CRA allows Congress to pass a joint resolution of disapproval for a rule up to 60 days after the final rule is published by the agency in the Federal Register and submitted to Congress. 7 Notably, for rules submitted within the last 60 days of congress, the CRA includes a “lookback” mechanism that resets the 60-day window near the start of the next yearly legislative session.
+
+When administrations change, this allows the next Congress and President to expediently overturn previous administration’s rules that were submitted near the end of the previous President’s term.
+
+The Congressional Research Service estimates that Biden administration rules that were published in the Federal Register on or after August 1, 2024 are likely to qualify for CRA reviews by the new 119 th Congress in 2025—although this depends on when the final session of the 118 th Congress is adjourned.
+
+If the current Congress were to adjourn on the same day as the last eight sessions, its last session may end on January 3, 2025. 8
+The limitations of reversing a rule through the CRA include:
+
+The CRA only allows Congress to invalidate final rules in their entirety.
+
+The CRA does not allow reissuance of any rule that is “substantially the same form” or a “new rule that is substantially the same” as the invalidated rule, unless the reissued or new rule is “specifically authorized by a law enacted after the date of the joint resolution”.
+
+The CRA prevents judicial reviews of any “determination, finding, action, or omission” made under the CRA, which means that the courts cannot check if Congress followed its rules.
+
+There is also uncertainty around whether this also precludes the courts from reviewing “whether a new rule is substantially similar to a disapproved rule”.
+
+This uncertainty could result in legal challenges that might delay implementation.
+
+[H2]Which IRA regulations are at risk?
+
+[H3]Proposed regulation
+
+As of December 23, 2024, there are 23 proposed rules to implement the climate-related provisions of the IRA according to the IRA tracker by the Environmental Defense Fund and Columbia’s Sabin Center for Climate Change Law.
+
+Since a President is able to reverse rules that have not been finalized, the notable IRA-related climate regulations that are at risk of reversals by the President include:
+
+Rules for manufacturers and taxpayers related to the energy efficient home improvement credit.
+
+Federal income tax credit for costs related to alternative fuel refueling property in a low-income community or non-urban census tract.
+
+Bonus credit amounts for investors in clean electricity in low-income communities.
+
+Clean electricity production credit and the clean electricity investment credit, including eligibility.
+
+Rules for clean hydrogen production credit.
+
+Definitions and requirements for the low-income communities bonus energy investment credit program, which allows for increased energy investment credit for certain clean energy investments.
+
+[H3]Finalized regulation
+
+As noted above, executive action could direct agencies to delay the effective dates of rules or guidance documents that are finalized but not yet in effect.
+
+While many of the recently finalized rules have effective dates before January 20, 2025, proposed rules—such as those listed in the previous section—may be at risk of delays if they are finalized.
+
+Rules that were finalized after August 1, 2024 may be at risk of reversal through the CRA.
+
+If this cut-off date is confirmed, notable climate-related IRA rules at risk of reversal include:
+
+Implementation of the Methane Emissions Reduction Program (finalized on November 18, 2024).
+
+Rules to implement the advanced manufacturing production credit (finalized on October 28, 2024).
+
+Rules related to the energy credit, including eligibility (finalized December 12, 2024).
+
+[H2]Conclusion
+
+With a Republican-controlled White House and Congress, the future of the IRA is uncertain.
+
+Recent attempts by Republican lawmakers to partially repeal or hinder the implementation of the IRA suggest that there may be specific sections of the IRA that are particularly vulnerable under the next administration.
+
+The slimness of majorities in the Senate and House could present challenges for Republican lawmakers in creating a coalition for a full repeal of the IRA, as incentives in the IRA have benefitted Republican constituents.
+
+However, the IRA remains vulnerable as congressional coalitions are not needed for executive action that challenge the implementation of the IRA.
+
+Acknowledgements and disclosures
+
+The Brookings Institution is financed through the support of a diverse array of foundations, corporations, governments, individuals, as well as an endowment.
+
+Alist of donors can be found in our annual reports published online  here.
+
+The findings, interpretations, and conclusions in this report are solely those of its author(s) and are not influenced by any donation.
+
+Footnotes
+
+Authors’ own calculations, using the estimates of emission reduction ranges from Bistline, et al. (2023).
+
+Note that these figures may include clean energy jobs created through other legislative or regulatory measures, and it is unclear whether the estimated job creation is fully attributable to the IRA.
+
+An implicit repeal is a “ repeal by implication ”, where legislation does not explicitly repeal an existing law, but its contents conflict with that existing law.
+
+See page 83 of “ The Budget and Economic Outlook: 2024 to 2034 ” for details.
+
+Note that the document does not specify the IRA, but it explains the changes to estimates of the “Clean Vehicle and Energy-Related Tax Credits.”
+
+Note that while the IRS lists 21 proposed regulations, the Elective Payment of Advanced Manufacturing Investment Credit rule appears to relate to the Creating Helpful Incentives to Produce Semiconductors (CHIPS) Act of 2022, rather than the IRA.
+
+Similarly, the IRA lists 13 finalized regulations, two of the rules (the Advanced Manufacturing Investment Credit Rules Under Sections 48D and 50 and Elective Payment of Advanced Manufacturing Investment Credit ) appear to relate to the CHIPS Act, rather than the IRA.
+
+See Brookings Regulation Tracker including the Trump Archive, for numerous examples of rules nullified by the Congressional Review Act.
+
+The “ 60 days ” refers to 60 days of session in the Senate and 60 days of legislative days in the House.
+
+Note that the Senate adjourned on December 30, 2021, while the House adjourned on January 3, 2022.
+
+Authors’ own calculations, using the estimates of emission reduction ranges from Bistline, et al. (2023).
+
+Note that these figures may include clean energy jobs created through other legislative or regulatory measures, and it is unclear whether the estimated job creation is fully attributable to the IRA.
+
+An implicit repeal is a “ repeal by implication ”, where legislation does not explicitly repeal an existing law, but its contents conflict with that existing law.
+
+See page 83 of “ The Budget and Economic Outlook: 2024 to 2034 ” for details.
+
+Note that the document does not specify the IRA, but it explains the changes to estimates of the “Clean Vehicle and Energy-Related Tax Credits.”
+
+Note that while the IRS lists 21 proposed regulations, the Elective Payment of Advanced Manufacturing Investment Credit rule appears to relate to the Creating Helpful Incentives to Produce Semiconductors (CHIPS) Act of 2022, rather than the IRA.
+
+Similarly, the IRA lists 13 finalized regulations, two of the rules (the Advanced Manufacturing Investment Credit Rules Under Sections 48D and 50 and Elective Payment of Advanced Manufacturing Investment Credit ) appear to relate to the CHIPS Act, rather than the IRA.
+
+See Brookings Regulation Tracker including the Trump Archive, for numerous examples of rules nullified by the Congressional Review Act.
+
+The “ 60 days ” refers to 60 days of session in the Senate and 60 days of legislative days in the House.
+
+Note that the Senate adjourned on December 30, 2021, while the House adjourned on January 3, 2022.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

@@ -1,0 +1,154 @@
+An OpenAI whistleblower who quit in protest over the company’s use of copyright-protected data was found dead in his apartment at the end of last year, less than two months after posting an essay laying out the technical and legal reasons why he believed the company was breaking the law.
+
+Having spent four years working at the company, Suchir Balaji quit because he was so sure not only that what they were doing was illegal, but also that the harms—to society, the open web, and human creators—outweighed the benefits.
+
+He subsequently became a key witness in the New York Times lawsuit against OpenAI and Microsoft.
+
+The certainty of this young researcher, who worked on the underlying model for ChatGPT, stands in stark contrast to the uncertainty of the U.S. and British governments, which continue to vacillate on how to treat copyright when it comes to text and data mining for AI training.
+
+Last month, the U.K. launched a new consultation on AI and copyright, following failed efforts earlier in the year to develop a voluntary code.
+
+And the U.S.
+
+House of Representatives released a bipartisan report on AI that basically punted on the question and deferred to the courts, a process that will take years to resolve.
+
+As the arms race to develop bigger, better, and more capable AI models has accelerated since the release of ChatGPT in late 2022, so too has the tension between AI companies and the publishers, content creators, and website owners whose data they depend on to win the race.
+
+OpenAI and the New York Times went in front of a judge earlier this week to argue over whether the publisher’s copyright infringement case should be dismissed under the fair use doctrine.
+
+Although notions of consent and how we obtain it have evolved in other domains, our most advanced technologies are stuck in the past, a past where consent is implied by not opting out and is limited to a binary choice with little room for specification or nuance.
+
+For example, the longtime industry standard can only specify whether a bot is allowed, but not what type of usage is allowed or how much content can be crawled.
+
+For the past three decades, a simple yet elegant bit of code has provided basic instructions to bots that crawl the web, telling them whether they were allowed or not.
+
+For the most part, bots followed these instructions.
+
+Meanwhile, website operators and publishers allowed them to crawl their sites in exchange for the services they provided, like referral traffic from search engines or helping their websites load more quickly.
+
+And this value exchange, backed up by copyright, helped keep the internet open and most content freely accessible.
+
+Until recently.
+
+[H2]What is text and data mining (TDM)?
+
+The ethos of today’s approach to collecting natural language training data, known as text and data mining (TDM), is essentially that if content is available online—or “in public”—then it’s free for the taking.
+
+This includes social media posts and videos, publisher- and user-generated content, online repositories, and anything else that can be crawled, scraped, and copied by bots.
+
+This is, of course, not how copyright works, and more than two dozen lawsuits have been filed against AI companies for copyright violations, amid resignations by top AI executives who have objected to either using copyright-protected data under the guise of fair use or other irresponsible practices.
+
+AI executives freely admit that advances in generative AI would be possible without the vast troves of content culled from the internet with the help of these data mining bots.
+
+Currently, they crawl the internet without constraint, copying vast amounts of content without explicitly asking permission from website owners, oftentimes in blatant disregard for restrictions such as paywalls, copyright restrictions, or attribution requirements.
+
+Abit of code on each site, known as robots. txt, instructs crawlers from search engines like Google or Bing, archival bots like Common Crawl, and market research bots like Amazon’s price trackers, on whether they are permitted to access the website.
+
+Until recently, most legitimate bots voluntarily complied with those instructions.
+
+Most publishers, in turn, allowed bots to access their sites in exchange for referral traffic, meaning that the web remained open, information could flow freely, and people had free access to quality information.
+
+But this symbiotic relationship is over, with profound implications for the future of the open web and the safety and viability of generative AI systems.
+
+Artificial intelligence has become incredibly lucrative for those leading the charge.
+
+It is undermining business models and human labor across a range of industries, prompting a critical debate over how to govern TDM and whether the robots. txt standard is still fit for purpose.
+
+But decisions about how to regulate TDM are fundamentally intertwined with the standards developed to automatically convey preferences to, or even exercise control over, web crawlers.
+
+[H2]Improving the data collection and publishing processes
+
+At the heart of this debate are two questions: How should AI companies collect the data they use to train their systems?
+
+And how can website operators and publishers better convey their preferences and ensure that restricting one type of bot doesn’t interfere with others?
+
+Notions of online consent and how we obtain it have evolved with respect to privacy, for example, where the EU’s General Data Protection Regulation (GDPR) requires users to opt in to data collection and sharing.
+
+Even though user data has been a boon for tech companies and fueled innovation, lawmakers in much of the world constrain how that data may be collected and used.
+
+The same logic should be applied to AI innovation.
+
+Most website publishers, for example, want Google’s search bot to crawl their sites in order for consumers to find them, as highlighted in the trial that determined the corporation has an illegal monopoly over search.
+
+But many don’t want Google to train its AI systems or fuel its AI chatbot with their hard-earned intellectual property and creativity.
+
+And they especially don’t want OpenAI crawling their sites.
+
+We know this because the number of publishers blocking AI crawlers from their sites has risen significantly, particularly among the highest-quality websites that make up the most important part of many training datasets.
+
+And it is increasing as more and more websites say no to the free extraction of their content without credit, compensation, or consent.
+
+The impacts of this “ rapid crescendo of data restrictions ” undermine the safety and viability of future AI systems and underscore the fact that many do not feel that it is fair, legal, or desirable to let AI crawlers take their work and creativity. 
+“We have decided to block AI players from using our content unless they come to the table with a licensing agreement.
+
+It’s about protecting the value of our journalism and ensuring fair compensation,” explained a publisher representative who spoke on background. “The first step we took was to block all bots by default.
+
+We realized that allowing unrestricted access was undermining our business, so we implemented a closed approach to protect our content.”
+Furthermore, bots impose a cost on website operators and constitute about half of all web traffic.
+
+Publishers describe seeing bots scraping their logs thousands of times daily, originating from various cloud hosting providers, trying to bypass firewalls, and often impersonating legitimate browsers or human activity, leading to a never-ending cycle of whack-a-mole. 
+“Being able to keep track of developments, even from very large companies, is incredibly difficult,” said Matt Rogerson, director of global public policy and platform strategy at the Financial Times, in an interview. “The other big challenge is that content can clearly be scraped anonymously.”
+Meta, for example, surreptitiously began to scrape the web to build its own web index for grounding its AI models.
+
+The company did not disclose this process until it was nearly complete, only doing so in a blog post that journalists happened to notice, according to a media executive who asked not to be named in order to speak freely.
+
+The Dark Visitors website lists and offers a taxonomy of hundreds of known bots, describing their purpose, who operates them, whether they are AI-related, and what proportion of sites block them.
+
+However, many are uncategorized due to a lack of information.
+
+And while Dark Visitors previously offered a free automated service to keep websites apprised of updates, it is now realizing that there is money to be made in charging for this valuable service, underscoring the costs involved in keeping up-to-speed on the latest bots.
+
+This is why many publishers say they want standards based on an opt-in protocol that are backed up by legislation requiring that companies abide by them.
+
+[H2]The opt-in protocol
+
+By requiring explicit opt-in consent from rights holders for AI training, such standards would align more closely with foundational principles of copyright and reinforce the principle that content creators have ultimate authority over how their work is used, particularly in the context of AI training and data mining.
+
+And it would compel tech companies to develop systems that respect these rights, similar to how the Digital Millennium Copyright Act (DMCA) led to the creation of tools like YouTube’s Content ID to enforce copyright protections.
+
+But while there seems to be fairly widespread agreement about the need to modernize robots. txt—which wasn’t designed for the scale or nuance that today’s AI systems require—there is less agreement on whether the default should be opt-in or opt-out.
+
+An opt-out approach that puts the burden on rights holders turns copyright on its head by shifting the default assumption to crawling being permitted unless explicitly restricted.
+
+The U.K. consultation presents the opt-out default approach as a compromise between rights holders and AI companies, following in the ill-fated footsteps set by the European Union’s 2019 Copyright Directive, which was passed before the generative AI boom.
+
+The directive clarified that copyright applies to text and data mining, with the exception of scientific research, where rights holders reserve their rights in machine-readable format or in terms of service.
+
+The opt-out approach has left many rights holders concerned that this precedent could make it more difficult to pursue an opt-in approach in other jurisdictions.
+
+Furthermore, the EU AI Act emphasizes the need to follow the directive’s rules about preserving rights and requires the authorization of the rights holder for TDM if there are reservations.
+“[T]he EU AI Act and emerging practice flip copyright’s default opt-in regime to an opt-out one,” observed Mark Nottingham, a long-term participant in the Internet Engineering Task Force. “Arights holder now has to take positive action if they want to reserve their rights.
+
+While on the face of it they still have the same capability, this ends up being a significant practical shift in power.” 
+Meanwhile, voluntary standards-setting bodies like the Internet Engineering Task Force and the World Wide Web Consortium (W3C) are in the process of coming up with what they hope will be a new standard.
+
+Some in these bodies would like to see more specific and granular types of permissions, including those that embed licensing and provenance information or even control and track access.
+“Creators have an urgent need to gate access to their property.
+
+They must not be constrained by existing thinking concerning preference signaling,” explained James Rosewell, founder of Movement for an Open Web and 51 Degrees.
+
+Rosewell submitted a proposal to the IETF AI Control group following a workshop on AI and robots. txt that several people said they saw as insufficiently open or inclusive, having included virtually no perspectives from the Global Majority, internet users, or small publishers. “There is no reason that publishers need to accept a weak preference-based solution or wait for laws to bite.
+
+With the right vision, a single decentralized solution, like the technology that makes this email possible, can be deployed to address multiple issues.
+
+Publishers can control it,” he said.
+
+Data is as essential to AI systems as the compute, talent, land, and electricity needed to develop and power these systems.
+
+With the major AI companies set to collectively spend upwards of a trillion dollars on AI development in the coming years, the free riding on publishers and other content creators is particularly stark and should inform the way that policymakers approach the issue of AI and copyright.
+
+AI expert Peter Csathy estimates that major AI companies have only used about $1 billion of their total expected spend on AI on content licensing to date, representing just 0.1% of their budgets.
+
+Perhaps avoiding the true costs of developing their AI systems is why the dominant AI corporations have achieved trillion-dollar valuations.
+
+Acknowledgements and disclosures
+
+Google, Meta, Amazon, and Microsoft are general, unrestricted donors to the Brookings Institution.
+
+The findings, interpretations, and conclusions posted in this piece are solely those of the authors and are not influenced by any donation.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

@@ -239,22 +239,65 @@ class BaseIngester(ABC):
                 db_session.query(DocumentAuthor).filter_by(document_id=document.document_id).delete()
                 db_session.query(DocumentSubject).filter_by(document_id=document.document_id).delete()
 
-            # Add authors
-            for author_name in parsed_data.get('authors', []):
-                if not author_name or not author_name.strip():
+            # Add authors (supports both dict with metadata and legacy string format)
+            for idx, author_data in enumerate(parsed_data.get('authors', [])):
+                # Handle both dict (new format) and string (legacy format)
+                if isinstance(author_data, dict):
+                    author_name = author_data.get('name', '').strip()
+                    author_title = author_data.get('title')
+                    author_affiliation = author_data.get('affiliation')
+                    author_profile_url = author_data.get('profile_url')
+                    author_linkedin_url = author_data.get('linkedin_url')
+                elif isinstance(author_data, str):
+                    # Legacy format: just author name
+                    author_name = author_data.strip()
+                    author_title = None
+                    author_affiliation = None
+                    author_profile_url = None
+                    author_linkedin_url = None
+                else:
+                    continue
+
+                if not author_name:
                     continue
 
                 # Find or create author
-                author = db_session.query(Author).filter_by(full_name=author_name.strip()).first()
+                author = db_session.query(Author).filter_by(full_name=author_name).first()
                 if not author:
-                    author = Author(full_name=author_name.strip())
+                    # Create new author with all metadata
+                    author = Author(
+                        full_name=author_name,
+                        job_title=author_title,
+                        affiliation_text=author_affiliation,
+                        profile_url=author_profile_url,
+                        linkedin_url=author_linkedin_url
+                    )
                     db_session.add(author)
                     db_session.flush()  # Get author_id
+                    logger.debug(f"Created new author: {author_name} ({author_title or 'N/A'})")
+                else:
+                    # Update existing author if we have new metadata
+                    updated = False
+                    if author_title and not author.job_title:
+                        author.job_title = author_title
+                        updated = True
+                    if author_affiliation and not author.affiliation_text:
+                        author.affiliation_text = author_affiliation
+                        updated = True
+                    if author_profile_url and not author.profile_url:
+                        author.profile_url = author_profile_url
+                        updated = True
+                    if author_linkedin_url and not author.linkedin_url:
+                        author.linkedin_url = author_linkedin_url
+                        updated = True
+                    if updated:
+                        logger.debug(f"Updated author metadata: {author_name}")
 
-                # Create association
+                # Create association with author order
                 doc_author = DocumentAuthor(
                     document_id=document.document_id,
-                    author_id=author.author_id
+                    author_id=author.author_id,
+                    author_order=idx + 1  # 1-indexed order
                 )
                 db_session.add(doc_author)
 

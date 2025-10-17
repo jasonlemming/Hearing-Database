@@ -1,0 +1,1101 @@
+The high cost of housing is a significant economic pressure for many Americans, even as inflation has eased.
+
+Homeowners and renters alike pay increasingly higher percentages of their income on housing, and homelessness reached a record high in 2023.
+
+Recorded in front of a live audience, this episode of The Current features Brookings Senior Fellow Jenny Schuetz and San Francisco Chronicle Washington Correspondent Shira Stein discussing how the Harris and Trump campaigns are talking about the housing crisis, and what federal and local lawmakers can do to incentivize homebuilding and make rent and homebuying costs more affordable.
+
+Watch the live recording event »
+
+[H2]Transcript
+
+PITA: You’re listening to The Current, part of the Brookings Podcast Network.
+
+The high cost of housing is one of the top economic issues concerning voters this year.
+
+Even as inflation has eased, over half of all renters and an increasing share of homeowners are paying more than 30% of their income on housing costs.
+
+As part of the Brookings Election 24 initiative covering the issues at stake in November’s election, today’s episode will take a look at the factors driving rising costs and some of the possible solutions.
+
+Jenny Schuetz, senior fellow with Brookings Metro, and Shira Stein, the Washington correspondent for the San Francisco Chronicle, will discuss some of how cities and states are trying to increase supply and control costs, as well as the role of federal policies in trying to make housing more affordable.
+
+For more podcast coverage on this issue, you might check out the August 20 episode of our Reimagine Rural podcast.
+
+That’s called “The audacious goal of building 10,000 affordable homes in California’s Coachella Valley.” And for additional Brookings coverage on other important issues in the election this year, try one of our new shows, Democracy in Question, or the latest season of Climate Sense on Apple Podcasts, Spotify or wherever you listen to your favorite shows.
+
+Now, over to Jenny.
+
+SCHUETZ: Thanks, Adrianna.
+
+Shira, thanks for joining us here today.
+
+STEIN: Thanks for having me.
+
+SCHUETZ: So we get to talk about housing in the context of the 2024 election.
+
+And Iguess a good place to start is, is housing usually one of the top issues in the presidential election?
+
+STEIN: It is not.
+
+It is a very unusual thing that housing is become such an issue this election cycle.
+
+Even going back to President Biden’s State of the Union earlier this year, You and Italked about we’re, we were both shocked to see President Biden make housing such a big deal.
+
+And during the DNC, Iwas at the Democratic National Convention in August, August in Chicago, And one of the biggest applause lines of Vice President Harris’ speech was about housing policy.
+
+Iwas in the room and Iwas standing there watching, and Iwas not expecting that.
+
+So it is unusual and kind of cool that housing is such a big deal this election cycle.
+
+SCHUETZ: Imean, as a housing policy nerd, Ihave to agree.
+
+You know, why don’t people talk about housing policy all the time?
+
+But Iremember Iwas watching the the convention as well and sort of monitoring conversations on Twitter and the Twitter just like exploded, you know, sort of, you know, Harris campaign is going full YIMBY.
+
+We got, we got a shout out from from Barack Obama talking about zoning regulations.
+
+STEIN: When that happened, Iwas like, what is happening?
+
+SCHUETZ: It’s a good question.
+
+The policies have kind of infiltrated lots of places.
+
+And it’s you know, it’s been really interesting to watch also the way in which the two campaigns are approaching this.
+
+So not like totally shocking that people are talking about housing costs; cost of living, inflation has definitely been an issue, but that the federal government seems to be interested in doing something, especially on the housing supply part is really kind of unusual and surprising.
+
+STEIN: Yeah, you and Ihave talked about before for stories that I’ve written.
+
+Basically, housing has traditionally been seen as a local and state issue.
+
+And so states like California and like New York and others are very active on the issue because there is a housing affordability crisis in this country.
+
+But to have the federal government getting involved beyond just some more liberal members of Congress — like Iknow Representative Barbara Lee of Oakland has done a lot of work on housing policy over the years — and it’s very unusual for Congress to be talking about housing policy at all in sort of a semi-bipartisan fashion like we’ve seen in the last year or two.
+
+SCHUETZ: Yeah, and that’s been part of what’s interesting in watching the presidential discussion around this.
+
+Imean, Congress has been paying more attention in the last year.
+
+Anumber of different committees have held hearings on specifically on housing supply and affordability.
+
+But those really have stayed very much in a bipartisan space.
+
+So Congress is, in fact-finding mode.
+
+What’s the problem?
+
+What’s the source of the problem?
+
+What are the kinds of things that Congress can do?
+
+What are the kinds of fiscal carrots and sticks they could use?
+
+And it’s really been an area where there’s been a lot of interest in cooperating.
+
+That’s not the way that it’s been playing out in the presidential campaign, which is maybe not surprising.
+
+The campaigns want to draw distinctions with one another.
+
+But it’s been interesting to watch that they’ve actually taken very different approaches to the tone and the way they talk about this, as well as the specifics of the proposals.
+
+STEIN: Yeah, absolutely.
+
+Imean, Ithink it’s also fascinating.
+
+Housing policy is often a conversation of like taxes or a conversation of an influx of money.
+
+But you and Iwere sort of talking about recently, there’s also added this new sort of third wheel of lawsuits and states like California getting involved in litigation.
+
+SCHUETZ: Yeah, it’s and so far that’s mostly been playing out on the state level.
+
+So state governments kind of own the land use regulation space.
+
+They gave power to local governments.
+
+And now we’re in this kind of window where state governments are trying to claw back some of their power.
+
+And there’s a lot of resistance among many localities.
+
+So the state of California has sued localities, localities have sued, sued the state of California, Massachusetts, there’s a very large lawsuit going on.
+
+So this is playing out in some really contentious ways.
+
+You know, the federal government has really limited levers, particularly over land use and zoning.
+
+That’s just not a power that’s granted to the federal government.
+
+So Ithink part of what both Congress and the campaigns are doing is sort of circling around the issue and trying to figure out where are the levers, where we can push a little bit and nudge a little bit while staying within the boundaries of what we’re allowed to do.
+
+STEIN: Yeah.
+
+And it’s interesting because Ifeel like the discussions around zoning and land use that both campaigns are having are actually the same discussion.
+
+Like they’re both talking about sort of deregulation in some aspects or bringing regulation back to the states, which is unusual for Democrats to be talking about deregulation at all.
+
+So they’re having sort of the same conversation.
+
+They’re just using different language for it.
+
+But that’s one of the bipartisan areas of agreement is, can we address, you know, how many like parking spaces you need to have near this train station and other things like that?
+
+SCHUETZ: Yeah.
+
+And so if we look at a couple of the specifics in each of the campaigns’ proposals, so the the Harris-Walz campaign sort of most directly talks about zoning constraints by saying that the federal government should incentivize states and localities to change their rules and allow more housing.
+
+This would essentially be an expansion of the existing pro-housing grants that HUD started under the Biden administration.
+
+So, plussing up the existing program and then some more kind of cooperation with the private industry, encouraging innovation and design.
+
+So, you know, sort of recognizing that this is still going to stay with the state and local level, but that there are some fiscal carrots essentially, that the federal government could be offering.
+
+You know, the Trump campaign has a little bit of similar language.
+
+So they also talk about the need to cut red tape and regulation.
+
+But when former President Trump talks about this on the stump, he sort of goes back and forth between we need to make it easier to build and cut regulation, but also we need to protect single family zoning, which is, in fact, one of the things that states and localities are trying to change.
+
+So it gives me a little bit of whiplash.
+
+I’m sort of not entirely sure where his administration would come out on this because his his language really doesn’t match up very well.
+
+STEIN: Yeah.
+
+And I’m trying to remember, did did he really do much on this issue when he was president?
+
+Did Ben Carson, who was then-secretary of HUD, do much?
+
+Idon’t remember there being much action.
+
+SCHUETZ: They did a study, which is what the federal government always does when they’re trying to decide what to do.
+
+So there was a there was a period where both the president and Secretary Carson were talking about the need to cut regulation.
+
+And it actually plays really well for Republicans because a lot of the highly regulated states and cities are Democratic-led.
+
+And so they actually appointed a cross-agency commission and did almost a yearlong study and produced a report that came out right at the end of the administration.
+
+And the interesting thing is that if you look at the report, it sort of lists out these are the the practices that are problematic in the areas that maybe the federal government could lean into; it looks an awful lot like similar studies that came out under the Obama administration and under the George W.
+
+Bush administration.
+
+Like going all the way back to like, you know, George Romney as HUD secretary, HUD has had conversations about this and said, you know, you guys should really allow more housing diversity and more housing affordability.
+
+And then it kind of gets shelved and nothing really happens.
+
+STEIN: And I’m curious if she does end up getting elected, Vice President Harris has made, because she’s from California, because she knows the issues of housing really speak to sort of the economic concerns of this country.
+
+I’m curious, would they actually do, do something?
+
+Imean, one of the some of the proposals that she has, you talked about some of the sort of carrots.
+
+There’s also like what are the individual, the carrots for businesses?
+
+There are also carrots for individuals.
+
+And so we’ve talked about tax credits and whether or not some of the tax credits that she suggested are actually viable.
+
+Now, Republicans tend to like tax credits because it’s not just giving away money directly.
+
+But I’m curious, like how much of a priority that’s going to be when it comes to all of the things that are on her, her list of to-dos?
+
+And I, will President Trump change and want to make housing more of a priority to actually do something now that he’s talking about it more on the campaign trail?
+[13:24]
+SCHUETZ: Yeah, Imean, it’s hard to predict what’s going to happen in November, not just in the presidential campaign, but also in Congress.
+
+Because, of course, either of them getting something through that involves money is going to require Congress to sign off on it.
+
+And, you know, all bets are off on that one.
+
+You know, it’s just sort of, going through the kinds of things that the Harris campaign proposes that would require extra money: so, one is a tax incentive for developers to build entry-level starter homes.
+
+And that’s sort of an interesting kind of maybe tweak to the way we are doing things now.
+
+So developers are building a lot of housing.
+
+You know, most of our housing in this country is built by private sector developers.
+
+But the idea is that if you give some tax incentives that instead of building, you know, expensive homes that are bought by trade-up buyers, that maybe developers would build slightly smaller and cheaper homes for first-time homebuyers.
+
+So that’s not a totally crazy way to just like tweak the system without being really revolutionary.
+
+There’s also a proposal for a $25,000 tax credit for first-time homebuyers, and that’s really acknowledging that it’s a very, very hard market for first-time buyers right now.
+
+The combination of high prices and high mortgage interest rates just makes it really hard for renters to buy.
+
+So Ithink, you know, this sort of supply- and demand-side paired tax incentives are pretty interesting.
+
+But that would also add up to some real money, and is Congress going to want to open the pocketbook for that?
+
+STEIN: And Ithink, you know, you mentioned sort of interest rates, and we just obviously saw the Fed cut interest rates.
+
+And how much will that actually affect the prices?
+
+They’re hoping a good deal.
+
+Ithink both campaigns are probably hoping a good deal.
+
+But, Imean, it’s just, it’s just too expensive to buy or even rent houses nowadays.
+
+And so when Iwhen Italk to voters on the campaign trail and when Italk to people who don’t live in D.
+
+C., the thing that Ihear most often is like, Biden’s making the economy better, it doesn’t feel that way.
+
+And that’s from Democrats because, you know, Harris’s grocery prices are too expensive.
+
+Housing costs are too expensive.
+
+And Ithink one of the things that’s been interesting to watch is there’s been there’s been a lot of journalists asking her the question, how are you different from Biden and how is this different?
+
+And, you’ve had four years, why have you not fixed it then?
+
+And Ihave the same question like they have been in power.
+
+Obviously, there’s, they had initially a majority in that — well, didn’t they have, they had both?
+
+They had both chambers, right, at the beginning.
+
+And why wasn’t it a priority then?
+
+SCHUETZ: Yeah.
+
+And Ithink it’s fair to say that the Biden administration has pivoted on housing from the beginning, in part because the policy environment and the macroeconomic environment has changed a lot.
+
+So when the Biden administration came in, we were still in the midst of the pandemic.
+
+You know, the most urgent sort of housing problem was keeping people housed until the economy reopened and people could get back to work.
+
+So the first two years, they were really focused on things like emergency rental assistance, on temporary stops on foreclosures, allowing people more time to pay their mortgage.
+
+And so it was only the second half of the administration that Biden’s administration really started thinking about what do we do on the longer-term issue of supply on affordability.
+
+You know, it’s fascinating that both of them talk about interest rates and the role of the Fed because, of course, even the president has very limited direct authority over the Fed.
+
+They appoint the Fed chair.
+
+But beyond that, you know, FOMC does what it’s going to do on interest rates.
+
+You know, certainly the Biden administration is happy to see inflation come down, but they would surely like for interest rates to be dropping, mortgage rates to be dropping and making things more affordable.
+
+But neither one of these candidates, if they’re, when they win, would be able to just wave a magic wand and instantly have mortgage rates go back to, you know, 3%, like we’re going to see this come down over a long period of time.
+
+I’m sort of curious as as you talk to people, you know, is the extent that you ask them, sort of are they paying attention to the Fed?
+
+Like, do people have a mental model of how long it’s going to take from the Fed cutting interest rates until a mortgage is cheaper?
+
+STEIN: Idon’t think they do.
+
+Ithink the people who pay attention to the Fed and other federal agencies are the people who are in Washington or the people who work on the policies on the ground level.
+
+Imean, regular people will see the headlines.
+
+They’ll see, oh, interest rates are being cut, and they’ll think, okay, can Irefinance my home?
+
+Like, what am Igoing to do for myself?
+
+But Idon’t think they totally understand the connection between, you know, the Fed is going to do what it’s going to do and how long it’ll take for rates to come down and that sort of stuff.
+
+Ithink that’s a little bit — people are smart, but Idon’t think they pay that close of attention because they have other stuff going on in their lives, and unless it’s directly affecting them right now, why do they care?
+
+SCHUETZ: Yeah, it also kind of raises an interesting question.
+
+Obviously, housing Twitter is super excited when this issue gets coverage, but Idon’t have a great sense for how many voters are really hanging on housing affordability or specifically the housing proposal, like how many people are there who are likely to vote for one candidate or the other because they say, I’m going to tackle zoning or I’m going to bring down interest rates?
+
+Like, is that a pivotal issue for a lot of people?
+
+STEIN: Idon’t think so.
+
+You know, there’s been a lot of folks and I, as a policy nerd, would love to see more policy proposals from the vice president.
+
+It looks like she may be announcing some more on Wednesday.
+
+And especially Iwould love to see more detail because we are not getting a lot of detail so far.
+
+But the truth is, the fact like there’s been, Idon’t disagree with polling, but there has been polling that the general public does not really care about the details of policy and not really pay attention to it.
+
+And so it’s the, it’s the, it’s the vibes, not the not the policy.
+
+And so Ithink people get the vibe of like, you care about housing policy, you care that it’s unaffordable.
+
+Idon’t know that that’s going to if they go into details of the proposals, Idon’t know that that will make a huge difference for them.
+
+SCHUETZ: Yeah, and Itook a look at both of the campaigns’ websites before our conversation just to look at some of the language they’re using.
+
+And it feels like some of the proposals are definitely out there to send good vibes to specific constituencies.
+
+Imean, Iwill say that sort of offering first-time homebuyer tax credits feels like it’s playing very much to, you know, people who are in maybe their late 20s or early 30s, renter households who are looking to buy who feel like this is just a really hard time for them to get a leg up.
+
+You know, to me, that sounds like reasonable kinds of policy, but also like smart politics to be targeting that segment of probably some undecided voters.
+
+One of the things that caught my eye from the Trump campaign, or Ithink it may be the Republican platform in general, is that they say on there that in order to make housing more affordable, they’re going to, quote, end luxury housing.
+
+And that was the end of the sentence.
+
+And Iwas like, what is luxury housing?
+
+How are we going to end it?
+
+But that sort of speaks to this kind of like general anti-corporate vibe of the reason housing is expensive is because of the big evil corporations.
+
+And so we’re going to say bad things about them without really specifying what we’re going to do.
+
+STEIN: Yeah, Imean, the issue of corporate price gouging and Ithink the vice president tries to talk about it in regular people terms and not like lawyer terms, but Ithink she still struggles.
+
+She struggled a little bit – Iforget, was it Thursday or Friday?
+
+Iwas watching her speak and Iwas like, there’s some teeny bit of word salad going on there, because Ithink she was sort of losing her trail of thought.
+
+But, Idon’t know that people are like, okay, corporate price gouging, Idon’t know that Itotally understand what it is.
+
+Idon’t know that it’s actually going to directly affect me.
+
+Imean, also, like how much, it takes years for those kinds of lawsuits and those kinds of investigations, especially if you’re looking at antitrust litigation, like that takes years and years and years and appeals.
+
+And it’s it’s really difficult to prove like any type of antitrust case, DOJ and and and FTC really struggle to prove a lot of those cases.
+
+And so this would be kind of a new area for them to be going into corporate price gouging in housing.
+
+So then you have to figure out, okay, how do you prove this type of like, it’s just, it would just be so tough and take so long that Idon’t know that we would see any real like affect for potentially half a decade or a decade.
+
+SCHUETZ: Yeah, and one Imean, the the issue of sort of large corporate involvement or anti-competitive practices in real estate is actually pretty live at the moment.
+
+So the National Association of Realtors had a, you know, like series of really big lawsuits against it that basically said that brokers are colluding to make the seller pay for both the seller and the buyer’s fee.
+
+You know, that lawsuit has been percolating for years now.
+
+And even after sort of the decision came down, it’s kind of unclear how that’s going to wind up affecting individual transactions.
+
+Do home buyers and sellers know about the lawsuit?
+
+Do they know that this gives them potentially more kind of bargaining leverage with their brokers?
+
+Is this really going to bring down fees?
+
+So Ithink that’s a that’s a concrete example of, you know, there’s been some court action, but it’s really unclear.
+
+It’s certainly not going to change overall price levels and affordability overnight.
+
+You know, the sort of newer version of this is, the DOJ investigating RealPage, a software company that provides information to lots of the larger landlords.
+
+There may be some collusion and price setting that they sort of say, well, all of the landlords should be raising their rent by 5% or 7%.
+
+But that’s, you know, that’s still an early stage investigation.
+
+One thing that is kind of interesting on the politics of this, two years ago, three years ago, Congress held a hearing on kind of the role of corporate buyers buying up single family homes, turning them into rentals.
+
+And that was really coming from the Democratic side.
+
+So it was very much the sort of, you know, triumph of the, you know, the individual home buyer and the small communities against large corporate entities.
+
+And the Republicans in Congress just wanted to talk about inflation and did not want to talk about actual kind of corporate involvement.
+
+But now you have J.
+
+D.
+
+Vance, who has picked this up and is pushing back and saying, you know, this is sort of corporate.
+
+So we’re seeing kind of a little bit of a meeting of the left and right around this issue that, you know, big corporations, bad; people, good.
+[23:48]
+STEIN: Imean, that’s — and Inever got a chance to write this story, but Isort of wanted to talk about how YIMBYism is not political.
+
+And so for for folks who may not know, it’s “yes, in my backyard,” it’s pro-housing, pro- like building, like less zoning and allowing you to build more and create more housing on on properties.
+
+And YIMBYism is not a, it’s not a left idea, it’s not a right idea.
+
+Ifeel like we hear and that’s sort of the zoning that we were talking about earlier, that both campaigns are sort of talking about cutting back some of the zoning laws and helping build more.
+
+It’s it’s a YIMBY idea.
+
+SCHUETZ: The YIMBYS are certainly taking credit for it for sure.
+
+Ithink we should say YIMBYism isn’t partisan.
+
+It is absolutely political, right?
+
+This, this is an issue that has very sort of entrenched divides, both the YIMBYs and the NIMBYs, Imean, YIMBYs at this point are at least they’re organized groups that are pushing for this.
+
+NIMBYs often tend to be sort of just like long-term homeowners who don’t necessarily contribute to a group and have meetings and a secret handshake.
+
+But they’re aligned around the same economic issues.
+
+STEIN: Well, Ionce had a conversation with a member of Congress that was sort of there are NIMBYs in Congress, but they’re not going to ever form a NIMBY caucus because that would look bad, like they’re going to quietly, behind the scenes sort of prevent bills from getting brought up and not have hearings about those sorts of ideas.
+
+And Ithink at this point that isn’t really possible anymore.
+
+But Ithink that’s part of the reason why for a long time we did not see housing policy sort of bubble up in Congress is because you had members who didn’t want, who were, you know, not in my backyard members who did not want that to happen.
+
+And it’s just really fascinating because on the state and local level, you see it really being like, okay, that person is a YIMBY, that person is a NIMBY, and on the federal level, there are a couple of very active federal YIMBYs who are mostly former local politicians like Robert Garcia of Long Beach.
+
+But the NIMBYs on the federal level are not coming out and coordinated.
+
+They would be, you know, talking about in the scenes, but they’re not going to come out because they know it will look bad to their constituents.
+
+SCHUETZ: Yeah.
+
+And we can unpack a little bit more sort of why there’s at least some bipartisan agreement around kind of housing abundance and building more.
+
+So on the traditional sort of Republican side, some of this is just a straight-up property rights issue, right.
+
+So if Iown a house and Iwant to build an accessory dwelling unit in the backyard for my parents or, you know, to rent out and get some income, who is the government to tell me Ican’t do this with a piece of property that Iown?
+
+Right.
+
+And then sort of beyond that, you know, why shouldn’t somebody who owns a piece of property be able to build an apartment building?
+
+Why should the government tell them they have to build, you know, parking spaces or something?
+
+So the property rights falls very much under kind of the libertarian wing.
+
+Alot of the pro-business advocates on the Republican side also see this as an economic competitiveness issue.
+
+You know, this is absolutely come up in states like California, but also in states like Florida, right.
+
+That if employers can’t hire and retain workers because housing is so expensive, then there’s a prevailing interest for the state government in particular to push back against localities.
+
+Right.
+
+So those are some of the Republican side.
+
+On the Democratic side, some of this has been tied to fair housing.
+
+Really wealthy, mostly white communities use things like single family exclusive zoning and large minimum lot sizes to keep out low-income households who tend to be lower-income renters, nonwhite households.
+
+And so this is an access to opportunity and fair housing issue.
+
+It’s also the the environmental movement has been a little bit back and forth.
+
+Some environmental groups are in favor of denser infill development near transit.
+
+But like in California, the Sierra Club has basically said, actually, we just don’t want to build more houses because it’ll encourage people to move here.
+
+And we kind of think there shouldn’t be this many people in California.
+
+So like there’s there have been some really interesting political divides.
+
+And Ithink we’ve seen this in Congress, too: people who come into politics from being in the real estate industry, really understand how difficult it is to build in a lot of places and that regulations are not tied to health and safety.
+
+And so a lot of the Republicans who get interested in this also come from kind of the industry side of things.
+
+But it makes for some some interesting kind of bedfellows.
+
+STEIN: Yeah, Ijust think, Iused to cover health care and health policy is is almost always extremely partisan extremely divided.
+
+And housing policies in many ways is not is not divided on those specific lines.
+
+And that’s what makes it so fascinating to cover and I’m sure for you like to research and to talk about it.
+
+It’s it’s just it’s not the typical divide that we see in this country.
+
+And that’s Ithink, why we’re probably seeing the presidential candidates sort of talking about similar things just with different language.
+
+SCHUETZ: Yeah.
+
+And it’s interesting, too, that we have two presidential candidates from two different states that on the one hand, have very different kind of housing markets and housing policies.
+
+But also both California and Florida have done state-level policy changes in recent years.
+
+You know, as a true policy nerd, Iwould love for both of the candidates to be sort of drawing on that in their conversations.
+
+So California has done a lot of pretty heavy-handed sort of requirements that localities plan for more housing at lots of income levels, has preempted local government regulations on specific things like ADUs and duplexes and, you know, has a really kind of muscular state role, but so far, kind of limited impact.
+
+So they have, you know, they passed like 150 laws; they’re not actually building a ton more housing yet, partly because it’s mired in the courts.
+
+Florida a couple of years ago passed something called the Live Local Act, which had bipartisan support in the legislature and was signed by Governor Ron DeSantis and the Florida Live Local Act essentially lets developers override local zoning to build kind of work force, moderately priced housing in commercial corridors, build much taller buildings that sort of match the tallest building within about a mile radius.
+
+And instead of going through this process of, we set planning requirements and we preempt and we kind of fiddle around the edges of the rules, we’re just going to let developers build stuff.
+
+And it turns out developers have built stuff.
+
+So, you know, the Live Local Act is much newer than California’s laws, but is already prompting a much bigger response.
+
+And, you know, Ithink the Trump campaign is missing an opportunity to come out and say, look at Florida, look at this Republican-led state that passed statewide zoning reform that is immediately effective and is building.
+
+This is how you unleash the private sector.
+
+California’s over here, you know, with its big government role and hasn’t really won yet, right.
+
+Iwould love to see that debate.
+
+STEIN: Do you think what they’re doing in Florida would actually, would that work in a state like California where you know, that the issue is there isn’t, there’s so many people already, it’s kind of difficult to find room to build.
+
+SCHUETZ: Imean, the specific policy of the Live Local Act that you can build something tall if there are other tall buildings nearby, could work in a bunch of the commercial areas in California.
+
+Imean, if you think about like San Francisco and Los Angeles have plenty of neighborhoods where you’ve got some tall buildings and then a bunch of short buildings or parking lots, like Icould see developers using that.
+
+Politically, could you get something like the Live Local Act through California?
+
+Absolutely not.
+
+Right.
+
+Imean, Tallahassee sort of squeezed this through without people really paying attention to it.
+
+And then localities woke up after the fact and were a little shocked.
+
+You can’t sneak anything through in Sacramento.
+[31:35]
+STEIN: No, not not in California.
+
+You can never sneak anything through.
+
+We were sort of also going to talk about, you know, some of the some of the policies, we’ve talked about, a little bit about the feasibility for what the vice president and former president have talked about in their agendas.
+
+You know, we talked about taxes.
+
+You tend to have a better shot because the Republicans can get on board with tax credits for housing.
+
+Some of the down, we didn’t talk about down payment assistance, which has been a long priority of Democrats, is unlikely to ever happen.
+
+They tried to pass those at $20,000 in the Build Back Better plan and that did not make it through.
+
+And it became the IRA.
+
+And so, it is a idea that a lot of people love the idea of getting 20 or $25,000 in assistance for their down payments, and Idon’t think we’ll ever see that.
+
+SCHUETZ: Yeah, we got, we got an audience question about this, sort of asking whether that’s something that would be useful and how that would work in different kinds of housing markets.
+
+And Ithink this is also a fascinating one to think about how this would play out in different parts of the country.
+
+So, you know, in in expensive states like California, Imean, $25,000 is not going to cover your entire entire down payment.
+
+On the other hand, it’s a non-trivial amount of money.
+
+But there are some other parts of the country where, you know, the median housing price might be 200 or 250, $300,000, and that would really be essentially the amount of the down payment.
+
+So it’s really hard to craft sort of a national housing policy, especially with dollar values that’s going to make sense in a lot of different kinds of markets.
+
+But Ithink, you know, coming back to your point, the big question with down payment assistance, whether it’s tax credits or through some other mechanism or anything that costs money really comes back to, is Congress going to want to build this into a budget?
+
+Is the White House going to fight for this over all of their other budget priorities?
+
+And my gut instinct is probably no on that one.
+
+STEIN: Yeah, Ithink that’s that’s also my gut instinct.
+
+Imean, there are cities and localities that have existing programs and they help, but then they — D.
+
+C. has one, they run out of money early every year where they have this down payment assistance program, and they’ve already, they ran out back in like July or something.
+
+So if you don’t have the ability to keep adding more money and keep funding it when people need it and people want to use it, then sort of are you only helping the people who are able to get their houses bought or in the first half of the year?
+
+Like, yeah.
+
+SCHUETZ: One of our other questions here points out that in the 2020 primaries, Kamala Harris had a housing platform at that point and she was talking about a renters tax credit, sort of like the mortgage interest deduction that we have for homeowners, so it’s administered through the federal income tax, but that renter households could get money back from the IRS when they file their taxes.
+
+And that has not reappeared on her platform this year.
+
+So the question the audience poses, why do you think this hasn’t recurred?
+
+I’m going to, I’m going to try to channel the campaign.
+
+STEIN: Or you can let me, I’m happy, I’m happy to address that one.
+
+There’s been a lot of things I’m sure you all have seen in the news and read that she has not expressed again from 2019 or has said that she no longer would move forward with that kind of policy.
+
+As we were talking about earlier, policy is not the focus for most voters.
+
+Getting really deep in the weeds is not the focus.
+
+And Ithink that’s something that the campaign is is deciding to lean into.
+
+They are going to talk about policy, but they’re going to talk about it in broader terms.
+
+And they’re going to talk about sort of the vision of how they’d want to do things rather than the specifics.
+
+And Ithink that’s probably one of those where, yeah, maybe she still believes and would want to do it, but she’s not going to talk about it while she’s running for president.
+
+Imean, it was also 2019 was the primary, Democratic primary, it was really interesting, that was an especially interesting one.
+
+And Ithink in some ways, she may have expressed positions that were a little further left than she actually believed.
+
+And, you know, Iwrote a story last week talking about how the vice president’s changed as a candidate, sort of the environment that’s created it.
+
+And the sense that I’ve got from talking to people who’ve known her for a long time and people who work for her now is that she has the ability to sort of be herself and just go with her own gut instinct.
+
+And Ithink that’s some of what we’re seeing on some of these policies.
+
+Before, maybe she was going with what — somebody once said to me, her 2018 campaign was a poll-tested disaster because they poll-tested everything and went with whatever the poll said.
+
+And now my sense is that they’re they’re trusting her and her staff instincts more, not just listening to whatever the latest poll says.
+
+SCHUETZ: Yeah.
+
+Imean, Ithink the point that running in a primary and a general, you’re speaking to different constituencies also can explain this.
+
+So if you’re running in the Democratic primary, you’re talking to the Democratic base and you know, something like a renters tax credit is going to poll really well for people who are renters in high-cost blue states who vote.
+
+But something like appealing to first-time homebuyers is a better kind of national audience.
+
+And so that seems to me like a smart political pivot.
+
+You can also make the argument that just the housing market has changed quite a bit and sort of what made sense in policy terms in 2019 before the pandemic isn’t the same kind of policy that you would want to put forward today.
+
+STEIN: Yeah, that’s a good point.
+
+SCHUETZ: So we’ve got another fun question here.
+
+What tax policies could be leveraged to keep individuals and LLCs from owning multiple properties?
+
+So this is sort of getting back to the like, not quite the corporate ownership, but just, is it okay for rich people to have multiple vacation homes when we have other people who are homeless?
+
+I’ll just throw that one out there.
+
+STEIN: Yeah, that’s right.
+
+SCHUETZ: And, you know, taking taking a little bit of a crack at this, Iwill say that just it’s really hard to keep rich people from buying extra homes if they want to.
+
+So, you know, even if you did something really drastic like a land value tax or a wealth tax, you know, on the margin, that would probably discourage some wealthy people from buying maybe a third or fourth home.
+
+But like realistically, people with a lot of cash are looking for places to park it.
+
+And real estate is a good investment.
+
+And, you know, the money’s got to go somewhere.
+
+So it’s hard to me for me to imagine a policy that is that could be effective at doing this, let alone one that would be politically feasible enough to get through Congress.
+
+And by the way, lots of members of Congress have more than one home office, both in multiple places.
+
+STEIN: Most members of Congress have more than one home unless they’re sharing a house with roommates.
+
+The thing that Ialways say is that that it was like two seasons, Ithink, that Amazon show Alpha House, it’s one of the most accurate DC shows because it has members of Congress sharing an apartment and making mistakes.
+
+And every member of Congress Iknow who’s not super wealthy shares a place with another member.
+
+So, yeah.
+
+SCHUETZ: We haven’t actually talked a ton about policy proposals to help really low-income households.
+
+And, you know, if we look at what HUD actually spends its money on, it’s basically subsidies for very low-income renters.
+
+You know, HUD has some homeownership programs, obviously, through the Federal Housing Administration, but that’s not really where most of their budget goes.
+
+Neither of the campaigns are talking a ton about what we should do on things like housing vouchers or public housing.
+
+Is that surprising?
+
+STEIN: Idon’t feel like it’s surprising.
+
+Ifeel like Section 8 housing vouchers are pretty like politically unpopular unless you are a person who actually needs them or a person who cares about people who need them.
+
+And it’s just, it’s expensive.
+
+Iremember during the California Senate primary, which was another interesting discussion about housing policy, and Ireally, part of me wished that there were two Democrats getting through for that Senate to this general, because it would have been so much more of an interesting election to talk about housing policy in California.
+
+But one of the things is that Representative Barbara Lee of Oakland has long advocated for fully funding Section 8 housing vouchers.
+
+So the Section 8 housing voucher program is not funded to the point where they can give vouchers to everyone who needs them or who is eligible for one.
+
+And that was sort of a discussion during the California Senate primary.
+
+Idon’t think we’ll see it on the presidential election.
+
+Ialso don’t think it’s a politically viable thing, as much as it would help a lot of people get into housing.
+
+SCHUETZ: Yeah, Imean, in general, the the elections don’t talk a lot about anti-poverty programs, in part because it’s just not a big voting constituency.
+
+And definitely it’s not speaking to swing voters.
+
+You know, Ido find it reassuring when candidates find ways to signal that they understand that increasing the supply of housing is not going to solve problems for lower income households.
+
+Imean, realistically, poor households, even in places where housing is cheap, just can’t afford housing.
+
+And so that’s going to be a continuing part of the policy spectrum.
+
+But it’s not one that candidates are going to talk about a lot in primetime.
+
+STEIN: Yeah, that’s that’s that’s my sense of it.
+[40:59]
+SCHUETZ: So there’s another hot button issue that’s tangentially related to housing, which is immigration.
+
+And this has come up a fair amount when J.
+
+D.
+
+Vance talks about housing.
+
+You know, his sort of tagline is, well, you know, housing is expensive because we’ve got a bunch of immigrants who are moving in and they’re driving up the cost of housing.
+
+And so if we had fewer immigrants and mass deportations of immigrants, that this would somehow make housing cheaper.
+
+Does that sound to you like a like a viable political option and something they should be pursuing?
+
+STEIN: Ithink the thing to consider is in a place like the Bay Area, a lot of the immigrants who are moving in and buying homes in the Bay Area, it’s a lot of tech workers, so it tends to be a lot of Asian immigrants, South Asian immigrants.
+
+And Idon’t know that that’s the type of immigrants that J.
+
+D.
+
+Vance is thinking of.
+
+SCHUETZ: Yeah, that’s a really good point.
+
+Imean, the conversation is often not that specific about high-skilled immigrants, low-skilled immigrants, sort of where they are on the wage distribution.
+
+But, you know, it’s certainly true that in a lot of the really expensive markets, it, you know, there are a lot of immigrants who come here to work in the tech industry and it’s hard to imagine them getting deported.
+
+It’s hard to imagine that that’s overall good for the economy.
+
+STEIN: When J.
+
+D.
+
+Vance and Trump are talking about deporting immigrants, they’re often not talking about those very skilled tech workers.
+
+They are talking about the less-skilled, the farm workers, the migrant workers who come in and pick fruit.
+
+Imean — sorry, Ididn’t get to write, but my colleagues are hopefully going to finish it — it’s sort of the idea of a mass deportation of immigrants would have a deep impact on the food and wine supply out of California.
+
+That that could result in the wine industry’s collapse and could have result in food shortages across the country.
+
+SCHUETZ: Yeah, and Ithink this is a really important point to keep reminding people that immigrants are a huge part of our labor force and particularly in critical industries.
+
+So, you know, in in California, picking the food that we eat, that shows up in our supermarkets is definitely part of that.
+
+The other part, relevant to housing, is that about a quarter of the construction workforce is foreign-born.
+
+And so if you get rid of a bunch of immigrants, maybe you’re taking off some of the competition to buy and rent homes.
+
+But you’re also taking away a lot of the people who build homes and who do renovations and who work in the landscaping business.
+
+And for sure, our homebuilding industry would have a really hard time replacing those workers, you know, certainly in the short term.
+
+STEIN: Yeah.
+
+And Ishould say you and Iare talking about, you know, especially the wine industry, a lot of these migrant farm workers are very skilled, a highly skilled profession.
+
+And so not all migrant workers and not all farm workers are in an unskilled profession.
+
+Sometimes they’re working on a very specific crop that you couldn’t just bring in anybody to pick.
+
+And also not necessarily everybody would want to go and pick grapes for a living every day.
+
+SCHUETZ: Yeah, that’s Imean, this is true of both construction and the food industry.
+
+That part of the reason that we employ a lot of foreign-born workers is that most American-born workers don’t want to do these jobs.
+
+They’re physically really demanding, you do them outside in all kinds of weather, they’re seasonal and so you can’t necessarily do this year round.
+
+And many of them are skilled jobs.
+
+They require special kinds of skills and expertise and training.
+
+But these are really hard jobs to do.
+
+And so people don’t don’t choose to do them if they have other options.
+[44:21]
+STEIN: Yeah, absolutely.
+
+Do we have any more good audience questions that we want to talk about?
+
+SCHUETZ: We have a couple, so we have a couple that are sort of more on the macro economy.
+
+And you know, one of the things that we haven’t talked about is sort of the broader tax policies that the candidates have proposed.
+
+So thinking about sort of the range of things that they’ve talked about, like capping the, getting rid of the cap on the state and local tax deduction, you know, fiddling around the edges of things like the mortgage interest deduction, corporate tax rates, individual income tax rates.
+
+How should we be thinking about tax policy more broadly and the way that it interacts, especially with people’s home-buying behaviors?
+
+STEIN: Yeah.
+
+Imean, if people are paying higher taxes, they don’t have money to necessarily be buying a home and all and all the other things that come along with that.
+
+So it’s sort of which levers are you putting up?
+
+Which lovers are you pulling down and where do those interplay?
+
+SCHUETZ: And in states like California, what are the politics around the state and local tax deduction?
+
+STEIN: Iremember the SALT tax fight of 2017.
+
+States like California and New Jersey want SALT tax back.
+
+They’re, they were very upset when it got removed and so they would love to see it come back.
+
+The fact that Trump is now talking about it is fascinating.
+
+SCHUETZ: Yeah, Imean, the state and local tax deduction essentially, if you live in a high tax state, whether that’s a high income tax or someplace where you have high property values and pay a lot of property taxes to your local government, you used to be able to deduct more of that from your federal income taxes, so it lowers your tax bill.
+
+And of course, the 2017 Tax Cuts and Jobs Act capped that.
+
+And New York, New Jersey, Connecticut, California, those are states that have really high state and local tax burdens.
+
+And so, you know, that was very unpopular.
+
+They’d like to be able to deduct more of that.
+
+Obviously, that means the federal government has then less money if you do that.
+
+Imean, the politics around what’s going to happen with the expiration of some of the provisions from the 2017 law, that’s going to be really fascinating because Congress is going to have to make some decisions one way or the other.
+
+STEIN: Yeah, and Congress has really struggled.
+
+Imean, even with the child tax credit, there was that huge increase during the pandemic and Ithink people largely wanted to keep it pretty high.
+
+But it just, Republicans and some people, some some other members of Congress did not want that to happen, and so it went back to the original amount.
+
+And now they’re talking about the child tax credit again on the campaign trail.
+
+And Ithink the conversation when it comes to taxes, it’s like, okay, we talk in Washington about the details, but when we’re looking out at the macro level, we’re looking at people who do not pay attention to politics on a day-to-day basis.
+
+Like what they care about is how does this actually impact me?
+
+Is this, is this going to happen or is it not?
+
+And so, Imean, Ihear from from friends who are not in D.
+
+C., you know, “Biden keeps talking about student loan forgiveness.
+
+Ihaven’t got my student loans forgiven.
+
+What is he talking about?” And they they don’t, they don’t necessarily pay attention to the nuances that like, it’s in the courts and the courts are... and that’s Imean, so often these sorts of things end up being a regulatory action by a federal agency that then gets challenged in court, and it never happens for years or it doesn’t happen at all.
+
+And so Ithink when we — Congress is getting more and more polarized, and so we’re seeing less and less from them on some of these big ideas and the more we see from from executive action, the more litigation we’re going to see.
+
+And it’s just sort of an endless cycle of nothing ever actually changing in some ways.
+[48:04]
+SCHUETZ: Yeah.
+
+And Imean, Ithink housing policy is one of the areas where we haven’t seen a ton of executive action.
+
+Imean, the HUD budget, a lot of that is just done by formula allocation and sort of the programs get a little bit bigger, a little bit smaller.
+
+The kind of innovative things tend to be small pilot programs.
+
+You know, the upside is that we don’t see big swings in housing policy across administrations, right.
+
+Even things like, you know, the Trump administration wanted to get rid of the community development block grant program, but that’s really popular with local elected officials, it’s really popular with members of Congress, and so that was just never really on the table.
+
+Ithink the one area that has been swinging back a lot is the federal fair housing law.
+
+So the Obama administration passed this new sort of beefed-up version of enforcing the federal Fair Housing Act called Affirmatively Furthering Fair Housing – AFFH, such a mouthful.
+
+But the Obama administration spent a lot of time and energy figuring out ways to push back against kind of exclusionary neighborhoods within cities and telling them they needed to provide more diverse housing options to combat racial segregation.
+
+The Trump administration came in and immediately put that on hold and tried to roll back all of the provisions.
+
+And then the Biden administration came back in and revived it.
+
+And it’s like, you know, this is the one thing that has just been a pendulum that’s absolutely swinging from one end to the other.
+
+And so Idon’t know what to expect, but that that potentially could change a lot.
+
+STEIN: Imean, it’s it’s funny to me that there’s only one of those areas.
+
+And somebody used to cover health care policy.
+
+It was, there were like a dozen of those sorts of issues.
+
+Where would every administration go back and forth and back and forth.
+
+And Iwonder if that stays the one in housing that, you know, housing is such a uniquely nonpartisan issue in some ways that maybe they could actually try and get something done.
+
+Imean, drug pricing was partisan until it wasn’t anymore.
+
+That was sort of the one area, but then aspects of it are part are still partisan.
+
+So Idon’t know.
+
+Well, we’ll see.
+
+I’m curious.
+
+As we’re thinking about the election going forward, what are the types of ideas, the types of policies that you would want to see from the candidates, but also if whoever is elected, see from them to try and actually make a real difference on housing policy.
+
+SCHUETZ: So Ithink the federal government should be thinking about ways to press on the supply lever.
+
+But Ithink Ithink Congress and the White House should move slowly and carefully because this is a new space for them.
+
+Ithink it would be bad both in policy terms and in political terms, to act really quickly and throw out something that’s very bold and then get it wrong.
+
+And the potential for the federal government to mess things up and make things worse does make me a little bit nervous.
+
+So, you know, studying ways to make housing construction more productive, right?
+
+Imean, the construction industry has actually seen declining productivity for 50 years.
+
+It’s going in the wrong direction compared to other American industries.
+
+Why is that?
+
+Why are we worse at building homes than we were 50 years ago?
+
+And is that something that we could fix with better techniques, with better tools?
+
+You know, we can learn from other countries on this.
+
+That seems like a safe kind of technocratic area where research and development and cooperation with the industry and with architects and engineers seems like it could be really useful.
+
+Getting more information would be helpful.
+
+Ithink continuing to explore how the federal government can nudge states and localities to better regulations.
+
+And one way would be think about can can we get better guidance on how to align building codes with actual health and safety requirements and, you know, some sort of a cost benefit test where a lot of building code regulations that have nothing to do with health and safety.
+
+And, you know — is it worth requiring a $20,000 sprinkler system in every brand new house?
+
+Does that actually save lives? — isn’t something that we have really asked of building codes before.
+
+So like, again, like narrow and technocratic, but could be really useful.
+
+Beyond that, you know, Ithink there’s sort of limited kind of direct levers, you know, and some of this is just going to have to kind of play its way out in the state courts.
+
+You know, lower interest rates will help on the homebuilding side, too.
+
+Builders are spending a lot of money to borrow in order to do development up front.
+
+It’ll make it cheaper for them to build as well as cheaper for households.
+
+But that’s something that’s just going to have to work its way out over time.
+
+STEIN: Yeah, absolutely.
+
+SCHUETZ: Iwill say one other policy area that swings a lot across administrations is anything related to climate policy.
+
+And of course, that shows up in the real estate industry requirements for energy efficient appliances and new expectations for development to be energy efficient.
+
+Where you can build, right?
+
+We build a lot of houses in places that get destroyed by natural disasters.
+
+You know, the federal government actually has levers that could push on that because the disaster recovery programs are funded by federal agencies.
+
+And so seeing more kind of requirements around insurance, around federal insurance programs and federal disaster recovery, Imean, Iwill say, Idon’t think either party particularly wants to touch this.
+
+STEIN: Yeah.
+
+SCHUETZ: But we’re going to kick the can down the road a little bit longer.
+
+STEIN: As somebody who’s talked to many members of Congress and members of the state house in California.
+
+The issue of insurance markets is a huge problem for housing right now in California.
+
+Insurers are pulling out or they’re raising costs like to exorbitant rates because it is just so difficult to insure with wildfires.
+
+And Imean, for other states, tornadoes and all of these sorts of natural disasters that Iwill often hear them talking about, can we do a federal reinsurance program?
+
+And I, Ithink that is one of those like, very small, sort of not paid attention to changes that could help, but Idon’t know that will ever actually see action on it because it is affecting states like California and Florida equally.
+
+SCHUETZ: Yeah.
+
+And Imean, this is again an area where in an ideal universe, you could get bipartisan cooperation to study the options for federal insurance programs to like run some financial models and figure out what you could do to start building some awareness around this with the industry.
+
+And, you know, if sane and quiet heads prevail, we should be able to think about this rationally without frothing at the mouth and yelling things and the policy is swinging back and forth.
+
+But Idon’t know that Ihave huge confidence that that’s what’s going to happen.
+[54:38]
+So as we’re getting close to the close to the end of the hour, maybe two questions for us to think about: Is housing going to be the deciding issue that turns the election?
+
+Is this going to be the critical thing that matters?
+
+And do we think housing is going to be part of presidential election cycles going forward, or is this a one-off because we have such an unusual market right now?
+
+STEIN: Ithink housing is is part of the big picture, which is like, it’s always, it’s almost always the economy.
+
+And now there’s sort of discussion about making abortion and reproductive rights an economic issue.
+
+And so it sort of folds into that, although it’s always been an economic issue.
+
+Ithink it Ithink it folds into that.
+
+Ithink, Idon’t know that housing is the issue, but Ibut it is the thing that people feel most directly.
+
+You look at your bank account every month and you’re paying your rent or you’re paying your mortgage.
+
+And that is probably the biggest chunk of change.
+
+It’s coming out of your bank account every month.
+
+And so for most people, if you’re hearing conversation about housing, that that’s going to speak to you.
+
+And depending on how the candidate’s talking about it, you may vote for them or the other.
+
+In addition to some of the other things, because like we said, housing is not partisan, but voting is.
+
+So.
+
+Yeah, do you want to take that on and then we’ll get the second one?
+
+SCHUETZ: Yeah.
+
+Imean, Ithink Ithink candidates are wise to pay attention to the issues that really bug people.
+
+And the cost of living, particularly the cost of housing, is a big one.
+
+It’s, Ithink this is also a reasonable one to talk about when you look at who the swing voters are this year, because swing voters are younger.
+
+They feel economically insecure.
+
+And housing costs are a big piece of that.
+
+So it actually feels to me like an area where you can talk to people who are on the fence.
+
+The bigger question is sort of, do undecided voters care about the details of federal housing policy and think that federal housing policy will make their rent cheaper or easier for them to buy a home?
+
+And Ifind that Imean, Istudy this stuff for a living and Ihave to stop and walk through what the federal government can do, to: is your rent going to change or can you buy a house?
+
+STEIN: Yeah, it’s just it’s a lot of points that you have to connect to.
+
+And most people are too busy to pay attention to every single point that has to connect.
+
+SCHUETZ: Yeah.
+
+Imean, Ithink this is also really interesting how it aligns with different kinds of voters because the people who are feeling the most pain are in fact younger households, were renters, and they’re less likely just to show up and vote, less likely to do research on the proposals.
+
+And older adults, you know, sort of the boomers who own a house, who may have paid down their mortgage or have a sub-3% mortgage, are much less concerned about this as an issue.
+
+But Ithink if you want to sort of pull them into the conversation, it’s worth reminding them, hey, the reason that your kids can’t move back home and live closer to you and, you know, bring the grandkids or the reason your kids aren’t having children is part is because it’s really expensive.
+
+And so Ithink, you know, sort of bringing generations together to align their interests around this would be a smart play for either party.
+
+STEIN: Yeah.
+
+Imean, Iwould push back, there’s a lot of conversations about young voters don’t care about policy details.
+
+Iwould push back and say that they actually do.
+
+They’re one of the most like informed people who actually are looking at each policy detail.
+
+That’s one of those areas where I’m like hmm, polling?
+
+After 2016?
+
+I’m not so sure.
+
+When it comes to the future, future election cycles, Imean, Idon’t know how you not have housing be part of the conversation.
+
+It’s only going to continue getting more expensive and more difficult unless some massive change happens.
+
+Idon’t see it going anywhere.
+
+Do you?
+
+SCHUETZ: This is not a problem that’s going to solve itself.
+
+It’s not going to get solved quickly.
+
+Even if all 50 states tomorrow adopted brilliant statewide housing policies and we ramped up production, it’s going to take decades to build our way out of the shortage that we’re in.
+
+So it’s hard to imagine that four years from now, this isn’t going to be an important issue.
+
+STEIN: Yeah, Idon’t know that it’ll be a big issue, but Ithink it could still be up there as like, okay, top couple of issues that people actually care about because it’s a pocketbook issue and those are the things that people who are not in Washington or New York or San Francisco are actually thinking about.
+
+SCHUETZ: Make housing more affordable again sounds to me like a great slogan.
+
+All right.
+
+Well, thank you very much for joining us.
+
+It’s been lovely chatting.
+
+And if you’re interested in more issues about policy in the election, tune in to The Current’s issues on the current election.
+
+Thank you very much.
+
+STEIN: Thank you.
+
+The Brookings Institution is committed to quality, independence, and impact.
+
+We are supported by a diverse array of funders.
+
+In line with our values and policies, each Brookings publication represents the sole views of its author(s).

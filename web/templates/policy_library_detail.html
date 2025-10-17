@@ -526,7 +526,8 @@ html {
 <div class="row">
     {# Check if HTML content contains a TOC div - JavaScript will handle the rest #}
     {% set has_toc = 'class="TOC"' in content_version['html_content'] or 'class=\'TOC\'' in content_version['html_content'] %}
-    <!-- DEBUG: has_toc={{ has_toc }}, html_length={{ content_version['html_content']|length }} -->
+    {% set has_body_tag = '<body' in content_version['html_content']|lower %}
+    <!-- DEBUG: has_toc={{ has_toc }}, html_length={{ content_version['html_content']|length }}, has_body_tag={{ has_body_tag }} -->
 
     <div class="{% if has_toc %}col-lg-9{% else %}col-12{% endif %}">
         <div class="section">

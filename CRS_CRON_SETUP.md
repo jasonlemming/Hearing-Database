@@ -145,7 +145,7 @@ The cron job is configured in `vercel.json`:
 
 1. **Trigger**: Vercel Cron calls `/api/cron/crs-library-update` at 8 AM UTC daily
 
-2. **Authentication**: Endpoint verifies `CRON_SECRET` header
+2. **Authentication**: Endpoint verifies `CRON_SECRET` (prefer `Authorization: Bearer <secret>`; `X-Cron-Secret` headers and a `cron_secret` query parameter are also accepted for hosted schedulers)
 
 3. **Initialize**: Creates `CRSUpdater` instance with:
    - `lookback_days=30` (check last 30 days)

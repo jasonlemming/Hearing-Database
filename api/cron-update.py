@@ -27,14 +27,61 @@ app = Flask(__name__)
 logger = get_logger(__name__)
 
 
+def _extract_provided_secret() -> tuple[str | None, str]:
+    """Retrieve any cron authentication token and describe its source for logging."""
+
+    auth_header = request.headers.get('Authorization')
+    if auth_header:
+        scheme_value = auth_header.split(' ', 1)
+        if len(scheme_value) == 2:
+            scheme, value = scheme_value
+            if scheme.lower() in {"bearer", "token", "basic"}:
+                return value.strip(), "authorization"
+        # Fallback: treat entire header as the secret (supports raw tokens)
+        return auth_header.strip(), "authorization"
+
+    for header_name in ("X-Cron-Secret", "X-CRON-SECRET", "X-Vercel-Cron-Secret"):
+        header_value = request.headers.get(header_name)
+        if header_value:
+            return header_value.strip(), header_name.lower()
+
+    query_secret = request.args.get('cron_secret') or request.args.get('token')
+    if query_secret:
+        return query_secret.strip(), "querystring"
+
+    return None, "missing"
+
+
+def _mask_secret(secret: str | None) -> str:
+    """Return a masked representation of a secret for safe logging."""
+
+    if not secret:
+        return "<none>"
+    if len(secret) <= 4:
+        return "*" * len(secret)
+    return f"{secret[:2]}***{secret[-2:]}"
+
+
 def verify_cron_auth():
     """Verify the request is from Vercel cron with valid auth"""
-    cron_secret = request.headers.get('Authorization')
     expected_secret = os.environ.get('CRON_SECRET')
 
-    if expected_secret and cron_secret != f"Bearer {expected_secret}":
-        return False
-    return True
+    if not expected_secret:
+        logger.debug("CRON_SECRET not configured; skipping auth validation")
+        return True
+
+    provided_secret, source = _extract_provided_secret()
+
+    if provided_secret == expected_secret:
+        logger.debug("Cron authentication succeeded via %s", source)
+        return True
+
+    logger.warning(
+        "Cron authentication failed (source=%s, provided=%s)",
+        source,
+        _mask_secret(provided_secret),
+    )
+    return False
 
 
 def get_schedule_config(task_id):

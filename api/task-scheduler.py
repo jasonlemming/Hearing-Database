@@ -115,6 +115,14 @@ def schedule_tasks():
         executed = []
         skipped = []
 
+        cron_secret = os.environ.get("CRON_SECRET")
+        auth_headers = None
+        if cron_secret:
+            auth_headers = {"Authorization": f"Bearer {cron_secret}"}
+            logger.info("CRON_SECRET found; Authorization header will be attached to scheduler requests")
+        else:
+            logger.info("CRON_SECRET not set; scheduler requests will be sent without Authorization header")
+
         for task in tasks:
             task_id = task['task_id']
             task_name = task['name']
@@ -144,7 +152,12 @@ def schedule_tasks():
 
                     # Fire and forget with short timeout
                     try:
-                        response = requests.post(url, timeout=5)
+                        if auth_headers:
+                            logger.debug(f"Attaching Authorization header for task {task_name} (ID {task_id})")
+                        else:
+                            logger.debug(f"No Authorization header for task {task_name} (ID {task_id})")
+
+                        response = requests.post(url, timeout=5, headers=auth_headers)
                         logger.info(f"Triggered {task_name}: HTTP {response.status_code}")
                     except requests.exceptions.Timeout:
                         # Timeout is OK - the cron job is running
